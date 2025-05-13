@@ -1,19 +1,14 @@
-import { Button } from "@/components/ui/button";
-import Section from "@/components/ui/section";
-import Card from "@/components/ui/card";
-import Image from "next/image";
-import Link from "next/link";
 import React from "react";
-import { ArrowRight } from "lucide-react";
-import RitualProducts from "./sections/RitualProducts";
-import QnA from "./sections/QnA";
-import { Interaction } from "./sections/Interaction";
-import Posts from "./sections/Posts";
-import WhatShouldIDo from "./sections/WhatShouldIDo";
-import AboutUs from "./sections/AboutUs";
-import WhyUs from "./sections/WhyUs";
-import Services from "./sections/Services";
-import Hero from "./sections/Hero";
+import RitualProducts from "./_components/RitualProducts";
+import QnA from "./_components/QnA";
+import { Interaction } from "./_components/Interaction";
+import Posts from "./_components/Posts";
+import WhatShouldIDo from "./_components/WhatShouldIDo";
+import AboutUs from "./_components/AboutUs";
+import WhyUs from "./_components/WhyUs";
+import Services from "./_components/Services";
+import Hero from "./_components/Hero";
+import WhereToFindUs from "./_components/WhereToFindUs";
 
 export default function Home() {
 	return (
@@ -27,6 +22,7 @@ export default function Home() {
 			<QnA />
 			<Interaction />
 			<Posts />
+			<WhereToFindUs />
 		</>
 	);
 }

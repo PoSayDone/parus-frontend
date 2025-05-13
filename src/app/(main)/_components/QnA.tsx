@@ -37,7 +37,7 @@ const Question = ({
 				/>
 			</CollapsibleTrigger>
 			<CollapsibleContent className="bg-primary text-on-primary text-start text-lg p-8 rounded-2xl mt-2">
-				{paragraph}
+				<p>{paragraph}</p>
 			</CollapsibleContent>
 		</Collapsible>
 	);

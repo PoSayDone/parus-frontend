@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Golos_Text } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/Header";
+import Layout from "@/modules/layout";
 
 const golos = Golos_Text({
 	weight: ["400", "500", "600", "700", "800", "900"],
@@ -23,10 +23,7 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body className={`${golos.className} antialiased`}>
-				<div>
-					<Header />
-					<main className="flex flex-col">{children}</main>
-				</div>
+				<Layout>{children}</Layout>
 			</body>
 		</html>
 	);

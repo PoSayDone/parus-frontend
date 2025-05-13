@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import Section from "@/components/ui/section";
 
 const StepCard = ({
@@ -111,6 +112,9 @@ export default function WhatShouldIDo() {
 					/>
 				))}
 			</div>
+
+			<Button className="self-center mt-4">Вызывать агента</Button>
+			<p>Получите помощь — это бесплатно.</p>
 		</Section>
 	);
 }

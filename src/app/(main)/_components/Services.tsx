@@ -18,7 +18,7 @@ export default function Services() {
 			<div className="flex gap-4">
 				<Card title="Памятники">
 					<Image
-						className="mx-auto mt-4"
+						className="mx-auto mt-16"
 						src="/tomb.png"
 						alt="Логотип краевой ритуальной компании"
 						width={205}
@@ -27,7 +27,7 @@ export default function Services() {
 				</Card>
 				<Card title="Памятники">
 					<Image
-						className="mx-auto mt-4"
+						className="mx-auto mt-16"
 						src="/tomb.png"
 						alt="Логотип краевой ритуальной компании"
 						width={205}
@@ -36,7 +36,7 @@ export default function Services() {
 				</Card>
 				<Card title="Памятники">
 					<Image
-						className="mx-auto mt-4"
+						className="mx-auto mt-16"
 						src="/tomb.png"
 						alt="Логотип краевой ритуальной компании"
 						width={205}
@@ -45,7 +45,16 @@ export default function Services() {
 				</Card>
 				<Card title="Памятники">
 					<Image
-						className="mx-auto mt-4"
+						className="mx-auto mt-16"
+						src="/tomb.png"
+						alt="Логотип краевой ритуальной компании"
+						width={205}
+						height={370}
+					/>
+				</Card>
+				<Card title="Памятники">
+					<Image
+						className="mx-auto mt-16"
 						src="/tomb.png"
 						alt="Логотип краевой ритуальной компании"
 						width={205}
