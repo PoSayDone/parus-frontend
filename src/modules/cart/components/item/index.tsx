@@ -14,6 +14,14 @@ import { useState } from "react";
 import { TableRow, TableCell } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
 import { Loader } from "lucide-react";
+import {
+	Select,
+	SelectContent,
+	SelectGroup,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
 
 type ItemProps = {
 	item: HttpTypes.StoreCartLineItem;
@@ -84,37 +92,45 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
 
 			{type === "full" && (
 				<TableCell>
-					<div className="flex gap-2 items-center w-28">
+					<div className="flex gap-2 items-center w-32">
+						<Select
+							value={item.quantity.toString()}
+							onValueChange={(value) =>
+								changeQuantity(parseInt(value))
+							}
+							data-testid="product-select-button"
+						>
+							<SelectTrigger className="w-[180px]">
+								{updating ? (
+									<Loader className="animate-spin size-4 shrink-0" />
+								) : (
+									<SelectValue placeholder="Кол-во товаров" />
+								)}
+							</SelectTrigger>
+							<SelectContent>
+								<SelectGroup>
+									{/* TODO: Update this with the v2 way of managing inventory */}
+									{Array.from(
+										{
+											length: Math.min(maxQuantity, 10),
+										},
+										(_, i) => (
+											<SelectItem
+												value={(i + 1).toString()}
+												key={i}
+											>
+												{i + 1}
+											</SelectItem>
+										),
+									)}
+								</SelectGroup>
+							</SelectContent>
+						</Select>
 						<DeleteButton
 							size={"icon"}
 							id={item.id}
 							data-testid="product-delete-button"
 						/>
-						<CartItemSelect
-							value={item.quantity}
-							onChange={(value) =>
-								changeQuantity(parseInt(value.target.value))
-							}
-							className="w-14 h-10 p-4"
-							data-testid="product-select-button"
-						>
-							{/* TODO: Update this with the v2 way of managing inventory */}
-							{Array.from(
-								{
-									length: Math.min(maxQuantity, 10),
-								},
-								(_, i) => (
-									<option value={i + 1} key={i}>
-										{i + 1}
-									</option>
-								),
-							)}
-
-							<option value={1} key={1}>
-								1
-							</option>
-						</CartItemSelect>
-						{updating && <Loader className="animate-spin" />}
 					</div>
 					<ErrorMessage
 						error={error}

@@ -24,11 +24,8 @@ export function ProductCard({
 					size="full"
 					isFeatured={isFeatured}
 				/>
-				<div className="flex txt-compact-medium mt-4 justify-between">
-					<div
-						className="text-ui-fg-subtle"
-						data-testid="product-title"
-					>
+				<div className="flex flex-col text-base mt-4 justify-between">
+					<div className="font-medium" data-testid="product-title">
 						{product.title}
 					</div>
 					<div className="flex items-center gap-x-2">

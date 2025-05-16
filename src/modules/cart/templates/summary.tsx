@@ -5,6 +5,7 @@ import DiscountCode from "@modules/checkout/components/discount-code";
 import Link from "next/link";
 import { HttpTypes } from "@medusajs/types";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 type SummaryProps = {
 	cart: HttpTypes.StoreCart & {
@@ -26,14 +27,21 @@ const Summary = ({ cart }: SummaryProps) => {
 	const step = getCheckoutStep(cart);
 
 	return (
-		<div className="flex flex-col gap-y-4">
-			<h2 className="text-3xl font-medium">Summary</h2>
-			<DiscountCode cart={cart} />
-			<CartTotals totals={cart} />
-			<Link href={"/checkout?step=" + step} data-testid="checkout-button">
-				<Button className="w-full">Go to checkout</Button>
-			</Link>
-		</div>
+		<Card>
+			<CardHeader>
+				<CardTitle className="text-3xl font-medium">Summary</CardTitle>
+				<DiscountCode cart={cart} />
+			</CardHeader>
+			<CardContent className="flex flex-col gap-y-4">
+				<CartTotals totals={cart} />
+				<Link
+					href={"/checkout?step=" + step}
+					data-testid="checkout-button"
+				>
+					<Button className="w-full">Перейти к оформлению</Button>
+				</Link>
+			</CardContent>
+		</Card>
 	);
 };
 

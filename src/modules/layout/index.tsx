@@ -9,7 +9,7 @@ const Layout: React.FC<{
 	return (
 		<div>
 			<Header />
-			<main className="flex flex-col text-xl relative">{children}</main>
+			<main className="flex flex-col relative mx-auto">{children}</main>
 			<Footer />
 		</div>
 	);

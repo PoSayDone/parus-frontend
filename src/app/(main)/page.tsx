@@ -12,7 +12,7 @@ import WhereToFindUs from "./_components/WhereToFindUs";
 
 export default function Home() {
 	return (
-		<>
+		<div className="text-xl">
 			<Hero />
 			<Services />
 			<WhyUs />
@@ -23,6 +23,6 @@ export default function Home() {
 			<Interaction />
 			<Posts />
 			<WhereToFindUs />
-		</>
+		</div>
 	);
 }

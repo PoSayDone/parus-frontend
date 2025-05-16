@@ -27,7 +27,7 @@ const StoreTemplate = ({
 			{/* <RefinementList sortBy={sort} /> */}
 			<div className="w-full">
 				<div className="mb-8">
-					<h1 className="text-3xl" data-testid="store-page-title">
+					<h1 className="text-4xl" data-testid="store-page-title">
 						Все товары
 					</h1>
 				</div>

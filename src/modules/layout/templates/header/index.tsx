@@ -8,8 +8,8 @@ import CartButton from "@modules/layout/components/cart-button";
 export default function Header() {
 	return (
 		<header className="flex px-8 py-3 text-xl items-center sticky top-0 bg-background z-40">
-			<div className="flex-1">
-				<Link href={"/"}>
+			<div className="flex flex-row flex-1 gap-8">
+				<Link href={"/"} className="font-bold">
 					Парус
 					{/* <Image
 						src="/logo.svg"
@@ -18,10 +18,10 @@ export default function Header() {
 						height={38}
 					/> */}
 				</Link>
+				<nav className="flex justify-center">
+					<Link href="/store">Каталог</Link>
+				</nav>
 			</div>
-			<nav className="flex-1 flex justify-center">
-				<Link href="/store">Каталог</Link>
-			</nav>
 			<div className="flex-1 flex justify-end gap-2 items-center">
 				<div className="px-4">+7 963 842 15 42</div>
 				<Button>

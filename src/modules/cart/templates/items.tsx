@@ -20,7 +20,7 @@ const ItemsTemplate = ({ cart }: ItemsTemplateProps) => {
 	return (
 		<div>
 			<div className="pb-3 flex items-center">
-				<h1 className="text-3xl text-medium">Корзина</h1>
+				<h1 className="text-4xl">Корзина</h1>
 			</div>
 			<Table>
 				<TableHeader className="border-t-0">

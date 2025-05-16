@@ -1,4 +1,5 @@
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -30,34 +31,36 @@ export default function Hero() {
 				</Button>
 			</div>
 			<div className="flex flex-col gap-4">
-				<Button
-					className="hover:bg-inverse-primary/80 transition bg-inverse-primary text-foreground text-2xl font-medium aspect-square px-8 text-center flex items-center justify-center rounded-full h-auto"
-					asChild
+				<Link
+					className={cn(
+						buttonVariants(),
+						"hover:bg-inverse-primary/80 transition bg-inverse-primary text-foreground text-2xl font-medium aspect-square px-8 text-center flex items-center justify-center rounded-full h-auto",
+					)}
+					href={"/"}
 				>
-					<Link href={"/"}>
-						Что делать,
-						<br /> если случилась беда?
-					</Link>
-				</Button>
-				<Button
-					asChild
-					className="hover:bg-inverse-primary/80 transition bg-inverse-primary text-foreground text-2xl font-medium h-[400px] py-8 text-center flex items-start justify-center rounded-4xl relative overflow-clip"
+					Что делать,
+					<br /> если случилась беда?
+				</Link>
+				<Link
+					href={"/"}
+					className={cn(
+						buttonVariants(),
+						"hover:bg-inverse-primary/80 transition bg-inverse-primary text-foreground text-2xl font-medium h-[400px] py-8 text-center flex items-start justify-center rounded-4xl relative overflow-clip",
+					)}
 				>
-					<Link href={"/"}>
-						Перейти
-						<br />в конструтор
-						<Image
-							className="absolute top-32"
-							src="/tomb.png"
-							alt="Логотип краевой ритуальной компании"
-							width={205}
-							height={370}
-						/>
-						<div className="w-[54] h-[54] absolute right-5 bottom-5 bg-primary text-on-primary rounded-full flex items-center justify-center">
-							<ArrowRight className="size-6" />
-						</div>
-					</Link>
-				</Button>
+					Перейти
+					<br />в конструтор
+					<Image
+						className="absolute top-32"
+						src="/tomb.png"
+						alt="Логотип краевой ритуальной компании"
+						width={205}
+						height={370}
+					/>
+					<div className="w-[54] h-[54] absolute right-5 bottom-5 bg-primary text-on-primary rounded-full flex items-center justify-center">
+						<ArrowRight className="size-6" />
+					</div>
+				</Link>
 			</div>
 		</section>
 	);

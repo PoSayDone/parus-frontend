@@ -1,6 +1,6 @@
 "use client";
 
-import Card from "@/components/ui/card";
+import Card from "@/app/(main)/_components/card";
 import Section from "@/components/ui/section";
 import { EmblaOptionsType } from "embla-carousel";
 import Autoplay from "embla-carousel-autoplay";

@@ -1,30 +1,31 @@
-import { Heading } from "@medusajs/ui"
-
-import ItemsPreviewTemplate from "@modules/cart/templates/preview"
-import DiscountCode from "@modules/checkout/components/discount-code"
-import CartTotals from "@modules/common/components/cart-totals"
-import Divider from "@modules/common/components/divider"
+import {
+	Card,
+	CardContent,
+	CardFooter,
+	CardHeader,
+} from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import ItemsPreviewTemplate from "@modules/cart/templates/preview";
+import DiscountCode from "@modules/checkout/components/discount-code";
+import CartTotals from "@modules/common/components/cart-totals";
 
 const CheckoutSummary = ({ cart }: { cart: any }) => {
-  return (
-    <div className="sticky top-0 flex flex-col-reverse small:flex-col gap-y-8 py-8 small:py-0 ">
-      <div className="w-full bg-white flex flex-col">
-        <Divider className="my-6 small:hidden" />
-        <Heading
-          level="h2"
-          className="flex flex-row text-3xl-regular items-baseline"
-        >
-          In your Cart
-        </Heading>
-        <Divider className="my-6" />
-        <CartTotals totals={cart} />
-        <ItemsPreviewTemplate cart={cart} />
-        <div className="my-6">
-          <DiscountCode cart={cart} />
-        </div>
-      </div>
-    </div>
-  )
-}
+	return (
+		<div className="sticky top-0 flex flex-col-reverse md:flex-col gap-y-8 py-8 md:py-0">
+			<Card>
+				<CardHeader>
+					<h2 className="flex flex-row text-2xl font-medium">
+						In your Cart
+					</h2>
+				</CardHeader>
+				<CardContent className="pb-0">
+					<CartTotals totals={cart} />
+					<DiscountCode cart={cart} />
+					{/* <ItemsPreviewTemplate cart={cart} /> */}
+				</CardContent>
+			</Card>
+		</div>
+	);
+};
 
-export default CheckoutSummary
+export default CheckoutSummary;

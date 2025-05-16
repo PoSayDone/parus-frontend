@@ -60,8 +60,10 @@ function Button({
 			disabled={isLoading || props.disabled}
 			{...props}
 		>
-			{isLoading && <Loader2 className="animate-spin size-5" />}
-			<Slottable>{children}</Slottable>
+			<Slottable>
+				{isLoading && <Loader2 className="animate-spin size-5" />}
+				{children}
+			</Slottable>
 		</Comp>
 	);
 }
