@@ -23,7 +23,7 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({ product }) => {
 	return (
 		<>
 			<div
-				className="content-container flex flex-col sm:flex-row sm:items-start py-6 relative max-w-[1500px] w-full mx-auto sm:gap-x-12 px-8"
+				className="content-container flex flex-col sm:flex-row sm:items-start py-6 relative max-w-[1500px] w-full mx-auto sm:gap-x-12"
 				data-testid="product-container"
 			>
 				<div className="block w-full max-w-[600px] relative">

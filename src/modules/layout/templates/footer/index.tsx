@@ -1,32 +1,54 @@
-import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function Footer() {
 	return (
-		<footer className="p-8 flex justify-between">
-			<div className="flex flex-col justify-between">
-				<Image
-					// className="dark:invert"
-					src="/logo.svg"
-					alt="Логотип краевой ритуальной компании"
-					width={180}
-					height={38}
-				/>
-				<p>
-					Похоронное бюро в СПб ООО «Центр РУ». © 2025. ИНН:
-					7813661578, КПП: 780601001
-				</p>
+		<footer className="px-8 py-10 md:p-20 flex flex-col justify-between border-t">
+			<div className="flex flex-col md:flex-row justify-between items-start py-6 gap-6 md:mb-6">
+				<div className="flex flex-col gap-2">
+					<Link href={"/"} className="font-bold text-xl mb-2">
+						Парус
+					</Link>
+					<p className="text-sm">
+						г. Пермь, Советской армии 52,
+						<br /> этаж 128, офис 812
+					</p>
+					<p className="text-sm">parus@perm.ru</p>
+					<p className="text-sm">+79999999999</p>
+				</div>
+				<div className="flex flex-col gap-2">
+					<h6 className="font-bold text-xl mb-2">Компания</h6>
+					<Link href={"/"} className="text-sm">
+						О нас
+					</Link>
+					<Link href={"/"} className="text-sm">
+						Новости
+					</Link>
+				</div>
+				<div className="flex flex-col gap-2">
+					<h6 className="font-bold text-xl mb-2">Покупателям</h6>
+					<Link href={"/"} className="text-sm">
+						Как оформить заказ
+					</Link>
+					<Link href={"/"} className="text-sm">
+						Способы оплаты
+					</Link>
+				</div>
+				<div className="flex-col justify-start items-start text-start flex py-8 md:py-0">
+					<h2 className="text-2xl font-medium mb-2">
+						Не нашли ответ на вопрос?
+					</h2>
+					<p className="mb-4">
+						Напишите нам удобным способом
+						<br /> и специалист ответит в течение 5 минут
+					</p>
+					<Button>Задать вопрос</Button>
+				</div>
 			</div>
-			<div className="flex-col justify-end items-end text-end">
-				<h2 className="text-3xl font-medium mb-5">
-					Не нашли ответ на вопрос?
-				</h2>
-				<p className="mb-7">
-					Напишите нам удобным способом
-					<br /> и специалист ответит в течение 5 минут
-				</p>
-				<Button>Задать вопрос</Button>
-			</div>
+			<p className="text-muted-foreground text-sm">
+				Похоронное бюро в СПб ООО «Центр РУ». © 2025. ИНН: 7813661578,
+				КПП: 780601001
+			</p>
 		</footer>
 	);
 }

@@ -35,7 +35,9 @@ export async function retrieveCart(cartId?: string) {
 		...(await getCacheOptions("carts")),
 	};
 
-	return await sdk.client
+	console.log(next);
+
+	const cart = await sdk.client
 		.fetch<HttpTypes.StoreCartResponse>(`/store/carts/${id}`, {
 			method: "GET",
 			query: {
@@ -47,9 +49,16 @@ export async function retrieveCart(cartId?: string) {
 		})
 		.then(({ cart }) => cart)
 		.catch(() => null);
+	return cart;
 }
 
 export async function getOrSetCart() {
+	const region = await getRegion("ru");
+
+	if (!region) {
+		throw new Error(`Region not found for country code: ${"ru"}`);
+	}
+
 	let cart = await retrieveCart();
 
 	const headers = {
@@ -57,7 +66,11 @@ export async function getOrSetCart() {
 	};
 
 	if (!cart) {
-		const cartResp = await sdk.store.cart.create({}, {}, headers);
+		const cartResp = await sdk.store.cart.create(
+			{ region_id: region.id },
+			{},
+			headers,
+		);
 		cart = cartResp.cart;
 
 		await setCartId(cart.id);
@@ -66,11 +79,18 @@ export async function getOrSetCart() {
 		revalidateTag(cartCacheTag);
 	}
 
-	if (cart) {
-		await sdk.store.cart.update(cart.id, {}, {}, headers);
+	if (cart && cart?.region_id !== region.id) {
+		await sdk.store.cart.update(
+			cart.id,
+			{ region_id: region.id },
+			{},
+			headers,
+		);
 		const cartCacheTag = await getCacheTag("carts");
 		revalidateTag(cartCacheTag);
 	}
+
+	console.log(cart);
 
 	return cart;
 }
@@ -88,7 +108,7 @@ export async function updateCart(data: HttpTypes.StoreUpdateCart) {
 		...(await getAuthHeaders()),
 	};
 
-	return sdk.store.cart
+	const cart = sdk.store.cart
 		.update(cartId, data, {}, headers)
 		.then(async ({ cart }) => {
 			const cartCacheTag = await getCacheTag("carts");
@@ -100,6 +120,8 @@ export async function updateCart(data: HttpTypes.StoreUpdateCart) {
 			return cart;
 		})
 		.catch(medusaError);
+
+	return cart;
 }
 
 export async function addToCart({
@@ -342,8 +364,6 @@ export async function setAddresses(currentState: unknown, formData: FormData) {
 				country_code: "ru",
 				province: "",
 				phone: formData.get("shipping_address.phone"),
-				// country_code: formData.get("shipping_address.country_code"),
-				// province: formData.get("shipping_address.province"),
 			},
 			email: formData.get("email"),
 		} as any;
@@ -434,7 +454,7 @@ export async function updateRegion(countryCode: string, currentPath: string) {
 	const productsCacheTag = await getCacheTag("products");
 	revalidateTag(productsCacheTag);
 
-	redirect(`/${currentPath}`);
+	redirect(`${currentPath}`);
 }
 
 export async function listCartOptions() {

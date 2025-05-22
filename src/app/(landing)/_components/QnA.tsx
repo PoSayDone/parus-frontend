@@ -8,8 +8,6 @@ import {
 import Section from "@/components/ui/section";
 import { cn } from "@/lib/utils";
 import { ChevronUp } from "lucide-react";
-import { title } from "node:process";
-import { parseArgs } from "node:util";
 import React from "react";
 
 const Question = ({
@@ -27,7 +25,7 @@ const Question = ({
 			open={isOpen}
 			onOpenChange={setIsOpen}
 		>
-			<CollapsibleTrigger className="text-2xl bg-secondary-container py-6 px-8 rounded-2xl w-full flex justify-between">
+			<CollapsibleTrigger className="text-xl bg-secondary-container py-6 px-8 rounded-2xl w-full flex justify-between text-left">
 				{title}
 				<ChevronUp
 					className={cn(

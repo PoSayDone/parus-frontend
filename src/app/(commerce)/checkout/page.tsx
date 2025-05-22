@@ -12,7 +12,6 @@ export const metadata: Metadata = {
 
 export default async function Checkout() {
 	const cart = await retrieveCart();
-
 	if (!cart) {
 		return notFound();
 	}
@@ -20,11 +19,14 @@ export default async function Checkout() {
 	const customer = await retrieveCustomer();
 
 	return (
-		<div className="grid grid-cols-1 md:grid-cols-[1fr_416px] content-container gap-x-40 py-12 px-8 mx-auto w-full max-w-[1500px]">
+		<div className="grid grid-cols-1 sm:grid-cols-[1fr_400px] content-container gap-x-40 py-12 px-0">
 			<PaymentWrapper cart={cart}>
 				<CheckoutForm cart={cart} customer={customer} />
 			</PaymentWrapper>
-			<CheckoutSummary cart={cart} />
+
+			<div className=" py-6">
+				<CheckoutSummary cart={cart} />
+			</div>
 		</div>
 	);
 }

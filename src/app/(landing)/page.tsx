@@ -12,7 +12,7 @@ import WhereToFindUs from "./_components/WhereToFindUs";
 
 export default function Home() {
 	return (
-		<div className="text-xl">
+		<div className="text-base md:text-xl">
 			<Hero />
 			<Services />
 			<WhyUs />

@@ -1,5 +1,6 @@
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import Section from "@/components/ui/section";
+import { cn } from "@/lib/utils";
 import Link from "next/link";
 
 const Post = ({
@@ -16,9 +17,9 @@ const Post = ({
 	return (
 		<div className="flex flex-col">
 			<div className="w-full aspect-video bg-secondary-container rounded-3xl" />
-			<div className="text-2xl mt-4">{date}</div>
-			<h3 className="text-3xl font-medium mt-2">{title}</h3>
-			<p className="text-lg mt-2">{description}</p>
+			<div className="text-lg mt-4">{date}</div>
+			<h3 className="text-2xl font-medium mt-2">{title}</h3>
+			<p className="text-xl mt-2">{description}</p>
 		</div>
 	);
 };
@@ -27,11 +28,11 @@ export default function Posts() {
 	return (
 		<Section
 			id="posts"
-			className="px-0 items-center"
+			className="items-center"
 			title="Полезные статьи"
 			subtitle="Последние новости от нас."
 		>
-			<div className="grid columns-2 max-w-[1200px] w-full text-left justify-between items-start self-center grid-cols-[1fr_1fr] gap-4">
+			<div className="grid columns-2 max-w-[1200px] w-full text-left justify-between items-start self-center grid-cols-1 md:grid-cols-2 gap-4">
 				<Post
 					date="Сентябрь 23, 2024"
 					title="Если родственник умер за границей"
@@ -45,9 +46,12 @@ export default function Posts() {
 					imageUrl="https://example.com/image.jpg"
 				/>
 			</div>
-			<Button asChild className="mt-4">
-				<Link href="/">Все статьи</Link>
-			</Button>
+			<Link
+				href="/"
+				className={cn(buttonVariants({ variant: "default" }), "mt-4")}
+			>
+				Все статьи
+			</Link>
 		</Section>
 	);
 }

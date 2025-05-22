@@ -3,6 +3,7 @@ import {
 	CardContent,
 	CardFooter,
 	CardHeader,
+	CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import ItemsPreviewTemplate from "@modules/cart/templates/preview";
@@ -14,13 +15,13 @@ const CheckoutSummary = ({ cart }: { cart: any }) => {
 		<div className="sticky top-0 flex flex-col-reverse md:flex-col gap-y-8 py-8 md:py-0">
 			<Card>
 				<CardHeader>
-					<h2 className="flex flex-row text-2xl font-medium">
-						In your Cart
-					</h2>
+					<CardTitle className="text-3xl font-medium">
+						В вашей корзине
+					</CardTitle>
+					<DiscountCode cart={cart} />
 				</CardHeader>
 				<CardContent className="pb-0">
 					<CartTotals totals={cart} />
-					<DiscountCode cart={cart} />
 					{/* <ItemsPreviewTemplate cart={cart} /> */}
 				</CardContent>
 			</Card>

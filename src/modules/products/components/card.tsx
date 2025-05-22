@@ -24,14 +24,14 @@ export function ProductCard({
 					size="full"
 					isFeatured={isFeatured}
 				/>
-				<div className="flex flex-col text-base mt-4 justify-between">
-					<div className="font-medium" data-testid="product-title">
-						{product.title}
-					</div>
+				<div className="flex flex-col text-sm mt-2 justify-between">
 					<div className="flex items-center gap-x-2">
 						{cheapestPrice && (
 							<PreviewPrice price={cheapestPrice} />
 						)}
+					</div>
+					<div className="font-medium" data-testid="product-title">
+						{product.title}
 					</div>
 				</div>
 			</div>

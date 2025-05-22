@@ -4,7 +4,7 @@ import Section from "@/components/ui/section";
 export function Interaction() {
 	return (
 		<Section id="interaction" className="px-0 bg-secondary-container">
-			<div className="flex max-w-[1200px] w-full text-left justify-between items-center self-center">
+			<div className="flex max-w-[1200px] w-full justify-between items-center self-center flex-col px-3 gap-8 text-center md:text-left md:px-0 md:flex-row">
 				<div className="flex flex-col gap-6">
 					<h2 className="text-4xl font-medium">
 						Готовы получить помощь?

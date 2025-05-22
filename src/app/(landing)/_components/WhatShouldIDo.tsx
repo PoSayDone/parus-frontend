@@ -14,7 +14,7 @@ const StepCard = ({
 	imageSrc?: string;
 }) => {
 	return (
-		<div className="flex gap-28 bg-secondary-container justify-center items-center h-[500px] max-w-[1200px] rounded-4xl self-center w-full">
+		<div className="flex flex-col py-8 w-fit justify-between bg-secondary-container md:flex-row md:justify-center items-center min-h-[500px] max-w-[1200px] rounded-4xl self-center md:w-full px-6 gap-12">
 			<div className="flex flex-col gap-6 max-w-[350px] text-left">
 				<div>{`Шаг ${number}`}</div>
 				<h3 className="text-3xl font-medium">{title}</h3>
@@ -88,7 +88,7 @@ export default function WhatShouldIDo() {
 			id="what-should-i-do"
 			title={
 				<>
-					Что делать, если умер
+					Что делать, если&nbsp;умер
 					<br />
 					близкий человек?
 				</>
@@ -101,7 +101,7 @@ export default function WhatShouldIDo() {
 				</>
 			}
 		>
-			<div className="flex flex-col gap-10">
+			<div className="flex flex-col gap-10 items-center">
 				{stepsData.map((step, index) => (
 					<StepCard
 						key={index}

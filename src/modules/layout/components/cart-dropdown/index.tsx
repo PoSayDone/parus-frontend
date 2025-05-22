@@ -80,14 +80,17 @@ const CartDropdown = ({
 					<Link
 						onMouseEnter={openAndCancel}
 						onMouseLeave={close}
-						className={cn(buttonVariants({ variant: "outline" }))}
+						className={cn(
+							buttonVariants({ variant: "secondary" }),
+							"outline",
+						)}
 						href="/cart"
 						data-testid="nav-cart-link"
 					>{`Корзина (${totalItems})`}</Link>
 				</PopoverTrigger>
 				<PopoverContent
 					align="end"
-					className="w-fit min-w-[400px]"
+					className="w-full"
 					data-testid="nav-cart-dropdown"
 					onMouseEnter={openAndCancel}
 					onMouseLeave={close}

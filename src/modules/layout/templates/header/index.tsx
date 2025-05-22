@@ -1,46 +1,131 @@
-import Image from "next/image";
+"use client";
+
 import Link from "next/link";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { Phone } from "lucide-react";
-import { Suspense } from "react";
-import CartButton from "@modules/layout/components/cart-button";
+import { MenuIcon, Phone, XIcon } from "lucide-react";
+import {
+	Popover,
+	PopoverContent,
+	PopoverTrigger,
+} from "@/components/ui/popover";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { cn } from "@/lib/utils";
+import { Dispatch, useState } from "react";
 
-export default function Header() {
+const HeaderContent = ({
+	menuState,
+	setMenuState,
+}: {
+	menuState: boolean;
+	setMenuState: Dispatch<boolean>;
+}) => {
 	return (
-		<header className="flex px-8 py-3 text-xl items-center sticky top-0 bg-background z-40">
-			<div className="flex flex-row flex-1 gap-8">
-				<Link href={"/"} className="font-bold">
+		<>
+			<div className="flex flex-row  gap-8">
+				<Link href={"/"} className="font-bold text-xl ml-2">
 					Парус
-					{/* <Image
-						src="/logo.svg"
-						alt="Логотип краевой ритуальной компании"
-						width={180}
-						height={38}
-					/> */}
 				</Link>
-				<nav className="flex justify-center">
+				<nav className="justify-center hidden md:flex">
 					<Link href="/store">Каталог</Link>
 				</nav>
 			</div>
-			<div className="flex-1 flex justify-end gap-2 items-center">
-				<div className="px-4">+7 963 842 15 42</div>
-				<Button>
-					<Phone /> Позвонить
-				</Button>
-				<Suspense
-					fallback={
-						<Link
-							className={buttonVariants({ variant: "outline" })}
-							href="/cart"
-							data-testid="nav-cart-link"
-						>
-							Корзина (0)
-						</Link>
-					}
+			<div className="flex justify-end gap-2 items-center">
+				<Popover>
+					<PopoverTrigger asChild>
+						<Button className="flex w-[54px] !px-0 sm:size-auto sm:w-auto sm:h-[54px] sm:!px-7.5">
+							<Phone />{" "}
+							<span className="hidden sm:block">Позвонить</span>
+						</Button>
+					</PopoverTrigger>
+					<PopoverContent className="p-6">
+						<div className="flex flex-col">
+							<p className="mb-1">По телефону</p>
+							<p className="text-xl font-medium">
+								+7 999 999 99 99
+							</p>
+							<p className="text-sm text-muted-foreground">
+								Для всех абонентов
+							</p>
+						</div>
+					</PopoverContent>
+				</Popover>
+				<Button
+					className="md:hidden"
+					size={"icon"}
+					variant={"secondary"}
+					onClick={() => {
+						setMenuState((prev) => !prev);
+					}}
 				>
-					<CartButton />
-				</Suspense>
+					{menuState ? <XIcon /> : <MenuIcon />}
+				</Button>
 			</div>
+		</>
+	);
+};
+
+export default function Header() {
+	const [menuState, setMenuState] = useState(false);
+
+	const NavMenuLink = ({
+		item,
+		active = false,
+		href,
+	}: {
+		item: { name: string };
+		href: string;
+		active: boolean;
+	}) => {
+		return (
+			<Link href={href} onClick={() => setMenuState(false)}>
+				<li
+					className={cn(
+						buttonVariants({
+							variant: active ? "default" : "ghost",
+						}),
+						"w-full justify-start",
+					)}
+				>
+					{item.name}
+				</li>
+			</Link>
+		);
+	};
+
+	return (
+		<header className="flex px-2 md:px-8 py-3 text-base items-center sticky top-0 bg-background z-40 justify-between">
+			<HeaderContent menuState={menuState} setMenuState={setMenuState} />
+			<Dialog modal open={menuState} onOpenChange={setMenuState}>
+				<DialogContent
+					className={cn(
+						"h-[100dvh] w-screen !max-w-full rounded-none !px-0 !py-0",
+						"data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:slide-out-to-top-1/2 data-[state=open]:slide-in-from-top-1/2 data-[state=closed]:fade-out-0 data-[state=open]:fade-in-50 data-[state=closed]:zoom-out-100 data-[state=open]:zoom-in-100",
+					)}
+					showClose={false}
+				>
+					<DialogTitle className="sr-only">
+						Navigation dialog
+					</DialogTitle>
+					<div className="flex-col md:px-6">
+						<div className="flex items-center justify-between px-2 py-3">
+							<HeaderContent
+								menuState={menuState}
+								setMenuState={setMenuState}
+							/>
+						</div>
+						<NavMenuLink
+							item={{ name: "Главная" }}
+							href="/"
+							active={false}
+						/>
+						<NavMenuLink
+							item={{ name: "Каталог" }}
+							href="/store"
+							active={false}
+						/>
+					</div>
+				</DialogContent>
+			</Dialog>
 		</header>
 	);
 }

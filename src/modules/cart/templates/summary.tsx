@@ -29,7 +29,9 @@ const Summary = ({ cart }: SummaryProps) => {
 	return (
 		<Card>
 			<CardHeader>
-				<CardTitle className="text-3xl font-medium">Summary</CardTitle>
+				<CardTitle className="text-3xl font-medium">
+					В вашей корзине
+				</CardTitle>
 				<DiscountCode cart={cart} />
 			</CardHeader>
 			<CardContent className="flex flex-col gap-y-4">

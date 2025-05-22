@@ -1,5 +1,5 @@
-import { SortOptions } from "../../modules/store/components/sort-products";
-import StoreTemplate from "@/modules/store/templates";
+import { SortOptions } from "@modules/store/components/refinement-list/sort-products";
+import StoreTemplate from "@modules/store/templates";
 
 type Params = {
 	searchParams: Promise<{

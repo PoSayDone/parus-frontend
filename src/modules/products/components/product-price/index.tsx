@@ -28,7 +28,7 @@ export default function ProductPrice({
 						selectedPrice.price_type === "sale",
 				})}
 			>
-				{!variant && "From "}
+				{!variant && "От "}
 				<span
 					data-testid="product-price"
 					data-value={selectedPrice.calculated_price_number}

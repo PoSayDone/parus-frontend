@@ -1,6 +1,6 @@
 "use client";
 
-import Card from "@/app/(main)/_components/card";
+import Card from "@/app/(landing)/_components/card";
 import Section from "@/components/ui/section";
 import { EmblaOptionsType } from "embla-carousel";
 import Autoplay from "embla-carousel-autoplay";
@@ -69,7 +69,7 @@ export default function RitualProducts() {
 	return (
 		<Section
 			id="ritual-products"
-			className="px-0"
+			className="!px-0"
 			title="Ритуальные товары"
 			subtitle={
 				<>

@@ -1,4 +1,4 @@
-import React, { Fragment, useMemo } from "react";
+import React, { Fragment, useMemo, useState } from "react";
 
 import useToggleState from "@lib/hooks/use-toggle-state";
 
@@ -10,6 +10,7 @@ import { ChevronDown, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 
 type MobileActionsProps = {
 	product: HttpTypes.StoreProduct;
@@ -34,7 +35,7 @@ const MobileActions: React.FC<MobileActionsProps> = ({
 	show,
 	optionsDisabled,
 }) => {
-	const { state, open, close } = useToggleState();
+	const [open, setOpen] = useState(false);
 
 	const price = getProductPrice({
 		product: product,
@@ -55,22 +56,13 @@ const MobileActions: React.FC<MobileActionsProps> = ({
 	return (
 		<>
 			<div
-				className={cn("lg:hidden inset-x-0 bottom-0 fixed", {
-					"pointer-events-none": !show,
-				})}
+				className={cn(
+					"lg:hidden inset-x-0 bottom-0 fixed z-10 bg-background",
+					!show && "pointer-events-none",
+				)}
 			>
-				{/* <Transition
-					as={Fragment}
-					show={show}
-					enter="ease-in-out duration-300"
-					enterFrom="opacity-0"
-					enterTo="opacity-100"
-					leave="ease-in duration-300"
-					leaveFrom="opacity-100"
-					leaveTo="opacity-0"
-				> */}
 				<div
-					className="bg-white flex flex-col gap-y-3 justify-center items-center text-large-regular p-4 h-full w-full border-t border-gray-200"
+					className="flex flex-col gap-y-3 justify-center items-center text-large-regular p-4 h-full w-full border-t z-[20]"
 					data-testid="mobile-actions"
 				>
 					<div className="flex items-center gap-x-2">
@@ -105,7 +97,7 @@ const MobileActions: React.FC<MobileActionsProps> = ({
 					>
 						{!isSimple && (
 							<Button
-								onClick={open}
+								onClick={() => setOpen(true)}
 								variant="secondary"
 								className="w-full"
 								data-testid="mobile-actions-button"
@@ -114,7 +106,7 @@ const MobileActions: React.FC<MobileActionsProps> = ({
 									<span>
 										{variant
 											? Object.values(options).join(" / ")
-											: "Select Options"}
+											: "Вариант"}
 									</span>
 									<ChevronDown />
 								</div>
@@ -135,47 +127,19 @@ const MobileActions: React.FC<MobileActionsProps> = ({
 						</Button>
 					</div>
 				</div>
-				{/* </Transition> */}
 			</div>
-			{/* <Transition appear show={state} as={Fragment}> */}
-			<Dialog className="relative z-[75]" onClose={close}>
-				{/* <Transition.Child
-						as={Fragment}
-						enter="ease-out duration-300"
-						enterFrom="opacity-0"
-						enterTo="opacity-100"
-						leave="ease-in duration-200"
-						leaveFrom="opacity-100"
-						leaveTo="opacity-0"
-					>
-						<div className="fixed inset-0 bg-gray-700 bg-opacity-75 backdrop-blur-sm" />
-					</Transition.Child> */}
-
+			<Sheet open={open} onOpenChange={setOpen}>
 				<div className="fixed bottom-0 inset-x-0">
 					<div className="flex min-h-full h-full items-center justify-center text-center">
-						{/* <Transition.Child
-								as={Fragment}
-								enter="ease-out duration-300"
-								enterFrom="opacity-0"
-								enterTo="opacity-100"
-								leave="ease-in duration-200"
-								leaveFrom="opacity-100"
-								leaveTo="opacity-0"
-							> */}
-						<DialogContent
-							className="w-full h-full transform overflow-hidden text-left flex flex-col gap-y-3"
+						<SheetContent
+							side="bottom"
+							className="transform overflow-hidden text-left flex flex-col gap-y-3"
 							data-testid="mobile-actions-modal"
 						>
-							<div className="w-full flex justify-end pr-6">
-								<button
-									onClick={close}
-									className="bg-white w-12 h-12 rounded-full text-ui-fg-base flex justify-center items-center"
-									data-testid="close-modal-button"
-								>
-									<X />
-								</button>
-							</div>
-							<div className="bg-white px-6 py-12">
+							<SheetTitle className="sr-only">
+								Product Actions
+							</SheetTitle>
+							<div className="px-6 py-12">
 								{(product.variants?.length ?? 0) > 1 && (
 									<div className="flex flex-col gap-y-6">
 										{(product.options || []).map(
@@ -207,12 +171,10 @@ const MobileActions: React.FC<MobileActionsProps> = ({
 									</div>
 								)}
 							</div>
-						</DialogContent>
-						{/* </Transition.Child> */}
+						</SheetContent>
 					</div>
 				</div>
-			</Dialog>
-			{/* </Transition> */}
+			</Sheet>
 		</>
 	);
 };

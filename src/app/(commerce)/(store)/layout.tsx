@@ -1,0 +1,19 @@
+import { listCategories } from "@/lib/data/categories";
+import Categories from "@/modules/store/components/categories";
+
+export default async function StoreLayout({
+	children,
+}: Readonly<{
+	children: React.ReactNode;
+}>) {
+	const productCategories = await listCategories();
+	return (
+		<div
+			className="flex flex-col md:grid grid-cols-[300px_1fr] w-full gap-4"
+			data-testid="category-container"
+		>
+			<Categories categories={productCategories} />
+			{children}
+		</div>
+	);
+}

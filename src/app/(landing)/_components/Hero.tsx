@@ -1,4 +1,5 @@
 import { Button, buttonVariants } from "@/components/ui/button";
+import Section from "@/components/ui/section";
 import { cn } from "@/lib/utils";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
@@ -6,31 +7,34 @@ import Link from "next/link";
 
 export default function Hero() {
 	return (
-		<section id="hero" className="flex gap-4 mx-8">
-			<div className="rounded-4xl p-10 bg-secondary-container flex-1 relative overflow-clip">
-				<div className="flex flex-col gap-4 relative z-[1]">
-					<h1>
+		<Section
+			id="hero"
+			className="flex flex-col md:flex-row gap-4 py-0 w-full grow-0"
+		>
+			<div className="rounded-4xl p-10 bg-secondary-container flex-1 relative overflow-clip flex flex-col min-h-[600px] md:min-h-auto">
+				<div className="flex flex-col gap-4 relative z-[1] text-left">
+					<h1 className="text-3xl lg:text-5xl font-medium">
 						Сопровождаем вас
 						<br /> в трудный час
 					</h1>
-					<p className="text-2xl font-medium">
+					<p className="text-xl lg:text-2xl">
 						Всесторонняя поддержка и бережное отношение
 						<br />к каждой детали похоронной церемонии
 					</p>
 				</div>
-				<Image
-					className="absolute xl:bottom-0 xl:right-0"
-					src="/angel.png"
-					alt="Ангел"
-					width={795}
-					height={662}
-					priority
-				/>
-				<Button className="absolute bottom-10 right-10">
-					Стоимость похорон
-				</Button>
+				<div className="relative grow-1">
+					<Image
+						className="absolute top-4 left-1/2 -translate-x-1/2 min-w-[700px]"
+						src="/angel.png"
+						alt="Ангел"
+						width={795}
+						height={662}
+						priority
+					/>
+				</div>
+				<Button className="w-full z-[1]">Стоимость похорон</Button>
 			</div>
-			<div className="flex flex-col gap-4">
+			<div className="grid grid-cols-1 md:flex md:flex-col gap-4 ">
 				<Link
 					className={cn(
 						buttonVariants(),
@@ -62,6 +66,6 @@ export default function Hero() {
 					</div>
 				</Link>
 			</div>
-		</section>
+		</Section>
 	);
 }

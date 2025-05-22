@@ -13,7 +13,7 @@ export default function WhyUs() {
 				</>
 			}
 		>
-			<div className="flex gap-40 mx-auto">
+			<div className="flex flex-wrap justify-center gap-40 mx-auto">
 				<div className="flex flex-col items-center">
 					<div className="w-[115px] h-[115px] bg-secondary rounded-full mb-10" />
 					<h3 className="text-2xl font-medium mb-4">Забота</h3>

@@ -7,7 +7,7 @@ export default function AboutUs() {
 	return (
 		<Section
 			id="about-us"
-			className="flex flex-row max-w-[1200px] mx-auto gap-16 items-center"
+			className="flex flex-row flex-wrap sm:flex-nowrap max-w-[1200px] mx-auto gap-16 items-center"
 		>
 			<Image
 				className="mx-auto mt-4"
@@ -20,7 +20,7 @@ export default function AboutUs() {
 				<h2 className="text-5xl font-medium mb-10">
 					О краевой ритуальной компании
 				</h2>
-				<div className="flex flex-col gap-6 leading-8">
+				<div className="flex flex-col gap-6 leading-8 max-w-xl">
 					<p>
 						Мы помогаем проводить близких с достоинством, уважением
 						и заботой. Наша компания оказывает полный комплекс
