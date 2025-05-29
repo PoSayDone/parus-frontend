@@ -2,14 +2,14 @@ import { Radio as RadioGroupOption } from "@headlessui/react";
 import { Text, clx } from "@medusajs/ui";
 import React, { useContext, useMemo, type JSX } from "react";
 
-import Radio from "@modules/common/components/radio";
-
 import { isManual } from "@lib/constants";
 import SkeletonCardDetails from "@modules/skeletons/components/skeleton-card-details";
 import { CardElement } from "@stripe/react-stripe-js";
 import { StripeCardElementOptions } from "@stripe/stripe-js";
 import PaymentTest from "../payment-test";
 import { StripeContext } from "../payment-wrapper/stripe-wrapper";
+import { RadioGroupCard } from "@/components/ui/radio-group";
+import MedusaRadio from "@modules/common/components/radio";
 
 type PaymentContainerProps = {
 	paymentProviderId: string;
@@ -29,24 +29,21 @@ const PaymentContainer: React.FC<PaymentContainerProps> = ({
 	const isDevelopment = process.env.NODE_ENV === "development";
 
 	return (
-		<RadioGroupOption
+		<RadioGroupCard
 			key={paymentProviderId}
 			value={paymentProviderId}
 			disabled={disabled}
 			className={clx(
-				"flex flex-col gap-y-2 text-small-regular cursor-pointer py-4 border rounded-rounded px-8 mb-2 hover:shadow-borders-interactive-with-active",
+				"flex items-center justify-between text-small-regular cursor-pointer py-4 border rounded-rounded px-8 mb-2 hover:shadow-borders-interactive-with-active w-full",
 				{
 					"border-ui-border-interactive":
 						selectedPaymentOptionId === paymentProviderId,
 				},
 			)}
 		>
-			<div className="flex items-center justify-between ">
-				<div className="flex items-center gap-x-4">
-					<Radio
-						checked={selectedPaymentOptionId === paymentProviderId}
-					/>
-					<Text className="text-base-regular">
+			<div className="flex items-center justify-between">
+				<div className="flex flex-col items-center gap-x-4">
+					<Text className="text-base-regular text-start">
 						{paymentInfoMap[paymentProviderId]?.title ||
 							paymentProviderId}
 					</Text>
@@ -54,15 +51,15 @@ const PaymentContainer: React.FC<PaymentContainerProps> = ({
 						<PaymentTest className="hidden small:block" />
 					)}
 				</div>
-				<span className="justify-self-end text-ui-fg-base">
+				<span className="justify-self-end text-ui-fg-base ml-2">
 					{paymentInfoMap[paymentProviderId]?.icon}
 				</span>
 			</div>
 			{isManual(paymentProviderId) && isDevelopment && (
-				<PaymentTest className="small:hidden text-[10px]" />
+				<PaymentTest className="small:hidden text-[10px] ml-2" />
 			)}
 			{children}
-		</RadioGroupOption>
+		</RadioGroupCard>
 	);
 };
 

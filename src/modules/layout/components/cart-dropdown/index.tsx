@@ -154,7 +154,7 @@ const CartDropdown = ({
 																	item.quantity
 																}
 															>
-																Quantity:{" "}
+																Кол-во:{" "}
 																{item.quantity}
 															</span>
 														</div>

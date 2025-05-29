@@ -4,7 +4,6 @@ import { FloatingLabelInput } from "@/components/ui/floating-input";
 import { mapKeys } from "lodash";
 import React, { useEffect, useMemo, useState } from "react";
 import AddressSelect from "../address-select";
-import CountrySelect from "../country-select";
 
 const ShippingAddress = ({
 	customer,
@@ -132,7 +131,7 @@ const ShippingAddress = ({
 					data-testid="shipping-last-name-input"
 				/>
 				<FloatingLabelInput
-					label="Address"
+					label="Адрес"
 					name="shipping_address.address_1"
 					autoComplete="address-line1"
 					value={formData["shipping_address.address_1"]}
@@ -141,7 +140,7 @@ const ShippingAddress = ({
 					data-testid="shipping-address-input"
 				/>
 				<FloatingLabelInput
-					label="Company"
+					label="Компания"
 					name="shipping_address.company"
 					value={formData["shipping_address.company"]}
 					onChange={handleChange}
@@ -149,7 +148,7 @@ const ShippingAddress = ({
 					data-testid="shipping-company-input"
 				/>
 				<FloatingLabelInput
-					label="Postal code"
+					label="Почтовый индекс"
 					name="shipping_address.postal_code"
 					autoComplete="postal-code"
 					value={formData["shipping_address.postal_code"]}
@@ -158,7 +157,7 @@ const ShippingAddress = ({
 					data-testid="shipping-postal-code-input"
 				/>
 				<FloatingLabelInput
-					label="City"
+					label="Город"
 					name="shipping_address.city"
 					autoComplete="address-level2"
 					value={formData["shipping_address.city"]}
@@ -175,25 +174,14 @@ const ShippingAddress = ({
 					required
 					data-testid="shipping-country-select"
 				/> */}
-				<FloatingLabelInput
+				{/* <FloatingLabelInput
 					label="State / Province"
 					name="shipping_address.province"
 					autoComplete="address-level1"
 					value={formData["shipping_address.province"]}
 					onChange={handleChange}
 					data-testid="shipping-province-input"
-				/>
-			</div>
-			<div className="my-8">
-				<Checkbox
-					label="Billing address same as shipping address"
-					name="same_as_billing"
-					checked={checked}
-					onChange={onChange}
-					data-testid="billing-address-checkbox"
-				/>
-			</div>
-			<div className="grid grid-cols-2 gap-4 mb-4">
+				/> */}
 				<FloatingLabelInput
 					label="Email"
 					name="email"
@@ -206,7 +194,7 @@ const ShippingAddress = ({
 					data-testid="shipping-email-input"
 				/>
 				<FloatingLabelInput
-					label="Phone"
+					label="Номер телефона"
 					name="shipping_address.phone"
 					autoComplete="tel"
 					value={formData["shipping_address.phone"]}

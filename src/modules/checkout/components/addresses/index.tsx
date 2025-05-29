@@ -99,11 +99,11 @@ const Addresses = ({
 							<div className="flex items-start gap-x-8">
 								<div className="flex items-start gap-x-1 w-full">
 									<div
-										className="flex flex-col w-1/3"
+										className="flex flex-col w-1/2"
 										data-testid="shipping-address-summary"
 									>
 										<p className="txt-medium-plus text-ui-fg-base mb-1">
-											Shipping Address
+											Адрес доставки
 										</p>
 										<p className="txt-medium text-ui-fg-subtle">
 											{cart.shipping_address.first_name}{" "}
@@ -123,11 +123,11 @@ const Addresses = ({
 									</div>
 
 									<div
-										className="flex flex-col w-1/3 "
+										className="flex flex-col w-1/2"
 										data-testid="shipping-contact-summary"
 									>
 										<p className="txt-medium-plus text-ui-fg-base mb-1">
-											Contact
+											Контакт
 										</p>
 										<p className="txt-medium text-ui-fg-subtle">
 											{cart.shipping_address.phone}
@@ -135,56 +135,6 @@ const Addresses = ({
 										<p className="txt-medium text-ui-fg-subtle">
 											{cart.email}
 										</p>
-									</div>
-
-									<div
-										className="flex flex-col w-1/3"
-										data-testid="billing-address-summary"
-									>
-										<p className="txt-medium-plus text-ui-fg-base mb-1">
-											Billing Address
-										</p>
-
-										{sameAsBilling ? (
-											<p className="txt-medium text-ui-fg-subtle">
-												Billing- and delivery address
-												are the same.
-											</p>
-										) : (
-											<>
-												<p className="txt-medium text-ui-fg-subtle">
-													{
-														cart.billing_address
-															?.first_name
-													}{" "}
-													{
-														cart.billing_address
-															?.last_name
-													}
-												</p>
-												<p className="txt-medium text-ui-fg-subtle">
-													{
-														cart.billing_address
-															?.address_1
-													}{" "}
-													{
-														cart.billing_address
-															?.address_2
-													}
-												</p>
-												<p className="txt-medium text-ui-fg-subtle">
-													{
-														cart.billing_address
-															?.postal_code
-													}
-													,{" "}
-													{cart.billing_address?.city}
-												</p>
-												<p className="txt-medium text-ui-fg-subtle">
-													{cart.billing_address?.country_code?.toUpperCase()}
-												</p>
-											</>
-										)}
 									</div>
 								</div>
 							</div>

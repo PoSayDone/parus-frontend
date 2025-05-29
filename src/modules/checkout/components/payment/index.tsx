@@ -2,15 +2,13 @@
 
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
-import { RadioGroup } from "@headlessui/react";
+import { RadioGroup } from "@/components/ui/radio-group";
 import { isStripe as isStripeFunc, paymentInfoMap } from "@lib/constants";
 import { initiatePaymentSession } from "@lib/data/cart";
 import { CheckCircleSolid, CreditCard } from "@medusajs/icons";
 import { Button } from "@/components/ui/button";
 import ErrorMessage from "@modules/checkout/components/error-message";
-import PaymentContainer, {
-	StripeCardContainer,
-} from "@modules/checkout/components/payment-container";
+import PaymentContainer from "@modules/checkout/components/payment-container";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
@@ -139,43 +137,22 @@ const Payment = ({
 						<>
 							<RadioGroup
 								value={selectedPaymentMethod}
-								onChange={(value: string) =>
+								onValueChange={(value: string) =>
 									setPaymentMethod(value)
 								}
 							>
 								{availablePaymentMethods.map(
 									(paymentMethod) => (
 										<div key={paymentMethod.id}>
-											{isStripeFunc(paymentMethod.id) ? (
-												<StripeCardContainer
-													paymentProviderId={
-														paymentMethod.id
-													}
-													selectedPaymentOptionId={
-														selectedPaymentMethod
-													}
-													paymentInfoMap={
-														paymentInfoMap
-													}
-													setCardBrand={setCardBrand}
-													setError={setError}
-													setCardComplete={
-														setCardComplete
-													}
-												/>
-											) : (
-												<PaymentContainer
-													paymentInfoMap={
-														paymentInfoMap
-													}
-													paymentProviderId={
-														paymentMethod.id
-													}
-													selectedPaymentOptionId={
-														selectedPaymentMethod
-													}
-												/>
-											)}
+											<PaymentContainer
+												paymentInfoMap={paymentInfoMap}
+												paymentProviderId={
+													paymentMethod.id
+												}
+												selectedPaymentOptionId={
+													selectedPaymentMethod
+												}
+											/>
 										</div>
 									),
 								)}
@@ -186,13 +163,13 @@ const Payment = ({
 					{paidByGiftcard && (
 						<div className="flex flex-col w-1/3">
 							<p className="txt-medium-plus text-ui-fg-base mb-1">
-								Payment method
+								Способ оплаты
 							</p>
 							<p
 								className="txt-medium text-ui-fg-subtle"
 								data-testid="payment-method-summary"
 							>
-								Gift card
+								Подарочная карта
 							</p>
 						</div>
 					)}
@@ -212,9 +189,7 @@ const Payment = ({
 						}
 						data-testid="submit-payment-button"
 					>
-						{!activeSession && isStripeFunc(selectedPaymentMethod)
-							? " Enter card details"
-							: "Continue to review"}
+						Перейти к обзору
 					</Button>
 				</div>
 
@@ -223,7 +198,7 @@ const Payment = ({
 						<div className="flex items-start gap-x-1 w-full">
 							<div className="flex flex-col w-1/3">
 								<p className="txt-medium-plus text-ui-fg-base mb-1">
-									Payment method
+									Способ оплаты
 								</p>
 								<p
 									className="txt-medium text-ui-fg-subtle"
@@ -235,13 +210,13 @@ const Payment = ({
 							</div>
 							<div className="flex flex-col w-1/3">
 								<p className="txt-medium-plus text-ui-fg-base mb-1">
-									Payment details
+									Детали платежа
 								</p>
 								<div
 									className="flex gap-2 txt-medium text-ui-fg-subtle items-center"
 									data-testid="payment-details-summary"
 								>
-									<div className="flex items-center h-7 w-fit p-2 bg-ui-button-neutral-hover">
+									<div className="flex items-center h-7 w-fit pr-2 bg-ui-button-neutral-hover">
 										{paymentInfoMap[selectedPaymentMethod]
 											?.icon || <CreditCard />}
 									</div>
@@ -249,7 +224,7 @@ const Payment = ({
 										{isStripeFunc(selectedPaymentMethod) &&
 										cardBrand
 											? cardBrand
-											: "Another step will appear"}
+											: "Появится еще один шаг"}
 									</p>
 								</div>
 							</div>

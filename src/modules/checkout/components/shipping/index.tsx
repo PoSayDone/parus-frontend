@@ -191,10 +191,10 @@ const Shipping: React.FC<ShippingProps> = ({
 					<div className="grid">
 						<div className="flex flex-col">
 							<span className="font-medium txt-medium text-ui-fg-base">
-								Shipping method
+								Способ доставки
 							</span>
 							<span className="mb-4 text-ui-fg-muted txt-medium">
-								How would you like you order delivered
+								Как бы вы хотели, чтобы ваш заказ был доставлен
 							</span>
 						</div>
 						<div data-testid="delivery-options-container">
@@ -234,7 +234,7 @@ const Shipping: React.FC<ShippingProps> = ({
 													}
 												/>
 												<span className="text-base-regular">
-													Pick up your order
+													Самовывоз
 												</span>
 											</div>
 											<span className="justify-self-end text-ui-fg-base">
@@ -320,10 +320,10 @@ const Shipping: React.FC<ShippingProps> = ({
 						<div className="grid">
 							<div className="flex flex-col">
 								<span className="font-medium txt-medium text-ui-fg-base">
-									Store
+									Магазин
 								</span>
 								<span className="mb-4 text-ui-fg-muted txt-medium">
-									Choose a store near you
+									Выберите магазин рядом с вами
 								</span>
 							</div>
 							<div data-testid="delivery-options-container">
@@ -401,7 +401,7 @@ const Shipping: React.FC<ShippingProps> = ({
 							disabled={!cart.shipping_methods?.[0]}
 							data-testid="submit-delivery-option-button"
 						>
-							Continue to payment
+							Перейти к оплате
 						</Button>
 					</div>
 				</>
@@ -411,7 +411,7 @@ const Shipping: React.FC<ShippingProps> = ({
 						{cart && (cart.shipping_methods?.length ?? 0) > 0 && (
 							<div className="flex flex-col w-1/3">
 								<p className="txt-medium-plus text-ui-fg-base mb-1">
-									Method
+									Способ
 								</p>
 								<p className="txt-medium text-ui-fg-subtle">
 									{cart.shipping_methods?.at(-1)?.name}{" "}
