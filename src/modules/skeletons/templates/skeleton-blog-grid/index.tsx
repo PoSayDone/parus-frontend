@@ -1,23 +1,23 @@
 import repeat from "@lib/util/repeat";
-import SkeletonProductPreview from "@modules/skeletons/components/skeleton-product-card";
+import SkeletonPostPreview from "../../components/skeleton-post-card";
 
-const SkeletonProductGrid = ({
-	numberOfProducts = 8,
+const SkeletonBlogGrid = ({
+	numberOfPosts = 8,
 }: {
-	numberOfProducts?: number;
+	numberOfPosts?: number;
 }) => {
 	return (
 		<ul
 			className="grid grid-cols-2 w-full sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 gap-y-4 lg:gap-4"
 			data-testid="products-list-loader"
 		>
-			{repeat(numberOfProducts).map((index) => (
+			{repeat(numberOfPosts).map((index) => (
 				<li key={index}>
-					<SkeletonProductPreview />
+					<SkeletonPostPreview />
 				</li>
 			))}
 		</ul>
 	);
 };
 
-export default SkeletonProductGrid;
+export default SkeletonBlogGrid;

@@ -22,11 +22,14 @@ const HeaderContent = ({
 	return (
 		<>
 			<div className="flex flex-row  gap-8">
-				<Link href={"/"} className="font-bold text-xl ml-2">
+				<Link href={"/"} className="font-bold text-xl ml-2 -mt-0.5">
 					Парус
 				</Link>
 				<nav className="justify-center hidden md:flex">
 					<Link href="/store">Каталог</Link>
+				</nav>
+				<nav className="justify-center hidden md:flex">
+					<Link href="/blog">Статьи</Link>
 				</nav>
 			</div>
 			<div className="flex justify-end gap-2 items-center">

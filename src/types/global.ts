@@ -22,3 +22,21 @@ export type StoreFreeShippingPrice = StorePrice & {
 	target_remaining: number;
 	remaining_percentage: number;
 };
+
+export type BlogPost = {
+	id: string;
+	handle: string;
+	title?: string;
+	seo_title?: string | null;
+	thumbnail?: string;
+	body?: Record<string, unknown>; // or replace `any` with a more specific type if known
+	draft: boolean;
+	/**
+	 * The date the product was created.
+	 */
+	created_at: string | null;
+	/**
+	 * The date the product was update.
+	 */
+	updated_at: string | null;
+};

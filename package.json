@@ -3,9 +3,9 @@
 	"version": "0.1.0",
 	"private": true,
 	"scripts": {
-		"dev": "next dev --turbopack",
+		"dev": "next dev --turbopack -p 4000",
 		"build": "next build",
-		"start": "next start",
+		"start": "next start -p 4000",
 		"lint": "next lint"
 	},
 	"dependencies": {
@@ -30,6 +30,7 @@
 		"@stripe/stripe-js": "^7.3.0",
 		"class-variance-authority": "^0.7.1",
 		"clsx": "^2.1.1",
+		"editorjs-html": "^4.0.5",
 		"embla-carousel": "^8.5.2",
 		"embla-carousel-autoplay": "^8.5.2",
 		"embla-carousel-react": "^8.5.2",
