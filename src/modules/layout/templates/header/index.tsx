@@ -40,12 +40,15 @@ const HeaderContent = ({
 							<span className="hidden sm:block">Позвонить</span>
 						</Button>
 					</PopoverTrigger>
-					<PopoverContent className="p-6">
+					<PopoverContent className="p-6" align="end">
 						<div className="flex flex-col">
 							<p className="mb-1">По телефону</p>
-							<p className="text-xl font-medium">
+							<a
+								className="text-xl font-medium"
+								href="tel:+79999999999"
+							>
 								+7 999 999 99 99
-							</p>
+							</a>
 							<p className="text-sm text-muted-foreground">
 								Для всех абонентов
 							</p>
