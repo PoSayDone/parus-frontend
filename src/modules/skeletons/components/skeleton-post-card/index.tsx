@@ -1,11 +1,9 @@
 const SkeletonPostPreview = () => {
 	return (
-		<div className="animate-pulse">
-			<div className="aspect-[16/9] w-full bg-card text-card-foreground rounded-md" />
-			<div className="flex justify-between text-base-regular mt-2 ">
-				<div className="w-2/5 h-6 bg-card"></div>
-				<div className="w-1/5 h-6 bg-card"></div>
-			</div>
+		<div className="animate-pulse flex flex-col">
+			<div className="aspect-[16/9] w-full bg-card text-card-foreground rounded-3xl" />
+			<div className="w-2/5 h-6 bg-card mt-4 rounded-md"></div>
+			<div className="w-3/5 h-9 bg-card mt-2 rounded-md"></div>
 		</div>
 	);
 };

@@ -24,9 +24,9 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
 	return (
 		<div
 			className={cn(
-				"relative w-full overflow-hidden rounded-sm p-4 bg-card group-hover:shadow-elevation-card-hover transition-shadow ease-in-out duration-150 border",
+				"relative w-full overflow-hidden rounded-3xl p-4 bg-card group-hover:shadow-elevation-card-hover transition-shadow ease-in-out duration-150 border",
 				className,
-				"aspect-[16/9] rounded-md",
+				"aspect-[16/9] rounded-3xl",
 			)}
 			data-testid={dataTestid}
 		>

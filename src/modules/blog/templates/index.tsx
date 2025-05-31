@@ -1,7 +1,5 @@
 import { Suspense } from "react";
 
-import SkeletonProductGrid from "@/modules/skeletons/templates/skeleton-product-grid";
-
 import PaginatedPosts from "./paginated-posts";
 import SkeletonBlogGrid from "@/modules/skeletons/templates/skeleton-blog-grid";
 
@@ -17,7 +15,7 @@ const BlogTemplate = ({
 
 	return (
 		<div className="w-full">
-			<div className="mb-4">
+			<div className="mb-6">
 				<h1 className="text-4xl" data-testid="store-page-title">
 					Статьи
 				</h1>

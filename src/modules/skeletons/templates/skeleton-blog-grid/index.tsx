@@ -8,7 +8,7 @@ const SkeletonBlogGrid = ({
 }) => {
 	return (
 		<ul
-			className="grid grid-cols-2 w-full sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 gap-y-4 lg:gap-4"
+			className="grid grid-cols-1 w-full sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-2 gap-y-4 lg:gap-4"
 			data-testid="products-list-loader"
 		>
 			{repeat(numberOfPosts).map((index) => (
