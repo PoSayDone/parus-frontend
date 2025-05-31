@@ -1,13 +1,13 @@
 # syntax=docker.io/docker/dockerfile:1
 
 # Use Bun’s official image
-FROM oven/bun:1.1.13-alpine AS base
+FROM oven/bun:latest AS base
 
 WORKDIR /app
 
 # Install dependencies
 FROM base AS deps
-COPY bun.lockb package.json ./
+COPY bun.lock package.json ./
 RUN bun install --frozen-lockfile
 
 # Rebuild the source code only when needed
