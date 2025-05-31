@@ -1,4 +1,4 @@
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import Section from "@/components/ui/section";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
@@ -7,7 +7,6 @@ const Post = ({
 	date,
 	title,
 	description,
-	imageUrl,
 }: {
 	date: string;
 	title: string;

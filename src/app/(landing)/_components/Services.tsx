@@ -6,7 +6,7 @@ import Image from "next/image";
 export default function Services() {
 	return (
 		<Section
-			className="px-0"
+			className="!px-0"
 			id="services"
 			title="Доступные услуги"
 			subtitle={
