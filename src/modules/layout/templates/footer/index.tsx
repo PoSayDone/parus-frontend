@@ -1,6 +1,9 @@
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import FooterDocuments from "../../components/footer-documents";
+import { Suspense } from "react";
+import SkeletonFooterDocuments from "@/modules/skeletons/components/skeleton-footer-documents";
 
 export default function Footer() {
 	return (
@@ -30,12 +33,11 @@ export default function Footer() {
 				</div>
 				<div className="flex flex-col gap-2">
 					<h6 className="font-bold text-xl mb-2">Покупателям</h6>
-					<Link href={"/"} className="text-sm">
-						Как оформить заказ
-					</Link>
-					<Link href={"/"} className="text-sm">
-						Способы оплаты
-					</Link>
+					<ul>
+						<Suspense fallback={<SkeletonFooterDocuments />}>
+							<FooterDocuments />
+						</Suspense>
+					</ul>
 				</div>
 				<div className="flex-col justify-start items-start text-start flex py-8 md:py-0">
 					<h2 className="text-2xl font-medium mb-2">

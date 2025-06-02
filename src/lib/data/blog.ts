@@ -11,12 +11,16 @@ export const listPosts = async ({
 	queryParams,
 }: {
 	pageParam?: number;
-	queryParams?: HttpTypes.FindParams;
+	queryParams?: HttpTypes.FindParams & {
+		type: "article" | "info" | "document";
+	};
 	regionId?: string;
 }): Promise<{
 	response: { posts: BlogPost[]; count: number };
 	nextPage: number | null;
-	queryParams?: HttpTypes.FindParams;
+	queryParams?: HttpTypes.FindParams & {
+		type: "article" | "info" | "document";
+	};
 }> => {
 	const limit = queryParams?.limit || 12;
 	const _pageParam = Math.max(pageParam, 1);
@@ -26,8 +30,10 @@ export const listPosts = async ({
 		...(await getAuthHeaders()),
 	};
 
+	const { type = "article", ...restQueryParams } = queryParams || {};
+
 	const next = {
-		...(await getCacheOptions("posts")),
+		...(await getCacheOptions(`posts-${type}`)),
 	};
 
 	return sdk.client
@@ -36,7 +42,8 @@ export const listPosts = async ({
 			query: {
 				limit,
 				offset,
-				...queryParams,
+				...restQueryParams,
+				type: type,
 			},
 			headers,
 			next,
@@ -62,32 +69,39 @@ export const listPostsWithSort = async ({
 	sortBy = "created_at",
 }: {
 	page?: number;
-	queryParams?: HttpTypes.FindParams;
+	queryParams?: HttpTypes.FindParams & {
+		type: "article" | "info" | "document";
+	};
 	sortBy?: SortOptions;
 }): Promise<{
 	response: { posts: BlogPost[]; count: number };
 	nextPage: number | null;
-	queryParams?: HttpTypes.FindParams;
+	queryParams?: HttpTypes.FindParams & {
+		type: "article" | "info" | "document";
+	};
 }> => {
 	const limit = queryParams?.limit || 12;
+
+	const { type = "article", ...restQueryParams } = queryParams || {};
 
 	const {
 		response: { posts, count },
 	} = await listPosts({
 		pageParam: 0,
 		queryParams: {
-			...queryParams,
+			type: type,
+			...restQueryParams,
 			limit: 100,
 		},
 	});
 
-	const sortedProducts = sortPosts(posts, sortBy);
+	const sortedPosts = sortPosts(posts, sortBy);
 
 	const pageParam = (page - 1) * limit;
 
 	const nextPage = count > pageParam + limit ? pageParam + limit : null;
 
-	const paginatedPosts = sortedProducts.slice(pageParam, pageParam + limit);
+	const paginatedPosts = sortedPosts.slice(pageParam, pageParam + limit);
 
 	return {
 		response: {
