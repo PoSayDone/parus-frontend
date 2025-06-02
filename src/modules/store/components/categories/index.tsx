@@ -1,5 +1,6 @@
 "use client";
 import { buttonVariants } from "@/components/ui/button";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { StoreProductCategory } from "@medusajs/types";
 import Link from "next/link";
@@ -37,23 +38,26 @@ export default function Categories({
 	const slug = pathname.split("/").at(-1);
 
 	return (
-		<div className="flex flex-row overflow-x-scroll">
-			<Category
-				category={{
-					id: "-1",
-					name: "Всё",
-				}}
-				active={slug == "store"}
-				href="/store"
-			/>
-			{categories.map((category) => (
+		<ScrollArea>
+			<div className="flex flex-row">
 				<Category
-					key={category.id}
-					category={category}
-					active={slug == category.handle}
-					href={`/categories/${category.handle}`}
+					category={{
+						id: "-1",
+						name: "Всё",
+					}}
+					active={slug == "store"}
+					href="/store"
 				/>
-			))}
-		</div>
+				{categories.map((category) => (
+					<Category
+						key={category.id}
+						category={category}
+						active={slug == category.handle}
+						href={`/categories/${category.handle}`}
+					/>
+				))}
+			</div>
+			<ScrollBar orientation="horizontal" className="h-1.5" />
+		</ScrollArea>
 	);
 }
