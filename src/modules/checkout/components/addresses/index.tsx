@@ -47,7 +47,7 @@ const Addresses = ({
 		<div className="bg-background">
 			<div className="flex flex-row items-center justify-between mb-6">
 				<h2 className="flex flex-row text-3xl gap-x-2 items-baseline">
-					Данные для доставки
+					Контактные данные
 					{!isOpen && <CheckCircle2 />}
 				</h2>
 				{!isOpen && cart?.shipping_address && (
@@ -98,7 +98,7 @@ const Addresses = ({
 						{cart && cart.shipping_address ? (
 							<div className="flex items-start gap-x-8">
 								<div className="flex items-start gap-x-1 w-full">
-									<div
+									{/* <div
 										className="flex flex-col w-1/2"
 										data-testid="shipping-address-summary"
 									>
@@ -120,19 +120,23 @@ const Addresses = ({
 										<p className="txt-medium text-ui-fg-subtle">
 											{cart.shipping_address.country_code?.toUpperCase()}
 										</p>
-									</div>
+									</div> */}
 
 									<div
 										className="flex flex-col w-1/2"
 										data-testid="shipping-contact-summary"
 									>
-										<p className="txt-medium-plus text-ui-fg-base mb-1">
-											Контакт
+										<p className="text-xl font-medium">
+											Заказчик
 										</p>
-										<p className="txt-medium text-ui-fg-subtle">
+										<p className="text-lg text-ui-fg-subtle">
+											{cart.shipping_address.first_name}{" "}
+											{cart.shipping_address.last_name}
+										</p>
+										<p className="text-lg text-ui-fg-subtle">
 											{cart.shipping_address.phone}
 										</p>
-										<p className="txt-medium text-ui-fg-subtle">
+										<p className="text-lg text-ui-fg-subtle">
 											{cart.email}
 										</p>
 									</div>

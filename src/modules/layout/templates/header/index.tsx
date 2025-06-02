@@ -11,6 +11,7 @@ import {
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 import { Dispatch, useState } from "react";
+import { headerLinks } from "@/lib/constants";
 
 const HeaderContent = ({
 	menuState,
@@ -25,11 +26,14 @@ const HeaderContent = ({
 				<Link href={"/"} className="font-bold text-xl ml-2 -mt-0.5">
 					Парус
 				</Link>
-				<nav className="justify-center hidden md:flex">
-					<Link href="/store">Каталог</Link>
-				</nav>
-				<nav className="justify-center hidden md:flex">
-					<Link href="/blog">Статьи</Link>
+				<nav className="justify-center hidden md:flex gap-6">
+					{headerLinks.map((item) => {
+						return (
+							<Link key={item.href} href={item.href}>
+								{item.label}
+							</Link>
+						);
+					})}
 				</nav>
 			</div>
 			<div className="flex justify-end gap-2 items-center">
@@ -73,26 +77,19 @@ const HeaderContent = ({
 export default function Header() {
 	const [menuState, setMenuState] = useState(false);
 
-	const NavMenuLink = ({
-		item,
-		active = false,
-		href,
-	}: {
-		item: { name: string };
-		href: string;
-		active: boolean;
-	}) => {
+	const NavMenuLink = ({ name, href }: { name: string; href: string }) => {
 		return (
 			<Link href={href} onClick={() => setMenuState(false)}>
 				<li
 					className={cn(
 						buttonVariants({
-							variant: active ? "default" : "ghost",
+							variant: "ghost",
+							// variant: active ? "default" : "ghost",
 						}),
 						"w-full justify-start",
 					)}
 				>
-					{item.name}
+					{name}
 				</li>
 			</Link>
 		);
@@ -119,16 +116,15 @@ export default function Header() {
 								setMenuState={setMenuState}
 							/>
 						</div>
-						<NavMenuLink
-							item={{ name: "Главная" }}
-							href="/"
-							active={false}
-						/>
-						<NavMenuLink
-							item={{ name: "Каталог" }}
-							href="/store"
-							active={false}
-						/>
+						{headerLinks.map((item) => {
+							return (
+								<NavMenuLink
+									key={item.href}
+									name={item.label}
+									href={item.href}
+								/>
+							);
+						})}
 					</div>
 				</DialogContent>
 			</Dialog>

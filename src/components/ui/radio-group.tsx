@@ -50,7 +50,9 @@ const RadioGroupCard = React.forwardRef<
 		<RadioGroupPrimitive.Item
 			ref={ref}
 			className={cn(
-				"data-[state=checked]:border-1 rounded-full border bg-card text-card-foreground shadow-sm data-[state=checked]:border-ring data-[state=checked]:outline-none",
+				"focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
+				"flex items-center justify-between text-lg cursor-pointer py-4 border rounded-rounded px-6 hover:shadow-borders-interactive-with-active w-full",
+				"data-[state=checked]:border-2 rounded-2xl border bg-card text-card-foreground shadow-sm data-[state=checked]:border-ring data-[state=checked]:outline-none",
 				className,
 			)}
 			{...props}

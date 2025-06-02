@@ -37,7 +37,7 @@ export default function Categories({
 	const slug = pathname.split("/").at(-1);
 
 	return (
-		<div className="flex flex-row overflow-x-scroll md:flex-col md:overflow-clip">
+		<div className="flex flex-row overflow-x-scroll">
 			<Category
 				category={{
 					id: "-1",

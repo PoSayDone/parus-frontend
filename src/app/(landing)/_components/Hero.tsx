@@ -46,7 +46,7 @@ export default function Hero() {
 					<br /> если случилась беда?
 				</Link>
 				<Link
-					href={"/"}
+					href={"/designer"}
 					className={cn(
 						buttonVariants(),
 						"hover:bg-inverse-primary/80 transition bg-inverse-primary text-foreground text-2xl font-medium h-[400px] py-8 text-center flex items-start justify-center rounded-4xl relative overflow-clip",

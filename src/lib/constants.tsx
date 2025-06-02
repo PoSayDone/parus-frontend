@@ -67,3 +67,9 @@ export const noDivisionCurrencies = [
 	"xdr",
 	"xau",
 ];
+
+export const headerLinks = [
+	{ label: "Главная", href: "/" },
+	{ label: "Каталог", href: "/store" },
+	{ label: "Статьи", href: "/blog" },
+];

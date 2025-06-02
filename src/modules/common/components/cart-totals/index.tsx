@@ -29,7 +29,7 @@ const CartTotals: React.FC<CartTotalsProps> = ({ totals }) => {
 
 	return (
 		<div className="w-full">
-			<div className="flex flex-col gap-y-2 text-sm text-muted-foreground ">
+			<div className="flex flex-col gap-y-2 text-base text-muted-foreground ">
 				<div className="flex items-center justify-between gap-2">
 					<span className="flex gap-x-2 items-center">
 						Промежуточный итог

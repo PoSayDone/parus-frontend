@@ -39,8 +39,8 @@ export default async function RelatedProducts({
 				<span className="text-base text-muted-foreground mb-6">
 					Похожие товары
 				</span>
-				<p className="text-2xl text-ui-fg-base max-w-lg">
-					Возможно, вам также понравятся эти&nbsp;товары.
+				<p className="text-2xl text-ui-fg-base max-w-lg font-medium">
+					Возможно, вам также понравятся эти&nbsp;товары
 				</p>
 			</div>
 

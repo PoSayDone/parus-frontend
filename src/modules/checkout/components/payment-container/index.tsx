@@ -1,4 +1,3 @@
-import { Radio as RadioGroupOption } from "@headlessui/react";
 import { Text, clx } from "@medusajs/ui";
 import React, { useContext, useMemo, type JSX } from "react";
 
@@ -9,7 +8,6 @@ import { StripeCardElementOptions } from "@stripe/stripe-js";
 import PaymentTest from "../payment-test";
 import { StripeContext } from "../payment-wrapper/stripe-wrapper";
 import { RadioGroupCard } from "@/components/ui/radio-group";
-import MedusaRadio from "@modules/common/components/radio";
 
 type PaymentContainerProps = {
 	paymentProviderId: string;
@@ -33,13 +31,10 @@ const PaymentContainer: React.FC<PaymentContainerProps> = ({
 			key={paymentProviderId}
 			value={paymentProviderId}
 			disabled={disabled}
-			className={clx(
-				"flex items-center justify-between text-small-regular cursor-pointer py-4 border rounded-rounded px-8 mb-2 hover:shadow-borders-interactive-with-active w-full",
-				{
-					"border-ui-border-interactive":
-						selectedPaymentOptionId === paymentProviderId,
-				},
-			)}
+			className={clx({
+				"border-ui-border-interactive":
+					selectedPaymentOptionId === paymentProviderId,
+			})}
 		>
 			<div className="flex items-center justify-between">
 				<div className="flex flex-col items-center gap-x-4">

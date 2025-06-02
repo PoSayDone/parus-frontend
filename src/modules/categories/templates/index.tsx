@@ -37,7 +37,7 @@ export default function CategoryTemplate({
 	return (
 		<>
 			<div className="w-full">
-				<div className="flex flex-row mb-4 gap-4 text-3xl">
+				<div className="flex flex-row mb-4 gap-4 text-3xl sr-only">
 					{parents &&
 						parents.map((parent) => (
 							<span key={parent.id} className="text-ui-fg-subtle">
@@ -77,8 +77,13 @@ export default function CategoryTemplate({
 							</ul>
 						</div>
 					)}
-				<Input placeholder="Поиск..." className="mb-4" />
-				<RefinementList sortBy={sort} data-testid="sort-by-container" />
+				<div className="flex items-center gap-2 mb-4">
+					<Input placeholder="Поиск..." className="md:max-w-2/5" />
+					<RefinementList
+						sortBy={sort}
+						data-testid="sort-by-container"
+					/>
+				</div>
 				<Suspense
 					fallback={
 						<SkeletonProductGrid

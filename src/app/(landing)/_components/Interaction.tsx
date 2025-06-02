@@ -1,5 +1,7 @@
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import Section from "@/components/ui/section";
+import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 export function Interaction() {
 	return (
@@ -19,7 +21,16 @@ export function Interaction() {
 						<br />в любое время.
 					</p>
 				</div>
-				<Button size={"lg"}>Заказать звонок</Button>
+				<Link
+					href={"tel:+79999999999"}
+					className={cn(
+						buttonVariants({
+							size: "lg",
+						}),
+					)}
+				>
+					Заказать звонок
+				</Link>
 			</div>
 		</Section>
 	);

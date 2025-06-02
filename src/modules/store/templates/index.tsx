@@ -19,13 +19,15 @@ const StoreTemplate = ({
 
 	return (
 		<div className="w-full">
-			<div className="mb-4">
+			<div className="mb-4 sr-only">
 				<h1 className="text-4xl" data-testid="store-page-title">
 					Все товары
 				</h1>
 			</div>
-			<Input placeholder="Поиск..." className="mb-4" />
-			<RefinementList sortBy={sort} data-testid="sort-by-container" />
+			<div className="flex items-center gap-2 mb-4">
+				<Input placeholder="Поиск..." className="md:max-w-2/5" />
+				<RefinementList sortBy={sort} data-testid="sort-by-container" />
+			</div>
 			<Suspense fallback={<SkeletonProductGrid />}>
 				<PaginatedProducts sortBy={sort} page={pageNumber} />
 			</Suspense>

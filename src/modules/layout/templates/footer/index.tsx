@@ -1,4 +1,5 @@
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import Link from "next/link";
 
 export default function Footer() {
@@ -14,7 +15,9 @@ export default function Footer() {
 						<br /> этаж 128, офис 812
 					</p>
 					<p className="text-sm">parus@perm.ru</p>
-					<p className="text-sm">+79999999999</p>
+					<Link href="tel:+79999999999" className="text-sm">
+						+79999999999
+					</Link>
 				</div>
 				<div className="flex flex-col gap-2">
 					<h6 className="font-bold text-xl mb-2">Компания</h6>
@@ -42,7 +45,12 @@ export default function Footer() {
 						Напишите нам удобным способом
 						<br /> и специалист ответит в течение 5 минут
 					</p>
-					<Button>Задать вопрос</Button>
+					<Link
+						href={"tel:+79999999999"}
+						className={cn(buttonVariants())}
+					>
+						Задать вопрос
+					</Link>
 				</div>
 			</div>
 			<p className="text-muted-foreground text-sm">

@@ -35,13 +35,11 @@ const RefinementList = ({
 	};
 
 	return (
-		<div className="mb-4">
-			<SortProducts
-				sortBy={sortBy}
-				setQueryParams={setQueryParams}
-				data-testid={dataTestId}
-			/>
-		</div>
+		<SortProducts
+			sortBy={sortBy}
+			setQueryParams={setQueryParams}
+			data-testid={dataTestId}
+		/>
 	);
 };
 

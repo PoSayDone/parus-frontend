@@ -1,6 +1,12 @@
 "use client";
 
-import FilterRadioGroup from "@modules/common/components/filter-radio-group";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
 
 export type SortOptions = "price_asc" | "price_desc" | "created_at";
 
@@ -35,13 +41,18 @@ const SortProducts = ({
 	};
 
 	return (
-		<FilterRadioGroup
-			title="Sort by"
-			items={sortOptions}
-			value={sortBy}
-			handleChange={handleChange}
-			data-testid={dataTestId}
-		/>
+		<Select onValueChange={handleChange} value={sortBy}>
+			<SelectTrigger className="w-[130px] md:w-[200px]">
+				<SelectValue placeholder="Сортировка" />
+			</SelectTrigger>
+			<SelectContent>
+				{sortOptions.map((option) => (
+					<SelectItem key={option.value} value={option.value}>
+						{option.label}
+					</SelectItem>
+				))}
+			</SelectContent>
+		</Select>
 	);
 };
 

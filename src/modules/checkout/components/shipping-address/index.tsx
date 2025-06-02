@@ -1,6 +1,5 @@
 import { HttpTypes } from "@medusajs/types";
-import { Checkbox } from "@/components/ui/checkbox";
-import { FloatingLabelInput } from "@/components/ui/floating-input";
+import LabelInput from "@/components/ui/floating-input";
 import { mapKeys } from "lodash";
 import React, { useEffect, useMemo, useState } from "react";
 import AddressSelect from "../address-select";
@@ -8,13 +7,9 @@ import AddressSelect from "../address-select";
 const ShippingAddress = ({
 	customer,
 	cart,
-	checked,
-	onChange,
 }: {
 	customer: HttpTypes.StoreCustomer | null;
 	cart: HttpTypes.StoreCart | null;
-	checked: boolean;
-	onChange: () => void;
 }) => {
 	const [formData, setFormData] = useState<Record<string, any>>({
 		"shipping_address.first_name": cart?.shipping_address?.first_name || "",
@@ -111,8 +106,8 @@ const ShippingAddress = ({
 					/>
 				</div>
 			)}
-			<div className="grid grid-cols-2 gap-4">
-				<FloatingLabelInput
+			<div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+				<LabelInput
 					label="Имя"
 					name="shipping_address.first_name"
 					autoComplete="given-name"
@@ -121,7 +116,7 @@ const ShippingAddress = ({
 					required
 					data-testid="shipping-first-name-input"
 				/>
-				<FloatingLabelInput
+				<LabelInput
 					label="Фамилия"
 					name="shipping_address.last_name"
 					autoComplete="family-name"
@@ -130,7 +125,7 @@ const ShippingAddress = ({
 					required
 					data-testid="shipping-last-name-input"
 				/>
-				<FloatingLabelInput
+				{/* <LabelInput
 					label="Адрес"
 					name="shipping_address.address_1"
 					autoComplete="address-line1"
@@ -139,7 +134,7 @@ const ShippingAddress = ({
 					required
 					data-testid="shipping-address-input"
 				/>
-				<FloatingLabelInput
+				<LabelInput
 					label="Компания"
 					name="shipping_address.company"
 					value={formData["shipping_address.company"]}
@@ -147,7 +142,7 @@ const ShippingAddress = ({
 					autoComplete="organization"
 					data-testid="shipping-company-input"
 				/>
-				<FloatingLabelInput
+				<LabelInput
 					label="Почтовый индекс"
 					name="shipping_address.postal_code"
 					autoComplete="postal-code"
@@ -156,7 +151,7 @@ const ShippingAddress = ({
 					required
 					data-testid="shipping-postal-code-input"
 				/>
-				<FloatingLabelInput
+				<LabelInput
 					label="Город"
 					name="shipping_address.city"
 					autoComplete="address-level2"
@@ -164,25 +159,8 @@ const ShippingAddress = ({
 					onChange={handleChange}
 					required
 					data-testid="shipping-city-input"
-				/>
-				{/* <CountrySelect
-					name="shipping_address.country_code"
-					autoComplete="country"
-					region={cart?.region}
-					value={formData["shipping_address.country_code"]}
-					onChange={handleChange}
-					required
-					data-testid="shipping-country-select"
 				/> */}
-				{/* <FloatingLabelInput
-					label="State / Province"
-					name="shipping_address.province"
-					autoComplete="address-level1"
-					value={formData["shipping_address.province"]}
-					onChange={handleChange}
-					data-testid="shipping-province-input"
-				/> */}
-				<FloatingLabelInput
+				<LabelInput
 					label="Email"
 					name="email"
 					type="email"
@@ -193,7 +171,7 @@ const ShippingAddress = ({
 					required
 					data-testid="shipping-email-input"
 				/>
-				<FloatingLabelInput
+				<LabelInput
 					label="Номер телефона"
 					name="shipping_address.phone"
 					autoComplete="tel"

@@ -5,12 +5,12 @@ import { cn } from "@/lib/utils";
 import { RadioGroup } from "@/components/ui/radio-group";
 import { isStripe as isStripeFunc, paymentInfoMap } from "@lib/constants";
 import { initiatePaymentSession } from "@lib/data/cart";
-import { CheckCircleSolid, CreditCard } from "@medusajs/icons";
 import { Button } from "@/components/ui/button";
 import ErrorMessage from "@modules/checkout/components/error-message";
 import PaymentContainer from "@modules/checkout/components/payment-container";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
+import { CheckCircle2, CreditCard } from "lucide-react";
 
 const Payment = ({
 	cart,
@@ -118,7 +118,7 @@ const Payment = ({
 					)}
 				>
 					Способ оплаты
-					{!isOpen && paymentReady && <CheckCircleSolid />}
+					{!isOpen && paymentReady && <CheckCircle2 />}
 				</h2>
 				{!isOpen && paymentReady && (
 					<Button
@@ -197,11 +197,11 @@ const Payment = ({
 					{cart && paymentReady && activeSession ? (
 						<div className="flex items-start gap-x-1 w-full">
 							<div className="flex flex-col w-1/3">
-								<p className="txt-medium-plus text-ui-fg-base mb-1">
+								<p className="text-xl font-medium">
 									Способ оплаты
 								</p>
 								<p
-									className="txt-medium text-ui-fg-subtle"
+									className="text-lg"
 									data-testid="payment-method-summary"
 								>
 									{paymentInfoMap[activeSession?.provider_id]
@@ -209,11 +209,11 @@ const Payment = ({
 								</p>
 							</div>
 							<div className="flex flex-col w-1/3">
-								<p className="txt-medium-plus text-ui-fg-base mb-1">
+								<p className="text-xl font-medium">
 									Детали платежа
 								</p>
 								<div
-									className="flex gap-2 txt-medium text-ui-fg-subtle items-center"
+									className="flex gap-0 text-lg items-center"
 									data-testid="payment-details-summary"
 								>
 									<div className="flex items-center h-7 w-fit pr-2 bg-ui-button-neutral-hover">
@@ -231,14 +231,14 @@ const Payment = ({
 						</div>
 					) : paidByGiftcard ? (
 						<div className="flex flex-col w-1/3">
-							<p className="txt-medium-plus text-ui-fg-base mb-1">
-								Payment method
+							<p className="text-xl font-medium">
+								Детали платежа
 							</p>
 							<p
-								className="txt-medium text-ui-fg-subtle"
+								className="text-lg"
 								data-testid="payment-method-summary"
 							>
-								Gift card
+								Подарочная карта
 							</p>
 						</div>
 					) : null}

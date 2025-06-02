@@ -1,60 +1,98 @@
-import * as React from "react";
-
-import { cn } from "@/lib/utils";
-import { Input } from "@/components/ui/input";
+import React, { useState, useEffect } from "react";
 import { Label } from "@/components/ui/label";
+import { cn } from "@/lib/utils";
 
-export interface InputProps
-	extends React.InputHTMLAttributes<HTMLInputElement> {}
+type FloatingLabelInputProps = React.InputHTMLAttributes<HTMLInputElement> & {
+	label: string;
+};
 
-const FloatingInput = React.forwardRef<HTMLInputElement, InputProps>(
-	({ className, ...props }, ref) => {
+const LabelInput = React.forwardRef<HTMLInputElement, FloatingLabelInputProps>(
+	(
+		{
+			id,
+			name,
+			label,
+			placeholder,
+			value,
+			defaultValue,
+			onFocus,
+			onBlur,
+			onChange,
+			...props
+		},
+		ref,
+	) => {
+		const [isFocused, setIsFocused] = useState(false);
+		const [hasValue, setHasValue] = useState(
+			value != null ? value !== "" : !!defaultValue,
+		);
+
+		useEffect(() => {
+			if (value != null) {
+				setHasValue(value !== "");
+			}
+		}, [value]);
+
+		const inputId = id ?? name;
+
+		const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+			setIsFocused(true);
+			onFocus?.(e);
+		};
+
+		const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+			setIsFocused(false);
+			onBlur?.(e);
+		};
+
+		const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+			if (value == null) {
+				setHasValue(e.target.value !== "");
+			}
+			onChange?.(e);
+		};
+
+		const shouldFloat = !!placeholder || isFocused || hasValue;
+
 		return (
-			<Input
-				placeholder=" "
+			<div
 				className={cn(
-					"peer",
-					"valign-bottom h-fit pt-5 pb-3",
-					className,
+					"relative w-full px-3 py-1.5 h-14 bg-card rounded-xl transition border border-transparent",
+					isFocused && "border-ring ring-ring/50 ring-[3px]",
 				)}
-				ref={ref}
-				{...props}
-			/>
+			>
+				<div className="relative z-0 w-full h-full">
+					<input
+						ref={ref}
+						id={inputId}
+						name={name}
+						type="text"
+						placeholder={placeholder}
+						defaultValue={defaultValue}
+						value={value}
+						onFocus={handleFocus}
+						onBlur={handleBlur}
+						onChange={handleChange}
+						className="block w-full h-full bg-transparent pt-5 text-base text-foreground placeholder:text-muted-foreground focus:outline-none"
+						{...props}
+					/>
+					<Label
+						htmlFor={inputId}
+						className={cn(
+							"absolute left-0 transition-all duration-200 pointer-events-none text-card-foreground",
+							shouldFloat
+								? "top-0 text-sm"
+								: "top-1/2 -translate-y-1/2 text-base",
+						)}
+					>
+						{label}
+					</Label>
+				</div>
+			</div>
 		);
 	},
 );
-FloatingInput.displayName = "FloatingInput";
 
-const FloatingLabel = React.forwardRef<
-	React.ElementRef<typeof Label>,
-	React.ComponentPropsWithoutRef<typeof Label>
->(({ className, ...props }, ref) => {
-	return (
-		<Label
-			className={cn(
-				"peer-focus:secondary peer-focus:dark:secondary absolute start-3 top-3 z-10 origin-[0] -translate-y-2 scale-75 transform bg-transparent px-3 text-sm text-muted-foreground duration-300 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:top-3 peer-focus:-translate-y-2 peer-focus:scale-75  dark:bg-background rtl:peer-focus:left-auto  cursor-text",
-				className,
-			)}
-			ref={ref}
-			{...props}
-		/>
-	);
-});
-FloatingLabel.displayName = "FloatingLabel";
+LabelInput.displayName = "LabelInput";
 
-type FloatingLabelInputProps = InputProps & { label?: string };
-
-const FloatingLabelInput = React.forwardRef<
-	React.ElementRef<typeof FloatingInput>,
-	React.PropsWithoutRef<FloatingLabelInputProps>
->(({ id, name, label, ...props }, ref) => {
-	return (
-		<div className="relative">
-			<FloatingInput ref={ref} id={id} name={name} {...props} />
-			<FloatingLabel htmlFor={name ?? id ?? ""}>{label}</FloatingLabel>
-		</div>
-	);
-});
-FloatingLabelInput.displayName = "FloatingLabelInput";
-
-export { FloatingInput, FloatingLabel, FloatingLabelInput };
+export default LabelInput;

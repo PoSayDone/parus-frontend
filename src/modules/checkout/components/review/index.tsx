@@ -36,7 +36,7 @@ const Review = ({ cart }: { cart: any }) => {
 				<>
 					<div className="flex items-start gap-x-1 w-full mb-6">
 						<div className="w-full">
-							<p className="txt-medium-plus text-ui-fg-base mb-1">
+							<p className="text-lg mb-1">
 								Нажимая кнопку «Оформить заказ», вы
 								подтверждаете, что ознакомились, понимаете и
 								принимаете наши Условия использования, Условия

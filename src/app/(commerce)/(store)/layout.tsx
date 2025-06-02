@@ -9,7 +9,7 @@ export default async function StoreLayout({
 	const productCategories = await listCategories();
 	return (
 		<div
-			className="flex flex-col md:grid grid-cols-[300px_1fr] w-full gap-4"
+			className="flex flex-col w-full gap-4"
 			data-testid="category-container"
 		>
 			<Categories categories={productCategories} />

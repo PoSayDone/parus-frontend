@@ -29,11 +29,11 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({ product }) => {
 				<div className="block w-full max-w-[600px] relative">
 					<ImageGallery images={product?.images || []} />
 				</div>
-				<div className="flex flex-col sm:sticky sm:top-12 sm:py-0 sm:max-w-[500px] w-full py-8 gap-y-6">
+				<div className="flex flex-col sm:sticky sm:top-22 sm:py-0 sm:max-w-[500px] w-full py-8 gap-y-6">
 					<ProductInfo product={product} />
 					<ProductTabs product={product} />
 				</div>
-				<div className="flex flex-col sm:sticky sm:top-12 sm:py-0 sm:max-w-[400px] w-full py-8 gap-y-12">
+				<div className="flex flex-col sm:sticky sm:top-22 sm:py-0 sm:max-w-[400px] w-full py-8 gap-y-12">
 					<ProductOnboardingCta />
 					<Suspense
 						fallback={
