@@ -35,7 +35,7 @@ const PostTemplate: React.FC<PostTemplateProps> = ({ post }) => {
 				<div
 					className="mt-2 gap-2 md:mt-4 md:gap-4 text-[17px] flex flex-col"
 					dangerouslySetInnerHTML={{ __html: html }}
-				></div>
+				/>
 			</div>
 		</>
 	);
