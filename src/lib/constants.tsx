@@ -1,4 +1,4 @@
-import { CreditCard } from "lucide-react";
+import { Banknote, CreditCard } from "lucide-react";
 import React from "react";
 // import { CreditCard } from "@medusajs/icons";
 
@@ -31,6 +31,14 @@ export const paymentInfoMap: Record<
 		title: "Manual Payment",
 		icon: <CreditCard />,
 	},
+	pp_manual_manual: {
+		title: "Оплата наличными при получении",
+		icon: <Banknote />,
+	},
+	pp_yookassa_yookassa: {
+		title: "ЮКасса",
+		icon: <CreditCard />,
+	},
 	// Add more payment providers here
 };
 
@@ -43,6 +51,10 @@ export const isPaypal = (providerId?: string) => {
 };
 export const isManual = (providerId?: string) => {
 	return providerId?.startsWith("pp_system_default");
+};
+
+export const isYookassa = (providerId?: string) => {
+	return providerId?.startsWith("pp_yookassa");
 };
 
 // Add currencies that don't need to be divided by 100

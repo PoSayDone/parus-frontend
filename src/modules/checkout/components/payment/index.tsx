@@ -11,6 +11,7 @@ import PaymentContainer from "@modules/checkout/components/payment-container";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { CheckCircle2, CreditCard } from "lucide-react";
+import { getBaseURL } from "@lib/util/env";
 
 const Payment = ({
 	cart,
@@ -84,6 +85,12 @@ const Payment = ({
 			if (!checkActiveSession) {
 				await initiatePaymentSession(cart, {
 					provider_id: selectedPaymentMethod,
+					data: {
+						confirmation: {
+							type: "redirect",
+							return_url: `${getBaseURL()}/api/capture-payment/${cart?.id}`,
+						},
+					},
 				});
 			}
 

@@ -1,12 +1,13 @@
 "use client";
 
-import { isManual, isStripe } from "@lib/constants";
+import { isManual, isStripe, isYookassa } from "@lib/constants";
 import { placeOrder } from "@lib/data/cart";
 import { HttpTypes } from "@medusajs/types";
 import { useElements, useStripe } from "@stripe/react-stripe-js";
 import React, { useState } from "react";
 import ErrorMessage from "../error-message";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 type PaymentButtonProps = {
 	cart: HttpTypes.StoreCart;
@@ -39,6 +40,15 @@ const PaymentButton: React.FC<PaymentButtonProps> = ({
 			return (
 				<ManualTestPaymentButton
 					notReady={notReady}
+					data-testid={dataTestId}
+				/>
+			);
+
+		case isYookassa(paymentSession?.provider_id):
+			return (
+				<YookassaPaymentButton
+					notReady={notReady}
+					cart={cart}
 					data-testid={dataTestId}
 				/>
 			);
@@ -175,6 +185,50 @@ const ManualTestPaymentButton = ({ notReady }: { notReady: boolean }) => {
 		setSubmitting(true);
 
 		onPaymentCompleted();
+	};
+
+	return (
+		<>
+			<Button
+				disabled={notReady}
+				isLoading={submitting}
+				onClick={handlePayment}
+				data-testid="submit-order-button"
+			>
+				Оформить заказ
+			</Button>
+			<ErrorMessage
+				error={errorMessage}
+				data-testid="manual-payment-error-message"
+			/>
+		</>
+	);
+};
+
+const YookassaPaymentButton = ({
+	cart,
+	notReady,
+}: {
+	cart: HttpTypes.StoreCart;
+	notReady: boolean;
+	"data-testid"?: string;
+}) => {
+	const [submitting, setSubmitting] = useState(false);
+	const [errorMessage, setErrorMessage] = useState<string | null>(null);
+	const router = useRouter();
+
+	const paymentSession = cart.payment_collection?.payment_sessions?.find(
+		(session) => session.provider_id === "pp_yookassa_yookassa",
+	);
+
+	const handlePayment = () => {
+		setSubmitting(true);
+
+		const confirmation = paymentSession?.data
+			?.confirmation as IConfirmation;
+		if (confirmation?.confirmation_url) {
+			router.push(confirmation.confirmation_url);
+		}
 	};
 
 	return (
