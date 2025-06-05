@@ -30,7 +30,7 @@ const PostTemplate: React.FC<PostTemplateProps> = ({ post }) => {
 				data-testid="post-container"
 			>
 				<h1 className="text-3xl md:text-5xl">{post.title}</h1>
-				<h3 className="my-2 md:my-4">{formatted}</h3>
+				<h3 className="my-2 md:my-4 font-normal">{formatted}</h3>
 				{post.thumbnail && <Thumbnail thumbnail={post.thumbnail} />}
 				<div
 					className="mt-2 gap-2 md:mt-4 md:gap-4 text-[17px] flex flex-col"

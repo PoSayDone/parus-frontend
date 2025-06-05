@@ -18,8 +18,8 @@ export function PostCard({ post }: { post: BlogPost }) {
 					className="rounded-3xl bg-secondary-container"
 				/>
 			)}
-			<div className="text-lg mt-4">{formatted}</div>
-			<h3 className="text-2xl font-medium mt-2">{post.title}</h3>
+			<div className="text-lg mt-2">{formatted}</div>
+			<h3 className="text-2xl font-medium mt-1">{post.title}</h3>
 			{/* <p className="text-xl mt-2">{post.body}</p> */}
 		</Link>
 	);
