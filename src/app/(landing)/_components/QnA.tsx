@@ -1,43 +1,32 @@
 "use client";
 
 import {
-	Collapsible,
-	CollapsibleContent,
-	CollapsibleTrigger,
-} from "@/components/ui/collapsible";
+	Accordion,
+	AccordionContent,
+	AccordionItem,
+	AccordionTrigger,
+} from "@/components/ui/accordion";
 import Section from "@/components/ui/section";
-import { cn } from "@/lib/utils";
-import { ChevronUp } from "lucide-react";
 import React from "react";
 
 const Question = ({
+	value,
 	title,
 	paragraph,
 }: {
+	value: string;
 	title: React.ReactNode;
 	paragraph: React.ReactNode;
 }) => {
-	const [isOpen, setIsOpen] = React.useState(false);
-
 	return (
-		<Collapsible
-			className="w-full max-w-[1200px]"
-			open={isOpen}
-			onOpenChange={setIsOpen}
-		>
-			<CollapsibleTrigger className="text-xl bg-secondary-container py-6 px-8 rounded-2xl w-full flex justify-between text-left">
+		<AccordionItem value={value} className="!border-none">
+			<AccordionTrigger className="text-xl bg-secondary-container py-6 px-8 rounded-2xl w-full flex justify-between text-left">
 				{title}
-				<ChevronUp
-					className={cn(
-						isOpen ? "rotate-180" : "",
-						"transition-transform",
-					)}
-				/>
-			</CollapsibleTrigger>
-			<CollapsibleContent className="bg-primary text-on-primary text-start text-lg p-8 rounded-2xl mt-2">
+			</AccordionTrigger>
+			<AccordionContent className="bg-primary text-on-primary text-start text-lg p-8 rounded-2xl mt-2">
 				<p>{paragraph}</p>
-			</CollapsibleContent>
-		</Collapsible>
+			</AccordionContent>
+		</AccordionItem>
 	);
 };
 
@@ -84,13 +73,20 @@ export default function QnA() {
 			}
 			className="items-center"
 		>
-			{questions.map((question, index) => (
-				<Question
-					key={index}
-					title={question.title}
-					paragraph={question.paragraph}
-				/>
-			))}
+			<Accordion
+				type="single"
+				collapsible
+				className="flex flex-col gap-2 w-full max-w-[1200px]"
+			>
+				{questions.map((question, index) => (
+					<Question
+						key={index}
+						value={index.toString()}
+						title={question.title}
+						paragraph={question.paragraph}
+					/>
+				))}
+			</Accordion>
 		</Section>
 	);
 }

@@ -1,6 +1,6 @@
 import { listProductsWithSort } from "@lib/data/products";
 import { Pagination } from "@modules/store/components/pagination";
-import { SortOptions } from "@modules/store/components/sort-products";
+import { SortOptions } from "@modules/store/components/refinement-list/sort-products";
 import { ProductCard } from "@/modules/products/components/card";
 
 const PRODUCT_LIMIT = 12;
