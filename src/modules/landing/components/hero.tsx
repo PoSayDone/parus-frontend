@@ -34,11 +34,11 @@ export default function Hero() {
 				</div>
 				<Button className="w-full z-[1]">Стоимость похорон</Button>
 			</div>
-			<div className="grid grid-cols-1 md:flex md:flex-col gap-4 ">
+			<div className="grid grid-cols-1 md:flex md:flex-col gap-4 sm:grid-cols-2">
 				<Link
 					className={cn(
 						buttonVariants(),
-						"hover:bg-inverse-primary/80 transition bg-inverse-primary text-foreground text-2xl font-medium aspect-square px-8 text-center flex items-center justify-center rounded-full h-auto",
+						"hover:bg-inverse-primary/80 transition bg-inverse-primary text-foreground text-2xl font-medium sm:aspect-square px-8 text-center flex items-center justify-center rounded-full sm:h-auto h-[200px]",
 					)}
 					href={"/"}
 				>
@@ -49,7 +49,7 @@ export default function Hero() {
 					href={"/designer"}
 					className={cn(
 						buttonVariants(),
-						"hover:bg-inverse-primary/80 transition bg-inverse-primary text-foreground text-2xl font-medium h-[400px] py-8 text-center flex items-start justify-center rounded-4xl relative overflow-clip",
+						"hover:bg-inverse-primary/80 transition bg-inverse-primary text-foreground text-2xl font-medium sm:h-[400px] h-[300px] py-8 text-center flex items-start justify-center rounded-4xl relative overflow-clip",
 					)}
 				>
 					Перейти

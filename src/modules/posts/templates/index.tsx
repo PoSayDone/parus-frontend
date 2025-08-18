@@ -5,6 +5,7 @@ import edjsHTML from "editorjs-html";
 import Thumbnail from "../components/thumbnail";
 import { format } from "date-fns";
 import { ru } from "date-fns/locale";
+import _ from "lodash";
 
 type PostTemplateProps = {
 	post: BlogPost;
@@ -16,7 +17,7 @@ const PostTemplate: React.FC<PostTemplateProps> = ({ post }) => {
 	}
 
 	const edjsParser = edjsHTML();
-	const html = edjsParser.parse(post.body);
+	const html = !_.isEmpty(post.body) ? edjsParser.parse(post.body) : "";
 
 	let formatted = format(new Date(post.created_at!), "LLLL dd, yyyy", {
 		locale: ru,

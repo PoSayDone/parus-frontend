@@ -4,6 +4,7 @@ import Document from "@/modules/common/icons/document";
 import Passport from "@/modules/common/icons/passport";
 import Pigeon from "@/modules/common/icons/pigeon";
 import RitualAgent from "@/modules/common/icons/ritual-agent";
+import ContactModalTrigger from "@/modules/contact/components/contact-modal-trigger";
 import { IconProps } from "@/types/icon";
 
 const StepCard = ({
@@ -126,7 +127,9 @@ export default function WhatShouldIDo() {
 				))}
 			</div>
 
-			<Button className="self-center mt-4">Вызывать агента</Button>
+			<ContactModalTrigger className="self-center mt-4">
+				Вызывать агента
+			</ContactModalTrigger>
 			<p>Получите помощь — это бесплатно.</p>
 		</Section>
 	);

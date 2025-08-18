@@ -23,7 +23,10 @@ const HeaderContent = ({
 	return (
 		<>
 			<div className="flex flex-row  gap-8">
-				<Link href={"/"} className="font-bold text-xl ml-2 -mt-0.5">
+				<Link
+					href={"/"}
+					className="font-bold text-xl ml-2 md:ml-0 -mt-0.5"
+				>
 					Парус
 				</Link>
 				<nav className="justify-center hidden md:flex gap-6">

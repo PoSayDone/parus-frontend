@@ -2,7 +2,7 @@ import { buttonVariants } from "@/components/ui/button";
 import Section from "@/components/ui/section";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import PostsGrid from "./PostsGrid";
+import PostsGrid from "./posts-grid";
 import { Suspense } from "react";
 import SkeletonBlogLandingGrid from "@/modules/skeletons/templates/skeleton-blog-landing-grid";
 

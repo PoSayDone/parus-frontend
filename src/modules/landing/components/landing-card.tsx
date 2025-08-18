@@ -1,8 +1,8 @@
 import { cn } from "@/lib/utils";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
 
-export default function Card({
+export default function LandingCard({
 	title,
 	children,
 	className,

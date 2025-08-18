@@ -1,6 +1,6 @@
 "use client";
 
-import Card from "@/app/(landing)/_components/card";
+import LandingCard from "@/modules/landing/components/landing-card";
 import Section from "@/components/ui/section";
 import { EmblaOptionsType } from "embla-carousel";
 import Autoplay from "embla-carousel-autoplay";
@@ -84,7 +84,7 @@ export default function RitualProducts() {
 					<div className="embla__container">
 						{slides.map((slide, index) => (
 							<div key={index} className="embla__slide">
-								<Card title={slide.title}>
+								<LandingCard title={slide.title}>
 									<Image
 										className="mx-auto mt-4"
 										src={slide.image}
@@ -92,7 +92,7 @@ export default function RitualProducts() {
 										width={205}
 										height={370}
 									/>
-								</Card>
+								</LandingCard>
 							</div>
 						))}
 					</div>

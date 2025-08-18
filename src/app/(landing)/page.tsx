@@ -1,14 +1,15 @@
 import React from "react";
-import RitualProducts from "./_components/RitualProducts";
-import QnA from "./_components/QnA";
-import { Interaction } from "./_components/Interaction";
-import Posts from "./_components/Posts";
-import WhatShouldIDo from "./_components/WhatShouldIDo";
-import AboutUs from "./_components/AboutUs";
-import WhyUs from "./_components/WhyUs";
-import Services from "./_components/Services";
-import Hero from "./_components/Hero";
-import WhereToFindUs from "./_components/WhereToFindUs";
+import RitualProducts from "@/modules/landing/components/ritual-products";
+import QnA from "@/modules/landing/components/q-n-a";
+import { Interaction } from "@/modules/landing/components/Interaction";
+import Posts from "@/modules/landing/components/posts";
+import WhatShouldIDo from "@/modules/landing/components/actions";
+import AboutUs from "@/modules/landing/components/about-us";
+import WhyUs from "@/modules/landing/components/why-us";
+import Services from "@/modules/landing/components/services";
+import Hero from "@/modules/landing/components/hero";
+import WhereToFindUs from "@/modules/landing/components/location";
+import Pricing from "@/modules/landing/components/pricing";
 
 export default function Home() {
 	return (
@@ -16,6 +17,7 @@ export default function Home() {
 			<Hero />
 			<Services />
 			<WhyUs />
+			<Pricing />
 			<AboutUs />
 			<WhatShouldIDo />
 			<RitualProducts />

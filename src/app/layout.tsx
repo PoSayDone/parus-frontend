@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Golos_Text } from "next/font/google";
 import "./globals.css";
 import Layout from "@/modules/layout";
+import ContactModalProvider from "@/modules/contact/components/contact-modal-provider";
 
 const golos = Golos_Text({
 	weight: ["400", "500", "600", "700", "800", "900"],
@@ -23,6 +24,7 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body className={`${golos.className} antialiased`}>
+				<ContactModalProvider />
 				<Layout>{children}</Layout>
 			</body>
 		</html>

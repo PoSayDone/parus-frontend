@@ -19,8 +19,8 @@
 	--popover: oklch(1 0 0);
 	--popover-foreground: oklch(0.145 0 0);
 	--primary-foreground: oklch(0.985 0 0);
-	--secondary: #EDE7E4;
-	--secondary-foreground: oklch(0.205 0 0);
+	--secondary: #665E54;
+	--secondary-foreground:#fff;
 	--muted: #EDE7E4;
 	--muted-foreground: #7F756D;
 	--accent: #EDE7E4;
@@ -197,7 +197,11 @@
 		letter-spacing: -0.025em;
 	}
 
-	h1              { font-size: 2em;  }
+	* {
+		line-height: 150%;
+	}
+
+	h1              { font-size: 2em; }
 	h2              { font-size: 1.5em; }
 	h3              { font-size: 1.17em;}
 	h5              { font-size: .83em; }
