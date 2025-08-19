@@ -8,38 +8,52 @@ import { ru } from "date-fns/locale";
 import _ from "lodash";
 
 type PostTemplateProps = {
-	post: BlogPost;
+  post: BlogPost;
 };
 
 const PostTemplate: React.FC<PostTemplateProps> = ({ post }) => {
-	if (!post || !post.id) {
-		return notFound();
-	}
+  if (!post || !post.id) {
+    return notFound();
+  }
 
-	const edjsParser = edjsHTML();
-	const html = !_.isEmpty(post.body) ? edjsParser.parse(post.body) : "";
+  const edjsParser = edjsHTML();
+  const html = !_.isEmpty(post.body) ? edjsParser.parse(post.body) : "";
 
-	let formatted = format(new Date(post.created_at!), "LLLL dd, yyyy", {
-		locale: ru,
-	});
-	formatted = formatted.charAt(0).toUpperCase() + formatted.slice(1);
+  let formatted = "";
+  
+  // Check if created_at is a valid date string
+  if (post.created_at && post.created_at !== "null") {
+    try {
+      const date = new Date(post.created_at);
+      if (!isNaN(date.getTime())) {
+        formatted = format(date, "LLLL dd, yyyy", {
+          locale: ru,
+        });
+        formatted = formatted.charAt(0).toUpperCase() + formatted.slice(1);
+      }
+    } catch (e) {
+      // If date parsing fails, leave formatted as empty string
+    }
+  }
 
-	return (
-		<>
-			<div
-				className="content-container flex flex-col py-6 relative max-w-[800px] w-full mx-auto sm:gap-x-12"
-				data-testid="post-container"
-			>
-				<h1 className="text-3xl md:text-5xl">{post.title}</h1>
-				<h3 className="my-2 md:my-4 font-normal">{formatted}</h3>
-				{post.thumbnail && <Thumbnail thumbnail={post.thumbnail} />}
-				<div
-					className="mt-2 gap-2 md:mt-4 md:gap-4 text-[17px] flex flex-col"
-					dangerouslySetInnerHTML={{ __html: html }}
-				/>
-			</div>
-		</>
-	);
+  return (
+    <>
+      <div
+        className="content-container flex flex-col py-6 relative max-w-[800px] w-full mx-auto sm:gap-x-12"
+        data-testid="post-container"
+      >
+        <h1 className="text-3xl md:text-5xl">{post.title}</h1>
+        {formatted && (
+          <h3 className="my-2 md:my-4 font-normal">{formatted}</h3>
+        )}
+        {post.thumbnail && <Thumbnail thumbnail={post.thumbnail} />}
+        <div
+          className="mt-2 gap-2 md:mt-4 md:gap-4 text-[17px] flex flex-col"
+          dangerouslySetInnerHTML={{ __html: html }}
+        />
+      </div>
+    </>
+  );
 };
 
 export default PostTemplate;

@@ -11,17 +11,10 @@ import {
 	DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from "@/components/ui/select";
 import { Phone, Mail, Clock } from "lucide-react";
+import LabelInput from "@/components/ui/floating-input";
 
 interface ContactModalProps {
 	open: boolean;
@@ -75,55 +68,49 @@ export default function ContactModal({
 					</DialogDescription>
 				</DialogHeader>
 
-				<form onSubmit={handleSubmit} className="space-y-4 mt-4">
-					<div className="space-y-2">
-						<Label htmlFor="name">Имя *</Label>
-						<Input
-							id="name"
-							value={formData.name}
-							onChange={(e) =>
-								setFormData({
-									...formData,
-									name: e.target.value,
-								})
-							}
-							placeholder="Ваше имя"
-							required
-						/>
-					</div>
+				<form onSubmit={handleSubmit} className="space-y-4 mt-0">
+					<LabelInput
+						id="name"
+						label="Имя *"
+						value={formData.name}
+						onChange={(e) =>
+							setFormData({
+								...formData,
+								name: e.target.value,
+							})
+						}
+						placeholder="Ваше имя"
+						required
+					/>
 
-					<div className="space-y-2">
-						<Label htmlFor="phone">Телефон *</Label>
-						<Input
-							id="phone"
-							type="tel"
-							value={formData.phone}
-							onChange={(e) =>
-								setFormData({
-									...formData,
-									phone: e.target.value,
-								})
-							}
-							placeholder="+7 (___) ___-__-__"
-							required
-						/>
-					</div>
+					<LabelInput
+						id="phone"
+						label="Телефон *"
+						type="tel"
+						value={formData.phone}
+						onChange={(e) =>
+							setFormData({
+								...formData,
+								phone: e.target.value,
+							})
+						}
+						placeholder="+7 (___) ___-__-__"
+						required
+					/>
 
-					<div className="space-y-2">
-						<Label htmlFor="email">Email</Label>
-						<Input
-							id="email"
-							type="email"
-							value={formData.email}
-							onChange={(e) =>
-								setFormData({
-									...formData,
-									email: e.target.value,
-								})
-							}
-							placeholder="your@email.com"
-						/>
-					</div>
+					<LabelInput
+						id="email"
+						label="Email"
+						type="email"
+						value={formData.email}
+						onChange={(e) =>
+							setFormData({
+								...formData,
+								email: e.target.value,
+							})
+						}
+						placeholder="your@email.com"
+					/>
 
 					<div className="space-y-2">
 						<Label htmlFor="message">Сообщение</Label>

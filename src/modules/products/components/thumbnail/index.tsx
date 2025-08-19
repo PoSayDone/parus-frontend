@@ -1,18 +1,17 @@
-import { Container, clx } from "@medusajs/ui"
-import Image from "next/image"
-import React from "react"
+import { cn } from "@/lib/utils";
+import Image from "next/image";
+import React from "react";
 
-import PlaceholderImage from "@modules/common/icons/placeholder-image"
+import PlaceholderImage from "@modules/common/icons/placeholder-image";
 
 type ThumbnailProps = {
-  thumbnail?: string | null
-  // TODO: Fix image typings
-  images?: any[] | null
-  size?: "small" | "medium" | "large" | "full" | "square"
-  isFeatured?: boolean
-  className?: string
-  "data-testid"?: string
-}
+  thumbnail?: string | null;
+  images?: string[] | null;
+  size?: "small" | "medium" | "large" | "full" | "square";
+  isFeatured?: boolean;
+  className?: string;
+  "data-testid"?: string;
+};
 
 const Thumbnail: React.FC<ThumbnailProps> = ({
   thumbnail,
@@ -22,11 +21,11 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
   className,
   "data-testid": dataTestid,
 }) => {
-  const initialImage = thumbnail || images?.[0]?.url
+  const initialImage = thumbnail || images?.[0];
 
   return (
-    <Container
-      className={clx(
+    <div
+      className={cn(
         "relative w-full overflow-hidden p-4 bg-ui-bg-subtle shadow-elevation-card-rest rounded-large group-hover:shadow-elevation-card-hover transition-shadow ease-in-out duration-150",
         className,
         {
@@ -42,9 +41,9 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
       data-testid={dataTestid}
     >
       <ImageOrPlaceholder image={initialImage} size={size} />
-    </Container>
-  )
-}
+    </div>
+  );
+};
 
 const ImageOrPlaceholder = ({
   image,
@@ -64,7 +63,7 @@ const ImageOrPlaceholder = ({
     <div className="w-full h-full absolute inset-0 flex items-center justify-center">
       <PlaceholderImage size={size === "small" ? 16 : 24} />
     </div>
-  )
-}
+  );
+};
 
-export default Thumbnail
+export default Thumbnail;

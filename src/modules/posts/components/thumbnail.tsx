@@ -5,7 +5,6 @@ import { cn } from "@/lib/utils";
 
 type ThumbnailProps = {
 	thumbnail?: string | null;
-	// TODO: Fix image typings
 	images?: any[] | null;
 	isFeatured?: boolean;
 	className?: string;
@@ -15,7 +14,6 @@ type ThumbnailProps = {
 const Thumbnail: React.FC<ThumbnailProps> = ({
 	thumbnail,
 	images,
-	isFeatured,
 	className,
 	"data-testid": dataTestid,
 }) => {

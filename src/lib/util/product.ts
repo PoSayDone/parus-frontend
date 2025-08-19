@@ -1,7 +1,6 @@
-import { HttpTypes } from "@medusajs/types";
+import { StoreProduct } from "@/types/store";
 
-export const isSimpleProduct = (product: HttpTypes.StoreProduct): boolean => {
-	return (
-		product.options?.length === 1 && product.options[0].values?.length === 1
-	);
+export const isSimpleProduct = (product: StoreProduct): boolean => {
+  // All products are now considered simple since we removed variants
+  return true;
 };

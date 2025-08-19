@@ -12,6 +12,11 @@
 	--on-primary-container: #FFF5EC;
 	--secondary-container: #EADED2;
 	--on-secondary-container: #6A6158;
+	--surface-container-highest: #E6E1DD;
+	--surface-container-high: #ECE7E3;
+	--surface-container: #F2EDE9;
+	--surface-container-low:#FBF2EF;
+	--surface-container-lowest: #FFF;
 	--background: #FEF8F5;
 	--foreground: #1D1B1A;
 	--card: var(--secondary-container);
@@ -25,9 +30,10 @@
 	--muted-foreground: #7F756D;
 	--accent: #EDE7E4;
 	--accent-foreground: oklch(0.205 0 0);
-	--destructive: oklch(0.577 0.245 27.325);
-	--destructive-foreground: oklch(0.577 0.245 27.325);
+	--destructive: #BA1A1A;
+	--destructive-foreground: #FFF;
 	--border: #D0C5BA;
+	--border-variant: #CFC5BB;
 	--input: #D0C5BA;
 	--ring: #7F756D;
 	--chart-1: oklch(0.646 0.222 41.116);
@@ -49,6 +55,12 @@
 @theme inline {
 	--color-background: var(--background);
 	--color-foreground: var(--foreground);
+
+	--color-surface-container-highest: var(--surface-container-highest);
+	--color-surface-container-high: var(--surface-container-high);
+	--color-surface-container: var(--surface-container);
+	--color-surface-container-low: var(--surface-container-low);
+	--color-surface-container-lowest: var(--surface-container-lowest);
 
 	--color-primary: var(--primary);
 	--color-inverse-primary: var(--inverse-primary);
@@ -81,6 +93,7 @@
 	--color-ring: var(--ring);
 	--color-input: var(--input);
 	--color-border: var(--border);
+	--color-border-variant: var(--border-variant);
 	--color-destructive-foreground: var(--destructive-foreground);
 	--color-destructive: var(--destructive);
 	--color-accent-foreground: var(--accent-foreground);

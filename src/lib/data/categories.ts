@@ -1,49 +1,50 @@
-import { sdk } from "@lib/config"
-import { HttpTypes } from "@medusajs/types"
-import { getCacheOptions } from "./cookies"
+"use server";
+
+import prisma from "@lib/prisma";
 
 export const listCategories = async (query?: Record<string, any>) => {
-  const next = {
-    ...(await getCacheOptions("categories")),
-  }
+	const limit = query?.limit || 100;
 
-  const limit = query?.limit || 100
+	return prisma.category.findMany({
+		where: query?.where,
+		take: limit,
+		include: {
+			children: true,
+			parent: true,
+			products: true,
+		},
+		orderBy: {
+			createdAt: "desc",
+		},
+	});
+};
 
-  return sdk.client
-    .fetch<{ product_categories: HttpTypes.StoreProductCategory[] }>(
-      "/store/product-categories",
-      {
-        query: {
-          fields:
-            "*category_children, *products, *parent_category, *parent_category.parent_category",
-          limit,
-          ...query,
-        },
-        next,
-        cache: "force-cache",
-      }
-    )
-    .then(({ product_categories }) => product_categories)
-}
+export const getCategoryByHandle = async (categoryHandle: string) => {
+	return prisma.category.findUnique({
+		where: { handle: categoryHandle },
+		include: {
+			children: true,
+			parent: true,
+			products: true,
+		},
+	});
+};
 
-export const getCategoryByHandle = async (categoryHandle: string[]) => {
-  const handle = `${categoryHandle.join("/")}`
+export const createCategory = async (data: any) => {
+	return prisma.category.create({
+		data,
+	});
+};
 
-  const next = {
-    ...(await getCacheOptions("categories")),
-  }
+export const updateCategory = async (handle: string, data: any) => {
+	return prisma.category.update({
+		where: { handle },
+		data,
+	});
+};
 
-  return sdk.client
-    .fetch<HttpTypes.StoreProductCategoryListResponse>(
-      `/store/product-categories`,
-      {
-        query: {
-          fields: "*category_children, *products",
-          handle,
-        },
-        next,
-        cache: "force-cache",
-      }
-    )
-    .then(({ product_categories }) => product_categories[0])
-}
+export const deleteCategory = async (handle: string) => {
+	return prisma.category.delete({
+		where: { handle },
+	});
+};
