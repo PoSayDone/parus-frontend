@@ -22,7 +22,6 @@ export default function BlogPage() {
 	const [posts, setPosts] = useState<BlogPost[]>([]);
 	const [loading, setLoading] = useState(true);
 
-	// Fetch posts from API
 	useEffect(() => {
 		const fetchPosts = async () => {
 			try {
@@ -45,7 +44,7 @@ export default function BlogPage() {
 	const filteredPosts = posts.filter(
 		(post) =>
 			post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-			post.excerpt?.toLowerCase().includes(searchTerm.toLowerCase()),
+			post.description?.toLowerCase().includes(searchTerm.toLowerCase()),
 	);
 
 	const formatDate = (dateString: string | null) => {
@@ -62,7 +61,6 @@ export default function BlogPage() {
 			});
 
 			if (response.ok) {
-				// Remove the post from the state
 				setPosts(posts.filter((post) => post.handle !== handle));
 			} else {
 				const error = await response.json();
@@ -93,7 +91,7 @@ export default function BlogPage() {
 					<div className="max-w-xs">
 						<div className="font-medium">{row.title}</div>
 						<div className="text-sm text-muted-foreground truncate">
-							{row.excerpt}
+							{row.description}
 						</div>
 					</div>
 				</div>
@@ -120,7 +118,7 @@ export default function BlogPage() {
 			),
 		},
 		{
-			key: "publishedAt",
+			key: "createdAt",
 			label: "Дата публикации",
 			render: (value: string | null) => (
 				<div className="flex items-center space-x-1">
@@ -139,7 +137,7 @@ export default function BlogPage() {
 		{
 			type: "view" as const,
 			label: "Просмотр",
-			href: "/admin/posts/{key}",
+			href: "/posts/{key}",
 		},
 		{
 			type: "edit" as const,

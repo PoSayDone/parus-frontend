@@ -1,36 +1,43 @@
 "use server";
 
 import prisma from "@lib/prisma";
-import { BlogPost as PrismaBlogPost } from "@prisma/client";
-
-type BlogPost = Omit<PrismaBlogPost, "createdAt" | "updatedAt"> & {
-	created_at: Date;
-	updated_at: Date;
-};
+import { BlogPost, Prisma } from "@prisma/client";
+import _ from "lodash";
 
 export const listPosts = async ({
-	pageParam = 1,
+	page = 1,
 	queryParams,
+	sortBy = "created_at",
 }: {
-	pageParam?: number;
+	page?: number;
 	queryParams?: {
 		limit?: number;
 		offset?: number;
 		type?: string;
 		[key: string]: any;
 	};
+	sortBy?: "created_at" | "views";
 }): Promise<{
 	response: { posts: BlogPost[]; count: number };
 	nextPage: number | null;
 	queryParams?: any;
 }> => {
 	const limit = queryParams?.limit || 12;
-	const _pageParam = Math.max(pageParam, 1);
+	const _pageParam = Math.max(page, 1);
 	const offset = _pageParam === 1 ? 0 : (_pageParam - 1) * limit;
 
-	let where: any = {
+	const where: Prisma.BlogPostWhereInput = {
 		draft: false,
 	};
+	const orderBy: Prisma.BlogPostOrderByWithAggregationInput = {};
+
+	if (sortBy === "created_at") {
+		orderBy.createdAt = "desc";
+	}
+
+	if (sortBy === "views") {
+		orderBy.views = "desc";
+	}
 
 	if (queryParams?.type) {
 		where.type = queryParams.type;
@@ -41,25 +48,20 @@ export const listPosts = async ({
 			where,
 			skip: offset,
 			take: limit,
-			orderBy: {
-				created_at: "desc",
-			},
+			orderBy: _.isEmpty(orderBy)
+				? {
+						createdAt: "desc",
+					}
+				: orderBy,
 		}),
 		prisma.blogPost.count({ where }),
 	]);
 
-	// Convert field names
-	const formattedPosts = posts.map((post) => ({
-		...post,
-		created_at: post.created_at,
-		updated_at: post.updated_at,
-	})) as BlogPost[];
-
-	const nextPage = count > offset + limit ? pageParam + 1 : null;
+	const nextPage = count > offset + limit ? page + 1 : null;
 
 	return {
 		response: {
-			posts: formattedPosts,
+			posts,
 			count,
 		},
 		nextPage: nextPage,
@@ -87,7 +89,7 @@ export const getAllPosts = async ({
 	const _pageParam = Math.max(pageParam, 1);
 	const offset = _pageParam === 1 ? 0 : (_pageParam - 1) * limit;
 
-	let where: any = {};
+	const where: Prisma.BlogPostWhereInput = {};
 
 	if (queryParams?.type) {
 		where.type = queryParams.type;
@@ -99,96 +101,20 @@ export const getAllPosts = async ({
 			skip: offset,
 			take: limit,
 			orderBy: {
-				created_at: "desc",
+				createdAt: "desc",
 			},
 		}),
 		prisma.blogPost.count({ where }),
 	]);
-
-	// Convert field names
-	const formattedPosts = posts.map((post) => ({
-		...post,
-		created_at: post.created_at,
-		updated_at: post.updated_at,
-	})) as BlogPost[];
 
 	const nextPage = count > offset + limit ? pageParam + 1 : null;
 
 	return {
 		response: {
-			posts: formattedPosts,
+			posts: posts,
 			count,
 		},
 		nextPage: nextPage,
-		queryParams,
-	};
-};
-
-export const listPostsWithSort = async ({
-	page = 0,
-	queryParams,
-	sortBy = "created_at",
-}: {
-	page?: number;
-	queryParams?: {
-		limit?: number;
-		offset?: number;
-		type?: string;
-		[key: string]: any;
-	};
-	sortBy?: string;
-}): Promise<{
-	response: { posts: BlogPost[]; count: number };
-	nextPage: number | null;
-	queryParams?: any;
-}> => {
-	const limit = queryParams?.limit || 12;
-
-	let where: any = {};
-
-	if (queryParams?.type) {
-		where.type = queryParams.type;
-	}
-
-	const [posts, count] = await Promise.all([
-		prisma.blogPost.findMany({
-			where,
-			take: 100, // Fetch more posts for sorting
-			orderBy: {
-				created_at: "desc",
-			},
-		}),
-		prisma.blogPost.count({ where }),
-	]);
-
-	// Convert field names
-	const formattedPosts = posts.map((post) => ({
-		...post,
-		created_at: post.created_at,
-		updated_at: post.updated_at,
-	})) as BlogPost[];
-
-	// Apply sorting if needed (simplified for now)
-	const sortedPosts = formattedPosts.sort((a, b) => {
-		if (sortBy === "created_at") {
-			return (
-				new Date(b.created_at).getTime() -
-				new Date(a.created_at).getTime()
-			);
-		}
-		return 0;
-	});
-
-	const pageParam = (page - 1) * limit;
-	const nextPage = count > pageParam + limit ? pageParam + limit : null;
-	const paginatedPosts = sortedPosts.slice(pageParam, pageParam + limit);
-
-	return {
-		response: {
-			posts: paginatedPosts,
-			count,
-		},
-		nextPage,
 		queryParams,
 	};
 };
@@ -200,12 +126,7 @@ export const getPostByHandle = async (handle: string) => {
 
 	if (!post) return null;
 
-	// Convert field names
-	return {
-		...post,
-		created_at: post.created_at,
-		updated_at: post.updated_at,
-	} as BlogPost;
+	return post;
 };
 
 export const createPost = async (data: any) => {
@@ -213,9 +134,7 @@ export const createPost = async (data: any) => {
 		data,
 	});
 
-	return {
-		...post,
-	} as BlogPost;
+	return post;
 };
 
 export const updatePost = async (handle: string, data: any) => {
@@ -224,9 +143,7 @@ export const updatePost = async (handle: string, data: any) => {
 		data,
 	});
 
-	return {
-		...post,
-	} as BlogPost;
+	return post;
 };
 
 export const deletePost = async (handle: string) => {

@@ -78,9 +78,9 @@ export function AdminTable({
 											<DropdownMenuTrigger asChild>
 												<Button
 													variant="ghost"
-													className="h-8 w-8 p-0"
+													className="size-8 !p-0"
 												>
-													<MoreHorizontal className="h-4 w-4" />
+													<MoreHorizontal />
 												</Button>
 											</DropdownMenuTrigger>
 											<DropdownMenuContent align="end">
@@ -102,7 +102,7 @@ export function AdminTable({
 																	)
 																}
 															>
-																<Trash2 className="mr-2 h-4 w-4" />
+																<Trash2 />
 																{action.label}
 															</DropdownMenuItem>
 														);
@@ -126,11 +126,11 @@ export function AdminTable({
 																>
 																	{action.type ===
 																		"view" && (
-																		<Eye className="mr-2 h-4 w-4" />
+																		<Eye />
 																	)}
 																	{action.type ===
 																		"edit" && (
-																		<Edit className="mr-2 h-4 w-4" />
+																		<Edit />
 																	)}
 																	{
 																		action.label

@@ -6,10 +6,9 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { ArrowLeft, Save, Upload, X, Star } from "lucide-react";
-import Link from "next/link";
+import { Upload, X, Star } from "lucide-react";
 
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import {
 	Card,
 	CardContent,
@@ -18,7 +17,6 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 import {
-	Form,
 	FormControl,
 	FormDescription,
 	FormField,
@@ -28,15 +26,9 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { SlugHandler } from "../components/slug-handler";
+import { AdminFormLayout } from "../components/admin-form-layout";
 import {
 	productFormSchema,
 	ProductFormValues,
@@ -48,6 +40,7 @@ import {
 } from "@/lib/data/products";
 import { listCategories } from "@/lib/data/categories";
 import { uploadFileToS3 } from "@/lib/data/uploads";
+import { Switch } from "@/components/ui/switch";
 
 export default function ProductForm({
 	productHandle,
@@ -73,7 +66,7 @@ export default function ProductForm({
 			thumbnail: "",
 			images: [],
 			price: "",
-			status: "draft",
+			active: false,
 			categories: [],
 		},
 		mode: "onChange",
@@ -106,7 +99,7 @@ export default function ProductForm({
 							thumbnail: productData.thumbnail || "",
 							images: productData.images || [],
 							price: productData.price.toString(),
-							status: productData.status as "draft" | "published",
+							active: productData.active,
 							categories:
 								productData.categories?.map(
 									(cat: any) => cat.handle,
@@ -274,390 +267,309 @@ export default function ProductForm({
 		return <div className="p-6">Загрузка продукта...</div>;
 	}
 
-	return (
-		<div className="space-y-6">
-			<div className="flex flex-col items-start space-x-4">
-				<Link
-					href="/admin/products"
-					className={buttonVariants({
-						variant: "ghost",
-						size: "sm",
-						className: "mb-2",
-					})}
-				>
-					<ArrowLeft className="h-4 w-4" />
-					Назад к товарам
-				</Link>
-				<div>
-					<h2 className="text-2xl font-medium tracking-tight">
+	const mainContent = (
+		<>
+			<Card className="bg-transparent border-border-variant">
+				<CardHeader>
+					<CardTitle>Основная информация</CardTitle>
+					<CardDescription>
 						{productHandle
-							? "Редактировать продукт"
-							: "Новый продукт"}
-					</h2>
-					<p className="text-muted-foreground">
-						{productHandle
-							? "Изменение информации о товаре"
-							: "Добавьте новый товар в каталог"}
-					</p>
-				</div>
-			</div>
-
-			<Form {...form}>
-				<form
-					onSubmit={form.handleSubmit(onSubmit)}
-					className="space-y-6"
-				>
-					<div className="grid gap-6 lg:grid-cols-3">
-						<div className="lg:col-span-2 space-y-6">
-							<Card className="bg-transparent border-border-variant">
-								<CardHeader>
-									<CardTitle>Основная информация</CardTitle>
-									<CardDescription>
-										{productHandle
-											? "Обновите данные о продукте"
-											: "Заполните основные данные о продукте"}
-									</CardDescription>
-								</CardHeader>
-								<CardContent className="space-y-4">
-									<FormField
-										control={form.control}
-										name="title"
-										render={({ field }) => (
-											<FormItem>
-												<FormLabel>
-													Название продукта
-												</FormLabel>
-												<FormControl>
-													<Input
-														{...field}
-														placeholder="Введите название продукта"
-														onChange={onTitleChange}
-													/>
-												</FormControl>
-												<FormMessage />
-											</FormItem>
-										)}
+							? "Обновите данные о продукте"
+							: "Заполните основные данные о продукте"}
+					</CardDescription>
+				</CardHeader>
+				<CardContent className="space-y-4">
+					<FormField
+						control={form.control}
+						name="title"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>Название продукта</FormLabel>
+								<FormControl>
+									<Input
+										{...field}
+										placeholder="Введите название продукта"
+										onChange={onTitleChange}
 									/>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
 
-									<FormField
-										control={form.control}
-										name="handle"
-										render={({ field }) => (
-											<FormItem>
-												<FormLabel>
-													URL (handle)
-												</FormLabel>
-												<FormControl>
-													<Input
-														{...field}
-														placeholder="url-produkta"
-													/>
-												</FormControl>
-												<FormDescription>
-													Будет использоваться в URL:
-													/products/
-													{form.watch("handle") ||
-														"url-produkta"}
-												</FormDescription>
-												<FormMessage />
-											</FormItem>
-										)}
+					<FormField
+						control={form.control}
+						name="handle"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>URL (handle)</FormLabel>
+								<FormControl>
+									<Input
+										{...field}
+										placeholder="url-produkta"
 									/>
+								</FormControl>
+								<FormDescription>
+									Будет использоваться в URL: /products/
+									{form.watch("handle") || "url-produkta"}
+								</FormDescription>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
 
-									<FormField
-										control={form.control}
-										name="description"
-										render={({ field }) => (
-											<FormItem>
-												<FormLabel>Описание</FormLabel>
-												<FormControl>
-													<Textarea
-														{...field}
-														placeholder="Подробное описание продукта"
-														rows={4}
-													/>
-												</FormControl>
-												<FormMessage />
-											</FormItem>
-										)}
+					<FormField
+						control={form.control}
+						name="description"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>Описание</FormLabel>
+								<FormControl>
+									<Textarea
+										{...field}
+										placeholder="Подробное описание продукта"
+										rows={4}
 									/>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
 
-									<div className="grid gap-4 items-end sm:grid-cols-2">
-										<FormField
-											control={form.control}
-											name="price"
-											render={({ field }) => (
-												<FormItem>
-													<FormLabel>
-														Цена (₽)
-													</FormLabel>
-													<FormControl>
-														<Input
-															{...field}
-															type="number"
-															placeholder="0"
-															min="0"
-															step="0.01"
-														/>
-													</FormControl>
-													<FormMessage />
-												</FormItem>
-											)}
+					<div className="grid gap-4 items-end sm:grid-cols-2">
+						<FormField
+							control={form.control}
+							name="price"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Цена (₽)</FormLabel>
+									<FormControl>
+										<Input
+											{...field}
+											type="number"
+											placeholder="0"
+											min="0"
+											step="0.01"
 										/>
-									</div>
-								</CardContent>
-							</Card>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+					</div>
+				</CardContent>
+			</Card>
 
-							<Card className="bg-transparent border-border-variant">
-								<CardHeader>
-									<CardTitle>Категории</CardTitle>
-									<CardDescription>
-										Выберите категории для продукта
-									</CardDescription>
-								</CardHeader>
-								<CardContent>
-									<FormField
-										control={form.control}
-										name="categories"
-										render={() => (
-											<FormItem>
-												<div className="grid grid-cols-2 gap-4">
-													{categories.map(
-														(category) => (
-															<FormField
-																key={
-																	category.handle
-																}
-																control={
-																	form.control
-																}
-																name="categories"
-																render={({
-																	field,
-																}) => {
-																	return (
-																		<FormItem
-																			key={
-																				category.handle
-																			}
-																			className="flex flex-row items-start space-x-3 space-y-0"
-																		>
-																			<FormControl>
-																				<Checkbox
-																					checked={field.value?.includes(
+			<Card className="bg-transparent border-border-variant">
+				<CardHeader>
+					<CardTitle>Категории</CardTitle>
+					<CardDescription>
+						Выберите категории для продукта
+					</CardDescription>
+				</CardHeader>
+				<CardContent>
+					<FormField
+						control={form.control}
+						name="categories"
+						render={() => (
+							<FormItem>
+								<div className="grid grid-cols-2 gap-4">
+									{categories.map((category) => (
+										<FormField
+											key={category.handle}
+											control={form.control}
+											name="categories"
+											render={({ field }) => {
+												return (
+													<FormItem
+														key={category.handle}
+														className="flex flex-row items-start space-x-3 space-y-0"
+													>
+														<FormControl>
+															<Checkbox
+																checked={field.value?.includes(
+																	category.handle,
+																)}
+																onCheckedChange={(
+																	checked,
+																) => {
+																	return checked
+																		? field.onChange(
+																				[
+																					...field.value,
+																					category.handle,
+																				],
+																			)
+																		: field.onChange(
+																				field.value?.filter(
+																					(
+																						value,
+																					) =>
+																						value !==
 																						category.handle,
-																					)}
-																					onCheckedChange={(
-																						checked,
-																					) => {
-																						return checked
-																							? field.onChange(
-																									[
-																										...field.value,
-																										category.handle,
-																									],
-																								)
-																							: field.onChange(
-																									field.value?.filter(
-																										(
-																											value,
-																										) =>
-																											value !==
-																											category.handle,
-																									),
-																								);
-																					}}
-																				/>
-																			</FormControl>
-																			<FormLabel className="font-normal">
-																				{
-																					category.name
-																				}
-																			</FormLabel>
-																		</FormItem>
-																	);
+																				),
+																			);
 																}}
 															/>
-														),
-													)}
-												</div>
-												<FormMessage />
-											</FormItem>
-										)}
-									/>
-								</CardContent>
-							</Card>
+														</FormControl>
+														<FormLabel className="font-normal">
+															{category.name}
+														</FormLabel>
+													</FormItem>
+												);
+											}}
+										/>
+									))}
+								</div>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+				</CardContent>
+			</Card>
 
-							<Card className="bg-transparent border-border-variant">
-								<CardHeader>
-									<CardTitle>Изображения</CardTitle>
-									<CardDescription>
-										{productHandle
-											? "Управление изображениями продукта"
-											: "Добавьте изображения для продукта"}
-									</CardDescription>
-								</CardHeader>
-								<CardContent>
-									{images.length > 0 && (
-										<div className="grid grid-cols-3 gap-4 mb-4">
-											{images.map((image, index) => (
-												<div
-													key={index}
-													className="relative group"
-												>
-													<img
-														src={image}
-														alt={`Product image ${index + 1}`}
-														className={`w-full h-32 object-cover rounded-lg border ${
-															primaryImageIndex ===
-															index
-																? "border-primary ring-2 ring-primary/20"
-																: "border-border"
-														}`}
-													/>
-													{primaryImageIndex ===
-														index && (
-														<div className="absolute top-1 left-1 bg-primary text-primary-foreground text-xs px-2 py-1 rounded flex items-center">
-															<Star className="h-3 w-3 mr-1" />
-															Основное
-														</div>
-													)}
-													<div className="absolute top-1 right-1 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-														<Button
-															type="button"
-															size="icon"
-															variant="secondary"
-															className="h-6 w-6 rounded-full"
-															onClick={() =>
-																setPrimaryImage(
-																	index,
-																)
-															}
-															title="Сделать основным"
-														>
-															<Star className="h-3 w-3" />
-														</Button>
-														<Button
-															type="button"
-															size="icon"
-															variant="destructive"
-															className="h-6 w-6 rounded-full"
-															onClick={() =>
-																removeImage(
-																	index,
-																)
-															}
-															title="Удалить"
-														>
-															<X className="h-3 w-3" />
-														</Button>
-													</div>
-												</div>
-											))}
+			<Card className="bg-transparent border-border-variant">
+				<CardHeader>
+					<CardTitle>Изображения</CardTitle>
+					<CardDescription>
+						{productHandle
+							? "Управление изображениями продукта"
+							: "Добавьте изображения для продукта"}
+					</CardDescription>
+				</CardHeader>
+				<CardContent>
+					{images.length > 0 && (
+						<div className="grid grid-cols-3 gap-4 mb-4">
+							{images.map((image, index) => (
+								<div key={index} className="relative group">
+									<img
+										src={image}
+										alt={`Product image ${index + 1}`}
+										className={`w-full h-32 object-cover rounded-lg border ${
+											primaryImageIndex === index
+												? "border-primary ring-2 ring-primary/20"
+												: "border-border"
+										}`}
+									/>
+									{primaryImageIndex === index && (
+										<div className="absolute top-1 left-1 bg-primary text-primary-foreground text-xs px-2 py-1 rounded flex items-center">
+											<Star className="h-3 w-3 mr-1" />
+											Основное
 										</div>
 									)}
-
-									<div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-6 text-center">
-										<Upload className="mx-auto h-12 w-12 text-muted-foreground/50" />
-										<div className="mt-4">
-											<Input
-												ref={fileInputRef}
-												type="file"
-												multiple
-												accept="image/*"
-												onChange={handleImageUpload}
-												disabled={uploading}
-												className="hidden"
-												id="image-upload"
-											/>
-											<Button
-												type="button"
-												variant="outline"
-												onClick={triggerFileInput}
-												disabled={uploading}
-											>
-												{uploading
-													? "Загрузка..."
-													: "Загрузить изображения"}
-											</Button>
-										</div>
-										<p className="mt-2 text-sm text-muted-foreground">
-											Выберите одно или несколько
-											изображений
-										</p>
+									<div className="absolute top-1 right-1 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+										<Button
+											type="button"
+											size="icon"
+											variant="secondary"
+											className="h-6 w-6 rounded-full"
+											onClick={() =>
+												setPrimaryImage(index)
+											}
+											title="Сделать основным"
+										>
+											<Star className="h-3 w-3" />
+										</Button>
+										<Button
+											type="button"
+											size="icon"
+											variant="destructive"
+											className="h-6 w-6 rounded-full"
+											onClick={() => removeImage(index)}
+											title="Удалить"
+										>
+											<X className="h-3 w-3" />
+										</Button>
 									</div>
-								</CardContent>
-							</Card>
+								</div>
+							))}
 						</div>
+					)}
 
-						<div className="space-y-6">
-							<Card className="bg-transparent border-border-variant">
-								<CardHeader>
-									<CardTitle>Настройки</CardTitle>
-								</CardHeader>
-								<CardContent className="space-y-4">
-									<FormField
-										control={form.control}
-										name="status"
-										render={({ field }) => (
-											<FormItem>
-												<FormLabel>Статус</FormLabel>
-												<Select
-													onValueChange={
-														field.onChange
-													}
-													defaultValue={field.value}
-												>
-													<FormControl>
-														<SelectTrigger>
-															<SelectValue />
-														</SelectTrigger>
-													</FormControl>
-													<SelectContent>
-														<SelectItem value="draft">
-															Черновик
-														</SelectItem>
-														<SelectItem value="published">
-															Опубликован
-														</SelectItem>
-													</SelectContent>
-												</Select>
-												<FormMessage />
-											</FormItem>
-										)}
-									/>
-								</CardContent>
-							</Card>
-
-							<div className="flex flex-col space-y-2 mt-6">
-								<Button
-									type="submit"
-									className="w-full"
-									disabled={saving}
-								>
-									<Save />
-									{saving
-										? productHandle
-											? "Сохранение..."
-											: "Создание..."
-										: productHandle
-											? "Сохранить изменения"
-											: "Создать продукт"}
-								</Button>
-								<Link
-									href="/admin/products"
-									className={buttonVariants({
-										variant: "outline",
-										className: "w-full bg-transparent",
-									})}
-								>
-									Отмена
-								</Link>
-							</div>
+					<div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-6 text-center">
+						<Upload className="mx-auto h-12 w-12 text-muted-foreground/50" />
+						<div className="mt-4">
+							<Input
+								ref={fileInputRef}
+								type="file"
+								multiple
+								accept="image/*"
+								onChange={handleImageUpload}
+								disabled={uploading}
+								className="hidden"
+								id="image-upload"
+							/>
+							<Button
+								type="button"
+								variant="outline"
+								onClick={triggerFileInput}
+								disabled={uploading}
+							>
+								{uploading
+									? "Загрузка..."
+									: "Загрузить изображения"}
+							</Button>
 						</div>
+						<p className="mt-2 text-sm text-muted-foreground">
+							Выберите одно или несколько изображений
+						</p>
 					</div>
-				</form>
-			</Form>
-		</div>
+				</CardContent>
+			</Card>
+		</>
+	);
+
+	const sidebarContent = (
+		<Card className="bg-transparent border-border-variant">
+			<CardHeader>
+				<CardTitle>Настройки</CardTitle>
+			</CardHeader>
+			<CardContent className="space-y-4">
+				<FormField
+					control={form.control}
+					name="active"
+					render={({ field }) => (
+						<FormItem className="flex flex-row items-center space-x-3 space-y-0">
+							<div className="space-y-1 leading-none w-full">
+								<FormLabel>Активный продукт</FormLabel>
+								<FormDescription>
+									Если отмечено, продукт будет виден
+									пользователям
+								</FormDescription>
+							</div>
+							<FormControl>
+								<Switch
+									checked={field.value}
+									onCheckedChange={field.onChange}
+								/>
+							</FormControl>
+						</FormItem>
+					)}
+				/>
+			</CardContent>
+		</Card>
+	);
+
+	return (
+		<AdminFormLayout
+			onSubmit={onSubmit}
+			title={productHandle ? "Редактировать продукт" : "Новый продукт"}
+			description={
+				productHandle
+					? "Изменение информации о товаре"
+					: "Добавьте новый товар в каталог"
+			}
+			backHref="/admin/products"
+			backLabel="Назад к товарам"
+			form={form}
+			sidebar={sidebarContent}
+			submitLabel={
+				productHandle ? "Сохранить изменения" : "Создать продукт"
+			}
+			saving={saving}
+			cancelHref="/admin/products"
+		>
+			{mainContent}
+		</AdminFormLayout>
 	);
 }

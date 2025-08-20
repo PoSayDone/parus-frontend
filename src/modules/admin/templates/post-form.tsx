@@ -7,10 +7,9 @@ import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import dynamic from "next/dynamic";
-import { ArrowLeft, Save, Upload } from "lucide-react";
-import Link from "next/link";
+import { Upload, X } from "lucide-react";
 
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import {
 	Card,
 	CardContent,
@@ -19,7 +18,6 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 import {
-	Form,
 	FormControl,
 	FormDescription,
 	FormField,
@@ -37,8 +35,11 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 import { SlugHandler } from "../components/slug-handler";
+import { AdminFormLayout } from "../components/admin-form-layout";
 import { postFormSchema, PostFormValues } from "../schemas/post-form-schema";
 import { getPostByHandle, createPost, updatePost } from "@/lib/data/blog";
+import { uploadFileToS3 } from "@/lib/data/uploads";
+import { Switch } from "@/components/ui/switch";
 
 const Editor = dynamic(() => import("@/modules/admin/components/editor"), {
 	ssr: false,
@@ -48,14 +49,17 @@ export default function PostForm({ postHandle }: { postHandle?: string }) {
 	const router = useRouter();
 	const [loading, setLoading] = useState(!!postHandle);
 	const [saving, setSaving] = useState(false);
+	const [uploading, setUploading] = useState(false);
+	const [image, setImage] = useState<string | null>(null);
 	const editorRef = useRef<any>(null);
+	const fileInputRef = useRef<HTMLInputElement>(null);
 
 	const form = useForm<PostFormValues>({
 		resolver: zodResolver(postFormSchema),
 		defaultValues: {
 			title: "",
 			handle: "",
-			excerpt: "",
+			description: "",
 			body: null,
 			seoTitle: "",
 			thumbnail: "",
@@ -85,7 +89,7 @@ export default function PostForm({ postHandle }: { postHandle?: string }) {
 					form.reset({
 						title: postData.title,
 						handle: postData.handle,
-						excerpt: postData.excerpt || "",
+						description: postData.description || "",
 						body: postData.body || null,
 						seoTitle: postData.seoTitle || "",
 						thumbnail: postData.thumbnail || "",
@@ -93,6 +97,10 @@ export default function PostForm({ postHandle }: { postHandle?: string }) {
 						type: postData.type,
 						author: postData.author || "Администратор",
 					});
+
+					if (postData.thumbnail) {
+						setImage(postData.thumbnail);
+					}
 				} else {
 					console.error("Post not found");
 				}
@@ -112,7 +120,6 @@ export default function PostForm({ postHandle }: { postHandle?: string }) {
 		setSaving(true);
 
 		try {
-			// Save editor content
 			let editorContent = values.body;
 			if (editorRef.current) {
 				editorContent = await editorRef.current.save();
@@ -121,14 +128,13 @@ export default function PostForm({ postHandle }: { postHandle?: string }) {
 			const postData = {
 				...values,
 				body: editorContent,
+				thumbnail: image || "", // Use the image state for thumbnail
 			};
 
 			let result;
 			if (postHandle) {
-				// Update existing post using server action
 				result = await updatePost(postHandle, postData);
 			} else {
-				// Create new post using server action
 				result = await createPost(postData);
 			}
 
@@ -159,362 +165,333 @@ export default function PostForm({ postHandle }: { postHandle?: string }) {
 		form.setValue("title", value);
 	};
 
-	const handlePublish = () => {
-		form.setValue("draft", false);
+	const handleImageUpload = async (
+		e: React.ChangeEvent<HTMLInputElement>,
+	) => {
+		const files = e.target.files;
+		if (!files || files.length === 0) return;
+
+		setUploading(true);
+		try {
+			const file = files[0];
+			const url = await uploadFileToS3(file);
+
+			setImage(url);
+			form.setValue("thumbnail", url);
+		} catch (error) {
+			console.error("Error uploading image:", error);
+			alert("Ошибка при загрузке изображения");
+		} finally {
+			setUploading(false);
+			if (e.target) {
+				e.target.value = "";
+			}
+		}
+	};
+
+	const triggerFileInput = () => {
+		if (fileInputRef.current) {
+			fileInputRef.current.click();
+		}
+	};
+
+	const removeImage = () => {
+		setImage(null);
+		form.setValue("thumbnail", "");
 	};
 
 	if (loading) {
 		return <div className="p-6">Загрузка статьи...</div>;
 	}
 
-	return (
-		<div className="space-y-6">
-			<div className="flex flex-col items-start space-x-4">
-				<Link
-					href="/admin/posts"
-					className={buttonVariants({
-						variant: "ghost",
-						size: "sm",
-						className: "mb-2",
-					})}
-				>
-					<ArrowLeft />
-					Назад к блогу
-				</Link>
-				<div>
-					<h2 className="text-2xl font-medium tracking-tight">
-						{postHandle ? "Редактировать статью" : "Новая статья"}
-					</h2>
-					<p className="text-muted-foreground">
+	const mainContent = (
+		<>
+			<Card className="bg-transparent border-border-variant">
+				<CardHeader>
+					<CardTitle>Основное содержание</CardTitle>
+					<CardDescription>
 						{postHandle
-							? "Изменение содержания публикации"
-							: "Создайте новую публикацию для блога"}
-					</p>
-				</div>
-			</div>
-
-			<Form {...form}>
-				<form
-					onSubmit={form.handleSubmit(onSubmit)}
-					className="space-y-6"
-				>
-					<div className="grid gap-6 lg:grid-cols-3">
-						<div className="lg:col-span-2 space-y-6">
-							<Card className="bg-transparent border-border-variant">
-								<CardHeader>
-									<CardTitle>Основное содержание</CardTitle>
-									<CardDescription>
-										{postHandle
-											? "Обновите информацию о статье"
-											: "Заполните основную информацию о статье"}
-									</CardDescription>
-								</CardHeader>
-								<CardContent className="space-y-4">
-									<FormField
-										control={form.control}
-										name="title"
-										render={({ field }) => (
-											<FormItem>
-												<FormLabel>
-													Заголовок статьи
-												</FormLabel>
-												<FormControl>
-													<Input
-														{...field}
-														placeholder="Введите заголовок статьи"
-														onChange={onTitleChange}
-													/>
-												</FormControl>
-												<FormMessage />
-											</FormItem>
-										)}
+							? "Обновите информацию о статье"
+							: "Заполните основную информацию о статье"}
+					</CardDescription>
+				</CardHeader>
+				<CardContent className="space-y-4">
+					<FormField
+						control={form.control}
+						name="title"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>Заголовок статьи</FormLabel>
+								<FormControl>
+									<Input
+										{...field}
+										placeholder="Введите заголовок статьи"
+										onChange={onTitleChange}
 									/>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
 
-									<FormField
-										control={form.control}
-										name="handle"
-										render={({ field }) => (
-											<FormItem>
-												<FormLabel>
-													URL (handle)
-												</FormLabel>
-												<FormControl>
-													<Input
-														{...field}
-														placeholder="url-stati"
-													/>
-												</FormControl>
-												<FormDescription>
-													Будет использоваться в URL:
-													/blog/
-													{form.watch("handle") ||
-														"url-stati"}
-												</FormDescription>
-												<FormMessage />
-											</FormItem>
-										)}
+					<FormField
+						control={form.control}
+						name="handle"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>URL (handle)</FormLabel>
+								<FormControl>
+									<Input {...field} placeholder="url-stati" />
+								</FormControl>
+								<FormDescription>
+									Будет использоваться в URL: /blog/
+									{form.watch("handle") || "url-stati"}
+								</FormDescription>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+
+					<FormField
+						control={form.control}
+						name="description"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>Краткое описание</FormLabel>
+								<FormControl>
+									<Textarea
+										{...field}
+										placeholder="Краткое описание статьи для превью"
+										rows={3}
 									/>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
 
-									<FormField
-										control={form.control}
-										name="excerpt"
-										render={({ field }) => (
-											<FormItem>
-												<FormLabel>
-													Краткое описание
-												</FormLabel>
-												<FormControl>
-													<Textarea
-														{...field}
-														placeholder="Краткое описание статьи для превью"
-														rows={3}
-													/>
-												</FormControl>
-												<FormMessage />
-											</FormItem>
-										)}
-									/>
-
-									<FormField
-										control={form.control}
-										name="body"
-										render={({ field }) => (
-											<FormItem>
-												<FormLabel>
-													Содержание статьи
-												</FormLabel>
-												<FormControl>
-													<div className="border rounded-md p-2 min-h-[300px]">
-														<Editor
-															data={field.value}
-															onChange={
-																field.onChange
-															}
-															holder={
-																postHandle
-																	? "editorjs-edit"
-																	: "editorjs"
-															}
-														/>
-														<div
-															id={
-																postHandle
-																	? "editorjs-edit"
-																	: "editorjs"
-															}
-														/>
-													</div>
-												</FormControl>
-												<FormMessage />
-											</FormItem>
-										)}
-									/>
-								</CardContent>
-							</Card>
-
-							<Card className="bg-transparent border-border-variant">
-								<CardHeader>
-									<CardTitle>Изображение статьи</CardTitle>
-									<CardDescription>
-										{postHandle
-											? "Управление главным изображением"
-											: "Добавьте главное изображение для статьи"}
-									</CardDescription>
-								</CardHeader>
-								<CardContent>
-									{postHandle && form.watch("thumbnail") && (
-										<div className="mb-4">
-											<img
-												src={
-													form.watch("thumbnail") ||
-													"/placeholder.svg"
-												}
-												alt="Post thumbnail"
-												className="w-full h-48 object-cover rounded-lg border"
-											/>
-										</div>
-									)}
-
-									<div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-6 text-center">
-										<Upload className="mx-auto h-12 w-12 text-muted-foreground/50" />
-										<div className="mt-4">
-											<FormField
-												control={form.control}
-												name="thumbnail"
-												render={({ field }) => (
-													<FormItem>
-														<FormLabel>
-															URL изображения
-														</FormLabel>
-														<FormControl>
-															<Input
-																{...field}
-																placeholder="https://example.com/image.jpg"
-															/>
-														</FormControl>
-														<FormMessage />
-													</FormItem>
-												)}
-											/>
-										</div>
-										<p className="mt-2 text-sm text-muted-foreground">
-											Введите URL изображения
-										</p>
+					<FormField
+						control={form.control}
+						name="body"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>Содержание статьи</FormLabel>
+								<FormControl>
+									<div className="border rounded-md p-2 min-h-[300px]">
+										<Editor
+											data={field.value}
+											onChange={field.onChange}
+											holder={
+												postHandle
+													? "editorjs-edit"
+													: "editorjs"
+											}
+										/>
+										<div
+											id={
+												postHandle
+													? "editorjs-edit"
+													: "editorjs"
+											}
+										/>
 									</div>
-								</CardContent>
-							</Card>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+				</CardContent>
+			</Card>
 
-							<Card className="bg-transparent border-border-variant">
-								<CardHeader>
-									<CardTitle>SEO настройки</CardTitle>
-									<CardDescription>
-										Оптимизация для поисковых систем
-									</CardDescription>
-								</CardHeader>
-								<CardContent className="space-y-4">
-									<FormField
-										control={form.control}
-										name="seoTitle"
-										render={({ field }) => (
-											<FormItem>
-												<FormLabel>
-													SEO Заголовок
-												</FormLabel>
-												<FormControl>
-													<Input
-														{...field}
-														placeholder="Заголовок для поисковых систем"
-													/>
-												</FormControl>
-												<FormDescription>
-													Рекомендуется 50-60 символов
-												</FormDescription>
-												<FormMessage />
-											</FormItem>
-										)}
-									/>
-								</CardContent>
-							</Card>
+			<Card className="bg-transparent border-border-variant">
+				<CardHeader>
+					<CardTitle>Изображение статьи</CardTitle>
+					<CardDescription>
+						{postHandle
+							? "Управление главным изображением"
+							: "Добавьте главное изображение для статьи"}
+					</CardDescription>
+				</CardHeader>
+				<CardContent>
+					{image && (
+						<div className="mb-4 relative group">
+							<img
+								src={image}
+								alt="Post thumbnail"
+								className="w-full h-48 object-cover rounded-lg border"
+							/>
+							<Button
+								type="button"
+								size="icon"
+								variant="destructive"
+								className="absolute top-2 right-2 h-6 w-6 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+								onClick={removeImage}
+								title="Удалить"
+							>
+								<X className="h-3 w-3" />
+							</Button>
 						</div>
+					)}
 
-						<div className="space-y-6">
-							<Card className="bg-transparent border-border-variant">
-								<CardHeader>
-									<CardTitle>Публикация</CardTitle>
-								</CardHeader>
-								<CardContent className="space-y-4">
-									<FormField
-										control={form.control}
-										name="type"
-										render={({ field }) => (
-											<FormItem>
-												<FormLabel>Тип</FormLabel>
-												<Select
-													onValueChange={
-														field.onChange
-													}
-													defaultValue={field.value}
-												>
-													<FormControl>
-														<SelectTrigger>
-															<SelectValue />
-														</SelectTrigger>
-													</FormControl>
-													<SelectContent>
-														<SelectItem value="article">
-															Статья
-														</SelectItem>
-														<SelectItem value="info">
-															Информация
-														</SelectItem>
-														<SelectItem value="document">
-															Документ
-														</SelectItem>
-													</SelectContent>
-												</Select>
-												<FormMessage />
-											</FormItem>
-										)}
-									/>
-
-									<FormField
-										control={form.control}
-										name="author"
-										render={({ field }) => (
-											<FormItem>
-												<FormLabel>Автор</FormLabel>
-												<FormControl>
-													<Input
-														{...field}
-														placeholder="Автор статьи"
-													/>
-												</FormControl>
-												<FormMessage />
-											</FormItem>
-										)}
-									/>
-								</CardContent>
-							</Card>
-
-							<Card className="bg-transparent border-border-variant">
-								<CardHeader>
-									<CardTitle>
-										Предварительный просмотр
-									</CardTitle>
-								</CardHeader>
-								<CardContent>
-									<div className="space-y-2">
-										<h3 className="font-medium text-sm">
-											{form.watch("title") ||
-												"Заголовок статьи"}
-										</h3>
-										<p className="text-xs text-muted-foreground">
-											{form.watch("excerpt") ||
-												"Краткое описание статьи..."}
-										</p>
-									</div>
-								</CardContent>
-							</Card>
-
-							<div className="flex flex-col space-y-2 mt-6">
-								<Button
-									type="button"
-									onClick={handlePublish}
-									className="w-full"
-									disabled={!form.watch("draft")}
-								>
-									<Save />
-									Опубликовать
-								</Button>
-								<Button
-									type="submit"
-									variant="outline"
-									className="w-full bg-transparent"
-									disabled={saving}
-								>
-									<Save />
-									{saving
-										? postHandle
-											? "Сохранение..."
-											: "Создание..."
-										: postHandle
-											? "Сохранить изменения"
-											: "Сохранить черновик"}
-								</Button>
-								<Link
-									href="/admin/posts"
-									className={buttonVariants({
-										variant: "destructive",
-										className: "w-full",
-									})}
-								>
-									Отмена
-								</Link>
-							</div>
+					<div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-6 text-center">
+						<Upload className="mx-auto h-12 w-12 text-muted-foreground/50" />
+						<div className="mt-4">
+							<Input
+								ref={fileInputRef}
+								type="file"
+								accept="image/*"
+								onChange={handleImageUpload}
+								disabled={uploading || !!image} // Disable if image exists
+								className="hidden"
+								id="image-upload"
+							/>
+							<Button
+								type="button"
+								variant="outline"
+								onClick={triggerFileInput}
+								disabled={uploading || !!image} // Disable if image exists
+							>
+								{uploading
+									? "Загрузка..."
+									: image
+										? "Изображение загружено"
+										: "Загрузить изображение"}
+							</Button>
 						</div>
+						<p className="mt-2 text-sm text-muted-foreground">
+							Выберите изображение для статьи
+						</p>
 					</div>
-				</form>
-			</Form>
-		</div>
+				</CardContent>
+			</Card>
+
+			<Card className="bg-transparent border-border-variant">
+				<CardHeader>
+					<CardTitle>SEO настройки</CardTitle>
+					<CardDescription>
+						Оптимизация для поисковых систем
+					</CardDescription>
+				</CardHeader>
+				<CardContent className="space-y-4">
+					<FormField
+						control={form.control}
+						name="seoTitle"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>SEO Заголовок</FormLabel>
+								<FormControl>
+									<Input
+										{...field}
+										placeholder="Заголовок для поисковых систем"
+									/>
+								</FormControl>
+								<FormDescription>
+									Рекомендуется 50-60 символов
+								</FormDescription>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+				</CardContent>
+			</Card>
+		</>
+	);
+
+	const sidebarContent = (
+		<Card className="bg-transparent border-border-variant">
+			<CardHeader>
+				<CardTitle>Публикация</CardTitle>
+			</CardHeader>
+			<CardContent className="space-y-4">
+				<FormField
+					control={form.control}
+					name="type"
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>Тип</FormLabel>
+							<Select
+								onValueChange={field.onChange}
+								defaultValue={field.value}
+							>
+								<FormControl>
+									<SelectTrigger>
+										<SelectValue />
+									</SelectTrigger>
+								</FormControl>
+								<SelectContent>
+									<SelectItem value="article">
+										Статья
+									</SelectItem>
+									<SelectItem value="info">
+										Информация
+									</SelectItem>
+									<SelectItem value="document">
+										Документ
+									</SelectItem>
+								</SelectContent>
+							</Select>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+
+				<FormField
+					control={form.control}
+					name="author"
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>Автор</FormLabel>
+							<FormControl>
+								<Input {...field} placeholder="Автор статьи" />
+							</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+
+				<FormField
+					control={form.control}
+					name="draft"
+					render={({ field }) => (
+						<FormItem className="flex flex-row items-center space-x-3 space-y-0">
+							<div className="space-y-1 leading-none w-full">
+								<FormLabel>Черновик</FormLabel>
+								<FormDescription>
+									Если отмечено, статья будет видна только
+									администраторам
+								</FormDescription>
+							</div>
+							<FormControl>
+								<Switch
+									checked={field.value}
+									onCheckedChange={field.onChange}
+								/>
+							</FormControl>
+						</FormItem>
+					)}
+				/>
+			</CardContent>
+		</Card>
+	);
+
+	return (
+		<AdminFormLayout
+			onSubmit={onSubmit}
+			title={postHandle ? "Редактировать статью" : "Новая статья"}
+			description={
+				postHandle
+					? "Изменение содержания публикации"
+					: "Создайте новую публикацию для блога"
+			}
+			backHref="/admin/posts"
+			backLabel="Назад к блогу"
+			form={form}
+			sidebar={sidebarContent}
+			submitLabel={postHandle ? "Сохранить" : "Создать"}
+			saving={saving}
+			cancelHref="/admin/posts"
+		>
+			{mainContent}
+		</AdminFormLayout>
 	);
 }

@@ -14,7 +14,7 @@ export const postFormSchema = z.object({
 			message:
 				"URL может содержать только строчные буквы, цифры и дефисы",
 		}),
-	excerpt: z
+	description: z
 		.string()
 		.max(500, {
 			message: "Краткое описание должно быть не более 500 символов",
@@ -25,10 +25,7 @@ export const postFormSchema = z.object({
 		.string()
 		.max(60, { message: "SEO заголовок должен быть не более 60 символов" })
 		.optional(),
-	thumbnail: z
-		.url({ message: "Введите корректный URL изображения" })
-		.optional()
-		.or(z.string().max(0)),
+	thumbnail: z.string().optional(),
 	draft: z.boolean(),
 	type: z.enum(["article", "info", "document"]),
 	author: z

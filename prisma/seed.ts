@@ -27,7 +27,7 @@ async function main() {
       handle: 'gaming-laptop',
       description: 'High-performance gaming laptop with RTX graphics',
       price: 1299.99,
-      status: 'published',
+      active: true,
       categories: {
         connect: [{ id: electronics.id }],
       },
@@ -40,7 +40,7 @@ async function main() {
       handle: 'cotton-t-shirt',
       description: 'Comfortable cotton t-shirt for everyday wear',
       price: 19.99,
-      status: 'published',
+      active: true,
       categories: {
         connect: [{ id: clothing.id }],
       },

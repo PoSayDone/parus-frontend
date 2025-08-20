@@ -14,7 +14,7 @@ import { Category } from "@/types/admin";
 import { AdminTable } from "@/modules/admin/components/admin-table";
 import { SearchInput } from "@/modules/admin/components/search-input";
 import { StatusBadge } from "@/modules/admin/components/status-badge";
-import { Plus, Package } from "lucide-react";
+import { Plus, Package, Folder, FolderOpenIcon } from "lucide-react";
 
 export default function CategoriesPage() {
 	const [searchTerm, setSearchTerm] = useState("");
@@ -98,9 +98,6 @@ export default function CategoriesPage() {
 			label: "Категория",
 			render: (value: string, row: Category) => (
 				<div className="flex items-center space-x-3">
-					<div className="flex-shrink-0">
-						<Package className="size-6 text-muted-foreground" />
-					</div>
 					<div>
 						<div className="font-medium">{row.name}</div>
 						<div className="text-sm text-muted-foreground">
@@ -142,7 +139,7 @@ export default function CategoriesPage() {
 		{
 			type: "view" as const,
 			label: "Просмотр",
-			href: "/admin/categories/{key}",
+			href: "/categories/{key}",
 		},
 		{
 			type: "edit" as const,

@@ -1,4 +1,4 @@
-import { listPostsWithSort } from "@/lib/data/blog";
+import { listPosts } from "@/lib/data/blog";
 import { Pagination } from "@modules/store/components/pagination";
 import { SortOptions } from "@modules/store/components/sort-products";
 import { PostCard } from "../../posts/components/card";
@@ -28,7 +28,7 @@ export default async function PaginatedPosts({
 
 	const {
 		response: { posts, count },
-	} = await listPostsWithSort({
+	} = await listPosts({
 		page,
 		queryParams,
 		sortBy,

@@ -20,7 +20,7 @@ model Product {
     categories  Category[]
     price       Float      @default(0)
     tags        String[]
-    status      String     @default("draft")
+    active      Boolean    @default(false)
     createdAt   DateTime   @default(now())
     updatedAt   DateTime   @updatedAt
 }
@@ -40,14 +40,17 @@ model Category {
 }
 
 model BlogPost {
-    id         String   @id @default(uuid())
-    title      String
-    handle     String   @unique
-    seoTitle   String?
-    thumbnail  String?
-    body       String?
-    draft      Boolean  @default(true)
-    type       String   @default("article")
-    created_at DateTime @default(now())
-    updated_at DateTime @updatedAt
+    id          String   @id @default(uuid())
+    views       Int      @default(0)
+    title       String
+    handle      String   @unique
+    description String?
+    seoTitle    String?
+    thumbnail   String?
+    body        Json?
+    author      String?
+    draft       Boolean  @default(true)
+    type        String   @default("article")
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
 }

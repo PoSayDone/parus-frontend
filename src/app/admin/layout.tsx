@@ -65,15 +65,14 @@ export default function AdminRootLayout({
 					sidebarOpen ? "translate-x-0" : "-translate-x-full",
 				)}
 			>
-				<div className="flex items-center justify-between h-16 px-6 border-b">
+				<div className="flex items-center justify-between h-16 pl-6 pr-4 border-b">
 					<h2 className="text-lg font-medium">Админ-панель</h2>
 					<Button
 						variant="ghost"
-						size="sm"
-						className="lg:hidden"
+						className="lg:hidden size-8 !p-0"
 						onClick={() => setSidebarOpen(false)}
 					>
-						<X className="h-4 w-4" />
+						<X />
 					</Button>
 				</div>
 
@@ -108,24 +107,21 @@ export default function AdminRootLayout({
 				</nav>
 			</div>
 
-			{/* Main content */}
 			<div className="lg:pl-72">
-				{/* Top bar */}
 				<div className="sticky top-0 z-30 bg-background border-b h-16 flex items-center px-4 lg:px-6">
 					<Button
 						variant="ghost"
 						size="sm"
-						className="lg:hidden"
+						className="lg:hidden size-8 !p-0"
 						onClick={() => setSidebarOpen(true)}
 					>
-						<Menu className="h-4 w-4" />
+						<Menu />
 					</Button>
 					<h1 className="text-xl font-medium ml-4 lg:ml-0">
 						Управление контентом
 					</h1>
 				</div>
 
-				{/* Page content */}
 				<main className="p-4 lg:p-6">{children}</main>
 			</div>
 		</div>

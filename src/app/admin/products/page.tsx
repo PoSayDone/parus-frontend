@@ -106,12 +106,12 @@ export default function ProductsPage() {
 			render: (value: number) => `${value.toLocaleString()} ₽`,
 		},
 		{
-			key: "status",
+			key: "active",
 			label: "Статус",
-			render: (value: Product["status"]) => (
+			render: (value: Product["active"]) => (
 				<StatusBadge
-					status={value === "published" ? "published" : "draft"}
-					label={value === "published" ? "Опубликован" : "Черновик"}
+					status={value ? "published" : "draft"}
+					label={value ? "Опубликован" : "Черновик"}
 				/>
 			),
 		},
@@ -121,7 +121,7 @@ export default function ProductsPage() {
 		{
 			type: "view" as const,
 			label: "Просмотр",
-			href: "/admin/products/{key}",
+			href: "/products/{key}",
 		},
 		{
 			type: "edit" as const,

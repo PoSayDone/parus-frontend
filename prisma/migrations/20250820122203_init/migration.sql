@@ -6,38 +6,13 @@ CREATE TABLE "public"."Product" (
     "handle" TEXT NOT NULL,
     "thumbnail" TEXT,
     "images" TEXT[],
+    "price" DOUBLE PRECISION NOT NULL DEFAULT 0,
     "tags" TEXT[],
-    "status" TEXT NOT NULL DEFAULT 'draft',
+    "active" BOOLEAN NOT NULL DEFAULT false,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "Product_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "public"."ProductVariant" (
-    "id" TEXT NOT NULL,
-    "title" TEXT NOT NULL,
-    "productId" TEXT NOT NULL,
-    "sku" TEXT,
-    "price" DOUBLE PRECISION NOT NULL,
-    "inventory" INTEGER NOT NULL DEFAULT 0,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
-
-    CONSTRAINT "ProductVariant_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "public"."VariantOption" (
-    "id" TEXT NOT NULL,
-    "title" TEXT NOT NULL,
-    "value" TEXT NOT NULL,
-    "variantId" TEXT NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
-
-    CONSTRAINT "VariantOption_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -46,7 +21,7 @@ CREATE TABLE "public"."Category" (
     "name" TEXT NOT NULL,
     "handle" TEXT NOT NULL,
     "description" TEXT,
-    "image" TEXT,
+    "active" BOOLEAN NOT NULL DEFAULT true,
     "parentId" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -64,8 +39,8 @@ CREATE TABLE "public"."BlogPost" (
     "body" TEXT,
     "draft" BOOLEAN NOT NULL DEFAULT true,
     "type" TEXT NOT NULL DEFAULT 'article',
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "BlogPost_pkey" PRIMARY KEY ("id")
 );
@@ -89,12 +64,6 @@ CREATE UNIQUE INDEX "BlogPost_handle_key" ON "public"."BlogPost"("handle");
 
 -- CreateIndex
 CREATE INDEX "_CategoryToProduct_B_index" ON "public"."_CategoryToProduct"("B");
-
--- AddForeignKey
-ALTER TABLE "public"."ProductVariant" ADD CONSTRAINT "ProductVariant_productId_fkey" FOREIGN KEY ("productId") REFERENCES "public"."Product"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "public"."VariantOption" ADD CONSTRAINT "VariantOption_variantId_fkey" FOREIGN KEY ("variantId") REFERENCES "public"."ProductVariant"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "public"."Category" ADD CONSTRAINT "Category_parentId_fkey" FOREIGN KEY ("parentId") REFERENCES "public"."Category"("id") ON DELETE SET NULL ON UPDATE CASCADE;

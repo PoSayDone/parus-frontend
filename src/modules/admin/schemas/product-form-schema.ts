@@ -28,7 +28,7 @@ export const productFormSchema = z.object({
 		.refine((val) => !isNaN(parseFloat(val)) && parseFloat(val) >= 0, {
 			message: "Цена должна быть неотрицательным числом",
 		}),
-	status: z.enum(["draft", "published"]),
+	active: z.boolean(),
 	categories: z
 		.array(z.string())
 		.min(1, { message: "Выберите хотя бы одну категорию" }),

@@ -29,7 +29,7 @@ export const listProducts = async ({
 	const _pageParam = Math.max(page, 1);
 	const offset = _pageParam === 1 ? 0 : (_pageParam - 1) * limit;
 
-	const where: Prisma.ProductWhereInput = {};
+	const where: Prisma.ProductWhereInput = { active: true };
 	const orderBy: Prisma.ProductOrderByWithAggregationInput = {};
 
 	if (["price_asc", "price_desc"].includes(sortBy)) {

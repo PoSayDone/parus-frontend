@@ -1,25 +1,25 @@
-import { listPostsWithSort } from "@/lib/data/blog";
+import { listPosts } from "@/lib/data/blog";
 import Link from "next/link";
 
 export default async function FooterDocuments() {
-  const {
-    response: { posts },
-  } = await listPostsWithSort({
-    page: 1,
-    queryParams: {
-      type: "document",
-    },
-  });
+	const {
+		response: { posts },
+	} = await listPosts({
+		page: 1,
+		queryParams: {
+			type: "document",
+		},
+	});
 
-  return (
-    <ul>
-      {posts.map((post) => (
-        <li key={post.id}>
-          <Link href={`/document/${post.handle}`} className="text-sm">
-            {post.title}
-          </Link>
-        </li>
-      ))}
-    </ul>
-  );
+	return (
+		<ul>
+			{posts.map((post) => (
+				<li key={post.id}>
+					<Link href={`/document/${post.handle}`} className="text-sm">
+						{post.title}
+					</Link>
+				</li>
+			))}
+		</ul>
+	);
 }
