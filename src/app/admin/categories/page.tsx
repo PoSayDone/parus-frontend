@@ -14,21 +14,13 @@ import { Category } from "@/types/admin";
 import { AdminTable } from "@/modules/admin/components/admin-table";
 import { SearchInput } from "@/modules/admin/components/search-input";
 import { StatusBadge } from "@/modules/admin/components/status-badge";
-import { Plus, Package, Flower, Shirt, Wrench } from "lucide-react";
-
-const iconMap = {
-	Package,
-	Flower,
-	Shirt,
-	Wrench,
-};
+import { Plus, Package } from "lucide-react";
 
 export default function CategoriesPage() {
 	const [searchTerm, setSearchTerm] = useState("");
 	const [categories, setCategories] = useState<Category[]>([]);
 	const [loading, setLoading] = useState(true);
 
-	// Fetch categories from API
 	useEffect(() => {
 		const fetchCategories = async () => {
 			try {
@@ -36,15 +28,18 @@ export default function CategoriesPage() {
 				const response = await fetch("/api/admin/categories");
 				const data = await response.json();
 				if (response.ok) {
-					// Transform the data to match our UI needs
 					const transformedCategories = data.categories.map(
 						(category: any) => ({
 							id: category.id,
 							name: category.name,
 							handle: category.handle,
 							description: category.description,
-							icon: category.icon || "Package",
-							status: category.status || "active",
+							status:
+								category.active !== undefined
+									? category.active
+										? "active"
+										: "inactive"
+									: "active",
 							productCount: category.products?.length || 0,
 							createdAt: category.createdAt,
 							updatedAt: category.updatedAt,
@@ -70,12 +65,6 @@ export default function CategoriesPage() {
 				.includes(searchTerm.toLowerCase()),
 	);
 
-	const getIcon = (iconName: string) => {
-		const IconComponent =
-			iconMap[iconName as keyof typeof iconMap] || Package;
-		return <IconComponent className="size-6 text-muted-foreground" />;
-	};
-
 	const handleDelete = async (handle: string) => {
 		if (!confirm("Вы уверены, что хотите удалить эту категорию?")) return;
 
@@ -85,7 +74,6 @@ export default function CategoriesPage() {
 			});
 
 			if (response.ok) {
-				// Remove the category from the state
 				setCategories(
 					categories.filter((category) => category.handle !== handle),
 				);
@@ -111,7 +99,7 @@ export default function CategoriesPage() {
 			render: (value: string, row: Category) => (
 				<div className="flex items-center space-x-3">
 					<div className="flex-shrink-0">
-						{getIcon(row.icon || "Package")}
+						<Package className="size-6 text-muted-foreground" />
 					</div>
 					<div>
 						<div className="font-medium">{row.name}</div>

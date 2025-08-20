@@ -33,15 +33,23 @@ export async function POST(request: Request) {
 	try {
 		const data = await request.json();
 
+		// Remove icon field if present and map status to active
+		const { icon, status, ...categoryData } = data;
+		
+		// Map status to active field
+		if (status !== undefined) {
+			categoryData.active = status === "active" || status === true;
+		}
+
 		// Generate handle if not provided
-		if (!data.handle) {
-			data.handle = data.name
+		if (!categoryData.handle) {
+			categoryData.handle = categoryData.name
 				.toLowerCase()
 				.replace(/[^a-z0-9]+/g, "-")
 				.replace(/^-+|-+$/g, "");
 		}
 
-		const category = await createCategory(data);
+		const category = await createCategory(categoryData);
 
 		return NextResponse.json({ category });
 	} catch (error) {

@@ -31,7 +31,15 @@ export async function PUT(
     const { handle } = await params;
     const data = await request.json();
     
-    const category = await updateCategory(handle, data);
+    // Remove icon field if present and map status to active
+    const { icon, status, ...categoryData } = data;
+    
+    // Map status to active field
+    if (status !== undefined) {
+      categoryData.active = status === "active" || status === true;
+    }
+    
+    const category = await updateCategory(handle, categoryData);
     
     return NextResponse.json({ category });
   } catch (error) {

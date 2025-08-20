@@ -36,7 +36,34 @@ export async function POST(request: Request) {
       data.price = 0;
     }
     
-    const product = await createProduct(data);
+    // Handle categories relationship properly
+    const { categories, categoryHandles, ...productData } = data;
+    
+    // Convert price to float if it's a string
+    if (typeof productData.price === 'string') {
+      productData.price = parseFloat(productData.price);
+    }
+    
+    // Handle categories if provided
+    let categoryConnectData = undefined;
+    if (categoryHandles && Array.isArray(categoryHandles)) {
+      categoryConnectData = {
+        connect: categoryHandles.map((handle: string) => ({ handle }))
+      };
+    } else if (categories && Array.isArray(categories)) {
+      categoryConnectData = {
+        connect: categories.map((handle: string) => ({ handle }))
+      };
+    }
+    
+    const product = await prisma.product.create({
+      data: {
+        ...productData,
+        categories: categoryConnectData,
+        images: productData.images || [],
+        tags: productData.tags || []
+      }
+    });
     
     return NextResponse.json({ product });
   } catch (error) {

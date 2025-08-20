@@ -30,7 +30,30 @@ export async function PUT(
     const { handle } = await params;
     const data = await request.json();
     
-    const product = await updateProduct(handle, data);
+    // Handle categories relationship properly
+    const { categories, categoryHandles, ...productData } = data;
+    
+    // Convert price to float if it's a string
+    if (typeof productData.price === 'string') {
+      productData.price = parseFloat(productData.price);
+    }
+    
+    // Handle categories if provided
+    let categoryConnectData = undefined;
+    if (categoryHandles && Array.isArray(categoryHandles)) {
+      categoryConnectData = {
+        set: categoryHandles.map((handle: string) => ({ handle }))
+      };
+    } else if (categories && Array.isArray(categories)) {
+      categoryConnectData = {
+        set: categories.map((handle: string) => ({ handle }))
+      };
+    }
+    
+    const product = await updateProduct(handle, {
+      ...productData,
+      categories: categoryConnectData
+    });
     
     return NextResponse.json({ product });
   } catch (error) {

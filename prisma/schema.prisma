@@ -30,7 +30,7 @@ model Category {
     name        String
     handle      String     @unique
     description String?
-    image       String?
+    active      Boolean    @default(true)
     parent      Category?  @relation("CategoryToCategory", fields: [parentId], references: [id])
     parentId    String?
     children    Category[] @relation("CategoryToCategory")
@@ -40,14 +40,14 @@ model Category {
 }
 
 model BlogPost {
-    id        String   @id @default(uuid())
-    title     String
-    handle    String   @unique
-    seoTitle  String?
-    thumbnail String?
-    body      String?
-    draft     Boolean  @default(true)
-    type      String   @default("article")
+    id         String   @id @default(uuid())
+    title      String
+    handle     String   @unique
+    seoTitle   String?
+    thumbnail  String?
+    body       String?
+    draft      Boolean  @default(true)
+    type       String   @default("article")
     created_at DateTime @default(now())
     updated_at DateTime @updatedAt
 }

@@ -1,52 +1,55 @@
-import type { BlogPost as GlobalBlogPost } from "./global";
+// Admin types that align with Prisma schema
 
 export interface Product {
-  id: string
-  title: string
-  handle: string
-  description: string | null
-  thumbnail: string | null
-  price: number
-  status: "published" | "draft"
-  categories: {
-    id: string
-    name: string
-  }[]
-  createdAt: string
-  updatedAt: string
+	id: string;
+	title: string;
+	handle: string;
+	description: string | null;
+	thumbnail: string | null;
+	images: string[];
+	price: number;
+	status: string;
+	categories: {
+		id: string;
+		name: string;
+	}[];
+	tags: string[];
+	createdAt: string;
+	updatedAt: string;
 }
 
 export interface Category {
-  id: string
-  name: string
-  handle: string
-  description: string | null
-  icon: string | null
-  status: "active" | "inactive"
-  productCount: number
-  createdAt: string
-  updatedAt: string
+	id: string;
+	name: string;
+	handle: string;
+	description: string | null;
+	active: boolean;
+	parent: Category | null;
+	parentId: string | null;
+	children: Category[];
+	products: Product[];
+	createdAt: string;
+	updatedAt: string;
 }
 
-export interface BlogPost extends GlobalBlogPost {
-  excerpt: string | null
-  body: string | null
-  seoTitle: string | null
-  thumbnail: string | null
-  draft: boolean
-  type: string
-  author: string | null
-  publishedAt: string | null
-  views: number
-  createdAt: string
-  updatedAt: string
+export interface BlogPost {
+	id: string;
+	title: string;
+	handle: string;
+	seoTitle: string | null;
+	thumbnail: string | null;
+	body: string | null;
+	draft: boolean;
+	type: string;
+	created_at: string;
+	updated_at: string;
 }
 
 export interface AdminStats {
-  totalProducts: number
-  totalCategories: number
-  totalBlogPosts: number
-  publishedPosts: number
-  draftPosts: number
-  totalViews: number
+	totalProducts: number;
+	totalCategories: number;
+	totalBlogPosts: number;
+	publishedPosts: number;
+	draftPosts: number;
+	totalViews: number;
 }

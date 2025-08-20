@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
 import Section from "@/components/ui/section";
 
@@ -34,9 +34,15 @@ export default function AboutUs() {
 						момент.
 					</p>
 				</div>
-				<Button className="mt-14" asChild>
-					<Link href="/about">Подробнее о нас</Link>
-				</Button>
+				<Link
+					href="/about"
+					className={buttonVariants({
+						variant: "default",
+						className: "mt-6",
+					})}
+				>
+					Подробнее о нас
+				</Link>
 			</div>
 		</Section>
 	);

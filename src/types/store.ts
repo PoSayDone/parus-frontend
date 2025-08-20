@@ -10,9 +10,10 @@ export type StoreProduct = {
   images: string[];
   price: number;
   status: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
   categories?: StoreProductCategory[];
+  tags: string[];
 };
 
 export type StoreProductCategory = {
@@ -25,20 +26,6 @@ export type StoreProductCategory = {
   parent?: StoreProductCategory | null;
   children?: StoreProductCategory[];
   products?: StoreProduct[];
-  createdAt: Date;
-  updatedAt: Date;
-};
-
-// Blog post types
-export type BlogPost = {
-  id: string;
-  title: string;
-  handle: string;
-  seoTitle: string | null;
-  thumbnail: string | null;
-  body: string | null;
-  draft: boolean;
-  type: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
 };

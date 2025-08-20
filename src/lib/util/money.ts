@@ -15,16 +15,8 @@ export const convertToLocale = ({
 	maximumFractionDigits,
 	locale = "en-US",
 }: ConvertToLocaleParams) => {
-	console.log("convertToLocale", {
-		amount,
-		currency_code,
-		minimumFractionDigits,
-		maximumFractionDigits,
-		locale,
-	});
 	if (amount === 0) return "Бесплатно";
 
-	// Special handling for RUB to show ₽
 	if (currency_code === "rub") {
 		const formatted = new Intl.NumberFormat(locale, {
 			style: "decimal",

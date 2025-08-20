@@ -8,10 +8,10 @@ export const listCategories = async (query?: Record<string, any>) => {
 	return prisma.category.findMany({
 		where: query?.where,
 		take: limit,
-		include: {
-			children: true,
-			parent: true,
-			products: true,
+		select: {
+			id: true,
+			name: true,
+			handle: true,
 		},
 		orderBy: {
 			createdAt: "desc",
@@ -20,7 +20,7 @@ export const listCategories = async (query?: Record<string, any>) => {
 };
 
 export const getCategoryByHandle = async (categoryHandle: string) => {
-	return prisma.category.findUnique({
+	const category = prisma.category.findUnique({
 		where: { handle: categoryHandle },
 		include: {
 			children: true,
@@ -28,6 +28,7 @@ export const getCategoryByHandle = async (categoryHandle: string) => {
 			products: true,
 		},
 	});
+	return category;
 };
 
 export const createCategory = async (data: any) => {
