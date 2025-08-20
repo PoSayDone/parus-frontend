@@ -29,7 +29,7 @@ export default function CategoriesPage() {
 				const data = await response.json();
 				if (response.ok) {
 					const transformedCategories = data.categories.map(
-						(category: any) => ({
+						(category: Category) => ({
 							id: category.id,
 							name: category.name,
 							handle: category.handle,

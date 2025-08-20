@@ -1,10 +1,5 @@
 import { NextResponse } from "next/server";
-import {
-	listCategories,
-	createCategory,
-	updateCategory,
-	deleteCategory,
-} from "@lib/data/categories";
+import { createCategory } from "@lib/data/categories";
 import prisma from "@lib/prisma";
 
 // GET /api/admin/categories - List all categories
@@ -35,7 +30,7 @@ export async function POST(request: Request) {
 
 		// Remove icon field if present and map status to active
 		const { icon, status, ...categoryData } = data;
-		
+
 		// Map status to active field
 		if (status !== undefined) {
 			categoryData.active = status === "active" || status === true;

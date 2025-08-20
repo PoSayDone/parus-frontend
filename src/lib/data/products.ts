@@ -1,8 +1,9 @@
 "use server";
 
 import prisma from "@lib/prisma";
-import { Prisma, Product } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import { SortOptions } from "@modules/store/components/refinement-list/sort-products";
+import { Product } from "@/types/admin";
 
 export const listProducts = async ({
 	page = 1,

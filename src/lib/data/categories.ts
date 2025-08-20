@@ -1,22 +1,53 @@
 "use server";
 
 import prisma from "@lib/prisma";
+import { Prisma } from "@prisma/client";
+import _ from "lodash";
 
-export const listCategories = async (query?: Record<string, any>) => {
-	const limit = query?.limit || 100;
+type Props = {
+	page?: number;
+	queryParams?: {
+		limit?: number;
+		offset?: number;
+		[key: string]: unknown;
+	};
+};
 
-	return prisma.category.findMany({
-		where: query?.where,
-		take: limit,
-		select: {
-			id: true,
-			name: true,
-			handle: true,
+export const listCategories = async ({ page = 1, queryParams }: Props) => {
+	const limit = queryParams?.limit || 100;
+	const _pageParam = Math.max(page, 1);
+	const offset = _pageParam === 1 ? 0 : (_pageParam - 1) * limit;
+
+	const where: Prisma.CategoryWhereInput = {};
+
+	const [categories, count] = await Promise.all([
+		prisma.category.findMany({
+			where: _.isEmpty(where) ? { active: true } : where,
+			skip: offset,
+			take: limit,
+			select: {
+				id: true,
+				name: true,
+				handle: true,
+			},
+			orderBy: {
+				createdAt: "desc",
+			},
+		}),
+
+		prisma.category.count({ where }),
+	]);
+
+	const nextPage = count > offset + limit ? page + 1 : null;
+
+	return {
+		response: {
+			categories,
+			count,
 		},
-		orderBy: {
-			createdAt: "desc",
-		},
-	});
+		nextPage: nextPage,
+		queryParams,
+	};
 };
 
 export const getCategoryByHandle = async (categoryHandle: string) => {

@@ -1,46 +1,25 @@
 // Admin types that align with Prisma schema
+import type { Product as PrismaProduct, Category as PrismaCategory, BlogPost as PrismaBlogPost } from '@prisma/client';
 
-export interface Product {
-	id: string;
-	title: string;
-	handle: string;
-	description: string | null;
-	thumbnail: string | null;
-	images: string[];
-	price: number;
-	status: string;
+// Convert Prisma Date types to string for API responses
+export interface Product extends Omit<PrismaProduct, 'createdAt' | 'updatedAt'> {
+	createdAt: string;
+	updatedAt: string;
 	categories: {
 		id: string;
 		name: string;
 	}[];
-	tags: string[];
-	createdAt: string;
-	updatedAt: string;
 }
 
-export interface Category {
-	id: string;
-	name: string;
-	handle: string;
-	description: string | null;
-	active: boolean;
+export interface Category extends Omit<PrismaCategory, 'createdAt' | 'updatedAt'> {
+	createdAt: string;
+	updatedAt: string;
 	parent: Category | null;
-	parentId: string | null;
 	children: Category[];
 	products: Product[];
-	createdAt: string;
-	updatedAt: string;
 }
 
-export interface BlogPost {
-	id: string;
-	title: string;
-	handle: string;
-	seoTitle: string | null;
-	thumbnail: string | null;
-	body: string | null;
-	draft: boolean;
-	type: string;
+export interface BlogPost extends Omit<PrismaBlogPost, 'created_at' | 'updated_at'> {
 	created_at: string;
 	updated_at: string;
 }

@@ -89,7 +89,9 @@ export default function ProductForm({
 		const fetchData = async () => {
 			try {
 				// Fetch categories using server action
-				const categoriesData = await listCategories();
+				const {
+					response: { categories: categoriesData },
+				} = await listCategories({});
 				setCategories(categoriesData);
 
 				if (productHandle) {
@@ -558,10 +560,10 @@ export default function ProductForm({
 									<div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-6 text-center">
 										<Upload className="mx-auto h-12 w-12 text-muted-foreground/50" />
 										<div className="mt-4">
-																				<Input
-										ref={fileInputRef}
-										type="file"
-										multiple
+											<Input
+												ref={fileInputRef}
+												type="file"
+												multiple
 												accept="image/*"
 												onChange={handleImageUpload}
 												disabled={uploading}

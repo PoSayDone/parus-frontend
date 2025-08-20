@@ -6,7 +6,10 @@ export default async function StoreLayout({
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
-	const productCategories = await listCategories();
+	const {
+		response: { categories: productCategories },
+	} = await listCategories({});
+
 	return (
 		<div
 			className="flex flex-col w-full gap-4"

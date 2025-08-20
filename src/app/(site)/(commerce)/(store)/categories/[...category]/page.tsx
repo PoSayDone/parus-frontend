@@ -15,7 +15,9 @@ type Props = {
 };
 
 export async function generateStaticParams() {
-	const product_categories = await listCategories();
+	const {
+		response: { categories: product_categories },
+	} = await listCategories({ queryParams: { limit: 100 } });
 
 	if (!product_categories) {
 		return [];
