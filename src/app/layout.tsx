@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Golos_Text } from "next/font/google";
+import { Golos_Text, Inter } from "next/font/google";
 import "./globals.css";
 import ContactModalProvider from "@/modules/contact/components/contact-modal-provider";
 import { Toaster } from "@/components/ui/sonner";

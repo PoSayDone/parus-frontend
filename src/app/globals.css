@@ -6,36 +6,36 @@
 
 :root {
 	--primary: #655644;
-	--inverse-primary: #D8C3AD;
+	--inverse-primary: #d8c3ad;
 	--on-primary: #ffffff;
-	--primary-container: #7F6E5B;
-	--on-primary-container: #FFF5EC;
-	--secondary-container: #EADED2;
-	--on-secondary-container: #6A6158;
-	--surface-container-highest: #E6E1DD;
-	--surface-container-high: #ECE7E3;
-	--surface-container: #F2EDE9;
-	--surface-container-low:#FBF2EF;
-	--surface-container-lowest: #FFF;
-	--background: #FEF8F5;
-	--foreground: #1D1B1A;
+	--primary-container: #7f6e5b;
+	--on-primary-container: #fff5ec;
+	--secondary-container: #eaded2;
+	--on-secondary-container: #6a6158;
+	--surface-container-highest: #e6e1dd;
+	--surface-container-high: #ece7e3;
+	--surface-container: #f2ede9;
+	--surface-container-low: #fbf2ef;
+	--surface-container-lowest: #fff;
+	--background: #fef8f5;
+	--foreground: #1d1b1a;
 	--card: var(--secondary-container);
 	--card-foreground: var(--foreground);
 	--popover: oklch(1 0 0);
 	--popover-foreground: oklch(0.145 0 0);
 	--primary-foreground: oklch(0.985 0 0);
-	--secondary: #665E54;
-	--secondary-foreground:#fff;
-	--muted: #EDE7E4;
-	--muted-foreground: #7F756D;
-	--accent: #EDE7E4;
+	--secondary: #665e54;
+	--secondary-foreground: #fff;
+	--muted: #ede7e4;
+	--muted-foreground: #7f756d;
+	--accent: #ede7e4;
 	--accent-foreground: oklch(0.205 0 0);
-	--destructive: #BA1A1A;
-	--destructive-foreground: #FFF;
-	--border: #D0C5BA;
-	--border-variant: #CFC5BB;
-	--input: #D0C5BA;
-	--ring: #7F756D;
+	--destructive: #ba1a1a;
+	--destructive-foreground: #fff;
+	--border: #d0c5ba;
+	--border-variant: #cfc5bb;
+	--input: #d0c5ba;
+	--ring: #7f756d;
 	--chart-1: oklch(0.646 0.222 41.116);
 	--chart-2: oklch(0.6 0.118 184.704);
 	--chart-3: oklch(0.398 0.07 227.392);
@@ -46,7 +46,7 @@
 	--sidebar-foreground: oklch(0.145 0 0);
 	--sidebar-primary: oklch(0.205 0 0);
 	--sidebar-primary-foreground: oklch(0.985 0 0);
-	--sidebar-accent: #EDE7E4;
+	--sidebar-accent: #ede7e4;
 	--sidebar-accent-foreground: oklch(0.205 0 0);
 	--sidebar-border: oklch(0.922 0 0);
 	--sidebar-ring: oklch(0.708 0 0);
@@ -120,7 +120,6 @@
   }
 } */
 
-
 .dark {
 	--background: oklch(0.145 0 0);
 	--foreground: oklch(0.985 0 0);
@@ -157,14 +156,13 @@
 }
 
 @layer base {
-  * {
-    @apply border-border outline-ring/50;
+	* {
+		@apply border-border outline-ring/50;
 	}
-  body {
-    @apply bg-background text-foreground;
+	body {
+		@apply bg-background text-foreground;
 	}
 }
-
 
 @layer utilities {
 	.embla {
@@ -200,13 +198,15 @@
 		user-select: none;
 	}
 
-	html,body,main {
+	html,
+	body,
+	main {
 		background: var(--background);
-		color: var(--foreground)
+		color: var(--foreground);
 	}
 
 	body {
-		font-family: ,Arial, Helvetica, sans-serif;
+		font-family: Arial, Helvetica, sans-serif;
 		letter-spacing: -0.025em;
 	}
 
@@ -214,11 +214,27 @@
 		line-height: 150%;
 	}
 
-	h1              { font-size: 2em; }
-	h2              { font-size: 1.5em; }
-	h3              { font-size: 1.17em;}
-	h5              { font-size: .83em; }
-	h6              { font-size: .75em; }
-	h1, h2, h3, h4,
-	h5, h6          { font-weight: 500 }
+	h1 {
+		font-size: 2em;
+	}
+	h2 {
+		font-size: 1.5em;
+	}
+	h3 {
+		font-size: 1.17em;
+	}
+	h5 {
+		font-size: 0.83em;
+	}
+	h6 {
+		font-size: 0.75em;
+	}
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		font-weight: 500;
+	}
 }

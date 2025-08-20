@@ -13,7 +13,7 @@ export const listPosts = async ({
 	queryParams?: {
 		limit?: number;
 		offset?: number;
-		type?: string;
+		type?: string[] | string;
 		[key: string]: any;
 	};
 	sortBy?: "created_at" | "views";
@@ -40,7 +40,11 @@ export const listPosts = async ({
 	}
 
 	if (queryParams?.type) {
-		where.type = queryParams.type;
+		where.type = {
+			in: Array.isArray(queryParams.type)
+				? queryParams.type
+				: [queryParams.type],
+		};
 	}
 
 	const [posts, count] = await Promise.all([
