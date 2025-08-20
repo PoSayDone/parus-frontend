@@ -41,6 +41,7 @@ import {
 import { listCategories } from "@/lib/data/categories";
 import { uploadFileToS3 } from "@/lib/data/uploads";
 import { Switch } from "@/components/ui/switch";
+import { toast } from "sonner";
 
 export default function ProductForm({
 	productHandle,
@@ -165,7 +166,7 @@ export default function ProductForm({
 			if (result) {
 				router.push("/admin/products");
 			} else {
-				alert(
+				toast.error(
 					productHandle
 						? "Ошибка при обновлении продукта"
 						: "Ошибка при создании продукта",
@@ -173,7 +174,7 @@ export default function ProductForm({
 			}
 		} catch (error) {
 			console.error("Error saving product:", error);
-			alert(
+			toast.error(
 				productHandle
 					? "Ошибка при обновлении продукта"
 					: "Ошибка при создании продукта",
@@ -218,7 +219,7 @@ export default function ProductForm({
 			}
 		} catch (error) {
 			console.error("Error uploading images:", error);
-			alert("Ошибка при загрузке изображений");
+			toast.error("Ошибка при загрузке изображений");
 		} finally {
 			setUploading(false);
 			if (e.target) {
@@ -551,7 +552,7 @@ export default function ProductForm({
 	);
 
 	return (
-		<AdminFormLayout
+		<AdminFormLayout<ProductFormValues>
 			onSubmit={onSubmit}
 			title={productHandle ? "Редактировать продукт" : "Новый продукт"}
 			description={

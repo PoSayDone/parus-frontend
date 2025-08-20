@@ -16,6 +16,7 @@ import { SearchInput } from "@/modules/admin/components/search-input";
 import { StatusBadge } from "@/modules/admin/components/status-badge";
 import { StatCard } from "@/modules/admin/components/stat-card";
 import { Plus, Calendar, User } from "lucide-react";
+import { PostTypeBadge } from "@/modules/admin/components/post-type-badge";
 
 export default function BlogPage() {
 	const [searchTerm, setSearchTerm] = useState("");
@@ -105,6 +106,13 @@ export default function BlogPage() {
 					<User className="h-3 w-3 text-muted-foreground" />
 					<span className="text-sm">{value || "Администратор"}</span>
 				</div>
+			),
+		},
+		{
+			key: "type",
+			label: "Тип",
+			render: (value: "article" | "info" | "document") => (
+				<PostTypeBadge type={value} />
 			),
 		},
 		{

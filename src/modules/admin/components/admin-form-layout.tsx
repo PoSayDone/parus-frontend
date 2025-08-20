@@ -7,22 +7,21 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { FieldValues, UseFormReturn } from "react-hook-form";
 
-interface AdminFormLayoutProps {
+interface AdminFormLayoutProps<T extends FieldValues> {
 	title: string;
 	description: string;
 	backHref: string;
 	backLabel: string;
 	children: React.ReactNode;
 	sidebar: React.ReactNode;
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	form: UseFormReturn<any>;
+	form: UseFormReturn<T>;
 	submitLabel: string;
 	saving: boolean;
 	cancelHref?: string;
-	onSubmit: (values: FieldValues) => Promise<void>;
+	onSubmit: (values: T) => Promise<void>;
 }
 
-export function AdminFormLayout({
+export function AdminFormLayout<T extends FieldValues>({
 	title,
 	description,
 	backHref,
@@ -34,7 +33,7 @@ export function AdminFormLayout({
 	saving,
 	onSubmit,
 	cancelHref = "/admin",
-}: AdminFormLayoutProps) {
+}: AdminFormLayoutProps<T>) {
 	return (
 		<div className="space-y-6">
 			<div className="flex flex-col items-start space-x-4">

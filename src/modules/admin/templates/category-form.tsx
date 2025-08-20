@@ -6,9 +6,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Save } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
 import {
 	Card,
 	CardContent,
@@ -39,6 +37,7 @@ import {
 	createCategory,
 	updateCategory,
 } from "@/lib/data/categories";
+import { toast } from "sonner";
 
 export default function CategoryForm({
 	categoryHandle,
@@ -111,7 +110,7 @@ export default function CategoryForm({
 			if (result) {
 				router.push("/admin/categories");
 			} else {
-				alert(
+				toast.error(
 					categoryHandle
 						? "Ошибка при обновлении категории"
 						: "Ошибка при создании категории",
@@ -119,7 +118,7 @@ export default function CategoryForm({
 			}
 		} catch (error) {
 			console.error("Error saving category:", error);
-			alert(
+			toast.error(
 				categoryHandle
 					? "Ошибка при обновлении категории"
 					: "Ошибка при создании категории",
@@ -237,7 +236,7 @@ export default function CategoryForm({
 	);
 
 	return (
-		<AdminFormLayout
+		<AdminFormLayout<CategoryFormValues>
 			onSubmit={onSubmit}
 			title={
 				categoryHandle ? "Редактировать категорию" : "Новая категория"

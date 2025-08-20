@@ -40,6 +40,7 @@ import { postFormSchema, PostFormValues } from "../schemas/post-form-schema";
 import { getPostByHandle, createPost, updatePost } from "@/lib/data/blog";
 import { uploadFileToS3 } from "@/lib/data/uploads";
 import { Switch } from "@/components/ui/switch";
+import { toast } from "sonner";
 
 const Editor = dynamic(() => import("@/modules/admin/components/editor"), {
 	ssr: false,
@@ -141,7 +142,7 @@ export default function PostForm({ postHandle }: { postHandle?: string }) {
 			if (result) {
 				router.push("/admin/posts");
 			} else {
-				alert(
+				toast.error(
 					postHandle
 						? "Ошибка при обновлении статьи"
 						: "Ошибка при создании статьи",
@@ -149,7 +150,7 @@ export default function PostForm({ postHandle }: { postHandle?: string }) {
 			}
 		} catch (error) {
 			console.error("Error saving post:", error);
-			alert(
+			toast.error(
 				postHandle
 					? "Ошибка при обновлении статьи"
 					: "Ошибка при создании статьи",
@@ -180,7 +181,7 @@ export default function PostForm({ postHandle }: { postHandle?: string }) {
 			form.setValue("thumbnail", url);
 		} catch (error) {
 			console.error("Error uploading image:", error);
-			alert("Ошибка при загрузке изображения");
+			toast.error("Ошибка при загрузке изображения");
 		} finally {
 			setUploading(false);
 			if (e.target) {
@@ -475,7 +476,7 @@ export default function PostForm({ postHandle }: { postHandle?: string }) {
 	);
 
 	return (
-		<AdminFormLayout
+		<AdminFormLayout<PostFormValues>
 			onSubmit={onSubmit}
 			title={postHandle ? "Редактировать статью" : "Новая статья"}
 			description={
