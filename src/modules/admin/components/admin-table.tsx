@@ -76,8 +76,10 @@ export function AdminTable({
 	const [searchTerm, setSearchTerm] = useState("");
 	const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 	const [deleteItemKey, setDeleteItemKey] = useState<string | null>(null);
-	const [deleteAction, setDeleteAction] = useState<((key: string) => void) | null>(null);
-	
+	const [deleteAction, setDeleteAction] = useState<
+		((key: string) => void) | null
+	>(null);
+
 	// Debounce timeout ref
 	const debounceTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -150,6 +152,13 @@ export function AdminTable({
 				console.error("Error during deletion:", error);
 			}
 		}
+		// Reset all delete-related state
+		setShowDeleteDialog(false);
+		setDeleteItemKey(null);
+		setDeleteAction(null);
+	};
+
+	const cancelDelete = () => {
 		setShowDeleteDialog(false);
 		setDeleteItemKey(null);
 		setDeleteAction(null);
@@ -198,7 +207,10 @@ export function AdminTable({
 					<TableBody>
 						{loading && internalData.length === 0 ? (
 							<TableRow>
-								<TableCell colSpan={columns.length + 1} className="h-24 text-center">
+								<TableCell
+									colSpan={columns.length + 1}
+									className="h-24 text-center"
+								>
 									Загрузка...
 								</TableCell>
 							</TableRow>
@@ -228,6 +240,54 @@ export function AdminTable({
 													</Button>
 												</DropdownMenuTrigger>
 												<DropdownMenuContent align="end">
+													<Dialog
+														modal={true}
+														open={showDeleteDialog}
+														onOpenChange={(
+															open,
+														) => {
+															if (!open) {
+																cancelDelete();
+															}
+														}}
+													>
+														<DialogContent>
+															<DialogHeader>
+																<DialogTitle>
+																	Подтверждение
+																	удаления
+																</DialogTitle>
+																<DialogDescription>
+																	Вы уверены,
+																	что хотите
+																	удалить этот
+																	элемент? Это
+																	действие
+																	нельзя
+																	отменить.
+																</DialogDescription>
+															</DialogHeader>
+															<DialogFooter>
+																<Button
+																	variant="outline"
+																	onClick={
+																		cancelDelete
+																	}
+																>
+																	Отмена
+																</Button>
+																<Button
+																	variant="destructive"
+																	onClick={
+																		confirmDelete
+																	}
+																>
+																	Удалить
+																</Button>
+															</DialogFooter>
+														</DialogContent>
+													</Dialog>
+
 													{actions.map((action) => {
 														if (
 															action.type ===
@@ -240,12 +300,15 @@ export function AdminTable({
 																		action.type
 																	}
 																	className="text-destructive"
-																	onClick={() =>
+																	onClick={(
+																		e,
+																	) => {
+																		e.preventDefault();
 																		handleDeleteClick(
 																			rowKey,
 																			action.onClick!,
-																		)
-																	}
+																		);
+																	}}
 																>
 																	<Trash2 />
 																	{
@@ -299,7 +362,10 @@ export function AdminTable({
 							})
 						) : (
 							<TableRow>
-								<TableCell colSpan={columns.length + 1} className="h-24 text-center">
+								<TableCell
+									colSpan={columns.length + 1}
+									className="h-24 text-center"
+								>
 									Ничего не найдено
 								</TableCell>
 							</TableRow>
@@ -335,31 +401,6 @@ export function AdminTable({
 					</div>
 				</div>
 			)}
-
-			<Dialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
-				<DialogContent>
-					<DialogHeader>
-						<DialogTitle>Подтверждение удаления</DialogTitle>
-						<DialogDescription>
-							Вы уверены, что хотите удалить этот элемент? Это действие нельзя отменить.
-						</DialogDescription>
-					</DialogHeader>
-					<DialogFooter>
-						<Button
-							variant="outline"
-							onClick={() => setShowDeleteDialog(false)}
-						>
-							Отмена
-						</Button>
-						<Button
-							variant="destructive"
-							onClick={confirmDelete}
-						>
-							Удалить
-						</Button>
-					</DialogFooter>
-				</DialogContent>
-			</Dialog>
 		</div>
 	);
 }
