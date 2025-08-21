@@ -15,7 +15,9 @@ import {
 	Menu,
 	X,
 	Home,
+	User,
 } from "lucide-react";
+import { SignOutButton } from "@/modules/admin/components/sign-out-button";
 
 const navigation = [
 	{
@@ -37,6 +39,11 @@ const navigation = [
 		name: "Блог",
 		href: "/admin/posts",
 		icon: FileText,
+	},
+	{
+		name: "Пользователи",
+		href: "/admin/users",
+		icon: User,
 	},
 ];
 
@@ -104,6 +111,10 @@ export default function AdminRootLayout({
 							</Link>
 						);
 					})}
+					
+					<div className="pt-4 mt-4 border-t">
+						<SignOutButton />
+					</div>
 				</nav>
 			</div>
 

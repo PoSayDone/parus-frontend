@@ -3,6 +3,7 @@ import type {
 	Product as PrismaProduct,
 	Category as PrismaCategory,
 	BlogPost as PrismaBlogPost,
+	User as PrismaUser,
 } from "@prisma/client";
 
 // Convert Prisma Date types to string for API responses
@@ -29,6 +30,12 @@ export interface Category
 
 export interface BlogPost
 	extends Omit<PrismaBlogPost, "createdAt" | "updatedAt"> {
+	createdAt: string;
+	updatedAt: string;
+}
+
+export interface User
+	extends Omit<PrismaUser, "createdAt" | "updatedAt"> {
 	createdAt: string;
 	updatedAt: string;
 }

@@ -16,7 +16,6 @@ interface AdminFormLayoutProps<T extends FieldValues> {
 	sidebar: React.ReactNode;
 	form: UseFormReturn<T>;
 	submitLabel: string;
-	saving: boolean;
 	cancelHref?: string;
 	onSubmit: (values: T) => Promise<void>;
 }
@@ -30,7 +29,6 @@ export function AdminFormLayout<T extends FieldValues>({
 	sidebar,
 	form,
 	submitLabel,
-	saving,
 	onSubmit,
 	cancelHref = "/admin",
 }: AdminFormLayoutProps<T>) {
@@ -68,9 +66,14 @@ export function AdminFormLayout<T extends FieldValues>({
 						<div className="space-y-6 lg:sticky lg:top-22 lg:self-start">
 							{sidebar}
 							<div className="flex flex-col space-y-2 mt-6">
-								<Button type="submit" disabled={saving}>
+								<Button
+									type="submit"
+									disabled={form.formState.isSubmitting}
+								>
 									<Save />
-									{saving ? "Сохранение..." : submitLabel}
+									{form.formState.isSubmitting
+										? "Сохранение..."
+										: submitLabel}
 								</Button>
 								<Link
 									href={cancelHref}

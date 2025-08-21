@@ -15,7 +15,6 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 import {
-	Form,
 	FormControl,
 	FormDescription,
 	FormField,
@@ -27,7 +26,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { SlugHandler } from "../components/slug-handler";
-import { AdminFormLayout } from "../components/admin-form-layout";
+import { AdminFormLayout } from "./admin-form-layout";
 import {
 	categoryFormSchema,
 	CategoryFormValues,
@@ -46,7 +45,6 @@ export default function CategoryForm({
 }) {
 	const router = useRouter();
 	const [loading, setLoading] = useState(!!categoryHandle);
-	const [saving, setSaving] = useState(false);
 
 	const form = useForm<CategoryFormValues>({
 		resolver: zodResolver(categoryFormSchema),
@@ -253,7 +251,6 @@ export default function CategoryForm({
 			submitLabel={
 				categoryHandle ? "Сохранить изменения" : "Создать категорию"
 			}
-			saving={saving}
 			cancelHref="/admin/categories"
 		>
 			{mainContent}

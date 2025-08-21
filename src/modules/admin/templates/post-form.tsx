@@ -35,7 +35,7 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 import { SlugHandler } from "../components/slug-handler";
-import { AdminFormLayout } from "../components/admin-form-layout";
+import { AdminFormLayout } from "./admin-form-layout";
 import { postFormSchema, PostFormValues } from "../schemas/post-form-schema";
 import { getPostByHandle, createPost, updatePost } from "@/lib/data/blog";
 import { uploadFileToS3 } from "@/lib/data/uploads";
@@ -49,7 +49,6 @@ const Editor = dynamic(() => import("@/modules/admin/components/editor"), {
 export default function PostForm({ postHandle }: { postHandle?: string }) {
 	const router = useRouter();
 	const [loading, setLoading] = useState(!!postHandle);
-	const [saving, setSaving] = useState(false);
 	const [uploading, setUploading] = useState(false);
 	const [image, setImage] = useState<string | null>(null);
 	const editorRef = useRef<any>(null);
@@ -118,8 +117,6 @@ export default function PostForm({ postHandle }: { postHandle?: string }) {
 	}, [postHandle, form]);
 
 	const onSubmit = async (values: PostFormValues) => {
-		setSaving(true);
-
 		try {
 			let editorContent = values.body;
 			if (editorRef.current) {
@@ -155,8 +152,6 @@ export default function PostForm({ postHandle }: { postHandle?: string }) {
 					? "Ошибка при обновлении статьи"
 					: "Ошибка при создании статьи",
 			);
-		} finally {
-			setSaving(false);
 		}
 	};
 
@@ -489,7 +484,6 @@ export default function PostForm({ postHandle }: { postHandle?: string }) {
 			form={form}
 			sidebar={sidebarContent}
 			submitLabel={postHandle ? "Сохранить" : "Создать"}
-			saving={saving}
 			cancelHref="/admin/posts"
 		>
 			{mainContent}

@@ -28,7 +28,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { SlugHandler } from "../components/slug-handler";
-import { AdminFormLayout } from "../components/admin-form-layout";
+import { AdminFormLayout } from "./admin-form-layout";
 import {
 	productFormSchema,
 	ProductFormValues,
@@ -53,7 +53,6 @@ export default function ProductForm({
 		{ id: string; name: string; handle: string }[]
 	>([]);
 	const [loading, setLoading] = useState(!!productHandle); // Loading only for edit mode
-	const [saving, setSaving] = useState(false);
 	const [images, setImages] = useState<string[]>([]);
 	const [primaryImageIndex, setPrimaryImageIndex] = useState<number>(0);
 	const [uploading, setUploading] = useState(false);
@@ -138,8 +137,6 @@ export default function ProductForm({
 	}, [productHandle, form]);
 
 	const onSubmit = async (values: ProductFormValues) => {
-		setSaving(true);
-
 		try {
 			// Use the first image or the explicitly set primary image as thumbnail
 			const thumbnail =
@@ -179,8 +176,6 @@ export default function ProductForm({
 					? "Ошибка при обновлении продукта"
 					: "Ошибка при создании продукта",
 			);
-		} finally {
-			setSaving(false);
 		}
 	};
 
@@ -567,7 +562,6 @@ export default function ProductForm({
 			submitLabel={
 				productHandle ? "Сохранить изменения" : "Создать продукт"
 			}
-			saving={saving}
 			cancelHref="/admin/products"
 		>
 			{mainContent}

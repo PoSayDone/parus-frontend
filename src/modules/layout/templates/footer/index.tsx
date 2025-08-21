@@ -30,6 +30,9 @@ export default function Footer() {
 					<Link href={"/"} className="text-sm">
 						Новости
 					</Link>
+					<Link href={"/admin"} className="text-sm">
+						Панель
+					</Link>
 				</div>
 				<div className="flex flex-col gap-2">
 					<h6 className="font-bold text-xl mb-2">Покупателям</h6>
