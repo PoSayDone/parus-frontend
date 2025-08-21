@@ -26,14 +26,13 @@ export default function BlogPage() {
 	};
 
 	const handleDelete = async (handle: string) => {
-		if (!confirm("Вы уверены, что хотите удалить эту статью?")) return;
-
 		try {
 			await deletePost(handle);
 			toast.success("Статья успешно удалена");
 		} catch (error: any) {
 			console.error("Error deleting post:", error);
 			toast.error(error.message || "Ошибка при удалении статьи");
+			throw error; // Re-throw to be caught by the AdminTable
 		}
 	};
 

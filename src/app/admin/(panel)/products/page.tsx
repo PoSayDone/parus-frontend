@@ -19,14 +19,13 @@ import { toast } from "sonner";
 
 export default function ProductsPage() {
 	const handleDelete = async (handle: string) => {
-		if (!confirm("Вы уверены, что хотите удалить этот продукт?")) return;
-
 		try {
 			await deleteProduct(handle);
 			toast.success("Продукт успешно удален");
 		} catch (error: any) {
 			console.error("Error deleting product:", error);
 			toast.error(error.message || "Ошибка при удалении продукта");
+			throw error; // Re-throw to be caught by the AdminTable
 		}
 	};
 

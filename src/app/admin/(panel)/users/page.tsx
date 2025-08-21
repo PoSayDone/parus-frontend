@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 import {
@@ -25,15 +24,13 @@ export default function UsersPage() {
 	};
 
 	const handleDelete = async (id: string) => {
-		if (!confirm("Вы уверены, что хотите удалить этого пользователя?"))
-			return;
-
 		try {
 			await deleteUser(id);
 			toast.success("Пользователь успешно удален");
 		} catch (error: any) {
 			console.error("Error deleting user:", error);
 			toast.error(error.message || "Ошибка при удалении пользователя");
+			throw error; // Re-throw to be caught by the AdminTable
 		}
 	};
 
@@ -48,9 +45,7 @@ export default function UsersPage() {
 					</div>
 					<div>
 						<div className="font-medium">{row.name}</div>
-						<div className="text-sm text-muted-foreground">
-							{row.email}
-						</div>
+						<div className="text-sm text-muted-foreground">{row.email}</div>
 					</div>
 				</div>
 			),

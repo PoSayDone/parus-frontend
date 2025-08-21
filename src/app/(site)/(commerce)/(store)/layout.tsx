@@ -7,15 +7,15 @@ export default async function StoreLayout({
 	children: React.ReactNode;
 }>) {
 	const {
-		response: { categories: productCategories },
-	} = await listCategories({});
+		response: { data: categories },
+	} = await listCategories({ queryParams: { limit: 40 } });
 
 	return (
 		<div
 			className="flex flex-col w-full gap-4"
 			data-testid="category-container"
 		>
-			<Categories categories={productCategories} />
+			<Categories categories={categories} />
 			{children}
 		</div>
 	);

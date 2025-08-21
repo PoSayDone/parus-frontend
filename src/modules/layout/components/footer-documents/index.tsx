@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default async function FooterDocuments() {
 	const {
-		response: { posts },
+		response: { data: posts },
 	} = await listPosts({
 		page: 1,
 		queryParams: {

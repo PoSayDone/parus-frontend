@@ -14,6 +14,7 @@ export const listProducts = async ({
 	queryParams?: {
 		limit?: number;
 		category_id?: string;
+		handle?: string;
 		q?: string;
 		[key: string]: any;
 	};
@@ -44,6 +45,10 @@ export const listProducts = async ({
 				id: queryParams.category_id,
 			},
 		};
+	}
+
+	if (queryParams?.handle) {
+		where.handle = queryParams.handle;
 	}
 
 	if (queryParams?.q) {

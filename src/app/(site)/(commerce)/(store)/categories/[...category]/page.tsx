@@ -61,7 +61,6 @@ export default async function CategoryPage(props: Props) {
 	const { page, sortBy } = searchParams;
 
 	const productCategory = await getCategoryByHandle(params.category[0]);
-	console.log("category:", productCategory);
 
 	if (!productCategory) {
 		notFound();

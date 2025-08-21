@@ -28,7 +28,7 @@ export default async function PaginatedProducts({
 	}
 
 	const {
-		response: { products, count },
+		response: { data: products, count },
 	} = await listProducts({
 		page,
 		queryParams,

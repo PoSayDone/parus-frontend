@@ -19,14 +19,13 @@ import { toast } from "sonner";
 
 export default function CategoriesPage() {
 	const handleDelete = async (handle: string) => {
-		if (!confirm("Вы уверены, что хотите удалить эту категорию?")) return;
-
 		try {
 			await deleteCategory(handle);
 			toast.success("Категория успешно удалена");
 		} catch (error: any) {
 			console.error("Error deleting category:", error);
 			toast.error(error.message || "Ошибка при удалении категории");
+			throw error; // Re-throw to be caught by the AdminTable
 		}
 	};
 

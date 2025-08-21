@@ -16,6 +16,14 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+	Dialog,
+	DialogContent,
+	DialogDescription,
+	DialogFooter,
+	DialogHeader,
+	DialogTitle,
+} from "@/components/ui/dialog";
 import { MoreHorizontal, Edit, Trash2, Eye } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 
@@ -66,7 +74,10 @@ export function AdminTable({
 	const [limit] = useState(initialLimit);
 	const [total, setTotal] = useState(0);
 	const [searchTerm, setSearchTerm] = useState("");
-
+	const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+	const [deleteItemKey, setDeleteItemKey] = useState<string | null>(null);
+	const [deleteAction, setDeleteAction] = useState<((key: string) => void) | null>(null);
+	
 	// Debounce timeout ref
 	const debounceTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -123,6 +134,27 @@ export function AdminTable({
 		setPage(1); // Reset to first page when searching
 	};
 
+	const handleDeleteClick = (key: string, action: (key: string) => void) => {
+		setDeleteItemKey(key);
+		setDeleteAction(() => action);
+		setShowDeleteDialog(true);
+	};
+
+	const confirmDelete = async () => {
+		if (deleteItemKey && deleteAction) {
+			try {
+				await deleteAction(deleteItemKey);
+				// Refresh the data after successful deletion
+				await loadData(searchTerm);
+			} catch (error) {
+				console.error("Error during deletion:", error);
+			}
+		}
+		setShowDeleteDialog(false);
+		setDeleteItemKey(null);
+		setDeleteAction(null);
+	};
+
 	const totalPages = Math.ceil(total / limit);
 
 	// Load data when component mounts
@@ -166,10 +198,7 @@ export function AdminTable({
 					<TableBody>
 						{loading && internalData.length === 0 ? (
 							<TableRow>
-								<TableCell
-									colSpan={columns.length + 1}
-									className="h-24 text-center"
-								>
+								<TableCell colSpan={columns.length + 1} className="h-24 text-center">
 									Загрузка...
 								</TableCell>
 							</TableRow>
@@ -212,8 +241,9 @@ export function AdminTable({
 																	}
 																	className="text-destructive"
 																	onClick={() =>
-																		action.onClick?.(
+																		handleDeleteClick(
 																			rowKey,
+																			action.onClick!,
 																		)
 																	}
 																>
@@ -269,10 +299,7 @@ export function AdminTable({
 							})
 						) : (
 							<TableRow>
-								<TableCell
-									colSpan={columns.length + 1}
-									className="h-24 text-center"
-								>
+								<TableCell colSpan={columns.length + 1} className="h-24 text-center">
 									Ничего не найдено
 								</TableCell>
 							</TableRow>
@@ -308,6 +335,31 @@ export function AdminTable({
 					</div>
 				</div>
 			)}
+
+			<Dialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+				<DialogContent>
+					<DialogHeader>
+						<DialogTitle>Подтверждение удаления</DialogTitle>
+						<DialogDescription>
+							Вы уверены, что хотите удалить этот элемент? Это действие нельзя отменить.
+						</DialogDescription>
+					</DialogHeader>
+					<DialogFooter>
+						<Button
+							variant="outline"
+							onClick={() => setShowDeleteDialog(false)}
+						>
+							Отмена
+						</Button>
+						<Button
+							variant="destructive"
+							onClick={confirmDelete}
+						>
+							Удалить
+						</Button>
+					</DialogFooter>
+				</DialogContent>
+			</Dialog>
 		</div>
 	);
 }
