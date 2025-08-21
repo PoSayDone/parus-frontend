@@ -16,16 +16,18 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-	Dialog,
-	DialogContent,
-	DialogDescription,
-	DialogFooter,
-	DialogHeader,
-	DialogTitle,
-} from "@/components/ui/dialog";
 import { MoreHorizontal, Edit, Trash2, Eye } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 interface AdminTableAction {
 	type: "view" | "edit" | "delete";
@@ -77,7 +79,7 @@ export function AdminTable({
 	const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 	const [deleteItemKey, setDeleteItemKey] = useState<string | null>(null);
 	const [deleteAction, setDeleteAction] = useState<
-		((key: string) => void) | null
+		((key: string) => Promise<void>) | null
 	>(null);
 
 	// Debounce timeout ref
@@ -136,7 +138,10 @@ export function AdminTable({
 		setPage(1); // Reset to first page when searching
 	};
 
-	const handleDeleteClick = (key: string, action: (key: string) => void) => {
+	const handleDeleteClick = (
+		key: string,
+		action: (key: string) => Promise<void>,
+	) => {
 		setDeleteItemKey(key);
 		setDeleteAction(() => action);
 		setShowDeleteDialog(true);
@@ -146,7 +151,6 @@ export function AdminTable({
 		if (deleteItemKey && deleteAction) {
 			try {
 				await deleteAction(deleteItemKey);
-				// Refresh the data after successful deletion
 				await loadData(searchTerm);
 			} catch (error) {
 				console.error("Error during deletion:", error);
@@ -230,7 +234,7 @@ export function AdminTable({
 											</TableCell>
 										))}
 										<TableCell>
-											<DropdownMenu>
+											<DropdownMenu modal={false}>
 												<DropdownMenuTrigger asChild>
 													<Button
 														variant="ghost"
@@ -240,54 +244,6 @@ export function AdminTable({
 													</Button>
 												</DropdownMenuTrigger>
 												<DropdownMenuContent align="end">
-													<Dialog
-														modal={true}
-														open={showDeleteDialog}
-														onOpenChange={(
-															open,
-														) => {
-															if (!open) {
-																cancelDelete();
-															}
-														}}
-													>
-														<DialogContent>
-															<DialogHeader>
-																<DialogTitle>
-																	Подтверждение
-																	удаления
-																</DialogTitle>
-																<DialogDescription>
-																	Вы уверены,
-																	что хотите
-																	удалить этот
-																	элемент? Это
-																	действие
-																	нельзя
-																	отменить.
-																</DialogDescription>
-															</DialogHeader>
-															<DialogFooter>
-																<Button
-																	variant="outline"
-																	onClick={
-																		cancelDelete
-																	}
-																>
-																	Отмена
-																</Button>
-																<Button
-																	variant="destructive"
-																	onClick={
-																		confirmDelete
-																	}
-																>
-																	Удалить
-																</Button>
-															</DialogFooter>
-														</DialogContent>
-													</Dialog>
-
 													{actions.map((action) => {
 														if (
 															action.type ===
@@ -401,6 +357,29 @@ export function AdminTable({
 					</div>
 				</div>
 			)}
+
+			<AlertDialog
+				open={showDeleteDialog}
+				onOpenChange={setShowDeleteDialog}
+			>
+				<AlertDialogContent>
+					<AlertDialogHeader>
+						<AlertDialogTitle>
+							Подтверждение удаления
+						</AlertDialogTitle>
+						<AlertDialogDescription>
+							Вы уверены, что хотите удалить этот элемент? Это
+							действие нельзя отменить.
+						</AlertDialogDescription>
+					</AlertDialogHeader>
+					<AlertDialogFooter>
+						<AlertDialogCancel>Отмена</AlertDialogCancel>
+						<AlertDialogAction onClick={confirmDelete}>
+							Удалить
+						</AlertDialogAction>
+					</AlertDialogFooter>
+				</AlertDialogContent>
+			</AlertDialog>
 		</div>
 	);
 }

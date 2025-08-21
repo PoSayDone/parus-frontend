@@ -52,7 +52,7 @@ export default function ProductForm({
 	const [categories, setCategories] = useState<
 		{ id: string; name: string; handle: string }[]
 	>([]);
-	const [loading, setLoading] = useState(!!productHandle); // Loading only for edit mode
+	const [loading, setLoading] = useState(!!productHandle);
 	const [images, setImages] = useState<string[]>([]);
 	const [primaryImageIndex, setPrimaryImageIndex] = useState<number>(0);
 	const [uploading, setUploading] = useState(false);
@@ -83,7 +83,7 @@ export default function ProductForm({
 			try {
 				// Fetch categories using server action
 				const {
-					response: { categories: categoriesData },
+					response: { data: categoriesData },
 				} = await listCategories({});
 				setCategories(categoriesData);
 

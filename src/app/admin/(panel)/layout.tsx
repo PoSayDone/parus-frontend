@@ -68,7 +68,7 @@ export default function AdminRootLayout({
 			{/* Sidebar */}
 			<div
 				className={cn(
-					"fixed inset-y-0 left-0 z-50 w-72 bg-card border-r transform transition-transform duration-200 ease-in-out lg:translate-x-0",
+					"flex flex-col fixed inset-y-0 left-0 z-50 w-72 bg-card border-r transform transition-transform duration-200 ease-in-out lg:translate-x-0",
 					sidebarOpen ? "translate-x-0" : "-translate-x-full",
 				)}
 			>
@@ -83,36 +83,40 @@ export default function AdminRootLayout({
 					</Button>
 				</div>
 
-				<nav className="p-4 space-y-2">
-					<Link
-						href="/"
-						className={buttonVariants({
-							variant: "ghost",
-							className: "w-full justify-start mb-4",
-						})}
-					>
-						<Home />
-						На сайт
-					</Link>
+				<nav className="h-full flex-1 flex flex-col">
+					<div className="px-4 py-2 border-b">
+						<Link
+							href="/"
+							className={buttonVariants({
+								variant: "ghost",
+								className: "w-full justify-start",
+							})}
+						>
+							<Home />
+							На сайт
+						</Link>
+					</div>
 
-					{navigation.map((item) => {
-						const isActive = pathname === item.href;
-						return (
-							<Link
-								key={item.name}
-								href={item.href}
-								className={buttonVariants({
-									variant: isActive ? "default" : "ghost",
-									className: "w-full justify-start",
-								})}
-							>
-								<item.icon />
-								{item.name}
-							</Link>
-						);
-					})}
-					
-					<div className="pt-4 mt-4 border-t">
+					<div className="px-4 py-2 space-y-2 flex-1">
+						{navigation.map((item) => {
+							const isActive = pathname === item.href;
+							return (
+								<Link
+									key={item.name}
+									href={item.href}
+									className={buttonVariants({
+										variant: isActive ? "default" : "ghost",
+										className: "w-full justify-start",
+									})}
+								>
+									<item.icon />
+									{item.name}
+								</Link>
+							);
+						})}
+					</div>
+
+					<div className="px-4 py-2 border-t">
 						<SignOutButton />
 					</div>
 				</nav>
