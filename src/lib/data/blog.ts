@@ -12,23 +12,21 @@ export const listPosts = async ({
 	page?: number;
 	queryParams?: {
 		limit?: number;
-		offset?: number;
 		type?: string[] | string;
+		q?: string;
 		[key: string]: any;
 	};
 	sortBy?: "created_at" | "views";
 }): Promise<{
-	response: { posts: BlogPost[]; count: number };
+	response: { data: BlogPost[]; count: number };
 	nextPage: number | null;
 	queryParams?: any;
 }> => {
-	const limit = queryParams?.limit || 12;
+	const limit = queryParams?.limit || 10;
 	const _pageParam = Math.max(page, 1);
 	const offset = _pageParam === 1 ? 0 : (_pageParam - 1) * limit;
 
-	const where: Prisma.BlogPostWhereInput = {
-		draft: false,
-	};
+	const where: Prisma.BlogPostWhereInput = {};
 	const orderBy: Prisma.BlogPostOrderByWithAggregationInput = {};
 
 	if (sortBy === "created_at") {
@@ -45,6 +43,23 @@ export const listPosts = async ({
 				? queryParams.type
 				: [queryParams.type],
 		};
+	}
+
+	if (queryParams?.q) {
+		where.OR = [
+			{
+				title: {
+					contains: queryParams.q,
+					mode: "insensitive",
+				},
+			},
+			{
+				description: {
+					contains: queryParams.q,
+					mode: "insensitive",
+				},
+			},
+		];
 	}
 
 	const [posts, count] = await Promise.all([
@@ -65,57 +80,7 @@ export const listPosts = async ({
 
 	return {
 		response: {
-			posts,
-			count,
-		},
-		nextPage: nextPage,
-		queryParams,
-	};
-};
-
-export const getAllPosts = async ({
-	pageParam = 1,
-	queryParams,
-}: {
-	pageParam?: number;
-	queryParams?: {
-		limit?: number;
-		offset?: number;
-		type?: string;
-		[key: string]: any;
-	};
-}): Promise<{
-	response: { posts: BlogPost[]; count: number };
-	nextPage: number | null;
-	queryParams?: any;
-}> => {
-	const limit = queryParams?.limit || 12;
-	const _pageParam = Math.max(pageParam, 1);
-	const offset = _pageParam === 1 ? 0 : (_pageParam - 1) * limit;
-
-	const where: Prisma.BlogPostWhereInput = {};
-
-	if (queryParams?.type) {
-		where.type = queryParams.type;
-	}
-
-	const [posts, count] = await Promise.all([
-		prisma.blogPost.findMany({
-			where,
-			skip: offset,
-			take: limit,
-			orderBy: {
-				createdAt: "desc",
-			},
-		}),
-		prisma.blogPost.count({ where }),
-	]);
-
-	const nextPage = count > offset + limit ? pageParam + 1 : null;
-
-	return {
-		response: {
-			posts: posts,
+			data: posts,
 			count,
 		},
 		nextPage: nextPage,

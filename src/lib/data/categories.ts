@@ -8,41 +8,67 @@ type Props = {
 	page?: number;
 	queryParams?: {
 		limit?: number;
-		offset?: number;
+		q?: string;
 		[key: string]: unknown;
 	};
 };
 
 export const listCategories = async ({ page = 1, queryParams }: Props) => {
-	const limit = queryParams?.limit || 100;
+	const limit = queryParams?.limit || 10;
 	const _pageParam = Math.max(page, 1);
 	const offset = _pageParam === 1 ? 0 : (_pageParam - 1) * limit;
 
 	const where: Prisma.CategoryWhereInput = {};
 
+	if (queryParams?.q) {
+		where.OR = [
+			{
+				name: {
+					contains: queryParams.q,
+					mode: "insensitive",
+				},
+			},
+			{
+				description: {
+					contains: queryParams.q,
+					mode: "insensitive",
+				},
+			},
+		];
+	}
+
 	const [categories, count] = await Promise.all([
 		prisma.category.findMany({
-			where: _.isEmpty(where) ? { active: true } : where,
+			where,
 			skip: offset,
 			take: limit,
-			select: {
-				id: true,
-				name: true,
-				handle: true,
+			include: {
+				products: true,
 			},
 			orderBy: {
 				createdAt: "desc",
 			},
 		}),
-
 		prisma.category.count({ where }),
 	]);
+
+	// Transform categories to match the expected format
+	const transformedCategories = categories.map((category) => ({
+		id: category.id,
+		name: category.name,
+		handle: category.handle,
+		description: category.description,
+		status: category.active ? "active" : "inactive",
+		productCount: category.products?.length || 0,
+		createdAt: category.createdAt,
+		updatedAt: category.updatedAt,
+	}));
 
 	const nextPage = count > offset + limit ? page + 1 : null;
 
 	return {
 		response: {
-			categories,
+			data: transformedCategories,
 			count,
 		},
 		nextPage: nextPage,

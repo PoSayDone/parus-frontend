@@ -1,6 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { listProducts } from "@/lib/data/products";
+import { listCategories } from "@/lib/data/categories";
+import { listPosts } from "@/lib/data/blog";
 
 export function useAdminStats() {
 	const [stats, setStats] = useState({
@@ -15,35 +18,26 @@ export function useAdminStats() {
 	useEffect(() => {
 		const fetchStats = async () => {
 			try {
-				const productsResponse = await fetch("/api/admin/products");
-				const productsData = await productsResponse.json();
+				// Fetch all data with a single page request
+				const [productsResult, categoriesResult, postsResult] = await Promise.all([
+					listProducts({ page: 1, queryParams: { limit: 1000 } }),
+					listCategories({ page: 1, queryParams: { limit: 1000 } }),
+					listPosts({ page: 1, queryParams: { limit: 1000 } }),
+				]);
 
-				const categoriesResponse = await fetch("/api/admin/categories");
-				const categoriesData = await categoriesResponse.json();
+				const posts = postsResult.response.data || [];
 
-				const postsResponse = await fetch("/api/admin/posts");
-				const postsData = await postsResponse.json();
-
-				if (
-					productsResponse.ok &&
-					categoriesResponse.ok &&
-					postsResponse.ok
-				) {
-					const posts = postsData.posts || [];
-
-					setStats({
-						totalProducts: productsData.products?.length || 0,
-						totalCategories: categoriesData.categories?.length || 0,
-						totalBlogPosts: posts.length,
-						publishedPosts: posts.filter((p: any) => !p.draft)
-							.length,
-						draftPosts: posts.filter((p: any) => p.draft).length,
-						totalViews: posts.reduce(
-							(sum: number, post: any) => sum + (post.views || 0),
-							0,
-						),
-					});
-				}
+				setStats({
+					totalProducts: productsResult.response.count,
+					totalCategories: categoriesResult.response.count,
+					totalBlogPosts: postsResult.response.count,
+					publishedPosts: posts.filter((p: any) => !p.draft).length,
+					draftPosts: posts.filter((p: any) => p.draft).length,
+					totalViews: posts.reduce(
+						(sum: number, post: any) => sum + (post.views || 0),
+						0,
+					),
+				});
 			} catch (error) {
 				console.error("Error fetching admin stats:", error);
 			}

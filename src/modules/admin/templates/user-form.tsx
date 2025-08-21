@@ -29,7 +29,7 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
-import { getUserById } from "@/lib/data/users";
+import { getUserById, updateUser, createUser } from "@/lib/data/users";
 
 export function UserForm({ userId }: { userId?: string }) {
 	const router = useRouter();
@@ -76,34 +76,28 @@ export function UserForm({ userId }: { userId?: string }) {
 
 	async function onSubmit(values: UserFormSchema) {
 		try {
-			const url = userId 
-				? `/api/admin/users/${userId}` 
-				: "/api/admin/users";
-				
-			const method = userId ? "PATCH" : "POST";
-
-			const response = await fetch(url, {
-				method,
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify(values),
-			});
-
-			const data = await response.json();
-
-			if (!response.ok) {
-				throw new Error(
-					data.error || `Ошибка при ${userId ? "обновлении" : "создании"} пользователя`,
-				);
+			let result;
+			if (userId) {
+				// Update existing user
+				result = await updateUser(userId, values);
+			} else {
+				// Create new user
+				// Validate that password is provided for new users
+				if (!values.password || values.password === "") {
+					throw new Error("Password is required for new users");
+				}
+				result = await createUser(values);
 			}
 
-			toast.success(`Пользователь успешно ${userId ? "обновлен" : "создан"}`);
+			toast.success(
+				`Пользователь успешно ${userId ? "обновлен" : "создан"}`,
+			);
 			router.push("/admin/users");
 			router.refresh();
 		} catch (error: any) {
 			toast.error(
-				error.message || `Произошла ошибка при ${userId ? "обновлении" : "создании"} пользователя`,
+				error.message ||
+					`Произошла ошибка при ${userId ? "обновлении" : "создании"} пользователя`,
 			);
 		}
 	}
@@ -150,6 +144,7 @@ export function UserForm({ userId }: { userId?: string }) {
 								<FormControl>
 									<Input
 										placeholder="user@example.com"
+										autoComplete="one-time-code"
 										{...field}
 									/>
 								</FormControl>
@@ -164,12 +159,19 @@ export function UserForm({ userId }: { userId?: string }) {
 						render={({ field }) => (
 							<FormItem>
 								<FormLabel>
-									{userId ? "Новый пароль (оставьте пустым, чтобы не менять)" : "Пароль"}
+									{userId
+										? "Новый пароль (оставьте пустым, чтобы не менять)"
+										: "Пароль"}
 								</FormLabel>
 								<FormControl>
 									<Input
 										type="password"
-										placeholder={userId ? "•••••• (оставьте пустым, чтобы не менять)" : "••••••"}
+										autoComplete="one-time-code"
+										placeholder={
+											userId
+												? "•••••• (оставьте пустым, чтобы не менять)"
+												: "••••••"
+										}
 										{...field}
 									/>
 								</FormControl>

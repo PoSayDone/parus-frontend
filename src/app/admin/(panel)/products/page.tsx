@@ -1,6 +1,5 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 import {
@@ -12,70 +11,24 @@ import {
 } from "@/components/ui/card";
 import { Product } from "@/types/admin";
 import { AdminTable } from "@/modules/admin/components/admin-table";
-import { SearchInput } from "@/modules/admin/components/search-input";
 import { StatusBadge } from "@/modules/admin/components/status-badge";
 import { Plus } from "lucide-react";
+import { listProducts } from "@/lib/data/products";
+import { deleteProduct } from "@/lib/data/products";
+import { toast } from "sonner";
 
 export default function ProductsPage() {
-	const [searchTerm, setSearchTerm] = useState("");
-	const [products, setProducts] = useState<Product[]>([]);
-	const [loading, setLoading] = useState(true);
-
-	// Fetch products from API
-	useEffect(() => {
-		const fetchProducts = async () => {
-			try {
-				setLoading(true);
-				const response = await fetch("/api/admin/products");
-				const data = await response.json();
-				if (response.ok) {
-					setProducts(data.products);
-				}
-			} catch (error) {
-				console.error("Error fetching products:", error);
-			} finally {
-				setLoading(false);
-			}
-		};
-
-		fetchProducts();
-	}, []);
-
-	const filteredProducts = products.filter(
-		(product) =>
-			product.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-			product.categories.some((category) =>
-				category.name.toLowerCase().includes(searchTerm.toLowerCase()),
-			),
-	);
-
 	const handleDelete = async (handle: string) => {
 		if (!confirm("Вы уверены, что хотите удалить этот продукт?")) return;
 
 		try {
-			const response = await fetch(`/api/admin/products/${handle}`, {
-				method: "DELETE",
-			});
-
-			if (response.ok) {
-				// Remove the product from the state
-				setProducts(
-					products.filter((product) => product.handle !== handle),
-				);
-			} else {
-				const error = await response.json();
-				console.error("Error deleting product:", error.error);
-				alert("Ошибка при удалении продукта");
-			}
-		} catch (error) {
+			await deleteProduct(handle);
+			toast.success("Продукт успешно удален");
+		} catch (error: any) {
 			console.error("Error deleting product:", error);
-			alert("Ошибка при удалении продукта");
+			toast.error(error.message || "Ошибка при удалении продукта");
 		}
 	};
-
-	if (loading) {
-		return <div className="p-6">Загрузка продуктов...</div>;
-	}
 
 	const columns = [
 		{
@@ -155,23 +108,18 @@ export default function ProductsPage() {
 				<CardHeader>
 					<CardTitle>Каталог продуктов</CardTitle>
 					<CardDescription>
-						Всего продуктов: {products.length}
+						Управление продуктами в каталоге
 					</CardDescription>
 				</CardHeader>
 				<CardContent>
-					<div className="flex items-center space-x-2 mb-4">
-						<SearchInput
-							value={searchTerm}
-							onChange={setSearchTerm}
-							placeholder="Поиск продуктов..."
-						/>
-					</div>
-
 					<AdminTable
 						columns={columns}
-						data={filteredProducts}
+						data={[]}
 						actions={actions}
 						getKey={(row) => row.handle}
+						fetchDataAction={listProducts}
+						initialPage={1}
+						initialLimit={10}
 					/>
 				</CardContent>
 			</Card>

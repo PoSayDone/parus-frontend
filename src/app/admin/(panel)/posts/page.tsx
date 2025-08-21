@@ -1,6 +1,5 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 import {
@@ -12,42 +11,15 @@ import {
 } from "@/components/ui/card";
 import { BlogPost } from "@/types/admin";
 import { AdminTable } from "@/modules/admin/components/admin-table";
-import { SearchInput } from "@/modules/admin/components/search-input";
 import { StatusBadge } from "@/modules/admin/components/status-badge";
 import { StatCard } from "@/modules/admin/components/stat-card";
 import { Plus, Calendar, User } from "lucide-react";
 import { PostTypeBadge } from "@/modules/admin/components/post-type-badge";
+import { listPosts } from "@/lib/data/blog";
+import { deletePost } from "@/lib/data/blog";
+import { toast } from "sonner";
 
 export default function BlogPage() {
-	const [searchTerm, setSearchTerm] = useState("");
-	const [posts, setPosts] = useState<BlogPost[]>([]);
-	const [loading, setLoading] = useState(true);
-
-	useEffect(() => {
-		const fetchPosts = async () => {
-			try {
-				setLoading(true);
-				const response = await fetch("/api/admin/posts");
-				const data = await response.json();
-				if (response.ok) {
-					setPosts(data.posts);
-				}
-			} catch (error) {
-				console.error("Error fetching posts:", error);
-			} finally {
-				setLoading(false);
-			}
-		};
-
-		fetchPosts();
-	}, []);
-
-	const filteredPosts = posts.filter(
-		(post) =>
-			post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-			post.description?.toLowerCase().includes(searchTerm.toLowerCase()),
-	);
-
 	const formatDate = (dateString: string | null) => {
 		if (!dateString) return "—";
 		return new Date(dateString).toLocaleDateString("ru-RU");
@@ -57,26 +29,13 @@ export default function BlogPage() {
 		if (!confirm("Вы уверены, что хотите удалить эту статью?")) return;
 
 		try {
-			const response = await fetch(`/api/admin/posts/${handle}`, {
-				method: "DELETE",
-			});
-
-			if (response.ok) {
-				setPosts(posts.filter((post) => post.handle !== handle));
-			} else {
-				const error = await response.json();
-				console.error("Error deleting post:", error.error);
-				alert("Ошибка при удалении статьи");
-			}
-		} catch (error) {
+			await deletePost(handle);
+			toast.success("Статья успешно удалена");
+		} catch (error: any) {
 			console.error("Error deleting post:", error);
-			alert("Ошибка при удалении статьи");
+			toast.error(error.message || "Ошибка при удалении статьи");
 		}
 	};
-
-	if (loading) {
-		return <div className="p-6">Загрузка статей...</div>;
-	}
 
 	const columns = [
 		{
@@ -176,19 +135,10 @@ export default function BlogPage() {
 			</div>
 
 			<div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-				<StatCard title="Всего статей" value={posts.length} />
-				<StatCard
-					title="Опубликовано"
-					value={posts.filter((p) => !p.draft).length}
-				/>
-				<StatCard
-					title="Черновики"
-					value={posts.filter((p) => p.draft).length}
-				/>
-				<StatCard
-					title="Всего просмотров"
-					value={posts.reduce((sum, post) => sum + post.views, 0)}
-				/>
+				<StatCard title="Всего статей" value="0" />
+				<StatCard title="Опубликовано" value="0" />
+				<StatCard title="Черновики" value="0" />
+				<StatCard title="Всего просмотров" value="0" />
 			</div>
 
 			<Card className="bg-transparent border-border-variant">
@@ -199,19 +149,14 @@ export default function BlogPage() {
 					</CardDescription>
 				</CardHeader>
 				<CardContent>
-					<div className="flex items-center space-x-2 mb-4">
-						<SearchInput
-							value={searchTerm}
-							onChange={setSearchTerm}
-							placeholder="Поиск статей..."
-						/>
-					</div>
-
 					<AdminTable
 						columns={columns}
-						data={filteredPosts}
+						data={[]}
 						actions={actions}
 						getKey={(row) => row.handle}
+						fetchDataAction={listPosts}
+						initialPage={1}
+						initialLimit={10}
 					/>
 				</CardContent>
 			</Card>

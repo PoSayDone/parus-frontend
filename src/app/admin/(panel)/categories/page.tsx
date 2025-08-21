@@ -1,6 +1,5 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 import {
@@ -12,85 +11,24 @@ import {
 } from "@/components/ui/card";
 import { Category } from "@/types/admin";
 import { AdminTable } from "@/modules/admin/components/admin-table";
-import { SearchInput } from "@/modules/admin/components/search-input";
 import { StatusBadge } from "@/modules/admin/components/status-badge";
-import { Plus, Package, Folder, FolderOpenIcon } from "lucide-react";
+import { Plus } from "lucide-react";
+import { listCategories } from "@/lib/data/categories";
+import { deleteCategory } from "@/lib/data/categories";
+import { toast } from "sonner";
 
 export default function CategoriesPage() {
-	const [searchTerm, setSearchTerm] = useState("");
-	const [categories, setCategories] = useState<Category[]>([]);
-	const [loading, setLoading] = useState(true);
-
-	useEffect(() => {
-		const fetchCategories = async () => {
-			try {
-				setLoading(true);
-				const response = await fetch("/api/admin/categories");
-				const data = await response.json();
-				if (response.ok) {
-					const transformedCategories = data.categories.map(
-						(category: Category) => ({
-							id: category.id,
-							name: category.name,
-							handle: category.handle,
-							description: category.description,
-							status:
-								category.active !== undefined
-									? category.active
-										? "active"
-										: "inactive"
-									: "active",
-							productCount: category.products?.length || 0,
-							createdAt: category.createdAt,
-							updatedAt: category.updatedAt,
-						}),
-					);
-					setCategories(transformedCategories);
-				}
-			} catch (error) {
-				console.error("Error fetching categories:", error);
-			} finally {
-				setLoading(false);
-			}
-		};
-
-		fetchCategories();
-	}, []);
-
-	const filteredCategories = categories.filter(
-		(category) =>
-			category.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-			category.description
-				?.toLowerCase()
-				.includes(searchTerm.toLowerCase()),
-	);
-
 	const handleDelete = async (handle: string) => {
 		if (!confirm("Вы уверены, что хотите удалить эту категорию?")) return;
 
 		try {
-			const response = await fetch(`/api/admin/categories/${handle}`, {
-				method: "DELETE",
-			});
-
-			if (response.ok) {
-				setCategories(
-					categories.filter((category) => category.handle !== handle),
-				);
-			} else {
-				const error = await response.json();
-				console.error("Error deleting category:", error.error);
-				alert("Ошибка при удалении категории");
-			}
-		} catch (error) {
+			await deleteCategory(handle);
+			toast.success("Категория успешно удалена");
+		} catch (error: any) {
 			console.error("Error deleting category:", error);
-			alert("Ошибка при удалении категории");
+			toast.error(error.message || "Ошибка при удалении категории");
 		}
 	};
-
-	if (loading) {
-		return <div className="p-6">Загрузка категорий...</div>;
-	}
 
 	const columns = [
 		{
@@ -173,23 +111,18 @@ export default function CategoriesPage() {
 				<CardHeader>
 					<CardTitle>Список категорий</CardTitle>
 					<CardDescription>
-						Всего категорий: {categories.length}
+						Управление категориями товаров
 					</CardDescription>
 				</CardHeader>
 				<CardContent>
-					<div className="flex items-center space-x-2 mb-4">
-						<SearchInput
-							value={searchTerm}
-							onChange={setSearchTerm}
-							placeholder="Поиск категорий..."
-						/>
-					</div>
-
 					<AdminTable
 						columns={columns}
-						data={filteredCategories}
+						data={[]}
 						actions={actions}
 						getKey={(row) => row.handle}
+						fetchDataAction={listCategories}
+						initialPage={1}
+						initialLimit={10}
 					/>
 				</CardContent>
 			</Card>

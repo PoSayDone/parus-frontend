@@ -12,16 +12,14 @@ export const listProducts = async ({
 }: {
 	page?: number;
 	queryParams?: {
-		handle?: string;
 		limit?: number;
-		offset?: number;
 		category_id?: string;
 		q?: string;
 		[key: string]: any;
 	};
 	sortBy?: SortOptions;
 }): Promise<{
-	response: { products: Product[]; count: number };
+	response: { data: Product[]; count: number };
 	nextPage: number | null;
 	queryParams?: any;
 }> => {
@@ -29,7 +27,7 @@ export const listProducts = async ({
 	const _pageParam = Math.max(page, 1);
 	const offset = _pageParam === 1 ? 0 : (_pageParam - 1) * limit;
 
-	const where: Prisma.ProductWhereInput = { active: true };
+	const where: Prisma.ProductWhereInput = {};
 	const orderBy: Prisma.ProductOrderByWithAggregationInput = {};
 
 	if (["price_asc", "price_desc"].includes(sortBy)) {
@@ -38,14 +36,6 @@ export const listProducts = async ({
 
 	if (sortBy === "created_at") {
 		orderBy.createdAt = "desc";
-	}
-
-	if (queryParams?.handle) {
-		where.categories = {
-			some: {
-				id: queryParams.handle,
-			},
-		};
 	}
 
 	if (queryParams?.category_id) {
@@ -90,7 +80,7 @@ export const listProducts = async ({
 
 	return {
 		response: {
-			products,
+			data: products,
 			count,
 		},
 		nextPage: nextPage,
