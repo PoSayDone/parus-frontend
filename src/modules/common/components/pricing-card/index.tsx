@@ -11,7 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { CheckIcon } from "lucide-react";
 import type { ComponentProps } from "react";
 import { cn } from "@/lib/utils";
-import Link from "next/link";
+import ContactModalTrigger from "@/modules/contact/components/contact-modal-trigger";
 
 interface PricingPlan {
 	id: string;
@@ -37,7 +37,7 @@ export default function PricingCard({
 		<Card
 			key={plan.id}
 			className={cn(
-				"text-start grow min-h-0 max-w-[400px] relative transition-all duration-300 hover:shadow-lg",
+				"grow min-h-0 max-w-[400px] relative transition-all duration-300 hover:shadow-lg",
 				plan.popular
 					? "border-primary shadow-md"
 					: "border-border hover:border-primary/20",
@@ -103,15 +103,14 @@ export default function PricingCard({
 			</CardContent>
 
 			<CardFooter className="mt-auto">
-				<Link
-					href={plan.href ?? ""}
+				<ContactModalTrigger
 					className={buttonVariants({
 						variant: plan.popular ? "default" : "outline",
 						className: "w-full",
 					})}
 				>
 					Выбрать пакет
-				</Link>
+				</ContactModalTrigger>
 			</CardFooter>
 		</Card>
 	);

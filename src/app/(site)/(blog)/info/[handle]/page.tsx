@@ -30,8 +30,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 
 	const post = await listPosts({
 		queryParams: { handle, type: ["info"] },
-	}).then(({ response }) => response.posts[0]);
-	console.log(post);
+	}).then(({ response }) => response.data[0]);
 
 	if (!post) {
 		notFound();

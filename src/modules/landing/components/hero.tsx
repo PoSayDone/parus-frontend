@@ -32,7 +32,15 @@ export default function Hero() {
 						priority
 					/>
 				</div>
-				<Button className="w-full z-[1]">Стоимость похорон</Button>
+				<Link
+					href={"/prices"}
+					className={buttonVariants({
+						size: "lg",
+						className: "w-full z-[1]",
+					})}
+				>
+					Стоимость похорон
+				</Link>
 			</div>
 			<div className="grid grid-cols-1 md:flex md:flex-col gap-4 sm:grid-cols-2">
 				<Link

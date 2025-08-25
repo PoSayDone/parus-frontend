@@ -1,6 +1,5 @@
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import PricesList from "../components/prices-list";
+import ContactSection from "@/modules/contact/components/contact-section";
 
 export default function PricesTemplate() {
 	return (
@@ -62,31 +61,15 @@ export default function PricesTemplate() {
 					</div>
 				</div>
 
-				{/* Contact Section */}
-				<div className="bg-muted/50 rounded-[32px] p-8 text-center">
-					<h2 className="text-2xl font-semibold text-foreground mb-4">
-						Индивидуальный расчет
-					</h2>
-					<p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
+				<ContactSection
+					title="Индивидуальный расчет"
+					description={`
 						Каждая ситуация уникальна. Мы готовы составить
 						индивидуальное предложение с учетом всех ваших пожеланий
 						и финансовых возможностей. Консультация и выезд
 						специалиста бесплатны.
-					</p>
-					<div className="flex flex-col sm:flex-row gap-2 justify-center">
-						<Button
-							size="lg"
-							className="bg-primary hover:bg-primary/90"
-						>
-							<Link href="/contact">Получить консультацию</Link>
-						</Button>
-						<Button variant="outline" size="lg">
-							<Link href="tel:+7-800-000-00-00">
-								Позвонить сейчас
-							</Link>
-						</Button>
-					</div>
-				</div>
+					`}
+				/>
 			</div>
 		</div>
 	);

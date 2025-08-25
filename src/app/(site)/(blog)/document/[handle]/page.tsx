@@ -13,7 +13,7 @@ export async function generateStaticParams() {
 			queryParams: { limit: 100, type: ["document"] },
 		});
 
-		return response.posts.filter((param) => param.handle);
+		return response.data.filter((param) => param.handle);
 	} catch (error) {
 		console.error(
 			`Failed to generate static paths for product pages: ${
@@ -30,8 +30,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 
 	const post = await listPosts({
 		queryParams: { handle, type: ["document"] },
-	}).then(({ response }) => response.posts[0]);
-	console.log(post);
+	}).then(({ response }) => response.data[0]);
 
 	if (!post) {
 		notFound();
@@ -53,7 +52,7 @@ export default async function ProductPage(props: Props) {
 
 	const post = await listPosts({
 		queryParams: { handle: params.handle, type: ["document"] },
-	}).then(({ response }) => response.posts[0]);
+	}).then(({ response }) => response.data[0]);
 
 	if (!post) {
 		notFound();

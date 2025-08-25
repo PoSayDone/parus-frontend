@@ -1,7 +1,7 @@
 import { listPosts } from "@/lib/data/blog";
 import { Pagination } from "@modules/store/components/pagination";
-import { SortOptions } from "@modules/store/components/sort-products";
 import { PostCard } from "../../posts/components/card";
+import { SortOptions } from "@/modules/store/components/refinement-list/sort-products";
 
 const PRODUCT_LIMIT = 12;
 
@@ -27,7 +27,7 @@ export default async function PaginatedPosts({
 	};
 
 	const {
-		response: { posts, count },
+		response: { data: posts, count },
 	} = await listPosts({
 		page,
 		queryParams,

@@ -11,6 +11,7 @@ export const listPosts = async ({
 }: {
 	page?: number;
 	queryParams?: {
+		handle?: string;
 		limit?: number;
 		type?: string[] | string;
 		q?: string;
@@ -35,6 +36,10 @@ export const listPosts = async ({
 
 	if (sortBy === "views") {
 		orderBy.views = "desc";
+	}
+
+	if (queryParams?.handle) {
+		where.handle = queryParams.handle;
 	}
 
 	if (queryParams?.type) {

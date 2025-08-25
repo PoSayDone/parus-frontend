@@ -21,8 +21,6 @@ export const SlugHandler = ({
 		const previousFieldValue = formValues[fieldName];
 		const expectedSlug = sluga(previousFieldValue);
 
-		console.log(currentSlug, previousFieldValue);
-
 		if (currentSlug === expectedSlug) {
 			const newSlug = sluga(value);
 			form.setValue(slugFieldName, newSlug, { shouldValidate: true });

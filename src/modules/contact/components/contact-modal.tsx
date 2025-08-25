@@ -1,8 +1,5 @@
 "use client";
 
-import type React from "react";
-
-import { useState } from "react";
 import {
 	Dialog,
 	DialogContent,
@@ -11,10 +8,47 @@ import {
 	DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
 import { Phone, Mail, Clock } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import {
+	Form,
+	FormControl,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage,
+} from "@/components/ui/form";
 import LabelInput from "@/components/ui/floating-input";
+import { Separator } from "@/components/ui/separator";
+
+const contactFormSchema = z.object({
+	name: z.string().min(2, "Имя должно содержать минимум 2 символа"),
+	phone: z
+		.string()
+		.min(10, "Введите корректный номер телефона")
+		.regex(/^[+]?[0-9\s\-$$$$]+$/, "Некорректный формат телефона"),
+	email: z
+		.string()
+		.email("Введите корректный email")
+		.optional()
+		.or(z.literal("")),
+	service: z.string().optional(),
+	plan: z.string().optional(),
+	message: z.string().optional(),
+});
+
+type ContactFormData = z.infer<typeof contactFormSchema>;
 
 interface ContactModalProps {
 	open: boolean;
@@ -29,37 +63,29 @@ export default function ContactModal({
 	selectedService,
 	selectedPlan,
 }: ContactModalProps) {
-	const [formData, setFormData] = useState({
-		name: "",
-		phone: "",
-		email: "",
-		service: selectedService || "",
-		plan: selectedPlan || "",
-		message: "",
-	});
-
-	const handleSubmit = (e: React.FormEvent) => {
-		e.preventDefault();
-		// Здесь будет логика отправки формы
-		console.log("Form submitted:", formData);
-		// Показать уведомление об успешной отправке
-		onOpenChange(false);
-		// Сбросить форму
-		setFormData({
+	const form = useForm<ContactFormData>({
+		resolver: zodResolver(contactFormSchema),
+		defaultValues: {
 			name: "",
 			phone: "",
 			email: "",
-			service: "",
-			plan: "",
+			service: selectedService || "",
+			plan: selectedPlan || "",
 			message: "",
-		});
+		},
+	});
+
+	const onSubmit = (data: ContactFormData) => {
+		console.log("Form submitted:", data);
+		onOpenChange(false);
+		form.reset();
 	};
 
 	return (
 		<Dialog open={open} onOpenChange={onOpenChange}>
-			<DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto">
-				<DialogHeader>
-					<DialogTitle className="text-2xl font-semibold">
+			<DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto px-0">
+				<DialogHeader className="px-6">
+					<DialogTitle className="text-2xl font-medium">
 						Обратная связь
 					</DialogTitle>
 					<DialogDescription className="text-muted-foreground">
@@ -68,80 +94,107 @@ export default function ContactModal({
 					</DialogDescription>
 				</DialogHeader>
 
-				<form onSubmit={handleSubmit} className="space-y-4 mt-0">
-					<LabelInput
-						id="name"
-						label="Имя *"
-						value={formData.name}
-						onChange={(e) =>
-							setFormData({
-								...formData,
-								name: e.target.value,
-							})
-						}
-						placeholder="Ваше имя"
-						required
-					/>
-
-					<LabelInput
-						id="phone"
-						label="Телефон *"
-						type="tel"
-						value={formData.phone}
-						onChange={(e) =>
-							setFormData({
-								...formData,
-								phone: e.target.value,
-							})
-						}
-						placeholder="+7 (___) ___-__-__"
-						required
-					/>
-
-					<LabelInput
-						id="email"
-						label="Email"
-						type="email"
-						value={formData.email}
-						onChange={(e) =>
-							setFormData({
-								...formData,
-								email: e.target.value,
-							})
-						}
-						placeholder="your@email.com"
-					/>
-
-					<div className="space-y-2">
-						<Label htmlFor="message">Сообщение</Label>
-						<Textarea
-							id="message"
-							value={formData.message}
-							onChange={(e) =>
-								setFormData({
-									...formData,
-									message: e.target.value,
-								})
-							}
-							placeholder="Расскажите подробнее о ваших потребностях..."
-							rows={3}
+				<Form {...form}>
+					<form
+						onSubmit={form.handleSubmit(onSubmit)}
+						className="space-y-4 mt-4 px-6"
+					>
+						<FormField
+							control={form.control}
+							name="name"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Имя *</FormLabel>
+									<FormControl>
+										<LabelInput
+											label="Имя *"
+											placeholder="Ваше имя"
+											{...field}
+										/>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
 						/>
-					</div>
 
-					<div className="flex flex-col sm:flex-row gap-3 pt-4">
-						<Button type="submit">Отправить заявку</Button>
-						<Button
-							type="button"
-							variant="outline"
-							onClick={() => onOpenChange(false)}
-						>
-							Отмена
-						</Button>
-					</div>
-				</form>
+						<FormField
+							control={form.control}
+							name="phone"
+							render={({ field }) => (
+								<FormItem>
+									<FormControl>
+										<LabelInput
+											label="Телефон *"
+											type="tel"
+											placeholder="+7 (___) ___-__-__"
+											{...field}
+										/>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
 
-				{/* Contact Info */}
-				<div className="border-t pt-4 mt-6">
+						<FormField
+							control={form.control}
+							name="email"
+							render={({ field }) => (
+								<FormItem>
+									<FormControl>
+										<LabelInput
+											label="Email"
+											type="email"
+											placeholder="your@email.com"
+											{...field}
+										/>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+
+						<FormField
+							control={form.control}
+							name="message"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Сообщение</FormLabel>
+									<FormControl>
+										<Textarea
+											placeholder="Расскажите подробнее о ваших потребностях..."
+											rows={3}
+											{...field}
+										/>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+
+						<div className="flex flex-col sm:flex-row gap-3 pt-4">
+							<Button
+								type="submit"
+								className="flex-1"
+								disabled={form.formState.isSubmitting}
+							>
+								{form.formState.isSubmitting
+									? "Отправка..."
+									: "Отправить заявку"}
+							</Button>
+							<Button
+								type="button"
+								variant="outline"
+								onClick={() => onOpenChange(false)}
+							>
+								Отмена
+							</Button>
+						</div>
+					</form>
+				</Form>
+
+				<Separator className="my-2" />
+
+				<div className="px-6">
 					<h4 className="font-medium mb-3">
 						Или свяжитесь с нами напрямую:
 					</h4>

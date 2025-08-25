@@ -8,6 +8,7 @@ import _ from "lodash";
 import { BlogPost } from "@/types/admin";
 import { Eye } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { OutputData } from "@editorjs/editorjs";
 
 type PostTemplateProps = {
 	post: BlogPost;
@@ -19,13 +20,15 @@ const PostTemplate: React.FC<PostTemplateProps> = ({ post }) => {
 	}
 
 	const edjsParser = edjsHTML();
-	const html = !_.isEmpty(post.body) ? edjsParser.parse(post.body) : "";
+	const html = !_.isEmpty(post.body)
+		? edjsParser.parse(post.body as OutputData)
+		: "";
 
 	let formatted = "";
 
 	if (post.createdAt && post.createdAt !== "null") {
 		try {
-			const date = new Date(post.created_at);
+			const date = new Date(post.createdAt);
 			if (!isNaN(date.getTime())) {
 				formatted = format(date, "LLLL dd, yyyy", {
 					locale: ru,
