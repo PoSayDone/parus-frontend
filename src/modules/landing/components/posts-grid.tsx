@@ -3,11 +3,10 @@ import { PostCard } from "@/modules/posts/components/card";
 
 export default async function PostsGrid() {
 	const {
-		response: { data: posts, count },
+		response: { data: posts },
 	} = await listPosts({
 		queryParams: {
-			limit: 2,
-			draft: false,
+			limit: 10,
 		},
 	});
 

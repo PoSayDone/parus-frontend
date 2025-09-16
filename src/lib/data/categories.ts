@@ -59,6 +59,7 @@ export const listCategories = async ({ page = 1, queryParams }: Props) => {
 		name: category.name,
 		handle: category.handle,
 		description: category.description,
+		thumbnail: category.thumbnail,
 		status: category.active ? "active" : "inactive",
 		productCount: category.products?.length || 0,
 		createdAt: category.createdAt,

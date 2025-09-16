@@ -2,10 +2,11 @@
 
 import type React from "react";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { Upload, X } from "lucide-react";
 
 import {
 	Card,
@@ -36,7 +37,9 @@ import {
 	createCategory,
 	updateCategory,
 } from "@/lib/data/categories";
+import { uploadFile } from "@/lib/data/uploads";
 import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
 
 export default function CategoryForm({
 	categoryHandle,
@@ -45,6 +48,9 @@ export default function CategoryForm({
 }) {
 	const router = useRouter();
 	const [loading, setLoading] = useState(!!categoryHandle);
+	const [uploading, setUploading] = useState(false);
+	const [image, setImage] = useState<string | null>(null);
+	const fileInputRef = useRef<HTMLInputElement>(null);
 
 	const form = useForm<CategoryFormValues>({
 		resolver: zodResolver(categoryFormSchema),
@@ -81,6 +87,10 @@ export default function CategoryForm({
 								? categoryData.active
 								: true,
 					});
+
+					if (categoryData.thumbnail) {
+						setImage(categoryData.thumbnail);
+					}
 				} else {
 					console.error("Category not found");
 				}
@@ -98,11 +108,17 @@ export default function CategoryForm({
 
 	const onSubmit = async (values: CategoryFormValues) => {
 		try {
+			// Include thumbnail in the values
+			const categoryData = {
+				...values,
+				thumbnail: image || "",
+			};
+
 			let result;
 			if (categoryHandle) {
-				result = await updateCategory(categoryHandle, values);
+				result = await updateCategory(categoryHandle, categoryData);
 			} else {
-				result = await createCategory(values);
+				result = await createCategory(categoryData);
 			}
 
 			if (result) {
@@ -130,76 +146,176 @@ export default function CategoryForm({
 		form.setValue("name", value);
 	};
 
+	const handleImageUpload = async (
+		e: React.ChangeEvent<HTMLInputElement>,
+	) => {
+		const files = e.target.files;
+		if (!files || files.length === 0) return;
+
+		setUploading(true);
+		try {
+			const file = files[0];
+			const url = await uploadFile(file);
+
+			setImage(url);
+		} catch (error) {
+			console.error("Error uploading image:", error);
+			toast.error("Ошибка при загрузке изображения");
+		} finally {
+			setUploading(false);
+			if (e.target) {
+				e.target.value = "";
+			}
+		}
+	};
+
+	const triggerFileInput = () => {
+		if (fileInputRef.current) {
+			fileInputRef.current.click();
+		}
+	};
+
+	const removeImage = () => {
+		setImage(null);
+	};
+
 	if (loading) {
 		return <div className="p-6">Загрузка категории...</div>;
 	}
 
 	const mainContent = (
-		<Card className="bg-transparent border-border-variant">
-			<CardHeader>
-				<CardTitle>Основная информация</CardTitle>
-				<CardDescription>
-					{categoryHandle
-						? "Обновите данные категории"
-						: "Заполните данные о новой категории"}
-				</CardDescription>
-			</CardHeader>
-			<CardContent className="space-y-4">
-				<FormField
-					control={form.control}
-					name="name"
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>Название категории</FormLabel>
-							<FormControl>
-								<Input
-									{...field}
-									placeholder="Введите название категории"
-									onChange={onNameChange}
-								/>
-							</FormControl>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
+		<>
+			<Card className="bg-transparent border-border-variant">
+				<CardHeader>
+					<CardTitle>Основная информация</CardTitle>
+					<CardDescription>
+						{categoryHandle
+							? "Обновите данные категории"
+							: "Заполните данные о новой категории"}
+					</CardDescription>
+				</CardHeader>
+				<CardContent className="space-y-4">
+					<FormField
+						control={form.control}
+						name="name"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>Название категории</FormLabel>
+								<FormControl>
+									<Input
+										{...field}
+										placeholder="Введите название категории"
+										onChange={onNameChange}
+									/>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
 
-				<FormField
-					control={form.control}
-					name="handle"
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>URL (handle)</FormLabel>
-							<FormControl>
-								<Input {...field} placeholder="url-kategorii" />
-							</FormControl>
-							<FormDescription>
-								Будет использоваться в URL: /categories/
-								{form.watch("handle") || "url-kategorii"}
-							</FormDescription>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
+					<FormField
+						control={form.control}
+						name="handle"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>URL (handle)</FormLabel>
+								<FormControl>
+									<Input
+										{...field}
+										placeholder="url-kategorii"
+									/>
+								</FormControl>
+								<FormDescription>
+									Будет использоваться в URL: /categories/
+									{form.watch("handle") || "url-kategorii"}
+								</FormDescription>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
 
-				<FormField
-					control={form.control}
-					name="description"
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>Описание</FormLabel>
-							<FormControl>
-								<Textarea
-									{...field}
-									placeholder="Краткое описание категории"
-									rows={3}
-								/>
-							</FormControl>
-							<FormMessage />
-						</FormItem>
+					<FormField
+						control={form.control}
+						name="description"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>Описание</FormLabel>
+								<FormControl>
+									<Textarea
+										{...field}
+										placeholder="Краткое описание категории"
+										rows={3}
+									/>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+				</CardContent>
+			</Card>
+
+			<Card className="bg-transparent border-border-variant">
+				<CardHeader>
+					<CardTitle>Изображение категории</CardTitle>
+					<CardDescription>
+						{categoryHandle
+							? "Управление изображением категории"
+							: "Добавьте изображение для категории"}
+					</CardDescription>
+				</CardHeader>
+				<CardContent>
+					{image && (
+						<div className="mb-4 relative group">
+							<img
+								src={image}
+								alt="Category thumbnail"
+								className="w-full h-48 object-cover rounded-lg border"
+							/>
+							<Button
+								type="button"
+								size="icon"
+								variant="destructive"
+								className="absolute top-2 right-2 h-6 w-6 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+								onClick={removeImage}
+								title="Удалить"
+							>
+								<X className="h-3 w-3" />
+							</Button>
+						</div>
 					)}
-				/>
-			</CardContent>
-		</Card>
+
+					<div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-6 text-center">
+						<Upload className="mx-auto h-12 w-12 text-muted-foreground/50" />
+						<div className="mt-4">
+							<Input
+								ref={fileInputRef}
+								type="file"
+								accept="image/*"
+								onChange={handleImageUpload}
+								disabled={uploading || !!image} // Disable if image exists
+								className="hidden"
+								id="image-upload"
+							/>
+							<Button
+								type="button"
+								variant="outline"
+								onClick={triggerFileInput}
+								disabled={uploading || !!image} // Disable if image exists
+							>
+								{uploading
+									? "Загрузка..."
+									: image
+										? "Изображение загружено"
+										: "Загрузить изображение"}
+							</Button>
+						</div>
+						<p className="mt-2 text-sm text-muted-foreground">
+							Выберите изображение для категории
+						</p>
+					</div>
+				</CardContent>
+			</Card>
+		</>
 	);
 
 	const sidebarContent = (
