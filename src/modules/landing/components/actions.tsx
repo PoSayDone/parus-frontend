@@ -121,7 +121,7 @@ export default function WhatShouldIDo() {
 				))}
 			</div>
 
-			<ContactModalTrigger className="self-center mt-4">
+			<ContactModalTrigger size={"lg"} className="self-center mt-4">
 				Вызывать агента
 			</ContactModalTrigger>
 			<p>Получите помощь — это бесплатно.</p>

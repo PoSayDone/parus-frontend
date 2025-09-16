@@ -1,5 +1,7 @@
 import Section from "@/components/ui/section";
 import CategoriesCarousel from "./categories-carousel";
+import { Suspense } from "react";
+import SkeletonCategoriesCarousel from "@/modules/skeletons/templates/skeleton-categories-carousel";
 
 export default function RitualProducts() {
 	return (
@@ -15,7 +17,9 @@ export default function RitualProducts() {
 				</>
 			}
 		>
-			<CategoriesCarousel />
+			<Suspense fallback={<SkeletonCategoriesCarousel />}>
+				<CategoriesCarousel />
+			</Suspense>
 		</Section>
 	);
 }

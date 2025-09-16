@@ -6,7 +6,7 @@ export default async function PostsGrid() {
 		response: { data: posts },
 	} = await listPosts({
 		queryParams: {
-			limit: 10,
+			limit: 4,
 		},
 	});
 
