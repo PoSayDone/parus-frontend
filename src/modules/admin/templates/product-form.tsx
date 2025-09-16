@@ -39,7 +39,7 @@ import {
 	updateProduct,
 } from "@/lib/data/products";
 import { listCategories } from "@/lib/data/categories";
-import { uploadFileToS3 } from "@/lib/data/uploads";
+import { uploadFile } from "@/lib/data/uploads";
 import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
 
@@ -198,7 +198,7 @@ export default function ProductForm({
 			const uploadedUrls: string[] = [];
 			for (let i = 0; i < files.length; i++) {
 				const file = files[i];
-				const url = await uploadFileToS3(file);
+				const url = await uploadFile(file);
 				uploadedUrls.push(url);
 			}
 

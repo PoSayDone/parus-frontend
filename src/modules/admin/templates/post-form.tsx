@@ -38,7 +38,7 @@ import { SlugHandler } from "../components/slug-handler";
 import { AdminFormLayout } from "./admin-form-layout";
 import { postFormSchema, PostFormValues } from "../schemas/post-form-schema";
 import { getPostByHandle, createPost, updatePost } from "@/lib/data/blog";
-import { uploadFileToS3 } from "@/lib/data/uploads";
+import { uploadFile } from "@/lib/data/uploads";
 import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
 
@@ -170,7 +170,7 @@ export default function PostForm({ postHandle }: { postHandle?: string }) {
 		setUploading(true);
 		try {
 			const file = files[0];
-			const url = await uploadFileToS3(file);
+			const url = await uploadFile(file);
 
 			setImage(url);
 			form.setValue("thumbnail", url);
@@ -273,7 +273,7 @@ export default function PostForm({ postHandle }: { postHandle?: string }) {
 							<FormItem>
 								<FormLabel>Содержание статьи</FormLabel>
 								<FormControl>
-									<div className="border rounded-md p-2 min-h-[300px]">
+									<div>
 										<Editor
 											data={field.value}
 											onChange={field.onChange}
@@ -282,6 +282,7 @@ export default function PostForm({ postHandle }: { postHandle?: string }) {
 													? "editorjs-edit"
 													: "editorjs"
 											}
+											className="border rounded-md p-2 min-h-[300px]"
 										/>
 										<div
 											id={

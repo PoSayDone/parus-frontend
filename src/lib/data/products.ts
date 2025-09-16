@@ -4,6 +4,7 @@ import prisma from "@lib/prisma";
 import { Prisma } from "@prisma/client";
 import { SortOptions } from "@modules/store/components/refinement-list/sort-products";
 import { Product } from "@/types/admin";
+import { revalidateCategories } from "./categories";
 
 export const listProducts = async ({
 	page = 1,
@@ -128,7 +129,7 @@ export const createProduct = async (data: any) => {
 		}
 	}
 
-	return prisma.product.create({
+	const product = await prisma.product.create({
 		data: {
 			...productData,
 			categories: categoryConnectData,
@@ -136,6 +137,9 @@ export const createProduct = async (data: any) => {
 			tags: productData.tags || [],
 		},
 	});
+
+	await revalidateCategories();
+	return product;
 };
 
 export const updateProduct = async (handle: string, data: any) => {
@@ -172,7 +176,7 @@ export const updateProduct = async (handle: string, data: any) => {
 		};
 	}
 
-	return prisma.product.update({
+	const product = await prisma.product.update({
 		where: { handle },
 		data: {
 			...productData,
@@ -180,10 +184,16 @@ export const updateProduct = async (handle: string, data: any) => {
 			images: images || productData.images || [],
 		},
 	});
+
+	await revalidateCategories();
+	return product;
 };
 
 export const deleteProduct = async (handle: string) => {
-	return prisma.product.delete({
+	const product = await prisma.product.delete({
 		where: { handle },
 	});
+
+	await revalidateCategories();
+	return product;
 };

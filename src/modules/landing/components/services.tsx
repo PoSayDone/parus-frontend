@@ -1,59 +1,14 @@
 "use client";
 
-import LandingCard from "@/modules/landing/components/landing-card";
 import Section from "@/components/ui/section";
-import Image from "next/image";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import { EmblaOptionsType } from "embla-carousel";
+import { servicesData } from "@/lib/data/services";
+import { ServiceCard } from "@/modules/services/components/service-card";
 
 export default function Services() {
-	const slides = [
-		{
-			title: "Памятники",
-			image: "/tomb.png",
-		},
-		{
-			title: "Памятники",
-			image: "/tomb.png",
-		},
-		{
-			title: "Памятники",
-			image: "/tomb.png",
-		},
-		{
-			title: "Памятники",
-			image: "/tomb.png",
-		},
-		{
-			title: "Памятники",
-			image: "/tomb.png",
-		},
-		{
-			title: "Памятники",
-			image: "/tomb.png",
-		},
-		{
-			title: "Памятники",
-			image: "/tomb.png",
-		},
-		{
-			title: "Памятники",
-			image: "/tomb.png",
-		},
-		{
-			title: "Памятники",
-			image: "/tomb.png",
-		},
-		{
-			title: "Памятники",
-			image: "/tomb.png",
-		},
-		{
-			title: "Памятники",
-			image: "/tomb.png",
-		},
-	];
+	const services = Object.values(servicesData);
 
 	const options: EmblaOptionsType = {
 		align: "center",
@@ -83,17 +38,12 @@ export default function Services() {
 			<div className="embla">
 				<div className="embla__viewport" ref={emblaRef}>
 					<div className="embla__container">
-						{slides.map((slide, index) => (
+						{services.map((service, index) => (
 							<div key={index} className="embla__slide">
-								<LandingCard title={slide.title}>
-									<Image
-										className="mx-auto mt-4"
-										src={slide.image}
-										alt={slide.title}
-										width={205}
-										height={370}
-									/>
-								</LandingCard>
+								<ServiceCard
+									service={service}
+									className="h-full"
+								/>
 							</div>
 						))}
 					</div>

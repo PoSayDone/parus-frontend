@@ -40,22 +40,28 @@ const HeaderContent = ({
 				</nav>
 			</div>
 			<div className="flex justify-end gap-2 items-center">
+				<Link
+					href="tel:+79999999999"
+					className={cn(buttonVariants({ variant: "outline" }))}
+				>
+					+7 999 999 99 99
+				</Link>
 				<Popover>
 					<PopoverTrigger asChild>
 						<Button className="flex w-[54px] !px-0 sm:size-auto sm:w-auto sm:h-[54px] sm:!px-7.5">
-							<Phone />{" "}
+							<Phone />
 							<span className="hidden sm:block">Позвонить</span>
 						</Button>
 					</PopoverTrigger>
 					<PopoverContent className="p-6" align="end">
 						<div className="flex flex-col">
 							<p className="mb-1">По телефону</p>
-							<a
+							<Link
 								className="text-xl font-medium"
 								href="tel:+79999999999"
 							>
 								+7 999 999 99 99
-							</a>
+							</Link>
 							<p className="text-sm text-muted-foreground">
 								Для всех абонентов
 							</p>
@@ -87,7 +93,6 @@ export default function Header() {
 					className={cn(
 						buttonVariants({
 							variant: "ghost",
-							// variant: active ? "default" : "ghost",
 						}),
 						"w-full justify-start",
 					)}

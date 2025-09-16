@@ -3,6 +3,7 @@
 import prisma from "@lib/prisma";
 import { Prisma } from "@prisma/client";
 import _ from "lodash";
+import { revalidatePath } from "next/cache";
 
 type Props = {
 	page?: number;
@@ -89,20 +90,35 @@ export const getCategoryByHandle = async (categoryHandle: string) => {
 };
 
 export const createCategory = async (data: any) => {
-	return prisma.category.create({
+	const category = await prisma.category.create({
 		data,
 	});
+
+	await revalidateCategories();
+	return category;
 };
 
 export const updateCategory = async (handle: string, data: any) => {
-	return prisma.category.update({
+	const category = await prisma.category.update({
 		where: { handle },
 		data,
 	});
+
+	await revalidateCategories();
+	return category;
 };
 
 export const deleteCategory = async (handle: string) => {
-	return prisma.category.delete({
+	const category = await prisma.category.delete({
 		where: { handle },
 	});
+
+	await revalidateCategories();
+	return category;
+};
+
+export const revalidateCategories = async () => {
+	revalidatePath("/(commerce)/(store)/categories/[...category]", "page");
+	revalidatePath("/(commerce)/(store)/store", "page");
+	revalidatePath("/(commerce)/products/[handle]", "page");
 };

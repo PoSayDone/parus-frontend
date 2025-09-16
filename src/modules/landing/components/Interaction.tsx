@@ -11,7 +11,7 @@ export function Interaction() {
 					<h2 className="text-4xl font-medium">
 						Готовы получить помощь?
 						<br />
-						<span className="text-primary font-bold">
+						<span className="text-primary font-semibold">
 							Свяжитесь с нами
 						</span>
 					</h2>

@@ -6,7 +6,7 @@ export default function DesignerPage() {
 	return (
 		<div className="w-full py-12">
 			<div
-				className="py-48 px-2 flex flex-col justify-center items-start"
+				className="py-4 sm:py-48 px-2 flex flex-col justify-center items-start"
 				data-testid="empty-cart-message"
 			>
 				<h1 className="text-3xl">Конструктор в разработке</h1>
@@ -16,16 +16,26 @@ export default function DesignerPage() {
 					воспользоваться катлогом товаров и найти интересующий вас
 					товар при помощи него.
 				</div>
-				<div className="flex gap-2">
+				<div className="flex flex-wrap gap-2">
 					<Link
 						href="/services"
-						className={cn(buttonVariants({ variant: "default" }))}
+						className={cn(
+							buttonVariants({
+								variant: "default",
+								className: "w-full sm:w-auto",
+							}),
+						)}
 					>
 						Перейти к услугам
 					</Link>
 					<Link
 						href="/store"
-						className={cn(buttonVariants({ variant: "outline" }))}
+						className={cn(
+							buttonVariants({
+								variant: "outline",
+								className: "w-full sm:w-auto",
+							}),
+						)}
 					>
 						Перейти к товарам
 					</Link>

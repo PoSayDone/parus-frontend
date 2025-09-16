@@ -1,0 +1,53 @@
+import { Service } from "@/lib/data/services";
+import {
+	Card,
+	CardDescription,
+	CardFooter,
+	CardHeader,
+	CardTitle,
+} from "@/components/ui/card";
+import { buttonVariants } from "@/components/ui/button";
+import Link from "next/link";
+import { cn } from "@/lib/utils";
+
+export const ServiceCard = ({
+	service,
+	className,
+}: {
+	service: Service;
+	className?: string;
+}) => {
+	const IconComponent = service.icon;
+	return (
+		<Card
+			key={service.id}
+			className={cn(
+				"group hover:shadow-lg transition-all duration-300 border-border hover:border-primary/20",
+				className,
+			)}
+		>
+			<CardHeader className="text-start">
+				<div className="mb-4 p-3 rounded-full bg-primary/10 group-hover:bg-primary/20 transition-colors duration-300 size-14">
+					<IconComponent className="h-8 w-8 text-primary" />
+				</div>
+				<CardTitle className="text-xl font-medium text-foreground group-hover:text-primary transition-colors duration-300">
+					{service.title}
+				</CardTitle>
+				<CardDescription className="text-muted-foreground mb-2 leading-relaxed">
+					{service.shortDescription}
+				</CardDescription>
+			</CardHeader>
+			<CardFooter className="mt-auto">
+				<Link
+					className={buttonVariants({
+						variant: "secondary",
+						className: "w-full",
+					})}
+					href={`/services/${service.id}`}
+				>
+					Подробнее
+				</Link>
+			</CardFooter>
+		</Card>
+	);
+};

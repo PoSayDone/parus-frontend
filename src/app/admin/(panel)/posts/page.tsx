@@ -32,7 +32,7 @@ export default function BlogPage() {
 		} catch (error: any) {
 			console.error("Error deleting post:", error);
 			toast.error(error.message || "Ошибка при удалении статьи");
-			throw error; // Re-throw to be caught by the AdminTable
+			throw error;
 		}
 	};
 
@@ -103,7 +103,7 @@ export default function BlogPage() {
 		{
 			type: "view" as const,
 			label: "Просмотр",
-			href: "/posts/{key}",
+			href: "/blog/post/{key}",
 		},
 		{
 			type: "edit" as const,

@@ -1,32 +1,27 @@
-import Image from "next/image";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
 import Section from "@/components/ui/section";
+import Pigeon from "@/modules/common/icons/pigeon";
 
 export default function AboutUs() {
 	return (
 		<Section
 			id="about-us"
-			className="flex flex-row flex-wrap sm:flex-nowrap max-w-[1200px] mx-auto gap-16 items-center"
+			className="flex flex-col lg:flex-row f max-w-[1200px] mx-auto gap-16 items-center justify-between"
 		>
-			<Image
-				className="mx-auto mt-4"
-				src="/about.png"
-				alt="Иллюстрации"
-				width={505}
-				height={553}
-			/>
-			<div className="text-left">
+			<div className="text-center md:text-left max-w-3xl">
 				<h2 className="text-5xl font-medium mb-10">
-					О краевой ритуальной компании
+					О Пермском Агентстве Ритуальных Услуг
 				</h2>
-				<div className="flex flex-col gap-6 leading-8 max-w-xl">
+				<div className="flex flex-col gap-6 leading-8 mx-auto">
 					<p>
-						Мы помогаем проводить близких с достоинством, уважением
-						и заботой. Наша компания оказывает полный комплекс
-						ритуальных услуг, поддерживая вас на каждом этапе – от
-						оформления документов до организации прощальной
-						церемонии.
+						Организацией услуг нашего агентства занимаются
+						квалифицированные специалисты с многолетним опытом в
+						ритуальной сфере. Они проходят регулярное обучение и
+						обмениваются опытом как с крупными отечественными
+						организациями, так и с зарубежными партнерами. Мы готовы
+						помочь вам в организации похорон, а также предоставить
+						психологическую поддержку и юридические консультации.
 					</p>
 					<p>
 						Работая с вниманием к традициям и пожеланиям семьи, мы

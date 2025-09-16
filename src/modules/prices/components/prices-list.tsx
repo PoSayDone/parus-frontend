@@ -8,7 +8,7 @@ import { useState } from "react";
 export default function PricesList() {
 	const [priceType, setPriceType] = useState<"parts" | "full">("parts");
 	return (
-		<div className="space-y-8">
+		<div className="space-y-8 text-start">
 			<div className="p-1 bg-muted w-fit mx-auto rounded-full gap-1">
 				<Button
 					variant={priceType === "parts" ? "default" : "ghost"}

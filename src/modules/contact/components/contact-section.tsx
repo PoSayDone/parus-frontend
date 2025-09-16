@@ -1,4 +1,4 @@
-import { Link, Phone } from "lucide-react";
+import { Phone } from "lucide-react";
 import ContactModalTrigger from "./contact-modal-trigger";
 import { buttonVariants } from "@/components/ui/button";
 

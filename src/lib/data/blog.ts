@@ -3,6 +3,7 @@
 import prisma from "@lib/prisma";
 import { BlogPost, Prisma } from "@prisma/client";
 import _ from "lodash";
+import { revalidatePath } from "next/cache";
 
 export const listPosts = async ({
 	page = 1,
@@ -108,6 +109,8 @@ export const createPost = async (data: any) => {
 		data,
 	});
 
+	await revalidatePosts();
+
 	return post;
 };
 
@@ -116,12 +119,22 @@ export const updatePost = async (handle: string, data: any) => {
 		where: { handle },
 		data,
 	});
+	await revalidatePosts();
 
 	return post;
 };
 
 export const deletePost = async (handle: string) => {
-	return prisma.blogPost.delete({
+	const res = prisma.blogPost.delete({
 		where: { handle },
 	});
+	await revalidatePosts();
+	return res;
+};
+
+export const revalidatePosts = async () => {
+	revalidatePath("/(blog)/blog", "page");
+	revalidatePath("/(blog)/blog/post/[handle]", "page");
+	revalidatePath("/(blog)/document/[handle]", "page");
+	revalidatePath("/(blog)/info/[handle]", "page");
 };

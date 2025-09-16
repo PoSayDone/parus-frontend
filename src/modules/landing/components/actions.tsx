@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import Section from "@/components/ui/section";
+import Ambulance from "@/modules/common/icons/ambulance";
 import Document from "@/modules/common/icons/document";
 import Passport from "@/modules/common/icons/passport";
 import Pigeon from "@/modules/common/icons/pigeon";
@@ -43,32 +44,38 @@ export default function WhatShouldIDo() {
 	}[] = [
 		{
 			number: 1,
-			title: (
-				<>
-					Вызовите
-					<br />
-					ритуального агента
-				</>
-			),
+			title: <>Вызвать скорую помощь и полицию</>,
 			description:
-				"Позвоните по телефону, указанному на сайте. Оператор назовет вам ФИО и служебные данные представителя агентства.",
-			icon: RitualAgent,
+				"Вызовите бригаду скорой помощи и полицию по номеру 112.",
+			icon: Ambulance,
 		},
 		{
 			number: 2,
 			title: (
 				<>
-					Оформите
-					<br />
-					необходимые документы
+					Обратиться
+					<br />к нам
 				</>
 			),
 			description:
-				"При естественной смерти справку выдаст врач поликлиники. В случае несчастного случая или преступления потребуется вызов скорой помощи и полиции.",
+				"Обратитесь к нам с просьбой о вызове представителя. Не забудьте записать его ФИО.",
 			icon: Document,
 		},
 		{
 			number: 3,
+			title: (
+				<>
+					Проверьте
+					<br />
+					данные сотрудника
+				</>
+			),
+			description:
+				"Проверьте данные сотрудника, чтобы убедиться, что он действительно работает в вашем агентстве.",
+			icon: RitualAgent,
+		},
+		{
+			number: 4,
 			title: (
 				<>
 					Подготовьте
@@ -77,21 +84,8 @@ export default function WhatShouldIDo() {
 				</>
 			),
 			description:
-				"Для оформления потребуется паспорт и медицинский полис умершего, а также документы лиц, находившихся рядом.",
+				"Подготовьте заранее паспорт усопшего. Также потребуются документы тех, кто находился рядом в момент смерти.",
 			icon: Passport,
-		},
-		{
-			number: 4,
-			title: (
-				<>
-					Организуйте
-					<br />
-					прощание
-				</>
-			),
-			description:
-				"Агент поможет с выбором ритуальных услуг, транспортировкой и проведением церемонии.",
-			icon: Pigeon,
 		},
 	];
 
