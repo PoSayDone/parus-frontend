@@ -168,7 +168,7 @@
 	.embla {
 		max-width: 100%;
 		margin: auto;
-		--slide-height: 19rem;
+		--slide-height: 24rem;
 		--slide-spacing: 1rem;
 		--slide-size: 320px;
 	}
@@ -183,6 +183,7 @@
 	.embla__slide {
 		transform: translate3d(0, 0, 0);
 		flex: 0 0 var(--slide-size);
+		height: var(--slide-height);
 		min-width: 0;
 		padding-left: var(--slide-spacing);
 	}

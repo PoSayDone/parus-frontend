@@ -7,37 +7,44 @@ export default function AboutUs() {
 	return (
 		<Section
 			id="about-us"
-			className="flex flex-col lg:flex-row f max-w-[1200px] mx-auto gap-16 items-center justify-between"
+			className="flex flex-col lg:flex-row mx-auto gap-16 items-center justify-between container"
 		>
-			<div className="text-center md:text-left max-w-3xl">
-				<h2 className="text-5xl font-medium mb-10">
-					О Пермском Агентстве Ритуальных Услуг
-				</h2>
-				<div className="flex flex-col gap-6 leading-8 mx-auto">
-					<p>
-						Организацией услуг нашего агентства занимаются
-						квалифицированные специалисты с многолетним опытом в
-						ритуальной сфере. Они проходят регулярное обучение и
-						обмениваются опытом как с крупными отечественными
-						организациями, так и с зарубежными партнерами. Мы готовы
-						помочь вам в организации похорон, а также предоставить
-						психологическую поддержку и юридические консультации.
-					</p>
-					<p>
-						Работая с вниманием к традициям и пожеланиям семьи, мы
-						обеспечиваем достойное прощание, помогая вам в сложный
-						момент.
-					</p>
+			<div className="grid lg:grid-cols-2 gap-12 justify-center items-center px-4 md:px-0">
+				<div className="text-left">
+					<h2 className="text-4xl font-medium mb-10">
+						О Пермском Агентстве Ритуальных Услуг
+					</h2>
+					<div className="flex flex-col gap-6 leading-8 mx-auto">
+						<p>
+							Организацией услуг нашего агентства занимаются
+							квалифицированные специалисты с многолетним опытом в
+							ритуальной сфере. Они проходят регулярное обучение и
+							обмениваются опытом как с крупными отечественными
+							организациями, так и с зарубежными партнерами. Мы
+							готовы помочь вам в организации похорон, а также
+							предоставить психологическую поддержку и юридические
+							консультации.
+						</p>
+						<p>
+							Работая с вниманием к традициям и пожеланиям семьи,
+							мы обеспечиваем достойное прощание, помогая вам в
+							сложный момент.
+						</p>
+					</div>
+					<Link
+						href="/about"
+						className={buttonVariants({
+							variant: "default",
+							size: "lg",
+							className: "mt-6",
+						})}
+					>
+						Подробнее о нас
+					</Link>
 				</div>
-				<Link
-					href="/about"
-					className={buttonVariants({
-						variant: "default",
-						className: "mt-6",
-					})}
-				>
-					Подробнее о нас
-				</Link>
+				<div className="w-full aspect-square bg-primary-container flex items-center justify-center rounded-full p-16">
+					<Pigeon className="w-[60%] max-w-lg mx-auto" />
+				</div>
 			</div>
 		</Section>
 	);

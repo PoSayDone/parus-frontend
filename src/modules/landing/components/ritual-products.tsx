@@ -83,8 +83,14 @@ export default function RitualProducts() {
 				<div className="embla__viewport" ref={emblaRef}>
 					<div className="embla__container">
 						{slides.map((slide, index) => (
-							<div key={index} className="embla__slide">
-								<LandingCard title={slide.title}>
+							<div
+								key={index}
+								className="embla__slide !h-[420px]"
+							>
+								<LandingCard
+									title={slide.title}
+									className="h-full"
+								>
 									<Image
 										className="mx-auto mt-4"
 										src={slide.image}

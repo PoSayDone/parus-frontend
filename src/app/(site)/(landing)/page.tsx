@@ -13,7 +13,7 @@ import Pricing from "@/modules/landing/components/pricing";
 
 export default function Home() {
 	return (
-		<div className="text-base md:text-xl">
+		<div className="text-xl">
 			<Hero />
 			<Services />
 			<WhyUs />
