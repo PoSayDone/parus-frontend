@@ -1,9 +1,7 @@
-import { Button } from "@/components/ui/button";
 import Section from "@/components/ui/section";
 import Ambulance from "@/modules/common/icons/ambulance";
 import Document from "@/modules/common/icons/document";
 import Passport from "@/modules/common/icons/passport";
-import Pigeon from "@/modules/common/icons/pigeon";
 import RitualAgent from "@/modules/common/icons/ritual-agent";
 import ContactModalTrigger from "@/modules/contact/components/contact-modal-trigger";
 import { IconProps } from "@/types/icon";
@@ -116,7 +114,6 @@ export default function WhatShouldIDo() {
 						description={step.description}
 						number={index + 1}
 						icon={step.icon}
-						// imageSrc={step.imageSrc}
 					/>
 				))}
 			</div>

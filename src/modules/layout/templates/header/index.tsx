@@ -3,11 +3,6 @@
 import Link from "next/link";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { MenuIcon, Phone, XIcon } from "lucide-react";
-import {
-	Popover,
-	PopoverContent,
-	PopoverTrigger,
-} from "@/components/ui/popover";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 import { Dispatch, useState } from "react";
@@ -29,7 +24,7 @@ const HeaderContent = ({
 				>
 					Парус
 				</Link>
-				<nav className="justify-center hidden md:flex gap-6">
+				<nav className="justify-center hidden lg:flex gap-6">
 					{headerLinks.map((item) => {
 						return (
 							<Link key={item.href} href={item.href}>
@@ -42,34 +37,13 @@ const HeaderContent = ({
 			<div className="flex justify-end gap-2 items-center">
 				<Link
 					href="tel:+79999999999"
-					className={cn(buttonVariants({ variant: "outline" }))}
+					className={cn(buttonVariants({}))}
 				>
+					<Phone />
 					+7 999 999 99 99
 				</Link>
-				<Popover>
-					<PopoverTrigger asChild>
-						<Button className="flex w-[54px] !px-0 sm:size-auto sm:w-auto sm:h-[54px] sm:!px-7.5">
-							<Phone />
-							<span className="hidden sm:block">Позвонить</span>
-						</Button>
-					</PopoverTrigger>
-					<PopoverContent className="p-6" align="end">
-						<div className="flex flex-col">
-							<p className="mb-1">По телефону</p>
-							<Link
-								className="text-xl font-medium"
-								href="tel:+79999999999"
-							>
-								+7 999 999 99 99
-							</Link>
-							<p className="text-sm text-muted-foreground">
-								Для всех абонентов
-							</p>
-						</div>
-					</PopoverContent>
-				</Popover>
 				<Button
-					className="md:hidden"
+					className="lg:hidden"
 					size={"icon"}
 					variant={"secondary"}
 					onClick={() => {
@@ -86,7 +60,15 @@ const HeaderContent = ({
 export default function Header() {
 	const [menuState, setMenuState] = useState(false);
 
-	const NavMenuLink = ({ name, href }: { name: string; href: string }) => {
+	const NavMenuLink = ({
+		name,
+		href,
+		className,
+	}: {
+		name: string;
+		href: string;
+		className?: string;
+	}) => {
 		return (
 			<Link href={href} onClick={() => setMenuState(false)}>
 				<li
@@ -95,6 +77,7 @@ export default function Header() {
 							variant: "ghost",
 						}),
 						"w-full justify-start",
+						className,
 					)}
 				>
 					{name}
@@ -117,22 +100,26 @@ export default function Header() {
 					<DialogTitle className="sr-only">
 						Navigation dialog
 					</DialogTitle>
-					<div className="flex-col md:px-6">
-						<div className="flex items-center justify-between px-2 py-3">
+					<div className="flex-col ">
+						<div className="flex items-center justify-between px-2 py-3 md:px-6">
 							<HeaderContent
 								menuState={menuState}
 								setMenuState={setMenuState}
 							/>
 						</div>
-						{headerLinks.map((item) => {
-							return (
-								<NavMenuLink
-									key={item.href}
-									name={item.label}
-									href={item.href}
-								/>
-							);
-						})}
+						<div className="flex flex-col grow h-full">
+							{headerLinks.map((item) => {
+								return (
+									<NavMenuLink
+										key={item.href}
+										name={item.label}
+										href={item.href}
+										className="text-xl px-4 py-4 h-fit"
+									/>
+								);
+							})}
+						</div>
+						<div className="h-[78px]" />
 					</div>
 				</DialogContent>
 			</Dialog>

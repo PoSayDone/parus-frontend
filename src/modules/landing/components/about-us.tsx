@@ -42,7 +42,7 @@ export default function AboutUs() {
 						Подробнее о нас
 					</Link>
 				</div>
-				<div className="w-full aspect-square bg-primary-container flex items-center justify-center rounded-full p-16">
+				<div className="w-full aspect-square bg-primary-container flex items-center justify-center rounded-full p-16 max-w-[500px] mx-auto">
 					<Pigeon className="w-[60%] max-w-lg mx-auto" />
 				</div>
 			</div>

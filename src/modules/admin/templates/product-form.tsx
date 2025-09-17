@@ -68,6 +68,7 @@ export default function ProductForm({
 			price: "",
 			active: false,
 			categories: [],
+			characteristics: [],
 		},
 		mode: "onChange",
 	});
@@ -104,6 +105,13 @@ export default function ProductForm({
 								productData.categories?.map(
 									(cat: any) => cat.handle,
 								) || [],
+							characteristics:
+								productData.characteristics?.map(
+									(char: any) => ({
+										key: char.key,
+										value: char.value,
+									}),
+								) || [],
 						});
 
 						// Set images and primary image
@@ -119,6 +127,22 @@ export default function ProductForm({
 							if (primaryIndex !== -1) {
 								setPrimaryImageIndex(primaryIndex);
 							}
+						}
+
+						// Set characteristics
+						if (
+							productData.characteristics &&
+							productData.characteristics.length > 0
+						) {
+							form.setValue(
+								"characteristics",
+								productData.characteristics.map(
+									(char: any) => ({
+										key: char.key,
+										value: char.value,
+									}),
+								),
+							);
 						}
 					} else {
 						console.error("Product not found");
@@ -257,6 +281,21 @@ export default function ProductForm({
 	const setPrimaryImage = (index: number) => {
 		setPrimaryImageIndex(index);
 		form.setValue("thumbnail", images[index]);
+	};
+
+	const addCharacteristic = () => {
+		const currentCharacteristics = form.getValues("characteristics") || [];
+		form.setValue("characteristics", [
+			...currentCharacteristics,
+			{ key: "", value: "" },
+		]);
+	};
+
+	const removeCharacteristic = (index: number) => {
+		const currentCharacteristics = form.getValues("characteristics") || [];
+		const newCharacteristics = [...currentCharacteristics];
+		newCharacteristics.splice(index, 1);
+		form.setValue("characteristics", newCharacteristics);
 	};
 
 	if (loading) {
@@ -421,6 +460,107 @@ export default function ProductForm({
 							</FormItem>
 						)}
 					/>
+				</CardContent>
+			</Card>
+
+			<Card className="bg-transparent border-border-variant">
+				<CardHeader>
+					<CardTitle>Характеристики</CardTitle>
+					<CardDescription>
+						Добавьте характеристики продукта
+					</CardDescription>
+				</CardHeader>
+				<CardContent>
+					<FormField
+						control={form.control}
+						name="characteristics"
+						render={() => {
+							const characteristics =
+								form.watch("characteristics") || [];
+							return (
+								<>
+									{characteristics.length > 0 && (
+										<div className="space-y-4 mb-4">
+											{characteristics.map(
+												(char: any, index: number) => (
+													<div
+														key={index}
+														className="flex gap-2 items-end"
+													>
+														<FormField
+															control={
+																form.control
+															}
+															name={`characteristics.${index}.key`}
+															render={({
+																field,
+															}) => (
+																<FormItem className="flex-1">
+																	<FormLabel>
+																		Название
+																	</FormLabel>
+																	<FormControl>
+																		<Input
+																			{...field}
+																			placeholder="Например: Цвет"
+																		/>
+																	</FormControl>
+																	<FormMessage />
+																</FormItem>
+															)}
+														/>
+														<FormField
+															control={
+																form.control
+															}
+															name={`characteristics.${index}.value`}
+															render={({
+																field,
+															}) => (
+																<FormItem className="flex-1">
+																	<FormLabel>
+																		Значение
+																	</FormLabel>
+																	<FormControl>
+																		<Input
+																			{...field}
+																			placeholder="Например: Красный"
+																		/>
+																	</FormControl>
+																	<FormMessage />
+																</FormItem>
+															)}
+														/>
+														<Button
+															type="button"
+															variant="destructive"
+															size="icon"
+															onClick={() =>
+																removeCharacteristic(
+																	index,
+																)
+															}
+														>
+															<X className="h-4 w-4" />
+														</Button>
+													</div>
+												),
+											)}
+										</div>
+									)}
+								</>
+							);
+						}}
+					/>
+
+					<Button
+						type="button"
+						variant="outline"
+						onClick={addCharacteristic}
+						className="w-full"
+					>
+						Добавить характеристику
+					</Button>
 				</CardContent>
 			</Card>
 

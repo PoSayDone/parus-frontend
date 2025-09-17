@@ -76,6 +76,7 @@ export const listProducts = async ({
 			take: limit,
 			include: {
 				categories: true,
+				characteristics: true,
 			},
 			orderBy: orderBy ?? [{ createdAt: "desc" }],
 		}),
@@ -99,13 +100,14 @@ export const getProductByHandle = async (handle: string) => {
 		where: { handle },
 		include: {
 			categories: true,
+			characteristics: true,
 		},
 	});
 };
 
 export const createProduct = async (data: any) => {
 	// Handle categories relationship properly
-	const { categories, images, ...productData } = data;
+	const { categories, images, characteristics, ...productData } = data;
 
 	// Convert price to float if it's a string
 	if (typeof productData.price === "string") {
@@ -129,10 +131,22 @@ export const createProduct = async (data: any) => {
 		}
 	}
 
+	// Handle characteristics if provided
+	let characteristicsData = undefined;
+	if (characteristics && Array.isArray(characteristics) && characteristics.length > 0) {
+		characteristicsData = {
+			create: characteristics.map((char: { key: string; value: string }) => ({
+				key: char.key,
+				value: char.value,
+			})),
+		};
+	}
+
 	const product = await prisma.product.create({
 		data: {
 			...productData,
 			categories: categoryConnectData,
+			characteristics: characteristicsData,
 			images: images || [],
 			tags: productData.tags || [],
 		},
@@ -144,7 +158,7 @@ export const createProduct = async (data: any) => {
 
 export const updateProduct = async (handle: string, data: any) => {
 	// Handle categories relationship properly
-	const { categories, images, ...productData } = data;
+	const { categories, images, characteristics, ...productData } = data;
 
 	// Convert price to float if it's a string
 	if (typeof productData.price === "string") {
@@ -176,11 +190,25 @@ export const updateProduct = async (handle: string, data: any) => {
 		};
 	}
 
+	// Handle characteristics if provided
+	let characteristicsData = undefined;
+	if (characteristics && Array.isArray(characteristics)) {
+		// Delete existing characteristics and create new ones
+		characteristicsData = {
+			deleteMany: {},
+			create: characteristics.map((char: { key: string; value: string }) => ({
+				key: char.key,
+				value: char.value,
+			})),
+		};
+	}
+
 	const product = await prisma.product.update({
 		where: { handle },
 		data: {
 			...productData,
 			categories: categoryConnectData,
+			characteristics: characteristicsData,
 			images: images || productData.images || [],
 		},
 	});

@@ -23,7 +23,7 @@ export default function Footer() {
 					</Link>
 				</div>
 				<div className="flex flex-col gap-2">
-					<h6 className="font-bold text-xl mb-2">Компания</h6>
+					<h6 className="font-medium text-xl mb-2">Компания</h6>
 					<Link href={"/"} className="text-sm">
 						О нас
 					</Link>
@@ -35,7 +35,7 @@ export default function Footer() {
 					</Link>
 				</div>
 				<div className="flex flex-col gap-2">
-					<h6 className="font-bold text-xl mb-2">Покупателям</h6>
+					<h6 className="font-medium text-xl mb-2">Покупателям</h6>
 					<ul>
 						<Suspense fallback={<SkeletonFooterDocuments />}>
 							<FooterDocuments />

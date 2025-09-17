@@ -37,6 +37,14 @@ export default async function PaginatedProducts({
 
 	const totalPages = Math.ceil(count / PRODUCT_LIMIT);
 
+	if (count === 0) {
+		return (
+			<div className="flex justify-center items-center h-full py-16">
+				<p className="text-lg">Найдено 0 товаров</p>
+			</div>
+		);
+	}
+
 	return (
 		<>
 			<ul

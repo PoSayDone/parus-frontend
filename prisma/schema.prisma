@@ -21,18 +21,31 @@ model User {
 }
 
 model Product {
-    id          String     @id @default(uuid())
-    title       String
-    description String?
-    handle      String     @unique
-    thumbnail   String?
-    images      String[]
-    categories  Category[]
-    price       Float      @default(0)
-    tags        String[]
-    active      Boolean    @default(false)
-    createdAt   DateTime   @default(now())
-    updatedAt   DateTime   @updatedAt
+    id            String         @id @default(uuid())
+    title         String
+    description   String?
+    handle        String         @unique
+    thumbnail     String?
+    images        String[]
+    categories    Category[]
+    characteristics ProductCharacteristic[]
+    price         Float          @default(0)
+    tags          String[]
+    active        Boolean        @default(false)
+    createdAt     DateTime       @default(now())
+    updatedAt     DateTime       @updatedAt
+}
+
+model ProductCharacteristic {
+    id        String   @id @default(uuid())
+    productId String
+    product   Product  @relation(fields: [productId], references: [id])
+    key       String
+    value     String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@unique([productId, key])
 }
 
 model Category {

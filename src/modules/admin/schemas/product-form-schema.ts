@@ -1,5 +1,10 @@
 import z from "zod";
 
+const characteristicSchema = z.object({
+	key: z.string().min(1, { message: "Ключ характеристики обязателен" }),
+	value: z.string().min(1, { message: "Значение характеристики обязательно" }),
+});
+
 export const productFormSchema = z.object({
 	title: z
 		.string()
@@ -32,6 +37,7 @@ export const productFormSchema = z.object({
 	categories: z
 		.array(z.string())
 		.min(1, { message: "Выберите хотя бы одну категорию" }),
+	characteristics: z.array(characteristicSchema).optional(),
 });
 
 export type ProductFormValues = z.infer<typeof productFormSchema>;

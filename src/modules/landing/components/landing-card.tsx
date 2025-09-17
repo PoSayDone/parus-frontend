@@ -1,29 +1,27 @@
-import { cn } from "@/lib/utils";
-import { buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function LandingCard({
 	title,
 	children,
 	className,
+	href = "#",
 }: {
 	title: React.ReactNode;
 	children?: React.ReactNode;
 	className?: string;
+	href?: string;
 }) {
 	return (
-		<Link
-			href={"#"}
-			className={cn(
-				buttonVariants(),
-				"hover:bg-primary-container flex flex-col hover:text-on-primary-container bg-secondary-container text-foreground rounded-4xl px-12 pt-12 relative flex-1 h-auto transition-colors justify-start",
-				className,
-			)}
-		>
-			<h3 className="text-2xl font-medium px-4 text-wrap line-clamp-2 min-h-16">
-				{title}
-			</h3>
-			{children}
+		<Link href={href} className="group">
+			<Card className={className}>
+				<CardHeader className="text-start">
+					<CardTitle className="text-xl font-medium text-foreground group-hover:text-primary transition-colors duration-300">
+						{title}
+					</CardTitle>
+				</CardHeader>
+				<CardContent>{children}</CardContent>
+			</Card>
 		</Link>
 	);
 }

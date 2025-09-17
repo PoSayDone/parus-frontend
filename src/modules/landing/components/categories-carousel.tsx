@@ -29,7 +29,11 @@ export default async function CategoriesCarousel() {
 		<EmblaCarousel>
 			{categories.map((slide) => (
 				<div key={slide.id} className="embla__slide !h-[420px]">
-					<LandingCard title={slide.name} className="h-full">
+					<LandingCard
+						title={slide.name}
+						className="h-full"
+						href={`/categories/${slide.handle}`}
+					>
 						{slide.thumbnail && (
 							<Image
 								className="mx-auto mt-4"

@@ -19,7 +19,7 @@ export default function ProductPrice({ product }: { product: Product }) {
 	return (
 		<div className="flex flex-col text-ui-fg-base">
 			<span
-				className={cn("text-xl", {
+				className={cn("text-2xl", {
 					"text-ui-fg-interactive":
 						selectedPrice.price_type === "sale",
 				})}
