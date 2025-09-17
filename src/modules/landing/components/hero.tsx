@@ -46,7 +46,7 @@ export default function Hero() {
 				<Link
 					className={cn(
 						buttonVariants(),
-						"hover:bg-inverse-primary/80 transition bg-inverse-primary text-foreground text-2xl font-medium sm:aspect-square px-8 text-center flex items-center justify-center rounded-full sm:h-auto h-[200px]",
+						"hover:bg-inverse-primary/80 transition bg-inverse-primary text-foreground text-2xl font-medium sm:aspect-square px-8 text-center flex items-center justify-center rounded-full sm:h-auto h-[150px]",
 					)}
 					href={"/"}
 				>

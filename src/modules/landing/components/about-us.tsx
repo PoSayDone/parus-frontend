@@ -11,7 +11,7 @@ export default function AboutUs() {
 		>
 			<div className="grid lg:grid-cols-2 gap-12 justify-center items-center px-4 md:px-0">
 				<div className="text-left">
-					<h2 className="text-4xl font-medium mb-10">
+					<h2 className="text-3xl md:text-4xl font-medium mb-10">
 						О Пермском Агентстве Ритуальных Услуг
 					</h2>
 					<div className="flex flex-col gap-6 leading-8 mx-auto">

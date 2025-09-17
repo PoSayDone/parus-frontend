@@ -24,7 +24,7 @@ export default function Section({
 			{!!title && (
 				<h2
 					className={cn(
-						"text-4xl font-medium px-4",
+						"text-3xl md:text-4xl font-medium px-4",
 						subtitle ? "mb-4" : "mb-8",
 					)}
 				>
@@ -32,7 +32,9 @@ export default function Section({
 				</h2>
 			)}
 			{!!subtitle && (
-				<div className="text-xl md:text-2xl mb-12 px-4">{subtitle}</div>
+				<div className="text-xl md:text-2xl mb-12 px-4 max-w-3xl mx-auto">
+					{subtitle}
+				</div>
 			)}
 			{children}
 		</section>

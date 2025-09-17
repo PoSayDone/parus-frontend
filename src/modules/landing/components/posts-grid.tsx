@@ -15,7 +15,7 @@ export default async function PostsGrid() {
 			<div className="w-full">
 				<div className="px-8 py-16 flex items-center justify-center bg-card text-card-foreground h-[420px]">
 					<p className="text-center text-muted-foreground">
-						На данный момент ритуальные товары не доступны
+						На данный момент статьи не доступны
 					</p>
 				</div>
 			</div>

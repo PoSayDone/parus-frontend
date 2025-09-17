@@ -10,6 +10,7 @@ import Services from "@/modules/landing/components/services";
 import Hero from "@/modules/landing/components/hero";
 import WhereToFindUs from "@/modules/landing/components/location";
 import Pricing from "@/modules/landing/components/pricing";
+import Memorials from "@/modules/landing/components/memorials";
 
 export default function Home() {
 	return (
@@ -21,6 +22,7 @@ export default function Home() {
 			<AboutUs />
 			<WhatShouldIDo />
 			<RitualProducts />
+			<Memorials />
 			<QnA />
 			<Interaction />
 			<Posts />
