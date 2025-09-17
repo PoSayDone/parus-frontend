@@ -10,7 +10,7 @@ export default function Posts() {
 	return (
 		<Section
 			id="posts"
-			className="items-center"
+			className="items-center md:px-0"
 			title="Полезные статьи"
 			subtitle="Последние новости от нас."
 		>
