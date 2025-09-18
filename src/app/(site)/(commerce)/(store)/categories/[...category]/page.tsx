@@ -15,23 +15,24 @@ type Props = {
 };
 
 export async function generateStaticParams() {
-	const {
-		response: { categories: product_categories },
-	} = await listCategories({ queryParams: { limit: 100 } });
+	try {
+		const {
+			response: { data: categories },
+		} = await listCategories({ queryParams: { limit: 100 } });
 
-	if (!product_categories) {
+		if (!categories) {
+			return [];
+		}
+
+		const staticParams = categories.map((category: any) => ({
+			category: [category.handle],
+		}));
+
+		return staticParams;
+	} catch (error) {
+		console.error("Error generating static params for categories:", error);
 		return [];
 	}
-
-	const categoryHandles = product_categories.map(
-		(category: Category) => category.handle,
-	);
-
-	const staticParams = categoryHandles.map((handle: any) => ({
-		category: [handle],
-	}));
-
-	return staticParams;
 }
 
 export async function generateMetadata(props: Props): Promise<Metadata> {
