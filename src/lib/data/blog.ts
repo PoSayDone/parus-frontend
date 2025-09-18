@@ -133,8 +133,9 @@ export const deletePost = async (handle: string) => {
 };
 
 export const revalidatePosts = async () => {
-	revalidatePath("/(blog)/blog", "page");
-	revalidatePath("/(blog)/blog/post/[handle]", "page");
-	revalidatePath("/(blog)/document/[handle]", "page");
-	revalidatePath("/(blog)/info/[handle]", "page");
+	revalidatePath("/", "page");
+	revalidatePath("/blog", "page");
+	revalidatePath("/blog/post/[handle]", "page");
+	revalidatePath("/document/[handle]", "page");
+	revalidatePath("/info/[handle]", "page");
 };

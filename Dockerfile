@@ -21,7 +21,6 @@ RUN bun install --frozen-lockfile
 FROM base AS builder
 WORKDIR /app
 
-# Re-use build-time envs
 ARG DATABASE_URL
 ARG REVALIDATE_SECRET
 
