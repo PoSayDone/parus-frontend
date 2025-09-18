@@ -173,7 +173,7 @@
 		--slide-size: 320px;
 	}
 	.embla__viewport {
-		overflow: hidden;
+		overflow-x: clip;
 	}
 	.embla__container {
 		display: flex;

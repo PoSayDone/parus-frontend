@@ -36,6 +36,16 @@ export default async function PaginatedPosts({
 
 	const totalPages = Math.ceil(count / PRODUCT_LIMIT);
 
+	if (count === 0) {
+		return (
+			<div className="flex justify-center items-center h-full py-16">
+				<p className="text-lg">
+					На данный момент нет ни одной статьи, приходите позже
+				</p>
+			</div>
+		);
+	}
+
 	return (
 		<>
 			<ul

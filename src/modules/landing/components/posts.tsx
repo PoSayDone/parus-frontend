@@ -19,7 +19,10 @@ export default function Posts() {
 			</Suspense>
 			<Link
 				href="/blog"
-				className={cn(buttonVariants({ variant: "default" }), "mt-4")}
+				className={cn(
+					buttonVariants({ variant: "default", size: "lg" }),
+					"mt-4",
+				)}
 			>
 				Все статьи
 			</Link>

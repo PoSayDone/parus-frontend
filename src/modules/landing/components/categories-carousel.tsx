@@ -2,6 +2,7 @@ import { listCategories } from "@/lib/data/categories";
 import EmblaCarousel from "@/modules/common/components/embla-carousel";
 import LandingCard from "./landing-card";
 import Image from "next/image";
+import ListPlaceholder from "./list-placeholder";
 
 export default async function CategoriesCarousel() {
 	const {
@@ -15,13 +16,7 @@ export default async function CategoriesCarousel() {
 
 	if (categories.length === 0) {
 		return (
-			<div>
-				<div className="px-8 py-16 flex items-center justify-center bg-card text-card-foreground h-[420px]">
-					<p className="text-center text-muted-foreground">
-						На данный момент ритуальные товары не доступны
-					</p>
-				</div>
-			</div>
+			<ListPlaceholder text="На данный момент ритуальные товары не доступны" />
 		);
 	}
 
@@ -31,16 +26,15 @@ export default async function CategoriesCarousel() {
 				<div key={slide.id} className="embla__slide !h-[420px]">
 					<LandingCard
 						title={slide.name}
-						className="h-full"
+						className="h-full relative overflow-clip"
 						href={`/categories/${slide.handle}`}
 					>
 						{slide.thumbnail && (
 							<Image
-								className="mx-auto mt-4"
+								className="mx-auto object-cover w-full h-auto"
 								src={slide.thumbnail}
 								alt={slide.name}
-								width={205}
-								height={370}
+								layout="fill"
 							/>
 						)}
 					</LandingCard>

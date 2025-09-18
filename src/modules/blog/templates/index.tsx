@@ -20,8 +20,6 @@ const BlogTemplate = ({
 					Статьи
 				</h1>
 			</div>
-			{/* <Input placeholder="Поиск..." className="mb-4" /> */}
-			{/* <RefinementList sortBy={sort} data-testid="sort-by-container" /> */}
 			<Suspense fallback={<SkeletonBlogGrid />}>
 				<PaginatedPosts sortBy={sort} page={pageNumber} />
 			</Suspense>

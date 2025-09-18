@@ -1,5 +1,6 @@
 import { listPosts } from "@/lib/data/blog";
 import { PostCard } from "@/modules/posts/components/card";
+import ListPlaceholder from "./list-placeholder";
 
 export default async function PostsGrid() {
 	const {
@@ -11,15 +12,7 @@ export default async function PostsGrid() {
 	});
 
 	if (count === 0) {
-		return (
-			<div className="w-full">
-				<div className="px-8 py-16 flex items-center justify-center bg-card text-card-foreground h-[420px]">
-					<p className="text-center text-muted-foreground">
-						На данный момент статьи не доступны
-					</p>
-				</div>
-			</div>
-		);
+		return <ListPlaceholder text="На данный момент статьи не доступны" />;
 	}
 
 	return (
