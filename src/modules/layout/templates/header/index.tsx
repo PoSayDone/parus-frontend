@@ -7,6 +7,7 @@ import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 import { Dispatch, useState } from "react";
 import { headerLinks } from "@/lib/constants";
+import Logo from "@/modules/common/icons/logo";
 
 const HeaderContent = ({
 	menuState,
@@ -18,16 +19,17 @@ const HeaderContent = ({
 	return (
 		<>
 			<div className="flex flex-row  gap-8">
-				<Link
-					href={"/"}
-					className="font-bold text-xl ml-2 md:ml-0 -mt-0.5"
-				>
-					Парус
+				<Link href={"/"} className="text-xl ml-2 md:ml-0 -mt-0.5">
+					<Logo size={32} />
 				</Link>
-				<nav className="justify-center hidden lg:flex gap-6">
+				<nav className="items-center hidden lg:flex gap-6">
 					{headerLinks.map((item) => {
 						return (
-							<Link key={item.href} href={item.href}>
+							<Link
+								key={item.href}
+								href={item.href}
+								className="h-fit"
+							>
 								{item.label}
 							</Link>
 						);
@@ -76,7 +78,7 @@ export default function Header() {
 						buttonVariants({
 							variant: "ghost",
 						}),
-						"w-full justify-start",
+						"w-full justify-start items-center ",
 						className,
 					)}
 				>

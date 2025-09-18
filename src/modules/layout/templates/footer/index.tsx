@@ -4,6 +4,7 @@ import Link from "next/link";
 import FooterDocuments from "../../components/footer-documents";
 import { Suspense } from "react";
 import SkeletonFooterDocuments from "@/modules/skeletons/components/skeleton-footer-documents";
+import Logo from "@/modules/common/icons/logo";
 
 export default function Footer() {
 	return (
@@ -11,7 +12,7 @@ export default function Footer() {
 			<div className="flex flex-col md:flex-row justify-between items-start py-6 gap-6 md:mb-6">
 				<div className="flex flex-col gap-2">
 					<Link href={"/"} className="font-bold text-xl mb-2">
-						Парус
+						<Logo size={32} />
 					</Link>
 					<p className="text-sm">
 						г. Пермь, Советской армии 52,
