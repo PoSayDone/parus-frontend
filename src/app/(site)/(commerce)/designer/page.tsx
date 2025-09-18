@@ -1,6 +1,18 @@
+import { Metadata } from "next";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Конструктор ритуальных изделий - Парус",
+  description: "Создайте уникальные ритуальные изделия с помощью нашего конструктора. Персонализированные надгробия, кресты и другие изделия.",
+  keywords: ["конструктор", "ритуальные изделия", "надгробия", "кресты", "персонализация"],
+  openGraph: {
+    title: "Конструктор ритуальных изделий - Парус",
+    description: "Создайте уникальные ритуальные изделия с помощью нашего конструктора. Персонализированные надгробия, кресты и другие изделия.",
+    images: ["/images/designer-og-image.jpg"],
+  },
+};
 
 export default function DesignerPage() {
 	return (

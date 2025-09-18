@@ -23,11 +23,13 @@ export async function GET(req: NextRequest) {
 					);
 					revalidatePath("/(commerce)/(store)/store", "page");
 					revalidatePath("/(commerce)/products/[handle]", "page");
+					break;
 				case "posts":
 					revalidatePath("/(blog)/blog", "page");
 					revalidatePath("/(blog)/blog/post/[handle]", "page");
 					revalidatePath("/(blog)/document/[handle]", "page");
 					revalidatePath("/(blog)/info/[handle]", "page");
+					break;
 				default:
 					break;
 			}
