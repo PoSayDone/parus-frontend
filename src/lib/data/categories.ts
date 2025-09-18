@@ -119,8 +119,11 @@ export const deleteCategory = async (handle: string) => {
 };
 
 export const revalidateCategories = async () => {
-	revalidatePath("/", "page");
-	revalidatePath("/categories/[...category]", "page");
-	revalidatePath("/store", "page");
-	revalidatePath("/products/[handle]", "page");
+	revalidatePath("/(site)/(landing)", "page");
+	revalidatePath(
+		"/(site)/(commerce)/(store)/categories/[...category]",
+		"page",
+	);
+	revalidatePath("/(site)/(commerce)/(store)/store", "page");
+	revalidatePath("/(site)/(commerce)/products/[handle]", "page");
 };
