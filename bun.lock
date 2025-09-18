@@ -10,7 +10,6 @@
         "@editorjs/image": "^2.10.3",
         "@editorjs/list": "^2.0.8",
         "@editorjs/paragraph": "^2.11.7",
-        "@eioluseyi/tailwind-fade": "^1.1.1",
         "@headlessui/react": "^2.2.3",
         "@hookform/resolvers": "^5.2.1",
         "@lucia-auth/adapter-prisma": "^4.0.1",
@@ -168,8 +167,6 @@
     "@editorjs/list": ["@editorjs/list@2.0.8", "", { "dependencies": { "@codexteam/icons": "^0.3.2" } }, "sha512-/EJNvpeJYa1YDtYa85ug9R3sbDyI5ZlMHQ2bIh5S9iPa19qXe45jk6kgcew+jMNQq3j4NS4Q6YeeFbU1QkNMWw=="],
 
     "@editorjs/paragraph": ["@editorjs/paragraph@2.11.7", "", { "dependencies": { "@codexteam/icons": "^0.0.4" } }, "sha512-qD6bbWvRc4VvP0mXDOm+hOhzzhUYR9ZjcAvgCuKWcCbUMpCvhVF1s8NX40zdjekPi6JEnuHTamCncTrSzVsVhw=="],
-
-    "@eioluseyi/tailwind-fade": ["@eioluseyi/tailwind-fade@1.1.1", "", {}, "sha512-QpGEhtR1/c4JxzZPXfm4Dwws0UoEBgxh1U4jBOHqPIf7SGjbQ54XioU6LNSz1Htj2Q4aKGrU/KRDDOaXxbwysg=="],
 
     "@emnapi/runtime": ["@emnapi/runtime@1.4.3", "", { "dependencies": { "tslib": "^2.4.0" } }, "sha512-pBPWdu6MLKROBX05wSNKcNb++m5Er+KQ9QkB+WVM+pW2Kx9hoSrVTnu3BdkI5eBLZoKu/J6mW/B6i6bJB2ytXQ=="],
 

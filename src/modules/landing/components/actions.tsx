@@ -90,7 +90,7 @@ export default function WhatShouldIDo() {
 	return (
 		<Section
 			className="px-0"
-			id="what-should-i-do"
+			id="actions"
 			title={
 				<>
 					Что делать, если&nbsp;умер

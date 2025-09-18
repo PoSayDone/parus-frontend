@@ -48,7 +48,7 @@ export default function Hero() {
 						buttonVariants(),
 						"hover:bg-inverse-primary/80 transition bg-inverse-primary text-foreground text-2xl font-medium sm:aspect-square px-8 text-center flex items-center justify-center rounded-full sm:h-auto h-[150px]",
 					)}
-					href={"/"}
+					href={"#actions"}
 				>
 					Что делать,
 					<br /> если случилась беда?

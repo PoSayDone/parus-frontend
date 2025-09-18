@@ -17,7 +17,6 @@
 		"@editorjs/image": "^2.10.3",
 		"@editorjs/list": "^2.0.8",
 		"@editorjs/paragraph": "^2.11.7",
-		"@eioluseyi/tailwind-fade": "^1.1.1",
 		"@headlessui/react": "^2.2.3",
 		"@hookform/resolvers": "^5.2.1",
 		"@lucia-auth/adapter-prisma": "^4.0.1",
