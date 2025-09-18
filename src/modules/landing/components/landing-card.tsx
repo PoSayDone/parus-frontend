@@ -15,7 +15,12 @@ export default function LandingCard({
 }) {
 	return (
 		<Link href={href} className="group">
-			<Card className={cn("relative", className)}>
+			<Card
+				className={cn(
+					"relative group hover:shadow-lg transition-all duration-300 border-border hover:border-primary/20",
+					className,
+				)}
+			>
 				<div className="absolute z-1 w-full h-32 top-0 right-0 bg-linear-to-b from-card to-transparent" />
 				<CardHeader className="text-start z-1 relative">
 					<CardTitle className="text-xl font-medium text-foreground group-hover:text-primary transition-colors duration-300">
