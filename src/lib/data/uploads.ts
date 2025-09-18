@@ -13,8 +13,6 @@ export const uploadFile = async (file: File): Promise<string> => {
 		const fileExtension = file.name.split(".").pop();
 		const uniqueFileName = `${uuidv4()}.${fileExtension}`;
 
-		console.log(process.env);
-
 		if (process.env.S3_BUCKET) {
 			return await uploadToS3(buffer, uniqueFileName, file.type);
 		} else {
