@@ -4,9 +4,9 @@ import { Product } from "@/types/admin";
 export default function ProductPrice({ product }: { product: Product }) {
 	const selectedPrice = {
 		calculated_price_number: product.price,
-		calculated_price: `₽${product.price.toFixed(2)}`,
+		calculated_price: `${product.price.toFixed(2)} ₽`,
 		original_price_number: product.price,
-		original_price: `₽${product.price.toFixed(2)}`,
+		original_price: `${product.price.toFixed(2)} ₽`,
 		currency_code: "RUB",
 		price_type: "default",
 		percentage_diff: "0",
@@ -19,7 +19,7 @@ export default function ProductPrice({ product }: { product: Product }) {
 	return (
 		<div className="flex flex-col text-ui-fg-base">
 			<span
-				className={cn("text-2xl", {
+				className={cn("text-2xl font-medium", {
 					"text-ui-fg-interactive":
 						selectedPrice.price_type === "sale",
 				})}

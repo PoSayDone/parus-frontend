@@ -1,97 +1,70 @@
 "use client";
 
-import { RefreshCw, StepBack, Truck } from "lucide-react";
-import Accordion from "./accordion";
 import { StoreProduct } from "@/types/store";
+import { RefreshCw, StepBack, Truck } from "lucide-react";
 
 type ProductTabsProps = {
-  product: StoreProduct;
+	product: StoreProduct;
 };
 
 const ProductTabs = ({ product }: ProductTabsProps) => {
-  const tabs = [
-    {
-      label: "Информация о товаре",
-      component: <ProductInfoTab product={product} />,
-    },
-    {
-      label: "Доставка и возврат",
-      component: <ShippingInfoTab />,
-    },
-  ];
+	const tabs = [
+		{
+			label: "Информация о товаре",
+			component: <ProductInfoTab product={product} />,
+		},
+		{
+			label: "Информация о Доставке",
+			component: <ShippingInfoTab />,
+		},
+	];
 
-  return (
-    <div className="w-full">
-      <Accordion type="multiple">
-        {tabs.map((tab, i) => (
-          <Accordion.Item
-            key={i}
-            title={tab.label}
-            headingSize="medium"
-            value={tab.label}
-          >
-            {tab.component}
-          </Accordion.Item>
-        ))}
-      </Accordion>
-    </div>
-  );
+	return (
+		<div className="w-full">
+			{tabs.map((tab, i) => (
+				<div key={i}>
+					<h3 className="mb-4">{tab.label}</h3>
+					{tab.component}
+				</div>
+			))}
+		</div>
+	);
 };
 
 const ProductInfoTab = ({ product }: ProductTabsProps) => {
-  return (
-    <div className="text-small-regular py-8">
-      <div className="grid grid-cols-2 gap-x-8">
-        <div className="flex flex-col gap-y-4">
-          <div>
-            <span className="font-semibold">Material</span>
-            <p>{product.description ? product.description : "-"}</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+	return (
+		<div className="text-small-regular mb-4">
+			<div className="flex flex-col">
+				{product.characteristics.map((characteristic, index) => (
+					<div
+						className="grid grid-cols-2 not-last:border-b py-4"
+						key={characteristic.id}
+					>
+						<div className="font-medium text-muted-foreground">
+							{characteristic.key}
+						</div>
+						<div className="font-medium">
+							{characteristic.value}
+						</div>
+					</div>
+				))}
+			</div>
+		</div>
+	);
 };
 
 const ShippingInfoTab = () => {
-  return (
-    <div className="text-small-regular py-8">
-      <div className="grid grid-cols-1 gap-y-8">
-        <div className="flex items-start gap-x-2">
-          <Truck />
-          <div>
-            <span className="font-semibold">Fast delivery</span>
-            <p className="max-w-sm">
-              Your package will arrive in 3-5 business days at
-              your pick up location or in the comfort of your
-              home.
-            </p>
-          </div>
-        </div>
-        <div className="flex items-start gap-x-2">
-          <RefreshCw />
-          <div>
-            <span className="font-semibold">Simple exchanges</span>
-            <p className="max-w-sm">
-              Is the fit not quite right? No worries - we'll
-              exchange your product for a new one.
-            </p>
-          </div>
-        </div>
-        <div className="flex items-start gap-x-2">
-          <StepBack />
-          <div>
-            <span className="font-semibold">Easy returns</span>
-            <p className="max-w-sm">
-              Just return your product and we'll refund your
-              money. No questions asked – we'll do our best
-              to make sure your return is hassle-free.
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+	return (
+		<div className="flex flex-col gap-6">
+			<div>
+				<div className="font-medium mb-1">Быстрая доставка</div>
+				<p className="max-w-sm">
+					Мы имеем возможность доставки товара, условия доставки
+					обсуждаются с менеджером.
+				</p>
+			</div>
+		</div>
+	);
 };
 
 export default ProductTabs;
