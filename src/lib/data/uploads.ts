@@ -14,8 +14,10 @@ export const uploadFile = async (file: File): Promise<string> => {
 		const uniqueFileName = `${uuidv4()}.${fileExtension}`;
 
 		if (process.env.S3_BUCKET) {
+			console.log("Uploading to S3");
 			return await uploadToS3(buffer, uniqueFileName, file.type);
 		} else {
+			console.log("Uploading to local storage");
 			return await saveToLocal(buffer, uniqueFileName);
 		}
 	} catch (error) {
