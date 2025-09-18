@@ -14,6 +14,7 @@ export const listProducts = async ({
 	page?: number;
 	queryParams?: {
 		limit?: number;
+		includeInactive?: boolean;
 		category_id?: string;
 		handle?: string;
 		q?: string;
@@ -67,6 +68,10 @@ export const listProducts = async ({
 				},
 			},
 		];
+	}
+
+	if (!queryParams?.includeInactive) {
+		where.active = true;
 	}
 
 	const [products, count] = await Promise.all([
@@ -133,12 +138,18 @@ export const createProduct = async (data: any) => {
 
 	// Handle characteristics if provided
 	let characteristicsData = undefined;
-	if (characteristics && Array.isArray(characteristics) && characteristics.length > 0) {
+	if (
+		characteristics &&
+		Array.isArray(characteristics) &&
+		characteristics.length > 0
+	) {
 		characteristicsData = {
-			create: characteristics.map((char: { key: string; value: string }) => ({
-				key: char.key,
-				value: char.value,
-			})),
+			create: characteristics.map(
+				(char: { key: string; value: string }) => ({
+					key: char.key,
+					value: char.value,
+				}),
+			),
 		};
 	}
 
@@ -196,10 +207,12 @@ export const updateProduct = async (handle: string, data: any) => {
 		// Delete existing characteristics and create new ones
 		characteristicsData = {
 			deleteMany: {},
-			create: characteristics.map((char: { key: string; value: string }) => ({
-				key: char.key,
-				value: char.value,
-			})),
+			create: characteristics.map(
+				(char: { key: string; value: string }) => ({
+					key: char.key,
+					value: char.value,
+				}),
+			),
 		};
 	}
 

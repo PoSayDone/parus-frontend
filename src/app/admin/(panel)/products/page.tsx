@@ -116,7 +116,15 @@ export default function ProductsPage() {
 						data={[]}
 						actions={actions}
 						getKey={(row) => row.handle}
-						fetchDataAction={listProducts}
+						fetchDataAction={({ page, queryParams }) =>
+							listProducts({
+								page,
+								queryParams: {
+									...queryParams,
+									includeInactive: true,
+								},
+							})
+						}
 						initialPage={1}
 						initialLimit={10}
 					/>
