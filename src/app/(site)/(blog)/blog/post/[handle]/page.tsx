@@ -16,7 +16,7 @@ export async function generateStaticParams() {
 		return response.data.filter((param) => param.handle);
 	} catch (error) {
 		console.error(
-			`Failed to generate static paths for product pages: ${
+			`Failed to generate static paths for post pages: ${
 				error instanceof Error ? error.message : "Unknown error"
 			}.`,
 		);

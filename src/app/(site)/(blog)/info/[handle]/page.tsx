@@ -13,10 +13,10 @@ export async function generateStaticParams() {
 			queryParams: { limit: 100, type: ["info"] },
 		});
 
-		return response.posts.filter((param) => param.handle);
+		return response.data.filter((param) => param.handle);
 	} catch (error) {
 		console.error(
-			`Failed to generate static paths for product pages: ${
+			`Failed to generate static paths for info pages: ${
 				error instanceof Error ? error.message : "Unknown error"
 			}.`,
 		);

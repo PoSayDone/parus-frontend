@@ -1,10 +1,31 @@
 import { notFound } from "next/navigation";
+import { listProducts } from "@lib/data/products";
 import { getProductByHandle } from "@lib/data/products";
 import ProductTemplate from "@modules/products/templates";
 
 type Props = {
 	params: Promise<{ handle: string }>;
 };
+
+export async function generateStaticParams() {
+	try {
+		const { response } = await listProducts({
+			queryParams: { limit: 100 },
+		});
+		return response.data
+			.filter((product) => product.handle)
+			.map((product) => ({
+				handle: product.handle,
+			}));
+	} catch (error) {
+		console.error(
+			`Failed to generate static paths for product pages: ${
+				error instanceof Error ? error.message : "Unknown error"
+			}.`,
+		);
+		return [];
+	}
+}
 
 export async function generateMetadata(props: Props) {
 	const params = await props.params;
