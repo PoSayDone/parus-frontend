@@ -1,18 +1,19 @@
-import { Button, buttonVariants } from "@/components/ui/button";
-import Section from "@/components/ui/section";
-import { cn } from "@/lib/utils";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { buttonVariants } from "@/components/ui/button";
+import Section from "@/components/ui/section";
+import { cn } from "@/lib/utils";
 
 export default function Hero() {
 	return (
+		// biome-ignore lint/correctness/useUniqueElementIds: <explanation>
 		<Section
 			id="hero"
 			className="flex flex-col md:flex-row gap-4 py-0 w-full grow-0"
 		>
-			<div className="rounded-4xl p-10 bg-secondary-container flex-1 relative overflow-clip flex flex-col min-h-[600px] md:min-h-auto">
-				<div className="flex flex-col gap-4 relative z-[1] text-left">
+			<div className="rounded-4xl bg-secondary-container flex-1 relative overflow-clip flex flex-col min-h-[600px] md:min-h-auto">
+				<div className="flex flex-col gap-4 relative z-[1] text-left pt-10 px-10">
 					<h1 className="text-3xl lg:text-5xl font-medium">
 						Сопровождаем вас
 						<br /> в трудный час
@@ -22,25 +23,28 @@ export default function Hero() {
 						<br />к каждой детали похоронной церемонии
 					</p>
 				</div>
-				<div className="relative grow-1">
-					<Image
-						className="absolute top-4 left-1/2 -translate-x-1/2 min-w-[700px]"
-						src="/angel.png"
-						alt="Ангел"
-						width={795}
-						height={662}
-						priority
-					/>
+				<div className="relative 2xl:static grow-1">
+					<div className="absolute top-6 right-4 lg:right-20 -scale-x-100 xl:max-w-[600px] max-w-[500px] w-full aspect-[4/9]">
+						<Image
+							fill
+							className="object-cover"
+							src="/angel.png"
+							alt="Ангел"
+							priority
+						/>
+					</div>
 				</div>
-				<Link
-					href={"/prices"}
-					className={buttonVariants({
-						size: "lg",
-						className: "w-full z-[1]",
-					})}
-				>
-					Стоимость похорон
-				</Link>
+				<div className="pb-10 px-10 z-[1]">
+					<Link
+						href={"/prices"}
+						className={buttonVariants({
+							size: "lg",
+							className: "w-full",
+						})}
+					>
+						Стоимость похорон
+					</Link>
+				</div>
 			</div>
 			<div className="grid grid-cols-1 md:flex md:flex-col gap-4 sm:grid-cols-2">
 				<Link
