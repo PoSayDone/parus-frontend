@@ -1,24 +1,19 @@
-import React, { useMemo } from "react";
+"use client";
 
-import { StoreProduct } from "@/types/store";
+import type React from "react";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
+import { useContactModal } from "@/lib/hooks/use-contact-modal";
+import { cn } from "@/lib/utils";
+import type { StoreProduct } from "@/types/store";
 
 type MobileActionsProps = {
 	product: StoreProduct;
-	handleContactClick: () => void;
-	show: boolean;
-	optionsDisabled: boolean;
 };
 
-const MobileActions: React.FC<MobileActionsProps> = ({
-	product,
-	handleContactClick,
-	show,
-	optionsDisabled,
-}) => {
-	// eslint-disable-next-line react-hooks/exhaustive-deps
+const MobileActions: React.FC<MobileActionsProps> = ({ product }) => {
+	const { openModal: handleContactClick } = useContactModal();
+
 	const price = {
 		calculated_price_number: product.price,
 		calculated_price: `₽${product.price.toFixed(2)}`,
@@ -34,7 +29,6 @@ const MobileActions: React.FC<MobileActionsProps> = ({
 			<div
 				className={cn(
 					"lg:hidden inset-x-0 bottom-0 fixed z-10 bg-background",
-					!show && "pointer-events-none",
 				)}
 			>
 				<div
@@ -71,7 +65,7 @@ const MobileActions: React.FC<MobileActionsProps> = ({
 						className="w-full"
 						data-testid="mobile-cart-button"
 					>
-						Связаться с нами
+						Купить
 					</Button>
 				</div>
 			</div>

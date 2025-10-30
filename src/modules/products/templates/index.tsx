@@ -8,6 +8,7 @@ import ProductInfo from "@modules/products/templates/product-info";
 import SkeletonRelatedProducts from "@modules/skeletons/templates/skeleton-related-products";
 import { notFound } from "next/navigation";
 import { StoreProduct } from "@/types/store";
+import MobileActions from "../components/product-actions/mobile-actions";
 
 type ProductTemplateProps = {
 	product: StoreProduct;
@@ -31,9 +32,10 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({ product }) => {
 					<ProductInfo product={product} />
 					<ProductTabs product={product} />
 				</div>
-				<div className="flex flex-col sm:sticky sm:top-22 sm:py-0 sm:max-w-[400px] w-full py-8 gap-y-12">
+				<div className="hidden lg:flex flex-col sm:sticky sm:top-22 sm:py-0 sm:max-w-[400px] w-full py-8 gap-y-12">
 					<ProductActions product={product} />
 				</div>
+				<MobileActions product={product} />
 			</div>
 			<div
 				className="content-container my-16 sm:my-32 max-w-[1500px] w-full mx-auto"

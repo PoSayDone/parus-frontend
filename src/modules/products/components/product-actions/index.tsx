@@ -22,26 +22,18 @@ export default function ProductActions({
 	};
 
 	return (
-		<>
-			<div className="flex flex-col gap-y-2 bg-card p-4 rounded-3xl">
-				<div className="mb-6">
-					<ProductPrice product={product} />
-				</div>
-				<Button
-					onClick={handleContactClick}
-					disabled={!!disabled}
-					className="w-full"
-					data-testid="contact-button"
-				>
-					Купить
-				</Button>
-				<MobileActions
-					product={product}
-					handleContactClick={handleContactClick}
-					show={!false}
-					optionsDisabled={!!disabled}
-				/>
+		<div className="flex flex-col gap-y-2 bg-card p-4 rounded-3xl">
+			<div className="mb-6">
+				<ProductPrice product={product} />
 			</div>
-		</>
+			<Button
+				onClick={handleContactClick}
+				disabled={!!disabled}
+				className="w-full"
+				data-testid="contact-button"
+			>
+				Купить
+			</Button>
+		</div>
 	);
 }

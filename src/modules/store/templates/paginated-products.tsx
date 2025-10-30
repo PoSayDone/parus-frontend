@@ -1,13 +1,13 @@
 import { Pagination } from "@modules/store/components/pagination";
-import { SortOptions } from "@modules/store/components/refinement-list/sort-products";
-import { ProductCard } from "@/modules/products/components/card";
+import type { SortOptions } from "@modules/store/components/refinement-list/sort-products";
 import { listProducts } from "@/lib/data/products";
+import { ProductCard } from "@/modules/products/components/card";
 
 const PRODUCT_LIMIT = 12;
 
 type PaginatedProductsParams = {
 	limit: number;
-	handle?: string;
+	category_id?: string;
 };
 
 export default async function PaginatedProducts({
@@ -24,7 +24,7 @@ export default async function PaginatedProducts({
 	};
 
 	if (categoryId) {
-		queryParams["handle"] = categoryId;
+		queryParams["category_id"] = categoryId;
 	}
 
 	const {
