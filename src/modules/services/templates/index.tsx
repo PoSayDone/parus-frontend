@@ -6,7 +6,7 @@ export default function ServicesTemplate() {
 		<div className="min-h-screen bg-background">
 			<div className="container mx-auto px-4 md:px-8 py-12">
 				<div className="text-center mb-12">
-					<h1 className="text-4xl mb-4">Наши услуги</h1>
+					<h1 className="text-3xl md:text-4xl mb-4">Наши услуги</h1>
 					<p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
 						Мы предоставляем полный спектр ритуальных услуг с
 						заботой и пониманием. Наша команда профессионалов
@@ -18,6 +18,15 @@ export default function ServicesTemplate() {
 
 				{/* Services Grid */}
 				<ServicesList className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-12" />
+
+				<div className="text-center mb-8">
+					<a
+						href="/addresses"
+						className="inline-block bg-primary hover:bg-primary/90 text-primary-foreground font-medium py-3 px-6 rounded-lg transition-colors"
+					>
+						Полезные адреса в Перми
+					</a>
+				</div>
 
 				<ContactSection
 					title="Нужна консультация?"

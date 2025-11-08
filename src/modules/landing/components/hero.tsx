@@ -1,4 +1,3 @@
-import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
@@ -45,11 +44,11 @@ export default function Hero() {
 					</Link>
 				</div>
 			</div>
-			<div className="grid grid-cols-1 md:flex md:flex-col gap-4 sm:grid-cols-2">
+			<div className="grid grid-cols-1 md:flex md:flex-col gap-4">
 				<Link
 					className={cn(
 						buttonVariants(),
-						"hover:bg-inverse-primary/80 transition bg-inverse-primary text-foreground text-2xl font-medium sm:aspect-square px-8 text-center flex items-center justify-center rounded-full h-full",
+						"hover:bg-inverse-primary/80 transition bg-inverse-primary text-foreground text-2xl font-medium px-8 text-center flex items-center justify-center rounded-full h-full min-h-[200px] w-full",
 					)}
 					href={"#actions"}
 				>

@@ -1,11 +1,11 @@
 "use client";
 
-import { notFound } from "next/navigation";
+import { Check, CheckCircle2, Clock, Phone, Star } from "lucide-react";
 import Link from "next/link";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { notFound } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
-import { Star, Phone, Clock, Check, CheckCircle2 } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getServiceBySlug } from "@/lib/data/services";
 import ContactModalTrigger from "@/modules/contact/components/contact-modal-trigger";
 import ContactSection from "@/modules/contact/components/contact-section";

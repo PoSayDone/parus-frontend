@@ -1,5 +1,5 @@
-import { cn } from "@/lib/utils";
 import { servicesData } from "@/lib/data/services";
+import { cn } from "@/lib/utils";
 import { ServiceCard } from "./service-card";
 
 export default function ServicesList({ className }: { className?: string }) {
