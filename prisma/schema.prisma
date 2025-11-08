@@ -99,6 +99,8 @@ model Service {
     description      String
     icon             String?
     image            String?
+    thumbnail        String?
+    images           String[]
     price            String
     duration         String?
     features         String[]
@@ -117,6 +119,7 @@ model PricePlan {
     creditPrice String?
     popular     Boolean  @default(false)
     features    String[]
+    included    String[]
     href        String?
     active      Boolean  @default(true)
     createdAt   DateTime @default(now())

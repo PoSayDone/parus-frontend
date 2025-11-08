@@ -92,6 +92,8 @@ export const getService = async (id: string): Promise<Service | null> => {
 		description: service.description,
 		icon: service.icon || "",
 		image: service.image || "",
+		thumbnail: service.thumbnail || "",
+		images: service.images,
 		price: service.price,
 		duration: service.duration || "",
 		features: service.features,
@@ -109,6 +111,8 @@ export const createService = async (
 	const service = await prisma.service.create({
 		data: {
 			...data,
+			thumbnail: data.thumbnail,
+			images: data.images || [],
 		},
 	});
 
@@ -119,6 +123,8 @@ export const createService = async (
 		description: service.description,
 		icon: service.icon || "",
 		image: service.image || "",
+		thumbnail: service.thumbnail || "",
+		images: service.images,
 		price: service.price,
 		duration: service.duration || "",
 		features: service.features,
@@ -146,6 +152,8 @@ export const updateService = async (
 		description: service.description,
 		icon: service.icon || "",
 		image: service.image || "",
+		thumbnail: service.thumbnail || "",
+		images: service.images,
 		price: service.price,
 		duration: service.duration || "",
 		features: service.features,

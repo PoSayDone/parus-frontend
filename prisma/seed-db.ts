@@ -318,6 +318,8 @@ async function seedServices() {
 				features: service.features,
 				included: service.included,
 				gallery: service.gallery,
+				thumbnail: "", // Add default thumbnail
+				images: [], // Add default images array
 			},
 		});
 	}

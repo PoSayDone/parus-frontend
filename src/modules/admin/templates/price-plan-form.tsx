@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import {
 	Card,
 	CardContent,
@@ -12,28 +13,26 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 import {
-	Form,
 	FormControl,
+	FormDescription,
 	FormField,
 	FormItem,
 	FormLabel,
 	FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
-import { AdminFormLayout } from "./admin-form-layout";
+import { Textarea } from "@/components/ui/textarea";
 import {
-	pricePlanFormSchema,
-	PricePlanFormValues,
-} from "../schemas/price-plan-form-schema";
-import {
-	getPricePlan,
 	createPricePlan,
+	getPricePlan,
 	updatePricePlan,
 } from "@/lib/data/pricing-db";
-import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
+import {
+	type PricePlanFormValues,
+	pricePlanFormSchema,
+} from "../schemas/price-plan-form-schema";
+import { AdminFormLayout } from "./admin-form-layout";
 
 export default function PricePlanForm({
 	pricePlanId,
@@ -255,9 +254,13 @@ export default function PricePlanForm({
 					control={form.control}
 					name="active"
 					render={({ field }) => (
-						<FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-							<div className="space-y-0.5">
-								<FormLabel>Активен</FormLabel>
+						<FormItem className="flex flex-row items-center space-x-3 space-y-0">
+							<div className="space-y-1 leading-none w-full">
+								<FormLabel>Активный</FormLabel>
+								<FormDescription>
+									Если отмечено, пакет услуг будет виден
+									пользователям
+								</FormDescription>
 							</div>
 							<FormControl>
 								<Switch
