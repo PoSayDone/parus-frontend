@@ -3,40 +3,52 @@ import { Golos_Text } from "next/font/google";
 import "./globals.css";
 import ContactModalProvider from "@/modules/contact/components/contact-modal-provider";
 import { Toaster } from "@/components/ui/sonner";
+import { ThemeProvider } from "@/providers/ThemeProvider";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://parus.ru"),
-  title: {
-    default: "Парус - Ритуальные услуги и товары",
-    template: "%s | Парус",
-  },
-  description: "Профессиональные ритуальные услуги и качественные ритуальные товары от компании Парус. Поможем в трудную минуту с уважением и заботой.",
-  keywords: ["ритуальные услуги", "ритуальные товары", "похороны", "кремация", "гроб", "венки", "надгробия"],
-  authors: [{ name: "Парус" }],
-  creator: "Парус",
-  publisher: "Парус",
-  formatDetection: {
-    email: false,
-    address: false,
-    telephone: false,
-  },
-  openGraph: {
-    type: "website",
-    locale: "ru_RU",
-    url: "https://parus.ru",
-    title: "Парус - Ритуальные услуги и товары",
-    description: "Профессиональные ритуальные услуги и качественные ритуальные товары от компании Парус. Поможем в трудную минуту с уважением и заботой.",
-    siteName: "Парус",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Парус - Ритуальные услуги и товары",
-    description: "Профессиональные ритуальные услуги и качественные ритуальные товары от компании Парус. Поможем в трудную минуту с уважением и заботой.",
-  },
-  robots: {
-    index: true,
-    follow: true,
-  },
+	metadataBase: new URL("https://parus.ru"),
+	title: {
+		default: "Парус - Ритуальные услуги и товары",
+		template: "%s | Парус",
+	},
+	description:
+		"Профессиональные ритуальные услуги и качественные ритуальные товары от компании Парус. Поможем в трудную минуту с уважением и заботой.",
+	keywords: [
+		"ритуальные услуги",
+		"ритуальные товары",
+		"похороны",
+		"кремация",
+		"гроб",
+		"венки",
+		"надгробия",
+	],
+	authors: [{ name: "Парус" }],
+	creator: "Парус",
+	publisher: "Парус",
+	formatDetection: {
+		email: false,
+		address: false,
+		telephone: false,
+	},
+	openGraph: {
+		type: "website",
+		locale: "ru_RU",
+		url: "https://parus.ru",
+		title: "Парус - Ритуальные услуги и товары",
+		description:
+			"Профессиональные ритуальные услуги и качественные ритуальные товары от компании Парус. Поможем в трудную минуту с уважением и заботой.",
+		siteName: "Парус",
+	},
+	twitter: {
+		card: "summary_large_image",
+		title: "Парус - Ритуальные услуги и товары",
+		description:
+			"Профессиональные ритуальные услуги и качественные ритуальные товары от компании Парус. Поможем в трудную минуту с уважением и заботой.",
+	},
+	robots: {
+		index: true,
+		follow: true,
+	},
 };
 
 const golos = Golos_Text({
@@ -52,7 +64,7 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang="ru">
+		<html lang="ru" suppressHydrationWarning>
 			<body className={`${golos.className} antialiased`}>
 				<ContactModalProvider />
 				<Toaster />

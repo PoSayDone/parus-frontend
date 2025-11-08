@@ -7,10 +7,9 @@ import { cn } from "@/lib/utils";
 
 export default function Hero() {
 	return (
-		// biome-ignore lint/correctness/useUniqueElementIds: <explanation>
 		<Section
 			id="hero"
-			className="flex flex-col md:flex-row gap-4 py-0 w-full grow-0"
+			className="flex flex-col md:flex-row gap-4 py-0 w-full grow-0 md:min-h-[650px]"
 		>
 			<div className="rounded-4xl bg-secondary-container flex-1 relative overflow-clip flex flex-col min-h-[600px] md:min-h-auto">
 				<div className="flex flex-col gap-4 relative z-[1] text-left pt-10 px-10">
@@ -50,14 +49,14 @@ export default function Hero() {
 				<Link
 					className={cn(
 						buttonVariants(),
-						"hover:bg-inverse-primary/80 transition bg-inverse-primary text-foreground text-2xl font-medium sm:aspect-square px-8 text-center flex items-center justify-center rounded-full sm:h-auto h-[150px]",
+						"hover:bg-inverse-primary/80 transition bg-inverse-primary text-foreground text-2xl font-medium sm:aspect-square px-8 text-center flex items-center justify-center rounded-full h-full",
 					)}
 					href={"#actions"}
 				>
 					Что делать,
 					<br /> если случилась беда?
 				</Link>
-				<Link
+				{/*<Link
 					href={"/designer"}
 					className={cn(
 						buttonVariants(),
@@ -76,7 +75,7 @@ export default function Hero() {
 					<div className="w-[54] h-[54] absolute right-5 bottom-5 bg-primary text-on-primary rounded-full flex items-center justify-center">
 						<ArrowRight className="size-6" />
 					</div>
-				</Link>
+				</Link>*/}
 			</div>
 		</Section>
 	);
