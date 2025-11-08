@@ -1,9 +1,9 @@
 "use client";
 
-import PricingCard from "@/modules/common/components/pricing-card";
-import { pricingPlans } from "@/lib/data/pricing";
-import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { pricingPlans } from "@/lib/data/pricing";
+import PricingCard from "@/modules/common/components/pricing-card";
 
 export default function PricesList() {
 	const [priceType, setPriceType] = useState<"parts" | "full">("parts");
