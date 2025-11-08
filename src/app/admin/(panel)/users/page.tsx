@@ -1,21 +1,13 @@
 "use client";
 
+import { Calendar, Plus, User as UserIcon } from "lucide-react";
 import Link from "next/link";
+import { toast } from "sonner";
 import { buttonVariants } from "@/components/ui/button";
-import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardHeader,
-	CardTitle,
-} from "@/components/ui/card";
-import { User } from "@/types/admin";
+import { deleteUser, listUsers } from "@/lib/data/users";
 import { AdminTable } from "@/modules/admin/components/admin-table";
 import { StatusBadge } from "@/modules/admin/components/status-badge";
-import { Plus, User as UserIcon, Calendar } from "lucide-react";
-import { listUsers } from "@/lib/data/users";
-import { deleteUser } from "@/lib/data/users";
-import { toast } from "sonner";
+import type { User } from "@/types/admin";
 
 export default function UsersPage() {
 	const formatDate = (dateString: string | null) => {
@@ -45,7 +37,9 @@ export default function UsersPage() {
 					</div>
 					<div>
 						<div className="font-medium">{row.name}</div>
-						<div className="text-sm text-muted-foreground">{row.email}</div>
+						<div className="text-sm text-muted-foreground">
+							{row.email}
+						</div>
 					</div>
 				</div>
 			),
@@ -101,25 +95,15 @@ export default function UsersPage() {
 				</Link>
 			</div>
 
-			<Card className="bg-transparent border-border-variant">
-				<CardHeader>
-					<CardTitle>Список пользователей</CardTitle>
-					<CardDescription>
-						Управление пользователями системы
-					</CardDescription>
-				</CardHeader>
-				<CardContent>
-					<AdminTable
-						columns={columns}
-						data={[]}
-						actions={actions}
-						getKey={(row) => row.id}
-						fetchDataAction={listUsers}
-						initialPage={1}
-						initialLimit={10}
-					/>
-				</CardContent>
-			</Card>
+			<AdminTable
+				columns={columns}
+				data={[]}
+				actions={actions}
+				getKey={(row) => row.id}
+				fetchDataAction={listUsers}
+				initialPage={1}
+				initialLimit={10}
+			/>
 		</div>
 	);
 }

@@ -1,13 +1,11 @@
 "use client";
 
-import React from "react";
-
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Star, Upload, X } from "lucide-react";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Upload, X, Star } from "lucide-react";
-
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
 	Card,
@@ -16,6 +14,7 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
 	FormControl,
 	FormDescription,
@@ -25,23 +24,21 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
-import { Checkbox } from "@/components/ui/checkbox";
-import { SlugHandler } from "../components/slug-handler";
-import { AdminFormLayout } from "./admin-form-layout";
+import { listCategories } from "@/lib/data/categories";
 import {
-	productFormSchema,
-	ProductFormValues,
-} from "../schemas/product-form-schema";
-import {
-	getProductByHandle,
 	createProduct,
+	getProductByHandle,
 	updateProduct,
 } from "@/lib/data/products";
-import { listCategories } from "@/lib/data/categories";
 import { uploadFile } from "@/lib/data/uploads";
-import { Switch } from "@/components/ui/switch";
-import { toast } from "sonner";
+import { SlugHandler } from "../components/slug-handler";
+import {
+	type ProductFormValues,
+	productFormSchema,
+} from "../schemas/product-form-schema";
+import { AdminFormLayout } from "./admin-form-layout";
 
 export default function ProductForm({
 	productHandle,

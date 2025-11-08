@@ -36,6 +36,21 @@ const navigation = [
 		icon: FolderOpen,
 	},
 	{
+		name: "Адреса",
+		href: "/admin/addresses",
+		icon: FolderOpen,
+	},
+	{
+		name: "Услуги",
+		href: "/admin/services",
+		icon: FolderOpen,
+	},
+	{
+		name: "Пакеты услуг",
+		href: "/admin/pricing",
+		icon: FolderOpen,
+	},
+	{
 		name: "Блог",
 		href: "/admin/posts",
 		icon: FileText,

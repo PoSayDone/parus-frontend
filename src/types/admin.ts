@@ -4,6 +4,9 @@ import type {
 	Category as PrismaCategory,
 	BlogPost as PrismaBlogPost,
 	User as PrismaUser,
+	Address as PrismaAddress,
+	Service as PrismaService,
+	PricePlan as PrismaPricePlan,
 } from "@prisma/client";
 
 // Convert Prisma Date types to string for API responses
@@ -34,8 +37,25 @@ export interface BlogPost
 	updatedAt: string;
 }
 
-export interface User
-	extends Omit<PrismaUser, "createdAt" | "updatedAt"> {
+export interface User extends Omit<PrismaUser, "createdAt" | "updatedAt"> {
+	createdAt: string;
+	updatedAt: string;
+}
+
+export interface Address
+	extends Omit<PrismaAddress, "createdAt" | "updatedAt"> {
+	createdAt: string;
+	updatedAt: string;
+}
+
+export interface Service
+	extends Omit<PrismaService, "createdAt" | "updatedAt"> {
+	createdAt: string;
+	updatedAt: string;
+}
+
+export interface PricePlan
+	extends Omit<PrismaPricePlan, "createdAt" | "updatedAt"> {
 	createdAt: string;
 	updatedAt: string;
 }

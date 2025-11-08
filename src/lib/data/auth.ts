@@ -1,11 +1,11 @@
 "use server";
 
+import prisma from "@lib/prisma";
+import bcrypt from "bcryptjs";
 import { getIronSession } from "iron-session";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { sessionOptions, User } from "@/lib/session";
-import bcrypt from "bcryptjs";
-import prisma from "@lib/prisma";
+import { sessionOptions, type User } from "@/lib/session";
 
 export async function signIn({
 	email,

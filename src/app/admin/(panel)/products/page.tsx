@@ -2,13 +2,6 @@
 
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
-import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardHeader,
-	CardTitle,
-} from "@/components/ui/card";
 import { Product } from "@/types/admin";
 import { AdminTable } from "@/modules/admin/components/admin-table";
 import { StatusBadge } from "@/modules/admin/components/status-badge";
@@ -103,33 +96,23 @@ export default function ProductsPage() {
 				</Link>
 			</div>
 
-			<Card className="bg-transparent border-border-variant">
-				<CardHeader>
-					<CardTitle>Каталог продуктов</CardTitle>
-					<CardDescription>
-						Управление продуктами в каталоге
-					</CardDescription>
-				</CardHeader>
-				<CardContent>
-					<AdminTable
-						columns={columns}
-						data={[]}
-						actions={actions}
-						getKey={(row) => row.handle}
-						fetchDataAction={({ page, queryParams }) =>
-							listProducts({
-								page,
-								queryParams: {
-									...queryParams,
-									includeInactive: true,
-								},
-							})
-						}
-						initialPage={1}
-						initialLimit={10}
-					/>
-				</CardContent>
-			</Card>
+			<AdminTable
+				columns={columns}
+				data={[]}
+				actions={actions}
+				getKey={(row) => row.handle}
+				fetchDataAction={({ page, queryParams }) =>
+					listProducts({
+						page,
+						queryParams: {
+							...queryParams,
+							includeInactive: true,
+						},
+					})
+				}
+				initialPage={1}
+				initialLimit={10}
+			/>
 		</div>
 	);
 }

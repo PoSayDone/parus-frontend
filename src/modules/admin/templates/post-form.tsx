@@ -1,14 +1,13 @@
 "use client";
 
-import type React from "react";
-
-import { useState, useEffect, useRef } from "react";
-import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import dynamic from "next/dynamic";
 import { Upload, X } from "lucide-react";
-
+import dynamic from "next/dynamic";
+import { useRouter } from "next/navigation";
+import type React from "react";
+import { useEffect, useRef, useState } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
 	Card,
@@ -26,7 +25,6 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import {
 	Select,
 	SelectContent,
@@ -34,13 +32,16 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
-import { SlugHandler } from "../components/slug-handler";
-import { AdminFormLayout } from "./admin-form-layout";
-import { postFormSchema, PostFormValues } from "../schemas/post-form-schema";
-import { getPostByHandle, createPost, updatePost } from "@/lib/data/blog";
-import { uploadFile } from "@/lib/data/uploads";
 import { Switch } from "@/components/ui/switch";
-import { toast } from "sonner";
+import { Textarea } from "@/components/ui/textarea";
+import { createPost, getPostByHandle, updatePost } from "@/lib/data/blog";
+import { uploadFile } from "@/lib/data/uploads";
+import { SlugHandler } from "../components/slug-handler";
+import {
+	type PostFormValues,
+	postFormSchema,
+} from "../schemas/post-form-schema";
+import { AdminFormLayout } from "./admin-form-layout";
 
 const Editor = dynamic(() => import("@/modules/admin/components/editor"), {
 	ssr: false,

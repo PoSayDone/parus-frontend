@@ -1,6 +1,8 @@
 "use client";
 
+import { Calendar, Plus, User } from "lucide-react";
 import Link from "next/link";
+import { toast } from "sonner";
 import { buttonVariants } from "@/components/ui/button";
 import {
 	Card,
@@ -9,15 +11,12 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
-import { BlogPost } from "@/types/admin";
+import { deletePost, listPosts } from "@/lib/data/blog";
 import { AdminTable } from "@/modules/admin/components/admin-table";
-import { StatusBadge } from "@/modules/admin/components/status-badge";
-import { StatCard } from "@/modules/admin/components/stat-card";
-import { Plus, Calendar, User } from "lucide-react";
 import { PostTypeBadge } from "@/modules/admin/components/post-type-badge";
-import { listPosts } from "@/lib/data/blog";
-import { deletePost } from "@/lib/data/blog";
-import { toast } from "sonner";
+import { StatCard } from "@/modules/admin/components/stat-card";
+import { StatusBadge } from "@/modules/admin/components/status-badge";
+import type { BlogPost } from "@/types/admin";
 
 export default function BlogPage() {
 	const formatDate = (dateString: string | null) => {
@@ -140,25 +139,15 @@ export default function BlogPage() {
 				<StatCard title="Всего просмотров" value="0" />
 			</div>
 
-			<Card className="bg-transparent border-border-variant">
-				<CardHeader>
-					<CardTitle>Статьи блога</CardTitle>
-					<CardDescription>
-						Управление публикациями и контентом
-					</CardDescription>
-				</CardHeader>
-				<CardContent>
-					<AdminTable
-						columns={columns}
-						data={[]}
-						actions={actions}
-						getKey={(row) => row.handle}
-						fetchDataAction={listPosts}
-						initialPage={1}
-						initialLimit={10}
-					/>
-				</CardContent>
-			</Card>
+			<AdminTable
+				columns={columns}
+				data={[]}
+				actions={actions}
+				getKey={(row) => row.handle}
+				fetchDataAction={listPosts}
+				initialPage={1}
+				initialLimit={10}
+			/>
 		</div>
 	);
 }

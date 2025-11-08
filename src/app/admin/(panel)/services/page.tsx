@@ -4,47 +4,39 @@ import { Plus } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
 import { buttonVariants } from "@/components/ui/button";
-import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardHeader,
-	CardTitle,
-} from "@/components/ui/card";
-import { deleteCategory, listCategories } from "@/lib/data/categories";
+import { deleteService, listServices } from "@/lib/data/services-db";
 import { AdminTable } from "@/modules/admin/components/admin-table";
-import { StatusBadge } from "@/modules/admin/components/status-badge";
-import type { Category } from "@/types/admin";
+import type { Service } from "@/types/admin";
 
-export default function CategoriesPage() {
-	const handleDelete = async (handle: string) => {
+export default function ServicesPage() {
+	const handleDelete = async (id: string) => {
 		try {
-			await deleteCategory(handle);
-			toast.success("Категория успешно удалена");
+			await deleteService(id);
+			toast.success("Услуга успешно удалена");
 		} catch (error: any) {
-			console.error("Error deleting category:", error);
-			toast.error(error.message || "Ошибка при удалении категории");
+			console.error("Error deleting service:", error);
+			toast.error(error.message || "Ошибка при удалении услуги");
 			throw error; // Re-throw to be caught by the AdminTable
 		}
 	};
 
 	const columns = [
 		{
-			key: "name",
-			label: "Категория",
-			render: (value: string, row: Category) => (
+			key: "title",
+			label: "Название",
+			render: (value: string, row: Service) => (
 				<div className="flex items-center space-x-3">
 					<div>
-						<div className="font-medium">{row.name}</div>
+						<div className="font-medium">{row.title}</div>
 						<div className="text-sm text-muted-foreground">
-							/{row.handle}
+							Цена: {row.price}
 						</div>
 					</div>
 				</div>
 			),
 		},
 		{
-			key: "description",
+			key: "shortDescription",
 			label: "Описание",
 			render: (value: string | null) => (
 				<div className="max-w-xs">
@@ -55,18 +47,21 @@ export default function CategoriesPage() {
 			),
 		},
 		{
-			key: "productCount",
-			label: "Товаров",
-			render: (value: number) => `${value} товаров`,
+			key: "duration",
+			label: "Длительность",
+			render: (value: string | null) => (
+				<div className="max-w-xs">
+					<p className="text-sm">{value || "—"}</p>
+				</div>
+			),
 		},
 		{
-			key: "status",
+			key: "active",
 			label: "Статус",
-			render: (value: Category["status"]) => (
-				<StatusBadge
-					status={value === "active" ? "active" : "inactive"}
-					label={value === "active" ? "Активна" : "Неактивна"}
-				/>
+			render: (value: boolean) => (
+				<div className="max-w-xs">
+					<p className="text-sm">{value ? "Активна" : "Неактивна"}</p>
+				</div>
 			),
 		},
 	];
@@ -75,12 +70,12 @@ export default function CategoriesPage() {
 		{
 			type: "view" as const,
 			label: "Просмотр",
-			href: "/categories/{key}",
+			href: "/services/{key}",
 		},
 		{
 			type: "edit" as const,
 			label: "Редактировать",
-			href: "/admin/categories/{key}/edit",
+			href: "/admin/services/{key}/edit",
 		},
 		{ type: "delete" as const, label: "Удалить", onClick: handleDelete },
 	];
@@ -90,18 +85,18 @@ export default function CategoriesPage() {
 			<div className="flex items-center justify-between">
 				<div>
 					<h2 className="text-2xl font-medium tracking-tight">
-						Категории
+						Услуги
 					</h2>
 					<p className="text-muted-foreground">
-						Управляйте категориями товаров и услуг
+						Управляйте ритуальными услугами
 					</p>
 				</div>
 				<Link
-					href="/admin/categories/new"
+					href="/admin/services/new"
 					className={buttonVariants({ variant: "default" })}
 				>
 					<Plus />
-					Добавить категорию
+					Добавить услугу
 				</Link>
 			</div>
 
@@ -109,8 +104,8 @@ export default function CategoriesPage() {
 				columns={columns}
 				data={[]}
 				actions={actions}
-				getKey={(row) => row.handle}
-				fetchDataAction={listCategories}
+				getKey={(row) => row.id}
+				fetchDataAction={listServices}
 				initialPage={1}
 				initialLimit={10}
 			/>

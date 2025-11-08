@@ -1,27 +1,10 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import {
-	FormControl,
-	FormField,
-	FormItem,
-	FormLabel,
-	FormMessage,
-} from "@/components/ui/form";
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
-import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { userFormSchema, UserFormSchema } from "../schemas/user-form-schema";
-import { AdminFormLayout } from "@/modules/admin/templates/admin-form-layout";
+import React, { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import {
 	Card,
 	CardContent,
@@ -29,7 +12,27 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
-import { getUserById, updateUser, createUser } from "@/lib/data/users";
+import {
+	FormControl,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
+import { createUser, getUserById, updateUser } from "@/lib/data/users";
+import { AdminFormLayout } from "@/modules/admin/templates/admin-form-layout";
+import {
+	type UserFormSchema,
+	userFormSchema,
+} from "../schemas/user-form-schema";
 
 export function UserForm({ userId }: { userId?: string }) {
 	const router = useRouter();

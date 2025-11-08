@@ -19,11 +19,15 @@ export function useAdminStats() {
 		const fetchStats = async () => {
 			try {
 				// Fetch all data with a single page request
-				const [productsResult, categoriesResult, postsResult] = await Promise.all([
-					listProducts({ page: 1, queryParams: { limit: 1000 } }),
-					listCategories({ page: 1, queryParams: { limit: 1000 } }),
-					listPosts({ page: 1, queryParams: { limit: 1000 } }),
-				]);
+				const [productsResult, categoriesResult, postsResult] =
+					await Promise.all([
+						listProducts({ page: 1, queryParams: { limit: 1000 } }),
+						listCategories({
+							page: 1,
+							queryParams: { limit: 1000 },
+						}),
+						listPosts({ page: 1, queryParams: { limit: 1000 } }),
+					]);
 
 				const posts = postsResult.response.data || [];
 

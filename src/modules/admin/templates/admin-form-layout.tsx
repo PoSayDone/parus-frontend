@@ -1,11 +1,11 @@
 "use client";
 
-import React from "react";
-import Link from "next/link";
 import { ArrowLeft, Save } from "lucide-react";
+import Link from "next/link";
+import type React from "react";
+import type { FieldValues, UseFormReturn } from "react-hook-form";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
-import { FieldValues, UseFormReturn } from "react-hook-form";
 
 interface AdminFormLayoutProps<T extends FieldValues> {
 	title: string;

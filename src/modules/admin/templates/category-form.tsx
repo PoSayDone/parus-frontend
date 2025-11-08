@@ -1,13 +1,13 @@
 "use client";
 
-import type React from "react";
-
-import { useState, useEffect, useRef } from "react";
-import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
 import { Upload, X } from "lucide-react";
-
+import { useRouter } from "next/navigation";
+import type React from "react";
+import { useEffect, useRef, useState } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
 import {
 	Card,
 	CardContent,
@@ -24,22 +24,20 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
-import { SlugHandler } from "../components/slug-handler";
-import { AdminFormLayout } from "./admin-form-layout";
+import { Textarea } from "@/components/ui/textarea";
 import {
-	categoryFormSchema,
-	CategoryFormValues,
-} from "../schemas/category-form-schema";
-import {
-	getCategoryByHandle,
 	createCategory,
+	getCategoryByHandle,
 	updateCategory,
 } from "@/lib/data/categories";
 import { uploadFile } from "@/lib/data/uploads";
-import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
+import { SlugHandler } from "../components/slug-handler";
+import {
+	type CategoryFormValues,
+	categoryFormSchema,
+} from "../schemas/category-form-schema";
+import { AdminFormLayout } from "./admin-form-layout";
 
 export default function CategoryForm({
 	categoryHandle,

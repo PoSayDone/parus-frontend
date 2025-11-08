@@ -21,19 +21,19 @@ model User {
 }
 
 model Product {
-    id            String         @id @default(uuid())
-    title         String
-    description   String?
-    handle        String         @unique
-    thumbnail     String?
-    images        String[]
-    categories    Category[]
+    id              String                  @id @default(uuid())
+    title           String
+    description     String?
+    handle          String                  @unique
+    thumbnail       String?
+    images          String[]
+    categories      Category[]
     characteristics ProductCharacteristic[]
-    price         Float          @default(0)
-    tags          String[]
-    active        Boolean        @default(false)
-    createdAt     DateTime       @default(now())
-    updatedAt     DateTime       @updatedAt
+    price           Float                   @default(0)
+    tags            String[]
+    active          Boolean                 @default(false)
+    createdAt       DateTime                @default(now())
+    updatedAt       DateTime                @updatedAt
 }
 
 model ProductCharacteristic {
@@ -75,6 +75,50 @@ model BlogPost {
     author      String?
     draft       Boolean  @default(true)
     type        String   @default("article")
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+}
+
+model Address {
+    id        String   @id @default(uuid())
+    type      String // "zags", "morgue", "cemetery"
+    name      String
+    address   String?
+    phone     String?
+    schedule  String?
+    district  String?
+    location  String?
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model Service {
+    id               String   @id @default(uuid())
+    title            String
+    shortDescription String?
+    description      String
+    icon             String?
+    image            String?
+    price            String
+    duration         String?
+    features         String[]
+    included         String[]
+    gallery          String[]
+    active           Boolean  @default(true)
+    createdAt        DateTime @default(now())
+    updatedAt        DateTime @updatedAt
+}
+
+model PricePlan {
+    id          String   @id @default(uuid())
+    title       String
+    description String
+    price       String
+    creditPrice String?
+    popular     Boolean  @default(false)
+    features    String[]
+    href        String?
+    active      Boolean  @default(true)
     createdAt   DateTime @default(now())
     updatedAt   DateTime @updatedAt
 }
