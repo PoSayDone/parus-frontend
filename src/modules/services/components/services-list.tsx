@@ -1,4 +1,4 @@
-import { listServices } from "@/lib/data/services-db";
+import { listServices } from "@/lib/data/services";
 import { cn } from "@/lib/utils";
 import { ServiceCard } from "./service-card";
 

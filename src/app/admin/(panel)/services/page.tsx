@@ -4,7 +4,7 @@ import { Plus } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
 import { buttonVariants } from "@/components/ui/button";
-import { deleteService, listServices } from "@/lib/data/services-db";
+import { deleteService, listServices } from "@/lib/data/services";
 import { AdminTable } from "@/modules/admin/components/admin-table";
 import type { Service } from "@/types/admin";
 import { StatusBadge } from "@/modules/admin/components/status-badge";

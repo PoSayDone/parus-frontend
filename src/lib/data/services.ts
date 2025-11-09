@@ -9,6 +9,7 @@ type Props = {
 	queryParams?: {
 		limit?: number;
 		q?: string;
+		includeInactive?: boolean;
 		[key: string]: unknown;
 	};
 };
@@ -35,6 +36,10 @@ export const listServices = async ({ page = 1, queryParams }: Props) => {
 				},
 			},
 		];
+	}
+
+	if (!queryParams?.includeInactive) {
+		where.active = true;
 	}
 
 	const [services, count] = await Promise.all([

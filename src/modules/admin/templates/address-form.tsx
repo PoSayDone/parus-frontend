@@ -29,11 +29,7 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import {
-	createAddress,
-	getAddress,
-	updateAddress,
-} from "@/lib/data/addresses-db";
+import { createAddress, getAddress, updateAddress } from "@/lib/data/addresses";
 import {
 	type AddressFormValues,
 	addressFormSchema,

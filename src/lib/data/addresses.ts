@@ -10,6 +10,7 @@ type Props = {
 		limit?: number;
 		q?: string;
 		type?: string;
+		includeInactive?: boolean;
 		[key: string]: unknown;
 	};
 };
@@ -40,6 +41,10 @@ export const listAddresses = async ({ page = 1, queryParams }: Props) => {
 
 	if (queryParams?.type) {
 		where.type = queryParams.type;
+	}
+
+	if (!queryParams?.includeInactive) {
+		where.active = true;
 	}
 
 	const [addresses, count] = await Promise.all([

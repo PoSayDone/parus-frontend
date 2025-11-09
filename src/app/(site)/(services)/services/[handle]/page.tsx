@@ -1,4 +1,4 @@
-import { listServices } from "@/lib/data/services-db";
+import { listServices } from "@/lib/data/services";
 import ServicePageTemplate from "@/modules/services/templates/service-page-template";
 
 export async function generateStaticParams() {

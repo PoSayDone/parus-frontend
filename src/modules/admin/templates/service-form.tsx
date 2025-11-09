@@ -27,11 +27,7 @@ import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { TagsInput } from "@/components/ui/tags-input";
 import { Textarea } from "@/components/ui/textarea";
-import {
-	createService,
-	getService,
-	updateService,
-} from "@/lib/data/services-db";
+import { createService, getService, updateService } from "@/lib/data/services";
 import { uploadFile } from "@/lib/data/uploads";
 import { cn } from "@/lib/utils";
 import { SlugHandler } from "../components/slug-handler";

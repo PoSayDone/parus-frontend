@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { listAddresses } from "@/lib/data/addresses-db";
+import { listAddresses } from "@/lib/data/addresses";
 
 export default async function AddressesList() {
 	const {

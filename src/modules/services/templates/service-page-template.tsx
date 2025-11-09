@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Icon, type IconName } from "@/components/ui/icon-picker";
-import { getService } from "@/lib/data/services-db";
+import { getService } from "@/lib/data/services";
 import ContactModalTrigger from "@/modules/contact/components/contact-modal-trigger";
 import ContactSection from "@/modules/contact/components/contact-section";
 import Image from "next/image";

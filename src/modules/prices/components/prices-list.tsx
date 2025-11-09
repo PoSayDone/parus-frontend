@@ -1,4 +1,4 @@
-import { listPricePlans } from "@/lib/data/pricing-db";
+import { listPricePlans } from "@/lib/data/pricing";
 import PricesListClient from "./prices-list-client";
 
 export default async function PricesListServer() {

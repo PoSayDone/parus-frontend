@@ -4,17 +4,10 @@ import { Plus } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
 import { buttonVariants } from "@/components/ui/button";
-import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardHeader,
-	CardTitle,
-} from "@/components/ui/card";
-import { deletePricePlan, listPricePlans } from "@/lib/data/pricing-db";
+import { deletePricePlan, listPricePlans } from "@/lib/data/pricing";
 import { AdminTable } from "@/modules/admin/components/admin-table";
-import type { PricePlan } from "@/types/admin";
 import { StatusBadge } from "@/modules/admin/components/status-badge";
+import type { PricePlan } from "@/types/admin";
 
 export default function PricingPage() {
 	const handleDelete = async (id: string) => {

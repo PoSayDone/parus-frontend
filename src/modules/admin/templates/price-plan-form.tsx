@@ -28,7 +28,7 @@ import {
 	createPricePlan,
 	getPricePlan,
 	updatePricePlan,
-} from "@/lib/data/pricing-db";
+} from "@/lib/data/pricing";
 import {
 	type PricePlanFormValues,
 	pricePlanFormSchema,

@@ -1,4 +1,4 @@
-import { listServices } from "@/lib/data/services-db";
+import { listServices } from "@/lib/data/services";
 import EmblaCarousel from "@/modules/common/components/embla-carousel";
 import { ServiceCard } from "@/modules/services/components/service-card";
 import ListPlaceholder from "./list-placeholder";

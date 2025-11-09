@@ -1,9 +1,9 @@
-import { listAddresses } from "@/lib/data/addresses-db";
+import { listAddresses } from "@/lib/data/addresses";
 import { listPosts } from "@/lib/data/blog";
 import { listCategories } from "@/lib/data/categories";
-import { listPricePlans } from "@/lib/data/pricing-db";
+import { listPricePlans } from "@/lib/data/pricing";
 import { listProducts } from "@/lib/data/products";
-import { listServices } from "@/lib/data/services-db";
+import { listServices } from "@/lib/data/services";
 
 export async function getAdminStats() {
 	try {

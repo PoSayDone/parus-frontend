@@ -5,7 +5,7 @@ import Link from "next/link";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
-import { deleteAddress, listAddresses } from "@/lib/data/addresses-db";
+import { deleteAddress, listAddresses } from "@/lib/data/addresses";
 import { AdminTable } from "@/modules/admin/components/admin-table";
 import type { Address } from "@/types/admin";
 import { StatusBadge } from "@/modules/admin/components/status-badge";
