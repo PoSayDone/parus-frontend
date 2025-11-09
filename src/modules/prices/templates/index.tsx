@@ -1,4 +1,6 @@
+import { Suspense } from "react";
 import ContactSection from "@/modules/contact/components/contact-section";
+import SkeletonPricesList from "@/modules/skeletons/templates/skeleton-prices-grid";
 import PricesList from "../components/prices-list";
 
 export default function PricesTemplate() {
@@ -18,8 +20,9 @@ export default function PricesTemplate() {
 					</p>
 				</div>
 
-				{/* Pricing Grid */}
-				<PricesList />
+				<Suspense fallback={<SkeletonPricesList />}>
+					<PricesList />
+				</Suspense>
 
 				{/* Additional Services Section */}
 				<div className="bg-muted/50 rounded-[32px] p-8 mb-8 md:pb-16 mt-12">

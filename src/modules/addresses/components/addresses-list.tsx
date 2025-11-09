@@ -1,13 +1,28 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { zagsData, morguesData, cemeteriesData } from "@/lib/data/addresses";
+import { listAddresses } from "@/lib/data/addresses-db";
 
-export default function AddressesList() {
+export default async function AddressesList() {
+	const {
+		response: { data: addresses },
+	} = await listAddresses({
+		page: 1,
+		queryParams: { limit: 100 },
+	});
+
+	const zagsData = addresses.filter((address) => address.type === "zags");
+	const morguesData = addresses.filter(
+		(address) => address.type === "morgue",
+	);
+	const cemeteriesData = addresses.filter(
+		(address) => address.type === "cemetery",
+	);
+
 	const groupedCemeteries = cemeteriesData.reduce(
 		(acc, cemetery) => {
-			if (!acc[cemetery.district]) {
-				acc[cemetery.district] = [];
+			if (!acc[cemetery.district!]) {
+				acc[cemetery.district!] = [];
 			}
-			acc[cemetery.district].push(cemetery);
+			acc[cemetery.district!].push(cemetery);
 			return acc;
 		},
 		{} as Record<string, typeof cemeteriesData>,
@@ -21,8 +36,8 @@ export default function AddressesList() {
 					ЗАГС города Перми
 				</h2>
 				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-					{zagsData.map((zags, index) => (
-						<Card key={index}>
+					{zagsData.map((zags) => (
+						<Card key={zags.id}>
 							<CardHeader>
 								<CardTitle className="text-lg max-w-[80%]">
 									{zags.name}
@@ -53,11 +68,11 @@ export default function AddressesList() {
 					Морги города Перми
 				</h2>
 				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-					{morguesData.map((morgue, index) => (
-						<Card key={index}>
+					{morguesData.map((morgue) => (
+						<Card key={morgue.id}>
 							<CardHeader>
 								<CardTitle className="text-lg max-w-[80%]">
-									{morgue.institution}
+									{morgue.name}
 								</CardTitle>
 							</CardHeader>
 							<CardContent>
@@ -95,9 +110,9 @@ export default function AddressesList() {
 								</CardHeader>
 								<CardContent>
 									<div className="space-y-3">
-										{cemeteries.map((cemetery, index) => (
+										{cemeteries.map((cemetery) => (
 											<div
-												key={index}
+												key={cemetery.id}
 												className="border-b pb-2 last:border-b-0 last:pb-0"
 											>
 												<p>{cemetery.name}</p>

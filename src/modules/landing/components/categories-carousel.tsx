@@ -1,7 +1,7 @@
+import Image from "next/image";
 import { listCategories } from "@/lib/data/categories";
 import EmblaCarousel from "@/modules/common/components/embla-carousel";
 import LandingCard from "./landing-card";
-import Image from "next/image";
 import ListPlaceholder from "./list-placeholder";
 
 export default async function CategoriesCarousel() {

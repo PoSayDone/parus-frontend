@@ -1,9 +1,9 @@
 "use server";
 
 import prisma from "@lib/prisma";
-import { Prisma } from "@prisma/client";
-import { SortOptions } from "@modules/store/components/refinement-list/sort-products";
-import { Product } from "@/types/admin";
+import type { SortOptions } from "@modules/store/components/refinement-list/sort-products";
+import type { Prisma } from "@prisma/client";
+import type { Product } from "@/types/admin";
 import { revalidateCategories } from "./categories";
 
 export const listProducts = async ({
@@ -120,7 +120,7 @@ export const createProduct = async (data: any) => {
 	}
 
 	// Handle categories if provided
-	let categoryConnectData = undefined;
+	let categoryConnectData;
 	if (categories && Array.isArray(categories) && categories.length > 0) {
 		// Check if categories contains objects with handles or just strings
 		if (typeof categories[0] === "string") {
@@ -137,7 +137,7 @@ export const createProduct = async (data: any) => {
 	}
 
 	// Handle characteristics if provided
-	let characteristicsData = undefined;
+	let characteristicsData;
 	if (
 		characteristics &&
 		Array.isArray(characteristics) &&
@@ -177,7 +177,7 @@ export const updateProduct = async (handle: string, data: any) => {
 	}
 
 	// Handle categories if provided
-	let categoryConnectData = undefined;
+	let categoryConnectData;
 	if (categories && Array.isArray(categories) && categories.length > 0) {
 		// Check if categories contains objects with handles or just strings
 		if (typeof categories[0] === "string") {
@@ -202,7 +202,7 @@ export const updateProduct = async (handle: string, data: any) => {
 	}
 
 	// Handle characteristics if provided
-	let characteristicsData = undefined;
+	let characteristicsData;
 	if (characteristics && Array.isArray(characteristics)) {
 		// Delete existing characteristics and create new ones
 		characteristicsData = {

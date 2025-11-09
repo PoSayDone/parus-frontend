@@ -17,16 +17,7 @@ export default function ServicesTemplate() {
 				</div>
 
 				{/* Services Grid */}
-				<ServicesList className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-12" />
-
-				<div className="text-center mb-8">
-					<a
-						href="/addresses"
-						className="inline-block bg-primary hover:bg-primary/90 text-primary-foreground font-medium py-3 px-6 rounded-lg transition-colors"
-					>
-						Полезные адреса в Перми
-					</a>
-				</div>
+				<ServicesList className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-8" />
 
 				<ContactSection
 					title="Нужна консультация?"

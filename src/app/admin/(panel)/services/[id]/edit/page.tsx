@@ -7,5 +7,5 @@ export default function EditServicePage() {
 	const params = useParams();
 	const serviceId = params.id as string;
 
-	return <ServiceForm serviceId={serviceId} />;
+	return <ServiceForm serviceHandle={serviceId} />;
 }

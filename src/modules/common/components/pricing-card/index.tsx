@@ -1,28 +1,18 @@
-import {
-	Card,
-	CardHeader,
-	CardTitle,
-	CardDescription,
-	CardContent,
-	CardFooter,
-} from "@/components/ui/card";
-import { buttonVariants } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { CheckIcon } from "lucide-react";
 import type { ComponentProps } from "react";
+import { Badge } from "@/components/ui/badge";
+import { buttonVariants } from "@/components/ui/button";
+import {
+	Card,
+	CardContent,
+	CardDescription,
+	CardFooter,
+	CardHeader,
+	CardTitle,
+} from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import ContactModalTrigger from "@/modules/contact/components/contact-modal-trigger";
-
-interface PricingPlan {
-	id: string;
-	title: string;
-	description: string;
-	price: string;
-	creditPrice?: string;
-	popular: boolean;
-	features: string[];
-	href: string;
-}
+import type { PricePlan } from "@/types/admin";
 
 export default function PricingCard({
 	className,
@@ -30,7 +20,7 @@ export default function PricingCard({
 	priceType = "full",
 	...rest
 }: {
-	plan: PricingPlan;
+	plan: PricePlan;
 	priceType?: "parts" | "full";
 } & ComponentProps<typeof Card>) {
 	return (
@@ -86,7 +76,7 @@ export default function PricingCard({
 					<span className="text-base text-left mb-2 font-medium">
 						Включает:
 					</span>
-					{plan.features.map((feature, index) => (
+					{plan.included?.map((feature, index) => (
 						<div
 							key={index}
 							className="flex items-start justify-start gap-2 text-sm"

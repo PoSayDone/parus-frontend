@@ -1,11 +1,9 @@
+import { Suspense } from "react";
 import Section from "@/components/ui/section";
-import { servicesData } from "@/lib/data/services";
-import EmblaCarousel from "@/modules/common/components/embla-carousel";
-import { ServiceCard } from "@/modules/services/components/service-card";
+import SkeletonServicesCarousel from "@/modules/skeletons/templates/skeleton-services-carousel";
+import ServicesCarousel from "./services-carousel";
 
 export default function Services() {
-	const services = Object.values(servicesData);
-
 	return (
 		<Section
 			className="!px-0"
@@ -19,13 +17,9 @@ export default function Services() {
 				</>
 			}
 		>
-			<EmblaCarousel>
-				{services.map((service, index) => (
-					<div key={index} className="embla__slide">
-						<ServiceCard service={service} className="h-full" />
-					</div>
-				))}
-			</EmblaCarousel>
+			<Suspense fallback={<SkeletonServicesCarousel />}>
+				<ServicesCarousel />
+			</Suspense>
 		</Section>
 	);
 }

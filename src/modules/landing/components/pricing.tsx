@@ -1,8 +1,10 @@
+import Link from "next/link";
+import { Suspense } from "react";
 import { buttonVariants } from "@/components/ui/button";
 import Section from "@/components/ui/section";
-import Link from "next/link";
 import { cn } from "@/lib/utils";
 import PricesList from "@/modules/prices/components/prices-list";
+import SkeletonPricesList from "@/modules/skeletons/templates/skeleton-prices-grid";
 
 export default function Pricing() {
 	return (
@@ -17,7 +19,9 @@ export default function Pricing() {
 				</>
 			}
 		>
-			<PricesList />
+			<Suspense fallback={<SkeletonPricesList />}>
+				<PricesList />
+			</Suspense>
 			<Link
 				href={"/prices"}
 				className={cn(

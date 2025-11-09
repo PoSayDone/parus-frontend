@@ -22,8 +22,10 @@ import {
 	FormLabel,
 	FormMessage,
 } from "@/components/ui/form";
+import { IconPicker } from "@/components/ui/icon-picker";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
+import { TagsInput } from "@/components/ui/tags-input";
 import { Textarea } from "@/components/ui/textarea";
 import {
 	createService,
@@ -31,15 +33,21 @@ import {
 	updateService,
 } from "@/lib/data/services-db";
 import { uploadFile } from "@/lib/data/uploads";
+import { cn } from "@/lib/utils";
+import { SlugHandler } from "../components/slug-handler";
 import {
 	type ServiceFormValues,
 	serviceFormSchema,
 } from "../schemas/service-form-schema";
 import { AdminFormLayout } from "./admin-form-layout";
 
-export default function ServiceForm({ serviceId }: { serviceId?: string }) {
+export default function ServiceForm({
+	serviceHandle,
+}: {
+	serviceHandle?: string;
+}) {
 	const router = useRouter();
-	const [loading, setLoading] = useState(!!serviceId);
+	const [loading, setLoading] = useState(!!serviceHandle);
 	const [images, setImages] = useState<string[]>([]);
 	const [primaryImageIndex, setPrimaryImageIndex] = useState<number>(0);
 	const [uploading, setUploading] = useState(false);
@@ -48,44 +56,54 @@ export default function ServiceForm({ serviceId }: { serviceId?: string }) {
 		resolver: zodResolver(serviceFormSchema),
 		defaultValues: {
 			title: "",
+			handle: "",
 			shortDescription: "",
 			description: "",
 			icon: "",
-			image: "",
 			thumbnail: "",
 			images: [],
 			price: "",
 			duration: "",
 			features: [],
 			included: [],
-			gallery: [],
 			active: true,
 		},
 		mode: "onChange",
 	});
 
+	const { handleFieldChange: handleNameChange } = SlugHandler({
+		form,
+		fieldName: "title",
+		slugFieldName: "handle",
+	});
+
+	const onNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const value = e.target.value;
+		handleNameChange(value);
+		form.setValue("title", value);
+	};
+
 	// Fetch service data for edit mode
 	useEffect(() => {
 		const fetchService = async () => {
-			if (!serviceId) return;
+			if (!serviceHandle) return;
 
 			try {
-				const serviceData = await getService(serviceId);
+				const serviceData = await getService(serviceHandle);
 
 				if (serviceData) {
 					form.reset({
 						title: serviceData.title,
+						handle: serviceData.handle,
 						shortDescription: serviceData.shortDescription || "",
 						description: serviceData.description,
 						icon: serviceData.icon || "",
-						image: serviceData.image || "",
 						thumbnail: serviceData.thumbnail || "",
 						images: serviceData.images || [],
 						price: serviceData.price,
 						duration: serviceData.duration || "",
 						features: serviceData.features || [],
 						included: serviceData.included || [],
-						gallery: serviceData.gallery || [],
 						active: serviceData.active,
 					});
 
@@ -109,10 +127,10 @@ export default function ServiceForm({ serviceId }: { serviceId?: string }) {
 			}
 		};
 
-		if (serviceId) {
+		if (serviceHandle) {
 			fetchService();
 		}
-	}, [serviceId, form]);
+	}, [serviceHandle, form]);
 
 	const onSubmit = async (values: ServiceFormValues) => {
 		try {
@@ -129,8 +147,8 @@ export default function ServiceForm({ serviceId }: { serviceId?: string }) {
 			};
 
 			let result;
-			if (serviceId) {
-				result = await updateService(serviceId, serviceData);
+			if (serviceHandle) {
+				result = await updateService(serviceHandle, serviceData);
 			} else {
 				result = await createService(serviceData);
 			}
@@ -140,7 +158,7 @@ export default function ServiceForm({ serviceId }: { serviceId?: string }) {
 				router.refresh();
 			} else {
 				toast.error(
-					serviceId
+					serviceHandle
 						? "Ошибка при обновлении услуги"
 						: "Ошибка при создании услуги",
 				);
@@ -148,7 +166,7 @@ export default function ServiceForm({ serviceId }: { serviceId?: string }) {
 		} catch (error) {
 			console.error("Error saving service:", error);
 			toast.error(
-				serviceId
+				serviceHandle
 					? "Ошибка при обновлении услуги"
 					: "Ошибка при создании услуги",
 			);
@@ -239,7 +257,7 @@ export default function ServiceForm({ serviceId }: { serviceId?: string }) {
 				<CardHeader>
 					<CardTitle>Основная информация</CardTitle>
 					<CardDescription>
-						{serviceId
+						{serviceHandle
 							? "Обновите данные услуги"
 							: "Заполните данные о новой услуге"}
 					</CardDescription>
@@ -255,8 +273,30 @@ export default function ServiceForm({ serviceId }: { serviceId?: string }) {
 									<Input
 										{...field}
 										placeholder="Введите название услуги"
+										onChange={onNameChange}
 									/>
 								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+
+					<FormField
+						control={form.control}
+						name="handle"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>URL (handle)</FormLabel>
+								<FormControl>
+									<Input
+										{...field}
+										placeholder="url-servisa"
+									/>
+								</FormControl>
+								<FormDescription>
+									Будет использоваться в URL: /service/
+									{form.watch("handle") || "url-servisa"}
+								</FormDescription>
 								<FormMessage />
 							</FormItem>
 						)}
@@ -338,9 +378,47 @@ export default function ServiceForm({ serviceId }: { serviceId?: string }) {
 							<FormItem>
 								<FormLabel>Иконка</FormLabel>
 								<FormControl>
-									<Input
-										{...field}
-										placeholder="Введите имя иконки"
+									<IconPicker
+										triggerPlaceholder="Выбрать иконку"
+										searchPlaceholder="Название иконки..."
+										value={field.value}
+										onValueChange={field.onChange}
+									/>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+
+					<FormField
+						control={form.control}
+						name="features"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>Особенности услуги</FormLabel>
+								<FormControl>
+									<TagsInput
+										placeholder="Добавьте особенность и нажмите Enter"
+										value={field.value || []}
+										onChange={field.onChange}
+									/>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+
+					<FormField
+						control={form.control}
+						name="included"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>Включено в услугу</FormLabel>
+								<FormControl>
+									<TagsInput
+										placeholder="Добавьте пункт и нажмите Enter"
+										value={field.value || []}
+										onChange={field.onChange}
 									/>
 								</FormControl>
 								<FormMessage />
@@ -354,7 +432,7 @@ export default function ServiceForm({ serviceId }: { serviceId?: string }) {
 				<CardHeader>
 					<CardTitle>Изображения</CardTitle>
 					<CardDescription>
-						{serviceId
+						{serviceHandle
 							? "Управление изображениями услуги"
 							: "Добавьте изображения для услуги"}
 					</CardDescription>
@@ -363,17 +441,16 @@ export default function ServiceForm({ serviceId }: { serviceId?: string }) {
 					{images.length > 0 && (
 						<div className="grid grid-cols-3 gap-4 mb-4">
 							{images.map((image, index) => (
-								<div key={index} className="relative group">
-									// eslint-disable-next-line
-									@next/next/no-img-element
+								<div key={image} className="relative group">
 									<img
 										src={image}
-										alt={`Product image ${index + 1}`}
-										className={`w-full h-32 object-cover rounded-lg border ${
+										alt={`Product ${index + 1}`}
+										className={cn(
+											"w-full h-32 object-cover rounded-lg border",
 											primaryImageIndex === index
 												? "border-primary ring-2 ring-primary/20"
-												: "border-border"
-										}`}
+												: "border-border",
+										)}
 									/>
 									{primaryImageIndex === index && (
 										<div className="absolute top-1 left-1 bg-primary text-primary-foreground text-xs px-2 py-1 rounded flex items-center">
@@ -476,16 +553,16 @@ export default function ServiceForm({ serviceId }: { serviceId?: string }) {
 
 	return (
 		<AdminFormLayout<ServiceFormValues>
-			title={serviceId ? "Редактировать услугу" : "Новая услуга"}
+			title={serviceHandle ? "Редактировать услугу" : "Новая услуга"}
 			description={
-				serviceId
+				serviceHandle
 					? "Изменение информации об услуге"
 					: "Добавьте новую услугу"
 			}
 			backHref="/admin/services"
 			backLabel="Назад к услугам"
 			sidebar={sidebarContent}
-			submitLabel={serviceId ? "Сохранить изменения" : "Создать"}
+			submitLabel={serviceHandle ? "Сохранить изменения" : "Создать"}
 			form={form}
 			onSubmit={onSubmit}
 		>

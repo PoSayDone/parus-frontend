@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
+import { TagsInput } from "@/components/ui/tags-input";
 import { Textarea } from "@/components/ui/textarea";
 import {
 	createPricePlan,
@@ -50,8 +51,6 @@ export default function PricePlanForm({
 			price: "",
 			creditPrice: "",
 			popular: false,
-			features: [],
-			href: "",
 			active: true,
 		},
 		mode: "onChange",
@@ -68,12 +67,11 @@ export default function PricePlanForm({
 				if (pricePlanData) {
 					form.reset({
 						title: pricePlanData.title,
+						included: pricePlanData.included || [],
 						description: pricePlanData.description,
 						price: pricePlanData.price,
 						creditPrice: pricePlanData.creditPrice || "",
 						popular: pricePlanData.popular,
-						features: pricePlanData.features || [],
-						href: pricePlanData.href || "",
 						active: pricePlanData.active,
 					});
 				} else {
@@ -207,14 +205,15 @@ export default function PricePlanForm({
 
 					<FormField
 						control={form.control}
-						name="href"
+						name="included"
 						render={({ field }) => (
 							<FormItem>
-								<FormLabel>Ссылка</FormLabel>
+								<FormLabel>Включено в пакет</FormLabel>
 								<FormControl>
-									<Input
-										{...field}
-										placeholder="Введите ссылку"
+									<TagsInput
+										placeholder="Добавьте пункт и нажмите Enter"
+										value={field.value || []}
+										onChange={field.onChange}
 									/>
 								</FormControl>
 								<FormMessage />
@@ -236,9 +235,13 @@ export default function PricePlanForm({
 					control={form.control}
 					name="popular"
 					render={({ field }) => (
-						<FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-							<div className="space-y-0.5">
+						<FormItem className="flex flex-row items-center space-x-3 space-y-0">
+							<div className="space-y-1 leading-none w-full">
 								<FormLabel>Популярный</FormLabel>
+								<FormDescription>
+									Если отмечено, пакет услуг будет отмечен как
+									популярный
+								</FormDescription>
 							</div>
 							<FormControl>
 								<Switch

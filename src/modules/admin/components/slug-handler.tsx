@@ -1,7 +1,7 @@
 "use client";
 
-import sluga from "sluga";
 import type { UseFormReturn } from "react-hook-form";
+import sluga from "sluga";
 
 interface SlugHandlerProps {
 	form: UseFormReturn<any>;

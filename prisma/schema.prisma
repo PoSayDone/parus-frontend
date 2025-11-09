@@ -80,32 +80,32 @@ model BlogPost {
 }
 
 model Address {
-    id        String   @id @default(uuid())
-    type      String // "zags", "morgue", "cemetery"
+    id        String      @id @default(uuid())
+    type      AddressType // "zags", "morgue", "cemetery"
     name      String
     address   String?
     phone     String?
     schedule  String?
     district  String?
     location  String?
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+    createdAt DateTime    @default(now())
+    updatedAt DateTime    @updatedAt
+    active    Boolean     @default(true)
 }
 
 model Service {
     id               String   @id @default(uuid())
+    handle           String   @unique
     title            String
     shortDescription String?
     description      String
     icon             String?
-    image            String?
     thumbnail        String?
     images           String[]
     price            String
     duration         String?
     features         String[]
     included         String[]
-    gallery          String[]
     active           Boolean  @default(true)
     createdAt        DateTime @default(now())
     updatedAt        DateTime @updatedAt
@@ -118,10 +118,14 @@ model PricePlan {
     price       String
     creditPrice String?
     popular     Boolean  @default(false)
-    features    String[]
     included    String[]
-    href        String?
     active      Boolean  @default(true)
     createdAt   DateTime @default(now())
     updatedAt   DateTime @updatedAt
+}
+
+enum AddressType {
+    zags
+    morgue
+    cemetery
 }

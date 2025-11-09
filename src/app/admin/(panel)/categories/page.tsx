@@ -4,13 +4,6 @@ import { Plus } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
 import { buttonVariants } from "@/components/ui/button";
-import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardHeader,
-	CardTitle,
-} from "@/components/ui/card";
 import { deleteCategory, listCategories } from "@/lib/data/categories";
 import { AdminTable } from "@/modules/admin/components/admin-table";
 import { StatusBadge } from "@/modules/admin/components/status-badge";
@@ -24,7 +17,7 @@ export default function CategoriesPage() {
 		} catch (error: any) {
 			console.error("Error deleting category:", error);
 			toast.error(error.message || "Ошибка при удалении категории");
-			throw error; // Re-throw to be caught by the AdminTable
+			throw error;
 		}
 	};
 
@@ -35,7 +28,7 @@ export default function CategoriesPage() {
 			render: (value: string, row: Category) => (
 				<div className="flex items-center space-x-3">
 					<div>
-						<div className="font-medium">{row.name}</div>
+						<div className="font-medium">{value}</div>
 						<div className="text-sm text-muted-foreground">
 							/{row.handle}
 						</div>

@@ -49,28 +49,11 @@ export const listServices = async ({ page = 1, queryParams }: Props) => {
 		prisma.service.count({ where }),
 	]);
 
-	const transformedServices = services.map((service) => ({
-		id: service.id,
-		title: service.title,
-		shortDescription: service.shortDescription || "",
-		description: service.description,
-		icon: service.icon || "",
-		image: service.image || "",
-		price: service.price,
-		duration: service.duration || "",
-		features: service.features,
-		included: service.included,
-		gallery: service.gallery,
-		active: service.active,
-		createdAt: service.createdAt.toISOString(),
-		updatedAt: service.updatedAt.toISOString(),
-	}));
-
 	const nextPage = count > offset + limit ? page + 1 : null;
 
 	return {
 		response: {
-			data: transformedServices,
+			data: services,
 			count,
 		},
 		nextPage: nextPage,
@@ -78,31 +61,14 @@ export const listServices = async ({ page = 1, queryParams }: Props) => {
 	};
 };
 
-export const getService = async (id: string): Promise<Service | null> => {
+export const getService = async (handle: string): Promise<Service | null> => {
 	const service = await prisma.service.findUnique({
-		where: { id },
+		where: { handle },
 	});
 
 	if (!service) return null;
 
-	return {
-		id: service.id,
-		title: service.title,
-		shortDescription: service.shortDescription || "",
-		description: service.description,
-		icon: service.icon || "",
-		image: service.image || "",
-		thumbnail: service.thumbnail || "",
-		images: service.images,
-		price: service.price,
-		duration: service.duration || "",
-		features: service.features,
-		included: service.included,
-		gallery: service.gallery,
-		active: service.active,
-		createdAt: service.createdAt.toISOString(),
-		updatedAt: service.updatedAt.toISOString(),
-	};
+	return service;
 };
 
 export const createService = async (
@@ -116,53 +82,19 @@ export const createService = async (
 		},
 	});
 
-	return {
-		id: service.id,
-		title: service.title,
-		shortDescription: service.shortDescription || "",
-		description: service.description,
-		icon: service.icon || "",
-		image: service.image || "",
-		thumbnail: service.thumbnail || "",
-		images: service.images,
-		price: service.price,
-		duration: service.duration || "",
-		features: service.features,
-		included: service.included,
-		gallery: service.gallery,
-		active: service.active,
-		createdAt: service.createdAt.toISOString(),
-		updatedAt: service.updatedAt.toISOString(),
-	};
+	return service;
 };
 
 export const updateService = async (
-	id: string,
+	handle: string,
 	data: Partial<Omit<Service, "id" | "createdAt" | "updatedAt">>,
 ): Promise<Service> => {
 	const service = await prisma.service.update({
-		where: { id },
+		where: { handle },
 		data,
 	});
 
-	return {
-		id: service.id,
-		title: service.title,
-		shortDescription: service.shortDescription || "",
-		description: service.description,
-		icon: service.icon || "",
-		image: service.image || "",
-		thumbnail: service.thumbnail || "",
-		images: service.images,
-		price: service.price,
-		duration: service.duration || "",
-		features: service.features,
-		included: service.included,
-		gallery: service.gallery,
-		active: service.active,
-		createdAt: service.createdAt.toISOString(),
-		updatedAt: service.updatedAt.toISOString(),
-	};
+	return service;
 };
 
 export const deleteService = async (id: string): Promise<void> => {

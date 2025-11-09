@@ -1,4 +1,5 @@
-import { Service } from "@/lib/data/services";
+import Link from "next/link";
+import { buttonVariants } from "@/components/ui/button";
 import {
 	Card,
 	CardDescription,
@@ -6,9 +7,9 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
-import { buttonVariants } from "@/components/ui/button";
-import Link from "next/link";
+import { Icon, type IconName } from "@/components/ui/icon-picker";
 import { cn } from "@/lib/utils";
+import type { Service } from "@/types/admin";
 
 export const ServiceCard = ({
 	service,
@@ -17,7 +18,6 @@ export const ServiceCard = ({
 	service: Service;
 	className?: string;
 }) => {
-	const IconComponent = service.icon;
 	return (
 		<Card
 			key={service.id}
@@ -28,7 +28,12 @@ export const ServiceCard = ({
 		>
 			<CardHeader className="text-start">
 				<div className="mb-4 p-3 rounded-full bg-primary/10 group-hover:bg-primary/20 transition-colors duration-300 size-14">
-					<IconComponent className="h-8 w-8 text-primary" />
+					{service.icon && (
+						<Icon
+							name={service.icon as IconName}
+							className="h-8 w-8 text-primary"
+						/>
+					)}
 				</div>
 				<CardTitle className="text-xl font-medium text-foreground group-hover:text-primary transition-colors duration-300">
 					{service.title}
@@ -43,7 +48,7 @@ export const ServiceCard = ({
 						variant: "secondary",
 						className: "w-full",
 					})}
-					href={`/services/${service.id}`}
+					href={`/services/${service.handle}`}
 				>
 					Подробнее
 				</Link>

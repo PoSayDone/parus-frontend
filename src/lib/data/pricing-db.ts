@@ -49,25 +49,11 @@ export const listPricePlans = async ({ page = 1, queryParams }: Props) => {
 		prisma.pricePlan.count({ where }),
 	]);
 
-	const transformedPricePlans = pricePlans.map((pricePlan) => ({
-		id: pricePlan.id,
-		title: pricePlan.title,
-		description: pricePlan.description,
-		price: pricePlan.price,
-		creditPrice: pricePlan.creditPrice || "",
-		popular: pricePlan.popular,
-		features: pricePlan.features,
-		href: pricePlan.href || "",
-		active: pricePlan.active,
-		createdAt: pricePlan.createdAt.toISOString(),
-		updatedAt: pricePlan.updatedAt.toISOString(),
-	}));
-
 	const nextPage = count > offset + limit ? page + 1 : null;
 
 	return {
 		response: {
-			data: transformedPricePlans,
+			data: pricePlans,
 			count,
 		},
 		nextPage: nextPage,
@@ -82,19 +68,7 @@ export const getPricePlan = async (id: string): Promise<PricePlan | null> => {
 
 	if (!pricePlan) return null;
 
-	return {
-		id: pricePlan.id,
-		title: pricePlan.title,
-		description: pricePlan.description,
-		price: pricePlan.price,
-		creditPrice: pricePlan.creditPrice || "",
-		popular: pricePlan.popular,
-		features: pricePlan.features,
-		href: pricePlan.href || "",
-		active: pricePlan.active,
-		createdAt: pricePlan.createdAt.toISOString(),
-		updatedAt: pricePlan.updatedAt.toISOString(),
-	};
+	return pricePlan;
 };
 
 export const createPricePlan = async (
@@ -106,19 +80,7 @@ export const createPricePlan = async (
 		},
 	});
 
-	return {
-		id: pricePlan.id,
-		title: pricePlan.title,
-		description: pricePlan.description,
-		price: pricePlan.price,
-		creditPrice: pricePlan.creditPrice || "",
-		popular: pricePlan.popular,
-		features: pricePlan.features,
-		href: pricePlan.href || "",
-		active: pricePlan.active,
-		createdAt: pricePlan.createdAt.toISOString(),
-		updatedAt: pricePlan.updatedAt.toISOString(),
-	};
+	return pricePlan;
 };
 
 export const updatePricePlan = async (
@@ -130,19 +92,7 @@ export const updatePricePlan = async (
 		data,
 	});
 
-	return {
-		id: pricePlan.id,
-		title: pricePlan.title,
-		description: pricePlan.description,
-		price: pricePlan.price,
-		creditPrice: pricePlan.creditPrice || "",
-		popular: pricePlan.popular,
-		features: pricePlan.features,
-		href: pricePlan.href || "",
-		active: pricePlan.active,
-		createdAt: pricePlan.createdAt.toISOString(),
-		updatedAt: pricePlan.updatedAt.toISOString(),
-	};
+	return pricePlan;
 };
 
 export const deletePricePlan = async (id: string): Promise<void> => {

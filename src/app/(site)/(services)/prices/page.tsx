@@ -20,6 +20,6 @@ export const metadata: Metadata = {
 	},
 };
 
-export default function PricingPage() {
+export default async function PricingPage() {
 	return <PricesTemplate />;
 }

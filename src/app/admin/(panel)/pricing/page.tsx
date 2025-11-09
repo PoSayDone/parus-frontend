@@ -14,6 +14,7 @@ import {
 import { deletePricePlan, listPricePlans } from "@/lib/data/pricing-db";
 import { AdminTable } from "@/modules/admin/components/admin-table";
 import type { PricePlan } from "@/types/admin";
+import { StatusBadge } from "@/modules/admin/components/status-badge";
 
 export default function PricingPage() {
 	const handleDelete = async (id: string) => {
@@ -66,9 +67,10 @@ export default function PricingPage() {
 			key: "active",
 			label: "Статус",
 			render: (value: boolean) => (
-				<div className="max-w-xs">
-					<p className="text-sm">{value ? "Активен" : "Неактивен"}</p>
-				</div>
+				<StatusBadge
+					status={value ? "active" : "inactive"}
+					label={value ? "Активна" : "Неактивна"}
+				/>
 			),
 		},
 	];

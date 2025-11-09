@@ -1,17 +1,16 @@
-import React from "react";
-import { Metadata } from "next";
-import RitualProducts from "@/modules/landing/components/ritual-products";
-import QnA from "@/modules/landing/components/q-n-a";
-import { Interaction } from "@/modules/landing/components/Interaction";
-import Posts from "@/modules/landing/components/posts";
-import WhatShouldIDo from "@/modules/landing/components/actions";
+import type { Metadata } from "next";
 import AboutUs from "@/modules/landing/components/about-us";
-import WhyUs from "@/modules/landing/components/why-us";
-import Services from "@/modules/landing/components/services";
+import WhatShouldIDo from "@/modules/landing/components/actions";
 import Hero from "@/modules/landing/components/hero";
+import { Interaction } from "@/modules/landing/components/Interaction";
 import WhereToFindUs from "@/modules/landing/components/location";
-import Pricing from "@/modules/landing/components/pricing";
 import Memorials from "@/modules/landing/components/memorials";
+import Posts from "@/modules/landing/components/posts";
+import Pricing from "@/modules/landing/components/pricing";
+import QnA from "@/modules/landing/components/q-n-a";
+import RitualProducts from "@/modules/landing/components/ritual-products";
+import Services from "@/modules/landing/components/services";
+import WhyUs from "@/modules/landing/components/why-us";
 
 export const metadata: Metadata = {
 	title: "Парус - Ритуальные услуги и товары",

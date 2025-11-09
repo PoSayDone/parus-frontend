@@ -54,24 +54,11 @@ export const listAddresses = async ({ page = 1, queryParams }: Props) => {
 		prisma.address.count({ where }),
 	]);
 
-	const transformedAddresses = addresses.map((address) => ({
-		id: address.id,
-		type: address.type,
-		name: address.name,
-		address: address.address || "",
-		phone: address.phone || "",
-		schedule: address.schedule || "",
-		district: address.district || "",
-		location: address.location || "",
-		createdAt: address.createdAt.toISOString(),
-		updatedAt: address.updatedAt.toISOString(),
-	}));
-
 	const nextPage = count > offset + limit ? page + 1 : null;
 
 	return {
 		response: {
-			data: transformedAddresses,
+			data: addresses,
 			count,
 		},
 		nextPage: nextPage,
@@ -86,18 +73,7 @@ export const getAddress = async (id: string): Promise<Address | null> => {
 
 	if (!address) return null;
 
-	return {
-		id: address.id,
-		type: address.type,
-		name: address.name,
-		address: address.address || "",
-		phone: address.phone || "",
-		schedule: address.schedule || "",
-		district: address.district || "",
-		location: address.location || "",
-		createdAt: address.createdAt.toISOString(),
-		updatedAt: address.updatedAt.toISOString(),
-	};
+	return address;
 };
 
 export const createAddress = async (
@@ -109,18 +85,7 @@ export const createAddress = async (
 		},
 	});
 
-	return {
-		id: address.id,
-		type: address.type,
-		name: address.name,
-		address: address.address || "",
-		phone: address.phone || "",
-		schedule: address.schedule || "",
-		district: address.district || "",
-		location: address.location || "",
-		createdAt: address.createdAt.toISOString(),
-		updatedAt: address.updatedAt.toISOString(),
-	};
+	return address;
 };
 
 export const updateAddress = async (
@@ -132,18 +97,7 @@ export const updateAddress = async (
 		data,
 	});
 
-	return {
-		id: address.id,
-		type: address.type,
-		name: address.name,
-		address: address.address || "",
-		phone: address.phone || "",
-		schedule: address.schedule || "",
-		district: address.district || "",
-		location: address.location || "",
-		createdAt: address.createdAt.toISOString(),
-		updatedAt: address.updatedAt.toISOString(),
-	};
+	return address;
 };
 
 export const deleteAddress = async (id: string): Promise<void> => {

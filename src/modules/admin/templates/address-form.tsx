@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import {
 	Card,
 	CardContent,
@@ -12,15 +13,14 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 import {
-	Form,
 	FormControl,
+	FormDescription,
 	FormField,
 	FormItem,
 	FormLabel,
 	FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import {
 	Select,
 	SelectContent,
@@ -29,18 +29,16 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import { AdminFormLayout } from "./admin-form-layout";
 import {
-	addressFormSchema,
-	AddressFormValues,
-} from "../schemas/address-form-schema";
-import {
-	getAddress,
 	createAddress,
+	getAddress,
 	updateAddress,
 } from "@/lib/data/addresses-db";
-import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
+import {
+	type AddressFormValues,
+	addressFormSchema,
+} from "../schemas/address-form-schema";
+import { AdminFormLayout } from "./admin-form-layout";
 
 export default function AddressForm({ addressId }: { addressId?: string }) {
 	const router = useRouter();
@@ -56,6 +54,7 @@ export default function AddressForm({ addressId }: { addressId?: string }) {
 			schedule: "",
 			district: "",
 			location: "",
+			active: true,
 		},
 		mode: "onChange",
 	});
@@ -71,6 +70,7 @@ export default function AddressForm({ addressId }: { addressId?: string }) {
 				if (addressData) {
 					form.reset({
 						type: addressData.type,
+						active: addressData.active,
 						name: addressData.name,
 						address: addressData.address || "",
 						phone: addressData.phone || "",
@@ -286,9 +286,13 @@ export default function AddressForm({ addressId }: { addressId?: string }) {
 					control={form.control}
 					name="active"
 					render={({ field }) => (
-						<FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-							<div className="space-y-0.5">
-								<FormLabel>Активен</FormLabel>
+						<FormItem className="flex flex-row items-center space-x-3 space-y-0">
+							<div className="space-y-1 leading-none w-full">
+								<FormLabel>Активный</FormLabel>
+								<FormDescription>
+									Если отмечено, пакет услуг будет виден
+									пользователям
+								</FormDescription>
 							</div>
 							<FormControl>
 								<Switch

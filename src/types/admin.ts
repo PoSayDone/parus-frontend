@@ -1,12 +1,12 @@
 // Admin types that align with Prisma schema
 import type {
-	Product as PrismaProduct,
-	Category as PrismaCategory,
-	BlogPost as PrismaBlogPost,
-	User as PrismaUser,
 	Address as PrismaAddress,
-	Service as PrismaService,
+	BlogPost as PrismaBlogPost,
+	Category as PrismaCategory,
 	PricePlan as PrismaPricePlan,
+	Product as PrismaProduct,
+	Service as PrismaService,
+	User as PrismaUser,
 } from "@prisma/client";
 
 // Convert Prisma Date types to string for API responses

@@ -1,23 +1,25 @@
-"use client";
-
 import { Check, CheckCircle2, Clock, Phone, Star } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { getServiceBySlug } from "@/lib/data/services";
+import { Icon, type IconName } from "@/components/ui/icon-picker";
+import { getService } from "@/lib/data/services-db";
 import ContactModalTrigger from "@/modules/contact/components/contact-modal-trigger";
 import ContactSection from "@/modules/contact/components/contact-section";
+import Image from "next/image";
 
-export default function ServicePageTemplate({ slug }: { slug: string }) {
-	const service = getServiceBySlug(slug);
+export default async function ServicePageTemplate({
+	handle,
+}: {
+	handle: string;
+}) {
+	const service = await getService(handle);
 
 	if (!service) {
 		notFound();
 	}
-
-	const IconComponent = service.icon;
 
 	return (
 		<div className="min-h-screen bg-background">
@@ -26,8 +28,13 @@ export default function ServicePageTemplate({ slug }: { slug: string }) {
 				<div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-12">
 					<div>
 						<div className="flex items-center gap-4 mb-6">
-							<div className="p-3 rounded-full bg-primary/10">
-								<IconComponent className="h-8 w-8 text-primary" />
+							<div className="p-3 rounded-full bg-primary/10 group-hover:bg-primary/20 transition-colors duration-300 size-14">
+								{service.icon && (
+									<Icon
+										name={service.icon as IconName}
+										className="size-8 text-primary"
+									/>
+								)}
 							</div>
 							<div>
 								<h1 className="text-4xl font-medium text-foreground">
@@ -81,8 +88,10 @@ export default function ServicePageTemplate({ slug }: { slug: string }) {
 					</div>
 
 					<div className="relative">
-						<img
-							src={service.image || "/placeholder.svg"}
+						<Image
+							width={400}
+							height={200}
+							src={service.thumbnail || "/placeholder.svg"}
 							alt={service.title}
 							className="w-full h-96 object-cover rounded-lg shadow-lg"
 						/>
@@ -141,22 +150,26 @@ export default function ServicePageTemplate({ slug }: { slug: string }) {
 				</div>
 
 				{/* Gallery */}
-				<div className="mb-12">
-					<h2 className="text-2xl font-medium text-foreground mb-6">
-						Фотогалерея
-					</h2>
-					<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-						{service.gallery.map((image, index) => (
-							<div key={index} className="relative group">
-								<img
-									src={image || "/placeholder.svg"}
-									alt={`${service.title} - фото ${index + 1}`}
-									className="w-full h-64 object-cover rounded-lg shadow-md group-hover:shadow-lg transition-shadow duration-300"
-								/>
-							</div>
-						))}
+				{service.images?.length > 0 && (
+					<div className="mb-12">
+						<h2 className="text-2xl font-medium text-foreground mb-6">
+							Фотогалерея
+						</h2>
+						<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+							{service.images.map((image, index) => (
+								<div key={image} className="relative group">
+									<Image
+										width={400}
+										height={200}
+										src={image || "/placeholder.svg"}
+										alt={`${service.title} - фото ${index + 1}`}
+										className="w-full h-64 object-cover rounded-lg shadow-md group-hover:shadow-lg transition-shadow duration-300"
+									/>
+								</div>
+							))}
+						</div>
 					</div>
-				</div>
+				)}
 
 				<ContactSection />
 			</div>

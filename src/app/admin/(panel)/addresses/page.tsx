@@ -3,17 +3,23 @@
 import { Plus } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
+import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
-import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardHeader,
-	CardTitle,
-} from "@/components/ui/card";
 import { deleteAddress, listAddresses } from "@/lib/data/addresses-db";
 import { AdminTable } from "@/modules/admin/components/admin-table";
 import type { Address } from "@/types/admin";
+import { StatusBadge } from "@/modules/admin/components/status-badge";
+
+const AddressTypeBadge = ({ type }: { type: string }) => {
+	switch (type) {
+		case "morgue":
+			return <Badge className="bg-amber-700">Морг</Badge>;
+		case "cemetery":
+			return <Badge className="bg-gray-700">Кладбище</Badge>;
+		case "zags":
+			return <Badge className="bg-blue-700">ЗАГС</Badge>;
+	}
+};
 
 export default function AddressesPage() {
 	const handleDelete = async (id: string) => {
@@ -33,12 +39,8 @@ export default function AddressesPage() {
 			label: "Название",
 			render: (value: string, row: Address) => (
 				<div className="flex items-center space-x-3">
-					<div>
-						<div className="font-medium">{row.name}</div>
-						<div className="text-sm text-muted-foreground">
-							Тип: {row.type}
-						</div>
-					</div>
+					<div className="text-foreground">{value}</div>
+					<AddressTypeBadge type={row.type} />
 				</div>
 			),
 		},
@@ -51,31 +53,41 @@ export default function AddressesPage() {
 				</div>
 			),
 		},
+		// {
+		// 	key: "phone",
+		// 	label: "Телефон",
+		// 	render: (value: string | null) => (
+		// 		<div className="max-w-xs">
+		// 			<p className="text-sm">{value || "—"}</p>
+		// 		</div>
+		// 	),
+		// },
+		// {
+		// 	key: "schedule",
+		// 	label: "График работы",
+		// 	render: (value: string | null) => (
+		// 		<div className="max-w-xs">
+		// 			<p className="text-sm">{value || "—"}</p>
+		// 		</div>
+		// 	),
+		// },
+		// {
+		// 	key: "district",
+		// 	label: "Район",
+		// 	render: (value: string | null) => (
+		// 		<div className="max-w-xs">
+		// 			<p className="text-sm">{value || "—"}</p>
+		// 		</div>
+		// 	),
+		// },
 		{
-			key: "phone",
-			label: "Телефон",
-			render: (value: string | null) => (
-				<div className="max-w-xs">
-					<p className="text-sm">{value || "—"}</p>
-				</div>
-			),
-		},
-		{
-			key: "schedule",
-			label: "График работы",
-			render: (value: string | null) => (
-				<div className="max-w-xs">
-					<p className="text-sm">{value || "—"}</p>
-				</div>
-			),
-		},
-		{
-			key: "district",
-			label: "Район",
-			render: (value: string | null) => (
-				<div className="max-w-xs">
-					<p className="text-sm">{value || "—"}</p>
-				</div>
+			key: "active",
+			label: "Статус",
+			render: (value: boolean) => (
+				<StatusBadge
+					status={value ? "active" : "inactive"}
+					label={value ? "Активен" : "Неактивен"}
+				/>
 			),
 		},
 	];
@@ -84,7 +96,7 @@ export default function AddressesPage() {
 		{
 			type: "view" as const,
 			label: "Просмотр",
-			href: "/addresses/{key}",
+			href: "/addresses",
 		},
 		{
 			type: "edit" as const,

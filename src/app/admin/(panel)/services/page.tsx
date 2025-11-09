@@ -7,6 +7,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { deleteService, listServices } from "@/lib/data/services-db";
 import { AdminTable } from "@/modules/admin/components/admin-table";
 import type { Service } from "@/types/admin";
+import { StatusBadge } from "@/modules/admin/components/status-badge";
 
 export default function ServicesPage() {
 	const handleDelete = async (id: string) => {
@@ -29,9 +30,20 @@ export default function ServicesPage() {
 					<div>
 						<div className="font-medium">{row.title}</div>
 						<div className="text-sm text-muted-foreground">
-							Цена: {row.price}
+							/{row.handle}
 						</div>
 					</div>
+				</div>
+			),
+		},
+		{
+			key: "price",
+			label: "Цена",
+			render: (value: string | null) => (
+				<div className="max-w-xs">
+					<p className="text-sm text-muted-foreground truncate">
+						{value || "Нет цены"}
+					</p>
 				</div>
 			),
 		},
@@ -59,9 +71,10 @@ export default function ServicesPage() {
 			key: "active",
 			label: "Статус",
 			render: (value: boolean) => (
-				<div className="max-w-xs">
-					<p className="text-sm">{value ? "Активна" : "Неактивна"}</p>
-				</div>
+				<StatusBadge
+					status={value ? "active" : "inactive"}
+					label={value ? "Активна" : "Неактивна"}
+				/>
 			),
 		},
 	];
@@ -104,7 +117,7 @@ export default function ServicesPage() {
 				columns={columns}
 				data={[]}
 				actions={actions}
-				getKey={(row) => row.id}
+				getKey={(row) => row.handle}
 				fetchDataAction={listServices}
 				initialPage={1}
 				initialLimit={10}
