@@ -1,10 +1,9 @@
-import { Metadata } from "next";
-import { notFound } from "next/navigation";
-
 import { getCategoryByHandle, listCategories } from "@lib/data/categories";
 import CategoryTemplate from "@modules/categories/templates";
-import { Category } from "@/types/admin";
-import { SortOptions } from "@/modules/store/components/refinement-list/sort-products";
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import type { SortOptions } from "@/modules/store/components/refinement-list/sort-products";
+import type { Category } from "@/types/admin";
 
 type Props = {
 	params: Promise<{ category: string[] }>;
@@ -40,9 +39,8 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 	try {
 		const productCategory = await getCategoryByHandle(params.category[0]);
 
-		const title = productCategory!.name;
-		const description =
-			productCategory!.description ?? `${title} category.`;
+		const title = productCategory?.name;
+		const description = productCategory?.description ?? `${title} category.`;
 
 		return {
 			title: `${title}`,

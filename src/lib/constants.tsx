@@ -1,5 +1,5 @@
 import { Banknote, CreditCard } from "lucide-react";
-import React from "react";
+import type React from "react";
 // import { CreditCard } from "@medusajs/icons";
 
 // import Ideal from "@modules/common/icons/ideal";

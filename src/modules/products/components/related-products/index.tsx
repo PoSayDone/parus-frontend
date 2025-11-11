@@ -1,5 +1,5 @@
 import { listProducts } from "@/lib/data/products";
-import { StoreProduct } from "@/types/store";
+import type { StoreProduct } from "@/types/store";
 import { ProductCard } from "../card";
 
 type RelatedProductsProps = {

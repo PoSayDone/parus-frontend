@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { useContactModal } from "@/lib/hooks/use-contact-modal";
-import { ComponentProps } from "react";
+import type { ComponentProps } from "react";
 
 export default function ContactModalTrigger({
 	...rest

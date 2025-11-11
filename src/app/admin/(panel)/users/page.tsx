@@ -30,7 +30,7 @@ export default function UsersPage() {
 		{
 			key: "name",
 			label: "Пользователь",
-			render: (value: string, row: User) => (
+			render: (_value: string, row: User) => (
 				<div className="flex items-center space-x-3">
 					<div className="bg-muted rounded-full p-2">
 						<UserIcon className="h-4 w-4" />

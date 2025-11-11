@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import {
@@ -79,17 +79,17 @@ export function UserForm({ userId }: { userId?: string }) {
 
 	async function onSubmit(values: UserFormSchema) {
 		try {
-			let result;
+			let _result;
 			if (userId) {
 				// Update existing user
-				result = await updateUser(userId, values);
+				_result = await updateUser(userId, values);
 			} else {
 				// Create new user
 				// Validate that password is provided for new users
 				if (!values.password || values.password === "") {
 					throw new Error("Password is required for new users");
 				}
-				result = await createUser(values);
+				_result = await createUser(values);
 			}
 
 			toast.success(

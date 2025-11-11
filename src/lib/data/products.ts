@@ -144,12 +144,10 @@ export const createProduct = async (data: any) => {
 		characteristics.length > 0
 	) {
 		characteristicsData = {
-			create: characteristics.map(
-				(char: { key: string; value: string }) => ({
-					key: char.key,
-					value: char.value,
-				}),
-			),
+			create: characteristics.map((char: { key: string; value: string }) => ({
+				key: char.key,
+				value: char.value,
+			})),
 		};
 	}
 
@@ -207,12 +205,10 @@ export const updateProduct = async (handle: string, data: any) => {
 		// Delete existing characteristics and create new ones
 		characteristicsData = {
 			deleteMany: {},
-			create: characteristics.map(
-				(char: { key: string; value: string }) => ({
-					key: char.key,
-					value: char.value,
-				}),
-			),
+			create: characteristics.map((char: { key: string; value: string }) => ({
+				key: char.key,
+				value: char.value,
+			})),
 		};
 	}
 

@@ -1,7 +1,7 @@
 "use server";
 
+import type { Prisma } from "@prisma/client";
 import prisma from "@/lib/prisma";
-import { Prisma } from "@prisma/client";
 
 export async function getUserById(id: string) {
 	try {

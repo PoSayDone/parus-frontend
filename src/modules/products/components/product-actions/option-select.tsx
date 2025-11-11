@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { StoreProductOption } from "@/types/store";
-import React from "react";
+import type { StoreProductOption } from "@/types/store";
+import type React from "react";
 
 type OptionSelectProps = {
   option: StoreProductOption;

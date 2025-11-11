@@ -1,23 +1,8 @@
 "use client";
 
+import { Edit, Eye, MoreHorizontal, Trash2 } from "lucide-react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import {
-	Table,
-	TableBody,
-	TableCell,
-	TableHead,
-	TableHeader,
-	TableRow,
-} from "@/components/ui/table";
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { MoreHorizontal, Edit, Trash2, Eye } from "lucide-react";
-import { useState, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -28,6 +13,21 @@ import {
 	AlertDialogHeader,
 	AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+	Table,
+	TableBody,
+	TableCell,
+	TableHead,
+	TableHeader,
+	TableRow,
+} from "@/components/ui/table";
 
 interface AdminTableAction {
 	type: "view" | "edit" | "delete";
@@ -93,25 +93,26 @@ export function AdminTable({
 	}, [externalData, fetchData]);
 
 	// Fetch data when fetchData function is provided
-	const loadData = async (searchQuery: string = searchTerm) => {
-		if (fetchData) {
-			setLoading(true);
-			try {
-				const result = await fetchData({
-					page,
-					queryParams: { limit, q: searchQuery },
-				});
-				setInternalData(
-					result.response.data || result.response.users || [],
-				);
-				setTotal(result.response.count);
-			} catch (error) {
-				console.error("Error fetching data:", error);
-			} finally {
-				setLoading(false);
+	const loadData = useCallback(
+		async (searchQuery: string = searchTerm) => {
+			if (fetchData) {
+				setLoading(true);
+				try {
+					const result = await fetchData({
+						page,
+						queryParams: { limit, q: searchQuery },
+					});
+					setInternalData(result.response.data || result.response.users || []);
+					setTotal(result.response.count);
+				} catch (error) {
+					console.error("Error fetching data:", error);
+				} finally {
+					setLoading(false);
+				}
 			}
-		}
-	};
+		},
+		[fetchData, page, limit, searchTerm],
+	);
 
 	// Implement debounce for search
 	useEffect(() => {
@@ -131,7 +132,7 @@ export function AdminTable({
 				clearTimeout(debounceTimeoutRef.current);
 			}
 		};
-	}, [searchTerm, page, limit]); // Include page and limit in dependencies
+	}, [searchTerm, loadData]); // Include page and limit in dependencies
 
 	const handleSearch = (term: string) => {
 		setSearchTerm(term);
@@ -162,7 +163,7 @@ export function AdminTable({
 		setDeleteAction(null);
 	};
 
-	const cancelDelete = () => {
+	const _cancelDelete = () => {
 		setShowDeleteDialog(false);
 		setDeleteItemKey(null);
 		setDeleteAction(null);
@@ -175,7 +176,7 @@ export function AdminTable({
 		if (fetchData && searchTerm === "") {
 			loadData();
 		}
-	}, [fetchData]);
+	}, [fetchData, loadData, searchTerm]);
 
 	return (
 		<div className="space-y-4">
@@ -190,9 +191,7 @@ export function AdminTable({
 							onChange={(e) => handleSearch(e.target.value)}
 						/>
 					</div>
-					<div className="text-sm text-muted-foreground">
-						Всего: {total}
-					</div>
+					<div className="text-sm text-muted-foreground">Всего: {total}</div>
 				</div>
 			)}
 
@@ -201,9 +200,7 @@ export function AdminTable({
 					<TableHeader>
 						<TableRow>
 							{columns.map((column) => (
-								<TableHead key={column.key}>
-									{column.label}
-								</TableHead>
+								<TableHead key={column.key}>{column.label}</TableHead>
 							))}
 							<TableHead className="w-[70px]"></TableHead>
 						</TableRow>
@@ -226,83 +223,43 @@ export function AdminTable({
 										{columns.map((column) => (
 											<TableCell key={column.key}>
 												{column.render
-													? column.render(
-															row[column.key],
-															row,
-														)
+													? column.render(row[column.key], row)
 													: row[column.key]}
 											</TableCell>
 										))}
 										<TableCell>
 											<DropdownMenu modal={false}>
 												<DropdownMenuTrigger asChild>
-													<Button
-														variant="ghost"
-														className="size-8 !p-0"
-													>
+													<Button variant="ghost" className="size-8 !p-0">
 														<MoreHorizontal />
 													</Button>
 												</DropdownMenuTrigger>
 												<DropdownMenuContent align="end">
 													{actions.map((action) => {
-														if (
-															action.type ===
-																"delete" &&
-															action.onClick
-														) {
+														if (action.type === "delete" && action.onClick) {
 															return (
 																<DropdownMenuItem
-																	key={
-																		action.type
-																	}
+																	key={action.type}
 																	className="text-destructive"
-																	onClick={(
-																		e,
-																	) => {
+																	onClick={(e) => {
 																		e.preventDefault();
-																		handleDeleteClick(
-																			rowKey,
-																			action.onClick!,
-																		);
+																		handleDeleteClick(rowKey, action.onClick!);
 																	}}
 																>
 																	<Trash2 />
-																	{
-																		action.label
-																	}
+																	{action.label}
 																</DropdownMenuItem>
 															);
 														}
 
 														if (action.href) {
-															const href =
-																action.href.replace(
-																	"{key}",
-																	rowKey,
-																);
+															const href = action.href.replace("{key}", rowKey);
 															return (
-																<DropdownMenuItem
-																	key={
-																		action.type
-																	}
-																	asChild
-																>
-																	<Link
-																		href={
-																			href
-																		}
-																	>
-																		{action.type ===
-																			"view" && (
-																			<Eye />
-																		)}
-																		{action.type ===
-																			"edit" && (
-																			<Edit />
-																		)}
-																		{
-																			action.label
-																		}
+																<DropdownMenuItem key={action.type} asChild>
+																	<Link href={href}>
+																		{action.type === "view" && <Eye />}
+																		{action.type === "edit" && <Edit />}
+																		{action.label}
 																	</Link>
 																</DropdownMenuItem>
 															);
@@ -358,18 +315,13 @@ export function AdminTable({
 				</div>
 			)}
 
-			<AlertDialog
-				open={showDeleteDialog}
-				onOpenChange={setShowDeleteDialog}
-			>
+			<AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
 				<AlertDialogContent>
 					<AlertDialogHeader>
-						<AlertDialogTitle>
-							Подтверждение удаления
-						</AlertDialogTitle>
+						<AlertDialogTitle>Подтверждение удаления</AlertDialogTitle>
 						<AlertDialogDescription>
-							Вы уверены, что хотите удалить этот элемент? Это
-							действие нельзя отменить.
+							Вы уверены, что хотите удалить этот элемент? Это действие нельзя
+							отменить.
 						</AlertDialogDescription>
 					</AlertDialogHeader>
 					<AlertDialogFooter>

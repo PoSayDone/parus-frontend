@@ -29,10 +29,7 @@ export async function signIn({
 			return { error: "Invalid credentials" };
 		}
 
-		const session = await getIronSession<User>(
-			await cookies(),
-			sessionOptions,
-		);
+		const session = await getIronSession<User>(await cookies(), sessionOptions);
 		session.user = {
 			id: user.id,
 			name: user.name,

@@ -24,7 +24,7 @@ export default async function PaginatedProducts({
 	};
 
 	if (categoryId) {
-		queryParams["category_id"] = categoryId;
+		queryParams.category_id = categoryId;
 	}
 
 	const {

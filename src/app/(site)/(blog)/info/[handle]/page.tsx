@@ -1,4 +1,4 @@
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { listPosts } from "@/lib/data/blog";
 import PostTemplate from "@/modules/posts/templates";

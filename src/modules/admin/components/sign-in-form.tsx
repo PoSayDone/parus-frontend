@@ -17,7 +17,7 @@ import { useRouter } from "next/navigation";
 import { signIn } from "@/lib/data/auth";
 import {
 	signInFormSchema,
-	SignInFormSchema,
+	type SignInFormSchema,
 } from "@/modules/admin/schemas/sign-in-form-schema";
 
 export function SignInForm() {
@@ -45,7 +45,7 @@ export function SignInForm() {
 				router.push("/admin");
 				router.refresh();
 			}
-		} catch (error) {
+		} catch (_error) {
 			toast.error("Произошла ошибка при входе");
 		}
 	}

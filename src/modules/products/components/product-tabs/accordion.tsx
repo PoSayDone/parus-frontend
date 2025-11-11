@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import * as AccordionPrimitive from "@radix-ui/react-accordion";
-import React from "react";
+import type React from "react";
 
 type AccordionItemProps = AccordionPrimitive.AccordionItemProps & {
 	title: string;

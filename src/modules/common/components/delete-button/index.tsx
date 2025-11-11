@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { deleteLineItem } from "@lib/data/cart";
 import { Loader, Trash } from "lucide-react";
-import { ComponentProps, useState } from "react";
+import { type ComponentProps, useState } from "react";
 
 const DeleteButton = ({
 	id,
@@ -16,7 +16,7 @@ const DeleteButton = ({
 
 	const handleDelete = async (id: string) => {
 		setIsDeleting(true);
-		await deleteLineItem(id).catch((err) => {
+		await deleteLineItem(id).catch((_err) => {
 			setIsDeleting(false);
 		});
 	};

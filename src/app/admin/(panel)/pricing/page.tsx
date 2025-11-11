@@ -25,7 +25,7 @@ export default function PricingPage() {
 		{
 			key: "title",
 			label: "Название",
-			render: (value: string, row: PricePlan) => (
+			render: (_value: string, row: PricePlan) => (
 				<div className="flex items-center space-x-3">
 					<div>
 						<div className="font-medium">{row.title}</div>

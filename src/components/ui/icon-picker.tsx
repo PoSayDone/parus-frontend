@@ -166,14 +166,14 @@ const IconPicker = React.forwardRef<
 						if (!categories.has(category)) {
 							categories.set(category, []);
 						}
-						categories.get(category)!.push(icon);
+						categories.get(category)?.push(icon);
 					});
 				} else {
 					const category = "Other";
 					if (!categories.has(category)) {
 						categories.set(category, []);
 					}
-					categories.get(category)!.push(icon);
+					categories.get(category)?.push(icon);
 				}
 			});
 
@@ -262,7 +262,7 @@ const IconPicker = React.forwardRef<
 					}, 1);
 				}
 			},
-			[open, onOpenChange, virtualizer],
+			[open, onOpenChange, virtualizer, setSearch],
 		);
 
 		const handleIconClick = useCallback(
@@ -271,7 +271,7 @@ const IconPicker = React.forwardRef<
 				setIsOpen(false);
 				setSearch("");
 			},
-			[handleValueChange],
+			[handleValueChange, setSearch],
 		);
 
 		const handleSearchChange = useCallback(
@@ -284,7 +284,7 @@ const IconPicker = React.forwardRef<
 
 				virtualizer.scrollToOffset(0);
 			},
-			[virtualizer],
+			[virtualizer, setSearch],
 		);
 
 		const scrollToCategory = useCallback(
@@ -403,7 +403,7 @@ const IconPicker = React.forwardRef<
 									style={itemStyle}
 								>
 									<div className="grid grid-cols-5 gap-2 w-full">
-										{item.icons!.map(renderIcon)}
+										{item.icons?.map(renderIcon)}
 									</div>
 								</div>
 							);

@@ -1,7 +1,8 @@
 "use client";
 
-import React, { memo, useEffect, useRef } from "react";
-import EditorJS, { I18nDictionary } from "@editorjs/editorjs";
+import type React from "react";
+import { memo, useEffect, useRef } from "react";
+import EditorJS, { type I18nDictionary } from "@editorjs/editorjs";
 import Paragraph from "@editorjs/paragraph";
 import Header from "@editorjs/header";
 import ImageTool from "@editorjs/image";
@@ -95,7 +96,7 @@ function Editor({
 				tools: EDITOR_TOOLS,
 				i18n: editorTranslations,
 				data: data,
-				async onChange(api: any, event: any) {
+				async onChange(api: any, _event: any) {
 					const content = await api.saver.save();
 					onChange(content);
 				},
@@ -106,12 +107,12 @@ function Editor({
 		}
 
 		return () => {
-			if (ref.current && ref.current.destroy) {
+			if (ref.current?.destroy) {
 				ref.current.destroy();
 			}
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [data, holder, onChange]);
 
 	return <div id={holder} {...props} />;
 }

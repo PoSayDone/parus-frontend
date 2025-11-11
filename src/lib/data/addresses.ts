@@ -2,6 +2,7 @@
 
 import prisma from "@lib/prisma";
 import type { Prisma } from "@prisma/client";
+import { revalidatePath } from "next/cache";
 import type { Address } from "@/types/admin";
 
 type Props = {
@@ -90,6 +91,7 @@ export const createAddress = async (
 		},
 	});
 
+	await revalidateAddresses();
 	return address;
 };
 
@@ -102,6 +104,7 @@ export const updateAddress = async (
 		data,
 	});
 
+	await revalidateAddresses();
 	return address;
 };
 
@@ -109,4 +112,11 @@ export const deleteAddress = async (id: string): Promise<void> => {
 	await prisma.address.delete({
 		where: { id },
 	});
+
+	await revalidateAddresses();
+};
+
+export const revalidateAddresses = async () => {
+	revalidatePath("/(site)/(landing)", "page");
+	revalidatePath("/(site)/(services)/addresses", "page");
 };

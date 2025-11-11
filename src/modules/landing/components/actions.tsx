@@ -4,7 +4,7 @@ import Document from "@/modules/common/icons/document";
 import Passport from "@/modules/common/icons/passport";
 import RitualAgent from "@/modules/common/icons/ritual-agent";
 import ContactModalTrigger from "@/modules/contact/components/contact-modal-trigger";
-import { IconProps } from "@/types/icon";
+import type { IconProps } from "@/types/icon";
 
 const StepCard = ({
 	title,

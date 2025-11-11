@@ -7,7 +7,7 @@ import {
 	AccordionTrigger,
 } from "@/components/ui/accordion";
 import Section from "@/components/ui/section";
-import React from "react";
+import type React from "react";
 
 const Question = ({
 	value,

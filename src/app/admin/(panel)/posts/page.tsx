@@ -4,13 +4,6 @@ import { Calendar, Plus, User } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
 import { buttonVariants } from "@/components/ui/button";
-import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardHeader,
-	CardTitle,
-} from "@/components/ui/card";
 import { deletePost, listPosts } from "@/lib/data/blog";
 import { AdminTable } from "@/modules/admin/components/admin-table";
 import { PostTypeBadge } from "@/modules/admin/components/post-type-badge";
@@ -39,7 +32,7 @@ export default function BlogPage() {
 		{
 			key: "title",
 			label: "Статья",
-			render: (value: string, row: BlogPost) => (
+			render: (_value: string, row: BlogPost) => (
 				<div className="flex items-center space-x-3">
 					<img
 						src={row.thumbnail || "/placeholder.svg"}

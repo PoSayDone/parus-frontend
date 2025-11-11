@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { Product } from "@/types/admin";
+import type { Product } from "@/types/admin";
 
 export default function ProductPrice({ product }: { product: Product }) {
 	const selectedPrice = {

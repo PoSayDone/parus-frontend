@@ -1,5 +1,5 @@
 import { buttonVariants } from "@/components/ui/button";
-import { ArrowLeft, ArrowUpCircle, ChevronLeft } from "lucide-react";
+import { ArrowLeft, } from "lucide-react";
 import Link from "next/link";
 
 export default function AuthLayout({

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Thumbnail from "./thumbnail";
-import { Product } from "@/types/admin";
+import type { Product } from "@/types/admin";
 import ProductPrice from "./product-price";
 
 export function ProductCard({

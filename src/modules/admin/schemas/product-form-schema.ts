@@ -30,7 +30,7 @@ export const productFormSchema = z.object({
 	images: z.array(z.string()).optional(),
 	price: z
 		.string()
-		.refine((val) => !isNaN(parseFloat(val)) && parseFloat(val) >= 0, {
+		.refine((val) => !Number.isNaN(parseFloat(val)) && parseFloat(val) >= 0, {
 			message: "Цена должна быть неотрицательным числом",
 		}),
 	active: z.boolean(),

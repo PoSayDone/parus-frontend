@@ -1,4 +1,5 @@
-import React, { Suspense } from "react";
+import type React from "react";
+import { Suspense } from "react";
 
 import ImageGallery from "@modules/products/components/image-gallery";
 import ProductActions from "@modules/products/components/product-actions";
@@ -7,7 +8,7 @@ import RelatedProducts from "@modules/products/components/related-products";
 import ProductInfo from "@modules/products/templates/product-info";
 import SkeletonRelatedProducts from "@modules/skeletons/templates/skeleton-related-products";
 import { notFound } from "next/navigation";
-import { StoreProduct } from "@/types/store";
+import type { StoreProduct } from "@/types/store";
 import MobileActions from "../components/product-actions/mobile-actions";
 
 type ProductTemplateProps = {

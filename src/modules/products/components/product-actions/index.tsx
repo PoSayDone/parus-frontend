@@ -1,8 +1,7 @@
 "use client";
 
-import { StoreProduct } from "@/types/store";
+import type { StoreProduct } from "@/types/store";
 import ProductPrice from "../product-price";
-import MobileActions from "./mobile-actions";
 import { Button } from "@/components/ui/button";
 import { useContactModal } from "@/lib/hooks/use-contact-modal";
 

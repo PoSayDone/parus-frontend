@@ -1,7 +1,7 @@
 import { listPosts } from "@/lib/data/blog";
 import { Pagination } from "@modules/store/components/pagination";
 import { PostCard } from "../../posts/components/card";
-import { SortOptions } from "@/modules/store/components/refinement-list/sort-products";
+import type { SortOptions } from "@/modules/store/components/refinement-list/sort-products";
 
 const PRODUCT_LIMIT = 12;
 

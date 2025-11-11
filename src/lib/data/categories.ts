@@ -2,7 +2,6 @@
 
 import prisma from "@lib/prisma";
 import type { Prisma } from "@prisma/client";
-import _ from "lodash";
 import { revalidatePath } from "next/cache";
 
 type Props = {
@@ -120,10 +119,7 @@ export const deleteCategory = async (handle: string) => {
 
 export const revalidateCategories = async () => {
 	revalidatePath("/(site)/(landing)", "page");
-	revalidatePath(
-		"/(site)/(commerce)/(store)/categories/[...category]",
-		"page",
-	);
+	revalidatePath("/(site)/(commerce)/(store)/categories/[...category]", "page");
 	revalidatePath("/(site)/(commerce)/(store)/store", "page");
 	revalidatePath("/(site)/(commerce)/products/[handle]", "page");
 };

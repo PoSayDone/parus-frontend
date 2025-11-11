@@ -25,7 +25,7 @@ export default function ServicesPage() {
 		{
 			key: "title",
 			label: "Название",
-			render: (value: string, row: Service) => (
+			render: (_value: string, row: Service) => (
 				<div className="flex items-center space-x-3">
 					<div>
 						<div className="font-medium">{row.title}</div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { EmblaOptionsType } from "embla-carousel";
+import type { EmblaOptionsType } from "embla-carousel";
 import Autoplay from "embla-carousel-autoplay";
 import useEmblaCarousel from "embla-carousel-react";
 
@@ -15,7 +15,7 @@ export default function EmblaCarousel({
 		loop: true,
 	};
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const [emblaRef, emblaApi] = useEmblaCarousel(options, [
+	const [emblaRef, _emblaApi] = useEmblaCarousel(options, [
 		Autoplay({
 			delay: 2000,
 		}),

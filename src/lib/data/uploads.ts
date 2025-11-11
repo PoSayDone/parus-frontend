@@ -1,9 +1,9 @@
 "use server";
 
-import { writeFile } from "fs/promises";
-import { join } from "path";
+import { writeFile } from "node:fs/promises";
+import { join } from "node:path";
+import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import { v4 as uuidv4 } from "uuid";
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 
 export const uploadFile = async (file: File): Promise<string> => {
 	try {
@@ -50,8 +50,7 @@ const uploadToS3 = async (
 			accessKeyId:
 				process.env.S3_ACCESS_KEY_ID || process.env.AWS_ACCESS_KEY_ID!,
 			secretAccessKey:
-				process.env.S3_SECRET_ACCESS_KEY ||
-				process.env.AWS_SECRET_ACCESS_KEY!,
+				process.env.S3_SECRET_ACCESS_KEY || process.env.AWS_SECRET_ACCESS_KEY!,
 		},
 	});
 

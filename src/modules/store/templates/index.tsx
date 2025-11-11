@@ -5,7 +5,7 @@ import RefinementList from "@modules/store/components/refinement-list";
 
 import PaginatedProducts from "./paginated-products";
 import { Input } from "@/components/ui/input";
-import { SortOptions } from "../components/refinement-list/sort-products";
+import type { SortOptions } from "../components/refinement-list/sort-products";
 
 const StoreTemplate = ({
 	sortBy,
@@ -14,7 +14,7 @@ const StoreTemplate = ({
 	sortBy?: SortOptions;
 	page?: string;
 }) => {
-	const pageNumber = page ? parseInt(page) : 1;
+	const pageNumber = page ? parseInt(page, 10) : 1;
 	const sort = sortBy || "created_at";
 
 	return (

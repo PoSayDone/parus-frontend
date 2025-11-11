@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 import { ChevronsUpDown } from "lucide-react";
 import {
-	SelectHTMLAttributes,
+	type SelectHTMLAttributes,
 	forwardRef,
 	useEffect,
 	useImperativeHandle,
@@ -40,7 +40,7 @@ const NativeSelect = forwardRef<HTMLSelectElement, NativeSelectProps>(
 			} else {
 				setIsPlaceholder(false);
 			}
-		}, [innerRef.current?.value]);
+		}, []);
 
 		return (
 			<div>

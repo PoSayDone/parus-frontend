@@ -17,7 +17,7 @@ export default function CategoryTemplate({
 	sortBy?: SortOptions;
 	page?: string;
 }) {
-	const pageNumber = page ? parseInt(page) : 1;
+	const pageNumber = page ? parseInt(page, 10) : 1;
 	const sort = sortBy || "created_at";
 
 	if (!category) notFound();
@@ -36,8 +36,7 @@ export default function CategoryTemplate({
 	return (
 		<div className="w-full">
 			<div className="flex flex-row mb-4 gap-4 text-3xl sr-only">
-				{parents &&
-					parents.map((parent) => (
+				{parents?.map((parent) => (
 						<span key={parent.id} className="text-ui-fg-subtle">
 							<Link
 								className="mr-4 hover:text-black"

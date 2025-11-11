@@ -2,7 +2,7 @@ import Link from "next/link";
 import Thumbnail from "./thumbnail";
 import { format } from "date-fns";
 import { ru } from "date-fns/locale";
-import { BlogPost } from "@/types/admin";
+import type { BlogPost } from "@/types/admin";
 
 export function PostCard({ post }: { post: BlogPost }) {
 	let formatted = "";
@@ -10,14 +10,14 @@ export function PostCard({ post }: { post: BlogPost }) {
 	if (post.createdAt && post.createdAt !== "null") {
 		try {
 			const date = new Date(post.createdAt);
-			if (!isNaN(date.getTime())) {
+			if (!Number.isNaN(date.getTime())) {
 				formatted = format(date, "LLLL dd, yyyy", {
 					locale: ru,
 				});
 				formatted =
 					formatted.charAt(0).toUpperCase() + formatted.slice(1);
 			}
-		} catch (e) {}
+		} catch (_e) {}
 	}
 
 	return (

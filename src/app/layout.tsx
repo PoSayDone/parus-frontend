@@ -3,7 +3,6 @@ import { Golos_Text } from "next/font/google";
 import "./globals.css";
 import ContactModalProvider from "@/modules/contact/components/contact-modal-provider";
 import { Toaster } from "@/components/ui/sonner";
-import { ThemeProvider } from "@/providers/ThemeProvider";
 
 export const metadata: Metadata = {
 	metadataBase: new URL("https://parus.ru"),

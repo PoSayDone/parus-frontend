@@ -5,7 +5,7 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { MenuIcon, Phone, XIcon } from "lucide-react";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
-import { Dispatch, useState } from "react";
+import { type Dispatch, useState } from "react";
 import { headerLinks } from "@/lib/constants";
 import Logo from "@/modules/common/icons/logo";
 

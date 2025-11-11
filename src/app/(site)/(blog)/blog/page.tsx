@@ -1,6 +1,6 @@
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import BlogTemplate from "@/modules/blog/templates";
-import { SortOptions } from "@modules/store/components/refinement-list/sort-products";
+import type { SortOptions } from "@modules/store/components/refinement-list/sort-products";
 
 export const metadata: Metadata = {
 	title: "Блог о ритуальных услугах и товарах - Парус",

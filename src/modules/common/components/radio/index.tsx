@@ -6,8 +6,7 @@ const Radio = ({
 	"data-testid"?: string;
 }) => {
 	return (
-		<>
-			<div
+		<div
 				role="radio"
 				aria-checked="true"
 				data-state={checked ? "checked" : "unchecked"}
@@ -25,7 +24,6 @@ const Radio = ({
 					)}
 				</div>
 			</div>
-		</>
 	);
 };
 

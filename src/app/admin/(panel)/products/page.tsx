@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
-import { Product } from "@/types/admin";
+import type { Product } from "@/types/admin";
 import { AdminTable } from "@/modules/admin/components/admin-table";
 import { StatusBadge } from "@/modules/admin/components/status-badge";
 import { Plus } from "lucide-react";
@@ -26,7 +26,7 @@ export default function ProductsPage() {
 		{
 			key: "title",
 			label: "Продукт",
-			render: (value: string, row: Product) => (
+			render: (_value: string, row: Product) => (
 				<div className="flex items-center space-x-3">
 					<img
 						src={row.thumbnail || "/placeholder.svg"}

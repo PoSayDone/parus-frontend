@@ -479,7 +479,7 @@ export default function ProductForm({
 									{characteristics.length > 0 && (
 										<div className="space-y-4 mb-4">
 											{characteristics.map(
-												(char: any, index: number) => (
+												(_char: any, index: number) => (
 													<div
 														key={index}
 														className="flex gap-2 items-end"

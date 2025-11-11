@@ -1,6 +1,6 @@
 import { listCategories } from "@/lib/data/categories";
 import { listProducts } from "@/lib/data/products";
-import { MetadataRoute } from "next";
+import type { MetadataRoute } from "next";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 	const baseUrl =
@@ -54,9 +54,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 		});
 
 		if (
-			categoryResponse &&
-			categoryResponse.response &&
-			categoryResponse.response.data
+			categoryResponse?.response?.data
 		) {
 			categoryPages.push(
 				...categoryResponse.response.data.map((category: any) => ({
@@ -81,9 +79,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 		});
 
 		if (
-			productResponse &&
-			productResponse.response &&
-			productResponse.response.data
+			productResponse?.response?.data
 		) {
 			productPages.push(
 				...productResponse.response.data.map((product: any) => ({

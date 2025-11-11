@@ -2,7 +2,7 @@
 import { buttonVariants } from "@/components/ui/button";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
-import { StoreProductCategory } from "@/types/store";
+import type { StoreProductCategory } from "@/types/store";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -48,14 +48,14 @@ export default function Categories({
             createdAt: new Date(),
             updatedAt: new Date(),
           } as StoreProductCategory}
-          active={slug == "store"}
+          active={slug === "store"}
           href="/store"
         />
         {categories.map((category) => (
           <Category
             key={category.id}
             category={category}
-            active={slug == category.handle}
+            active={slug === category.handle}
             href={`/categories/${category.handle}`}
           />
         ))}

@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { listProducts } from "@/lib/data/products";
-import { listCategories } from "@/lib/data/categories";
+import { useEffect, useState } from "react";
 import { listPosts } from "@/lib/data/blog";
+import { listCategories } from "@/lib/data/categories";
+import { listProducts } from "@/lib/data/products";
 
 export function useAdminStats() {
 	const [stats, setStats] = useState({

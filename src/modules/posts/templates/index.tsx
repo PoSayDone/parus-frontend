@@ -1,14 +1,14 @@
-import React from "react";
+import type React from "react";
 import { notFound } from "next/navigation";
 import edjsHTML from "editorjs-html";
 import Thumbnail from "../components/thumbnail";
 import { format } from "date-fns";
 import { ru } from "date-fns/locale";
 import _ from "lodash";
-import { BlogPost } from "@/types/admin";
+import type { BlogPost } from "@/types/admin";
 import { Eye } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { OutputData } from "@editorjs/editorjs";
+import type { OutputData } from "@editorjs/editorjs";
 
 type PostTemplateProps = {
 	post: BlogPost;
@@ -29,19 +29,18 @@ const PostTemplate: React.FC<PostTemplateProps> = ({ post }) => {
 	if (post.createdAt && post.createdAt !== "null") {
 		try {
 			const date = new Date(post.createdAt);
-			if (!isNaN(date.getTime())) {
+			if (!Number.isNaN(date.getTime())) {
 				formatted = format(date, "LLLL dd, yyyy", {
 					locale: ru,
 				});
 				formatted =
 					formatted.charAt(0).toUpperCase() + formatted.slice(1);
 			}
-		} catch (e) {}
+		} catch (_e) {}
 	}
 
 	return (
-		<>
-			<div
+		<div
 				className="content-container flex flex-col py-6 relative max-w-[800px] w-full mx-auto sm:gap-x-12"
 				data-testid="post-container"
 			>
@@ -63,7 +62,6 @@ const PostTemplate: React.FC<PostTemplateProps> = ({ post }) => {
 					dangerouslySetInnerHTML={{ __html: html }}
 				/>
 			</div>
-		</>
 	);
 };
 

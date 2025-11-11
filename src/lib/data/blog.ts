@@ -1,7 +1,7 @@
 "use server";
 
 import prisma from "@lib/prisma";
-import { BlogPost, Prisma } from "@prisma/client";
+import type { BlogPost, Prisma } from "@prisma/client";
 import _ from "lodash";
 import { revalidatePath } from "next/cache";
 

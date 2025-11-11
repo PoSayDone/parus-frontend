@@ -1,7 +1,7 @@
-import { Metadata } from "next";
+import type { Metadata } from "next";
+import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import Link from "next/link";
 
 export const metadata: Metadata = {
 	title: "Конструктор ритуальных изделий - Парус",
@@ -31,10 +31,9 @@ export default function DesignerPage() {
 			>
 				<h1 className="text-3xl">Конструктор в разработке</h1>
 				<div className="text-lg mt-4 mb-6 max-w-[32rem]">
-					На данный момент конструктор находится в разработке, просим
-					прощения за предоставленные неудобства. Сейчас вы можете
-					воспользоваться катлогом товаров и найти интересующий вас
-					товар при помощи него.
+					На данный момент конструктор находится в разработке, просим прощения
+					за предоставленные неудобства. Сейчас вы можете воспользоваться
+					катлогом товаров и найти интересующий вас товар при помощи него.
 				</div>
 				<div className="flex flex-wrap gap-2">
 					<Link

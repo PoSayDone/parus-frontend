@@ -17,7 +17,7 @@ export const SlugHandler = ({
 	const handleFieldChange = (value: string) => {
 		const formValues = form.getValues();
 
-		const currentSlug = formValues["handle"];
+		const currentSlug = formValues.handle;
 		const previousFieldValue = formValues[fieldName];
 		const expectedSlug = sluga(previousFieldValue);
 

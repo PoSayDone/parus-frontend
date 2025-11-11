@@ -2,6 +2,7 @@
 
 import prisma from "@lib/prisma";
 import type { Prisma } from "@prisma/client";
+import { revalidatePath } from "next/cache";
 import type { PricePlan } from "@/types/admin";
 
 type Props = {
@@ -85,6 +86,7 @@ export const createPricePlan = async (
 		},
 	});
 
+	await revalidatePricePlans();
 	return pricePlan;
 };
 
@@ -97,6 +99,7 @@ export const updatePricePlan = async (
 		data,
 	});
 
+	await revalidatePricePlans();
 	return pricePlan;
 };
 
@@ -104,4 +107,11 @@ export const deletePricePlan = async (id: string): Promise<void> => {
 	await prisma.pricePlan.delete({
 		where: { id },
 	});
+
+	await revalidatePricePlans();
+};
+
+export const revalidatePricePlans = async () => {
+	revalidatePath("/(site)/(landing)", "page");
+	revalidatePath("/(site)/(services)/prices", "page");
 };
