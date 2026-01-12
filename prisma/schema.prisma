@@ -129,7 +129,7 @@ model SiteSettings {
     id         String   @id @default(uuid())
     key        String   @unique @default("default")
     phone      String
-    email      String
+    email      String   @default("parus@perm.ru")
     address    String
     footerNote String
     createdAt  DateTime @default(now())
