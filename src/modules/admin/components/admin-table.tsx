@@ -47,6 +47,7 @@ interface AdminTableProps {
 	data: any[];
 	actions: AdminTableAction[];
 	getKey: (row: any) => string;
+	filters?: React.ReactNode;
 	fetchDataAction?: (params: {
 		page: number;
 		queryParams: {
@@ -66,6 +67,7 @@ export function AdminTable({
 	data: externalData,
 	actions,
 	getKey,
+	filters,
 	fetchDataAction: fetchData,
 	initialPage = 1,
 	initialLimit = 10,
@@ -181,8 +183,8 @@ export function AdminTable({
 	return (
 		<div className="space-y-4">
 			{fetchData && (
-				<div className="flex items-center justify-between">
-					<div className="flex items-center space-x-2">
+				<div className="flex items-center justify-between gap-3">
+					<div className="flex items-center gap-3">
 						<input
 							type="text"
 							placeholder="Поиск..."
@@ -190,6 +192,7 @@ export function AdminTable({
 							value={searchTerm}
 							onChange={(e) => handleSearch(e.target.value)}
 						/>
+						{filters}
 					</div>
 					<div className="text-sm text-muted-foreground">Всего: {total}</div>
 				</div>

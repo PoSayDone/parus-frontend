@@ -3,6 +3,7 @@ import type {
 	Address as PrismaAddress,
 	BlogPost as PrismaBlogPost,
 	Category as PrismaCategory,
+	ContactRequest as PrismaContactRequest,
 	PricePlan as PrismaPricePlan,
 	Product as PrismaProduct,
 	Service as PrismaService,
@@ -63,6 +64,12 @@ export interface PricePlan
 
 export interface SiteSettings
 	extends Omit<PrismaSiteSettings, "createdAt" | "updatedAt"> {
+	createdAt: string;
+	updatedAt: string;
+}
+
+export interface ContactRequest
+	extends Omit<PrismaContactRequest, "createdAt" | "updatedAt"> {
 	createdAt: string;
 	updatedAt: string;
 }

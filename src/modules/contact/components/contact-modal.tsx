@@ -24,6 +24,9 @@ import {
 } from "@/components/ui/form";
 import LabelInput from "@/components/ui/floating-input";
 import { Separator } from "@/components/ui/separator";
+import { toast } from "sonner";
+import { createContactRequest } from "@/lib/data/contact-requests";
+import FloatingTextarea from "@/components/ui/floating-textarea";
 
 const contactFormSchema = z.object({
 	name: z.string().min(2, "Имя должно содержать минимум 2 символа"),
@@ -80,10 +83,23 @@ export default function ContactModal({
 		[settings.address],
 	);
 
-	const onSubmit = (data: ContactFormData) => {
-		console.log("Form submitted:", data);
-		onOpenChange(false);
-		form.reset();
+	const onSubmit = async (data: ContactFormData) => {
+		try {
+			await createContactRequest({
+				name: data.name,
+				phone: data.phone,
+				email: data.email,
+				service: data.service,
+				plan: data.plan,
+				message: data.message,
+			});
+			toast.success("Заявка отправлена");
+			onOpenChange(false);
+			form.reset();
+		} catch (error) {
+			console.error("Error submitting contact request:", error);
+			toast.error("Не удалось отправить заявку");
+		}
 	};
 
 	return (
@@ -109,7 +125,6 @@ export default function ContactModal({
 							name="name"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>Имя *</FormLabel>
 									<FormControl>
 										<LabelInput
 											label="Имя *"
@@ -163,9 +178,9 @@ export default function ContactModal({
 							name="message"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>Сообщение</FormLabel>
 									<FormControl>
-										<Textarea
+										<FloatingTextarea
+											label="Сообщение"
 											placeholder="Расскажите подробнее о ваших потребностях..."
 											rows={3}
 											{...field}

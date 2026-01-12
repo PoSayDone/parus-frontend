@@ -136,6 +136,20 @@ model SiteSettings {
     updatedAt  DateTime @updatedAt
 }
 
+model ContactRequest {
+    id          String    @id @default(uuid())
+    name        String
+    phone       String
+    email       String?
+    service     String?
+    plan        String?
+    message     String?
+    processed   Boolean   @default(false)
+    processedAt DateTime?
+    createdAt   DateTime  @default(now())
+    updatedAt   DateTime  @updatedAt
+}
+
 enum AddressType {
     zags
     morgue
