@@ -24,15 +24,14 @@ export default async function ServicePageTemplate({
 	return (
 		<div className="min-h-screen bg-background">
 			<div className="container mx-auto px-4 py-12">
-				{/* Hero Section */}
 				<div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-12">
 					<div>
-						<div className="flex items-center gap-4 mb-6">
-							<div className="p-3 rounded-full bg-primary/10 group-hover:bg-primary/20 transition-colors duration-300 size-14">
+						<div className="flex items-center gap-4 mb-6 flex-wrap sm:flex-nowrap">
+							<div className="p-3 rounded-full bg-primary/10 group-hover:bg-primary/20 transition-colors duration-300 size-14 shrink-0">
 								{service.icon && (
 									<Icon
 										name={service.icon as IconName}
-										className="size-8 text-primary"
+										className="size-8 text-primary shrink-0"
 									/>
 								)}
 							</div>

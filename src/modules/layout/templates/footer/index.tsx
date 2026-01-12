@@ -5,8 +5,23 @@ import FooterDocuments from "../../components/footer-documents";
 import { Suspense } from "react";
 import SkeletonFooterDocuments from "@/modules/skeletons/components/skeleton-footer-documents";
 import Logo from "@/modules/common/icons/logo";
+import { getSiteSettings } from "@/lib/data/site-settings";
 
-export default function Footer() {
+const DEFAULT_ADDRESS =
+	"г. Пермь, Советской армии 52\nэтаж 128, офис 812";
+const DEFAULT_PHONE = "+79999999999";
+const DEFAULT_EMAIL = "parus@perm.ru";
+const DEFAULT_FOOTER_NOTE =
+	"Похоронное бюро в СПб ООО «Центр РУ». © 2025. ИНН: 7813661578, КПП: 780601001";
+
+export default async function Footer() {
+	const settings = await getSiteSettings();
+	const address = settings?.address || DEFAULT_ADDRESS;
+	const phone = settings?.phone || DEFAULT_PHONE;
+	const email = settings?.email || DEFAULT_EMAIL;
+	const footerNote = settings?.footerNote || DEFAULT_FOOTER_NOTE;
+	const addressLines = address.split("\n");
+
 	return (
 		<footer className="px-8 py-10 md:p-20 flex flex-col justify-between border-t">
 			<div className="flex flex-col md:flex-row justify-between items-start py-6 gap-6 md:mb-6">
@@ -15,12 +30,21 @@ export default function Footer() {
 						<Logo size={32} />
 					</Link>
 					<p className="text-sm">
-						г. Пермь, Советской армии 52,
-						<br /> этаж 128, офис 812
+						{addressLines.map((line, index) => (
+							<span key={`${line}-${index}`}>
+								{line}
+								{index < addressLines.length - 1 && <br />}
+							</span>
+						))}
 					</p>
-					<p className="text-sm">parus@perm.ru</p>
-					<Link href="tel:+79999999999" className="text-sm">
-						+79999999999
+					<a
+						href={`mailto:${email}`}
+						className="text-sm hover:underline"
+					>
+						{email}
+					</a>
+					<Link href={`tel:${phone}`} className="text-sm">
+						{phone}
 					</Link>
 				</div>
 				<div className="flex flex-col gap-2">
@@ -52,7 +76,7 @@ export default function Footer() {
 						<br /> и специалист ответит в течение 5 минут
 					</p>
 					<Link
-						href={"tel:+79999999999"}
+						href={`tel:${phone}`}
 						className={cn(buttonVariants())}
 					>
 						Задать вопрос
@@ -60,8 +84,7 @@ export default function Footer() {
 				</div>
 			</div>
 			<p className="text-muted-foreground text-sm">
-				Похоронное бюро в СПб ООО «Центр РУ». © 2025. ИНН: 7813661578,
-				КПП: 780601001
+				{footerNote}
 			</p>
 		</footer>
 	);

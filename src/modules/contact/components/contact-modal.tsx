@@ -9,7 +9,8 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Phone, Mail, Clock } from "lucide-react";
+import { Phone, Mail, Clock, MapPin } from "lucide-react";
+import { useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -47,6 +48,12 @@ interface ContactModalProps {
 	onOpenChange: (open: boolean) => void;
 	selectedService?: string;
 	selectedPlan?: string;
+	settings: {
+		phone: string;
+		email: string;
+		address: string;
+		footerNote: string;
+	};
 }
 
 export default function ContactModal({
@@ -54,6 +61,7 @@ export default function ContactModal({
 	onOpenChange,
 	selectedService,
 	selectedPlan,
+	settings,
 }: ContactModalProps) {
 	const form = useForm<ContactFormData>({
 		resolver: zodResolver(contactFormSchema),
@@ -66,6 +74,11 @@ export default function ContactModal({
 			message: "",
 		},
 	});
+
+	const addressLines = useMemo(
+		() => settings.address.split("\n"),
+		[settings.address],
+	);
 
 	const onSubmit = (data: ContactFormData) => {
 		console.log("Form submitted:", data);
@@ -194,20 +207,33 @@ export default function ContactModal({
 						<div className="flex items-center gap-2">
 							<Phone className="h-4 w-4 text-primary" />
 							<a
-								href="tel:+7-800-000-00-00"
+								href={`tel:${settings.phone}`}
 								className="text-primary hover:underline"
 							>
-								+7 (800) 000-00-00
+								{settings.phone}
 							</a>
 						</div>
 						<div className="flex items-center gap-2">
 							<Mail className="h-4 w-4 text-primary" />
 							<a
-								href="mailto:info@ritual-services.ru"
+								href={`mailto:${settings.email}`}
 								className="text-primary hover:underline"
 							>
-								info@ritual-services.ru
+								{settings.email}
 							</a>
+						</div>
+						<div className="flex items-center gap-2">
+							<MapPin className="h-4 w-4 text-primary" />
+							<span className="text-muted-foreground">
+								{addressLines.map((line, index) => (
+									<span key={`${line}-${index}`}>
+										{line}
+										{index < addressLines.length - 1 && (
+											<br />
+										)}
+									</span>
+								))}
+							</span>
 						</div>
 						<div className="flex items-center gap-2">
 							<Clock className="h-4 w-4 text-primary" />

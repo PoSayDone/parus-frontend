@@ -16,6 +16,7 @@ import {
 	X,
 	Home,
 	User,
+	Settings,
 } from "lucide-react";
 import { SignOutButton } from "@/modules/admin/components/sign-out-button";
 
@@ -59,6 +60,11 @@ const navigation = [
 		name: "Пользователи",
 		href: "/admin/users",
 		icon: User,
+	},
+	{
+		name: "Настройки",
+		href: "/admin/settings",
+		icon: Settings,
 	},
 ];
 

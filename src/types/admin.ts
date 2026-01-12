@@ -6,6 +6,7 @@ import type {
 	PricePlan as PrismaPricePlan,
 	Product as PrismaProduct,
 	Service as PrismaService,
+	SiteSettings as PrismaSiteSettings,
 	User as PrismaUser,
 } from "@prisma/client";
 
@@ -56,6 +57,12 @@ export interface Service
 
 export interface PricePlan
 	extends Omit<PrismaPricePlan, "createdAt" | "updatedAt"> {
+	createdAt: string;
+	updatedAt: string;
+}
+
+export interface SiteSettings
+	extends Omit<PrismaSiteSettings, "createdAt" | "updatedAt"> {
 	createdAt: string;
 	updatedAt: string;
 }
