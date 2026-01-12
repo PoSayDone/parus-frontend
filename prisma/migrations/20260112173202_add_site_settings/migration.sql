@@ -3,6 +3,7 @@ CREATE TABLE "SiteSettings" (
     "id" TEXT NOT NULL,
     "key" TEXT NOT NULL DEFAULT 'default',
     "phone" TEXT NOT NULL,
+    "email" TEXT NOT NULL DEFAULT 'support@parus-ritual.ru',
     "address" TEXT NOT NULL,
     "footerNote" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
