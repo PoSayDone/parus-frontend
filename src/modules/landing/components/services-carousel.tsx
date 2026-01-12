@@ -13,7 +13,7 @@ export default async function ServicesCarousel() {
 	});
 
 	if (count === 0) {
-		return <ListPlaceholder text="На данный момент статьи не доступны" />;
+		return <ListPlaceholder text="На данный момент услуги не доступны" />;
 	}
 
 	return (

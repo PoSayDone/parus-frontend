@@ -50,6 +50,7 @@ export default function PricePlanForm({
 			description: "",
 			price: "",
 			creditPrice: "",
+			order: 0,
 			popular: false,
 			active: true,
 		},
@@ -71,6 +72,7 @@ export default function PricePlanForm({
 						description: pricePlanData.description,
 						price: pricePlanData.price,
 						creditPrice: pricePlanData.creditPrice || "",
+						order: pricePlanData.order ?? 0,
 						popular: pricePlanData.popular,
 						active: pricePlanData.active,
 					});
@@ -271,6 +273,28 @@ export default function PricePlanForm({
 									onCheckedChange={field.onChange}
 								/>
 							</FormControl>
+						</FormItem>
+					)}
+				/>
+
+				<FormField
+					control={form.control}
+					name="order"
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>Порядок</FormLabel>
+							<FormControl>
+								<Input
+									{...field}
+									type="number"
+									min={0}
+									placeholder="Например, 1"
+								/>
+							</FormControl>
+							<FormDescription>
+								Меньшее число отображается выше в списке
+							</FormDescription>
+							<FormMessage />
 						</FormItem>
 					)}
 				/>

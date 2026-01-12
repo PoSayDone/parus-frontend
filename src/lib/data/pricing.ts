@@ -48,9 +48,7 @@ export const listPricePlans = async ({ page = 1, queryParams }: Props) => {
 			where,
 			skip: offset,
 			take: limit,
-			orderBy: {
-				createdAt: "desc",
-			},
+			orderBy: [{ order: "asc" }, { createdAt: "desc" }],
 		}),
 		prisma.pricePlan.count({ where }),
 	]);

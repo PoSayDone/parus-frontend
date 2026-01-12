@@ -119,6 +119,7 @@ model PricePlan {
     creditPrice String?
     popular     Boolean  @default(false)
     included    String[]
+    order       Int      @default(0)
     active      Boolean  @default(true)
     createdAt   DateTime @default(now())
     updatedAt   DateTime @updatedAt

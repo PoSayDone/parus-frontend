@@ -23,6 +23,13 @@ export default function PricingPage() {
 
 	const columns = [
 		{
+			key: "order",
+			label: "Порядок",
+			render: (value: number) => (
+				<div className="text-sm text-muted-foreground">{value}</div>
+			),
+		},
+		{
 			key: "title",
 			label: "Название",
 			render: (_value: string, row: PricePlan) => (

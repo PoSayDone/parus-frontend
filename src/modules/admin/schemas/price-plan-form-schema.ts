@@ -13,6 +13,11 @@ export const pricePlanFormSchema = z.object({
 	price: z.string().min(1, { message: "Цена обязательна" }),
 	included: z.array(z.string()),
 	creditPrice: z.string().optional(),
+	order: z.coerce
+		.number()
+		.int({ message: "Порядок должен быть целым числом" })
+		.min(0, { message: "Порядок не может быть меньше 0" })
+		.default(0),
 	popular: z.boolean().default(false),
 	active: z.boolean().default(true),
 });
