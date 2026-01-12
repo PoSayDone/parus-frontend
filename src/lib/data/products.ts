@@ -31,14 +31,18 @@ export const listProducts = async ({
 	const offset = _pageParam === 1 ? 0 : (_pageParam - 1) * limit;
 
 	const where: Prisma.ProductWhereInput = {};
-	const orderBy: Prisma.ProductOrderByWithAggregationInput = {};
+	const orderBy: Prisma.ProductOrderByWithAggregationInput[] = [];
 
 	if (["price_asc", "price_desc"].includes(sortBy)) {
-		orderBy.price = sortBy === "price_asc" ? "asc" : "desc";
+		orderBy.push({ price: sortBy === "price_asc" ? "asc" : "desc" });
 	}
 
 	if (sortBy === "created_at") {
-		orderBy.createdAt = "desc";
+		orderBy.push({ createdAt: "desc" });
+	}
+
+	if (orderBy.length === 0) {
+		orderBy.push({ createdAt: "desc" });
 	}
 
 	if (queryParams?.category_id) {
@@ -83,7 +87,7 @@ export const listProducts = async ({
 				categories: true,
 				characteristics: true,
 			},
-			orderBy: orderBy ?? [{ createdAt: "desc" }],
+			orderBy,
 		}),
 		prisma.product.count({ where }),
 	]);

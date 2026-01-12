@@ -19,6 +19,7 @@ export default async function PaginatedProducts({
 	page: number;
 	categoryId?: string;
 }) {
+	const safePage = Number.isFinite(page) && page > 0 ? page : 1;
 	const queryParams: PaginatedProductsParams = {
 		limit: 12,
 	};
@@ -30,7 +31,7 @@ export default async function PaginatedProducts({
 	const {
 		response: { data: products, count },
 	} = await listProducts({
-		page,
+		page: safePage,
 		queryParams,
 		sortBy,
 	});
@@ -62,7 +63,7 @@ export default async function PaginatedProducts({
 			{totalPages > 1 && (
 				<Pagination
 					data-testid="product-pagination"
-					page={page}
+					page={safePage}
 					totalPages={totalPages}
 				/>
 			)}
