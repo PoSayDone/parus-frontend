@@ -27,6 +27,10 @@ const buttonVariants = cva(
 				lg: "h-[60px] px-7 has-[>svg]:px-6",
 				icon: "size-[54px]",
 			},
+			disabled: {
+				true: "opacity-50 cursor-not-allowed",
+				false: "",
+			},
 		},
 		defaultVariants: {
 			variant: "default",
@@ -39,6 +43,7 @@ function Button({
 	className,
 	variant,
 	size,
+	disabled,
 	asChild = false,
 	isLoading = false,
 	children,
@@ -54,10 +59,10 @@ function Button({
 		<Comp
 			data-slot="button"
 			className={cn(
-				buttonVariants({ variant, size, className }),
+				buttonVariants({ variant, size, className, disabled: disabled }),
 				isLoading && "opacity-70 cursor-not-allowed",
 			)}
-			disabled={isLoading || props.disabled}
+			disabled={isLoading || disabled}
 			{...props}
 		>
 			<Slottable>

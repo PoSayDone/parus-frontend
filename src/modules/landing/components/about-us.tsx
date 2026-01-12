@@ -1,4 +1,4 @@
-import { buttonVariants } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
 import Section from "@/components/ui/section";
 import Pigeon from "@/modules/common/icons/pigeon";
@@ -31,16 +31,14 @@ export default function AboutUs() {
 							сложный момент.
 						</p>
 					</div>
-					<Link
-						href="/about"
-						className={buttonVariants({
-							variant: "default",
-							size: "lg",
-							className: "mt-6",
-						})}
+					<Button
+						variant="default"
+						size="lg"
+						className="mt-6"
+						disabled
 					>
 						Подробнее о нас
-					</Link>
+					</Button>
 				</div>
 				<div className="w-full aspect-square bg-primary-container flex items-center justify-center rounded-full p-16 max-w-[500px] mx-auto">
 					<Pigeon className="w-[60%] max-w-lg mx-auto" />

@@ -8,6 +8,7 @@ import Header from "@editorjs/header";
 import ImageTool from "@editorjs/image";
 import { uploadFile } from "@/lib/data/uploads";
 import { editorTranslations } from "@/modules/admin/components/editor/translations";
+import { cn } from "@/lib/utils";
 
 interface EditorJSConfig {
 	holder: string;
@@ -20,6 +21,7 @@ interface EditorJSConfig {
 
 interface EditorJSInstance {
 	destroy: () => void;
+	render?: (data: any) => Promise<void>;
 	saver: {
 		save: () => Promise<any>;
 	};
@@ -87,6 +89,13 @@ function Editor({
 	...props
 }: EditorProps) {
 	const ref = useRef<EditorJSInstance | null>(null);
+	const onChangeRef = useRef(onChange);
+	const hasHydratedData = useRef(!!data);
+	const isEditorChangeRef = useRef(false);
+
+	useEffect(() => {
+		onChangeRef.current = onChange;
+	}, [onChange]);
 
 	useEffect(() => {
 		if (!ref.current) {
@@ -95,26 +104,50 @@ function Editor({
 				placeholder: "Начните писать здесь...",
 				tools: EDITOR_TOOLS,
 				i18n: editorTranslations,
-				data: data,
+				data: data ?? undefined,
 				async onChange(api: any, _event: any) {
 					const content = await api.saver.save();
-					onChange(content);
+					isEditorChangeRef.current = true;
+					onChangeRef.current(content);
 				},
 			};
 
 			const editor = new EditorJS(editorConfig);
 			ref.current = editor;
+			hasHydratedData.current = !!data;
 		}
 
 		return () => {
 			if (ref.current?.destroy) {
 				ref.current.destroy();
+				ref.current = null;
+				hasHydratedData.current = false;
 			}
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [data, holder, onChange]);
+	}, [holder]);
 
-	return <div id={holder} {...props} />;
+	useEffect(() => {
+		if (!ref.current || !data || hasHydratedData.current) {
+			return;
+		}
+
+		if (isEditorChangeRef.current) {
+			isEditorChangeRef.current = false;
+			return;
+		}
+
+		ref.current.render?.(data);
+		hasHydratedData.current = true;
+	}, [data]);
+
+	return (
+		<div
+			id={holder}
+			{...props}
+			className={cn("editorjs-theme", props.className)}
+		/>
+	);
 }
 
 export default memo(Editor);

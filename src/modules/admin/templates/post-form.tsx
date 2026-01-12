@@ -283,14 +283,7 @@ export default function PostForm({ postHandle }: { postHandle?: string }) {
 													? "editorjs-edit"
 													: "editorjs"
 											}
-											className="border rounded-md p-2 min-h-[300px]"
-										/>
-										<div
-											id={
-												postHandle
-													? "editorjs-edit"
-													: "editorjs"
-											}
+											className="border rounded-md min-h-75"
 										/>
 									</div>
 								</FormControl>

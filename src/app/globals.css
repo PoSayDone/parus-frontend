@@ -165,6 +165,71 @@
 }
 
 @layer utilities {
+	.editorjs-theme {
+		--editorjs-bg: var(--card);
+		--editorjs-text: var(--foreground);
+		--editorjs-muted: var(--muted-foreground);
+		--editorjs-border: var(--border);
+		--editorjs-accent: var(--primary);
+	}
+	.editorjs-theme .codex-editor {
+		color: var(--editorjs-text);
+	}
+	.editorjs-theme .codex-editor__redactor {
+		padding-left: 0;
+		padding-right: 0;
+	}
+	.editorjs-theme .codex-editor,
+	.editorjs-theme .ce-block__content,
+	.editorjs-theme .ce-toolbar__content {
+		max-width: calc(100% - 8rem) !important;
+		padding-left: 0;
+		padding-right: 0;
+	}
+	.editorjs-theme .ce-toolbar__plus,
+	.editorjs-theme .ce-toolbar__settings-btn,
+	.editorjs-theme .ce-inline-tool,
+	.editorjs-theme .ce-popover__item,
+	.editorjs-theme .ce-conversion-toolbar__label {
+		color: var(--editorjs-text);
+	}
+	.editorjs-theme .ce-popover,
+	.editorjs-theme .ce-conversion-toolbar,
+	.editorjs-theme .ce-toolbar__settings,
+	.editorjs-theme .ce-inline-toolbar {
+		background: var(--editorjs-bg);
+		border: 1px solid var(--editorjs-border);
+		box-shadow: none;
+	}
+	.editorjs-theme .ce-popover__item:hover,
+	.editorjs-theme .ce-inline-tool:hover,
+	.editorjs-theme .ce-toolbar__plus:hover,
+	.editorjs-theme .ce-toolbar__settings-btn:hover {
+		background: var(--muted);
+	}
+	.editorjs-theme .ce-popover__item--active,
+	.editorjs-theme .ce-inline-tool--active {
+		background: var(--secondary-container);
+		color: var(--editorjs-text);
+	}
+	.editorjs-theme .ce-block__content,
+	.editorjs-theme .ce-paragraph,
+	.editorjs-theme .ce-header {
+		color: var(--editorjs-text);
+	}
+	.editorjs-theme .ce-toolbar__plus,
+	.editorjs-theme .ce-toolbar__settings-btn,
+	.editorjs-theme .ce-inline-tool,
+	.editorjs-theme .ce-popover__item {
+		border-radius: 0.5rem;
+	}
+	.editorjs-theme .ce-popover__item-icon {
+		color: var(--editorjs-muted);
+	}
+	.editorjs-theme .ce-settings__button--active,
+	.editorjs-theme .ce-popover__item--active .ce-popover__item-icon {
+		color: var(--editorjs-text);
+	}
 	.embla {
 		max-width: 100%;
 		margin: auto;

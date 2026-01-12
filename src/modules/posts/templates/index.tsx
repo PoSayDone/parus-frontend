@@ -51,7 +51,7 @@ const PostTemplate: React.FC<PostTemplateProps> = ({ post }) => {
 						{post.views}
 					</Badge>
 				)}
-				{formatted && (
+				{formatted && post.type !== "document" && (
 					<h3 className="my-2 md:my-4 font-normal">{formatted}</h3>
 				)}
 				{post.thumbnail && (
