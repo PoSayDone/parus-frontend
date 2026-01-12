@@ -1,5 +1,17 @@
 import { PrismaClient } from "@prisma/client";
 
+type Morgue = {
+	institution: string;
+	address: string;
+	schedule: string;
+};
+
+type Cemetery = {
+	district: string;
+	name: string;
+	location: string;
+};
+
 export const pricingPlans = [
 	{
 		id: "basic",

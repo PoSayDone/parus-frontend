@@ -2,22 +2,13 @@
 
 import type React from "react";
 import { memo, useEffect, useRef } from "react";
-import EditorJS, { type I18nDictionary } from "@editorjs/editorjs";
+import EditorJS, { type EditorConfig } from "@editorjs/editorjs";
 import Paragraph from "@editorjs/paragraph";
 import Header from "@editorjs/header";
 import ImageTool from "@editorjs/image";
 import { uploadFile } from "@/lib/data/uploads";
 import { editorTranslations } from "@/modules/admin/components/editor/translations";
 import { cn } from "@/lib/utils";
-
-interface EditorJSConfig {
-	holder: string;
-	placeholder: string;
-	tools: Record<string, any>;
-	data?: any;
-	i18n?: I18nDictionary;
-	onChange?: (api: any, event: any) => void;
-}
 
 interface EditorJSInstance {
 	destroy: () => void;
@@ -74,7 +65,7 @@ const EDITOR_TOOLS = {
 			},
 		},
 	},
-};
+} as unknown as EditorConfig["tools"];
 
 type EditorProps = {
 	data?: any;
@@ -99,11 +90,11 @@ function Editor({
 
 	useEffect(() => {
 		if (!ref.current) {
-			const editorConfig: EditorJSConfig = {
+			const editorConfig: EditorConfig = {
 				holder,
 				placeholder: "Начните писать здесь...",
 				tools: EDITOR_TOOLS,
-				i18n: editorTranslations,
+				i18n: editorTranslations as EditorConfig["i18n"],
 				data: data ?? undefined,
 				async onChange(api: any, _event: any) {
 					const content = await api.saver.save();

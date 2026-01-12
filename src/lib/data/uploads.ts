@@ -67,7 +67,7 @@ const uploadToS3 = async (
 		if (process.env.S3_PUBLIC_URL) {
 			return `${process.env.S3_PUBLIC_URL}/uploads/${filename}`;
 		}
-		const endpoint = process.env.S3_ENDPOINT.replace(/\/$/, "");
+		const endpoint = process.env.S3_ENDPOINT!.replace(/\/$/, "");
 		return `${endpoint}/${process.env.S3_BUCKET}/uploads/${filename}`;
 	} else {
 		return `https://${process.env.S3_BUCKET}.s3.${process.env.S3_REGION || "us-east-1"}.amazonaws.com/uploads/${filename}`;

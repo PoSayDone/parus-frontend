@@ -5,7 +5,7 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { MenuIcon, Phone, XIcon } from "lucide-react";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
-import { type Dispatch, useState } from "react";
+import { type Dispatch, type SetStateAction, useState } from "react";
 import { headerLinks } from "@/lib/constants";
 import Logo from "@/modules/common/icons/logo";
 
@@ -14,7 +14,7 @@ const HeaderContent = ({
 	setMenuState,
 }: {
 	menuState: boolean;
-	setMenuState: Dispatch<boolean>;
+	setMenuState: Dispatch<SetStateAction<boolean>>;
 }) => {
 	return (
 		<>

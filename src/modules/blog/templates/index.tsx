@@ -3,11 +3,13 @@ import { Suspense } from "react";
 import PaginatedPosts from "./paginated-posts";
 import SkeletonBlogGrid from "@/modules/skeletons/templates/skeleton-blog-grid";
 
+type BlogSortOptions = "created_at" | "views";
+
 const BlogTemplate = ({
 	sortBy,
 	page,
 }: {
-	sortBy?: SortOptions;
+	sortBy?: BlogSortOptions;
 	page?: string;
 }) => {
 	const pageNumber = page ? parseInt(page, 10) : 1;

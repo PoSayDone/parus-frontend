@@ -7,7 +7,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 		process.env.NEXT_PUBLIC_BASE_URL || "https://parusritual.ru";
 
 	// Static pages
-	const staticPages = [
+	const staticPages: MetadataRoute.Sitemap = [
 		{
 			url: `${baseUrl}`,
 			lastModified: new Date(),
@@ -47,7 +47,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 	];
 
 	// Dynamic category pages
-	const categoryPages = [];
+	const categoryPages: MetadataRoute.Sitemap = [];
 	try {
 		const categoryResponse = await listCategories({
 			queryParams: { limit: 1000 },
@@ -62,7 +62,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 					lastModified: category.updatedAt
 						? new Date(category.updatedAt)
 						: new Date(),
-					changeFrequency: "weekly",
+					changeFrequency: "weekly" as const,
 					priority: 0.8,
 				})),
 			);
@@ -72,7 +72,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 	}
 
 	// Dynamic product pages
-	const productPages = [];
+	const productPages: MetadataRoute.Sitemap = [];
 	try {
 		const productResponse = await listProducts({
 			queryParams: { limit: 1000 },
@@ -87,7 +87,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 					lastModified: product.updatedAt
 						? new Date(product.updatedAt)
 						: new Date(),
-					changeFrequency: "weekly",
+					changeFrequency: "weekly" as const,
 					priority: 0.7,
 				})),
 			);

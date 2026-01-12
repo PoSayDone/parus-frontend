@@ -93,11 +93,15 @@ export default function PricePlanForm({
 
 	const onSubmit = async (values: PricePlanFormValues) => {
 		try {
+			const payload = {
+				...values,
+				creditPrice: values.creditPrice || null,
+			};
 			let result;
 			if (pricePlanId) {
-				result = await updatePricePlan(pricePlanId, values);
+				result = await updatePricePlan(pricePlanId, payload);
 			} else {
-				result = await createPricePlan(values);
+				result = await createPricePlan(payload);
 			}
 
 			if (result) {
@@ -289,6 +293,12 @@ export default function PricePlanForm({
 									type="number"
 									min={0}
 									placeholder="Например, 1"
+									onChange={(event) => {
+										const nextValue = Number(event.target.value);
+										field.onChange(
+											Number.isNaN(nextValue) ? 0 : nextValue,
+										);
+									}}
 								/>
 							</FormControl>
 							<FormDescription>

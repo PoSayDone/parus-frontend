@@ -61,7 +61,7 @@ const MobileActions: React.FC<MobileActionsProps> = ({ product }) => {
 						)}
 					</div>
 					<Button
-						onClick={handleContactClick}
+						onClick={() => handleContactClick()}
 						className="w-full"
 						data-testid="mobile-cart-button"
 					>

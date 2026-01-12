@@ -95,7 +95,7 @@ export default function PostForm({ postHandle }: { postHandle?: string }) {
 						seoTitle: postData.seoTitle || "",
 						thumbnail: postData.thumbnail || "",
 						draft: postData.draft,
-						type: postData.type,
+						type: postData.type as PostFormValues["type"],
 						author: postData.author || "Администратор",
 					});
 

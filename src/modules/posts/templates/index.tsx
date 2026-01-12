@@ -21,12 +21,12 @@ const PostTemplate: React.FC<PostTemplateProps> = ({ post }) => {
 
 	const edjsParser = edjsHTML();
 	const html = !_.isEmpty(post.body)
-		? edjsParser.parse(post.body as OutputData)
+		? edjsParser.parse(post.body as unknown as OutputData)
 		: "";
 
 	let formatted = "";
 
-	if (post.createdAt && post.createdAt !== "null") {
+	if (post.createdAt) {
 		try {
 			const date = new Date(post.createdAt);
 			if (!Number.isNaN(date.getTime())) {

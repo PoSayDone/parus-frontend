@@ -55,7 +55,7 @@ export default function ServiceForm({
 			handle: "",
 			shortDescription: "",
 			description: "",
-			icon: "",
+			icon: undefined,
 			thumbnail: "",
 			images: [],
 			price: "",
@@ -93,7 +93,9 @@ export default function ServiceForm({
 						handle: serviceData.handle,
 						shortDescription: serviceData.shortDescription || "",
 						description: serviceData.description,
-						icon: serviceData.icon || "",
+						icon: serviceData.icon
+							? (serviceData.icon as ServiceFormValues["icon"])
+							: undefined,
 						thumbnail: serviceData.thumbnail || "",
 						images: serviceData.images || [],
 						price: serviceData.price,
@@ -135,11 +137,16 @@ export default function ServiceForm({
 					? images[primaryImageIndex]
 					: values.thumbnail;
 
-			// Include images in the values
+			// Normalize optional fields for Prisma
 			const serviceData = {
 				...values,
-				thumbnail,
+				thumbnail: thumbnail || null,
 				images,
+				shortDescription: values.shortDescription || null,
+				icon: values.icon || null,
+				duration: values.duration || null,
+				features: values.features || [],
+				included: values.included || [],
 			};
 
 			let result;

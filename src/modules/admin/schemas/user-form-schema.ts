@@ -9,8 +9,8 @@ export const createUserFormSchema = z.object({
 	password: z
 		.string()
 		.min(6, { message: "Пароль должен содержать минимум 6 символов" }),
-	role: z.enum(["admin", "user"], {
-		required_error: "Пожалуйста, выберите роль пользователя",
+role: z.enum(["admin", "user"], {
+		message: "Пожалуйста, выберите роль пользователя",
 	}),
 });
 
@@ -25,8 +25,8 @@ export const updateUserFormSchema = z.object({
 		.min(6, { message: "Пароль должен содержать минимум 6 символов" })
 		.optional()
 		.or(z.literal("")),
-	role: z.enum(["admin", "user"], {
-		required_error: "Пожалуйста, выберите роль пользователя",
+role: z.enum(["admin", "user"], {
+		message: "Пожалуйста, выберите роль пользователя",
 	}),
 });
 
@@ -41,8 +41,8 @@ export const userFormSchema = z.object({
 		.min(6, { message: "Пароль должен содержать минимум 6 символов" })
 		.optional()
 		.or(z.literal("")),
-	role: z.enum(["admin", "user"], {
-		required_error: "Пожалуйста, выберите роль пользователя",
+role: z.enum(["admin", "user"], {
+		message: "Пожалуйста, выберите роль пользователя",
 	}),
 });
 

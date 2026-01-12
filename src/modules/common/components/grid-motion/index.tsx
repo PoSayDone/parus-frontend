@@ -94,7 +94,9 @@ export function GridMotion({
 						<div
 							key={rowIndex}
 							className="grid gap-4 grid-cols-[repeat(7,1fr)] will-change-transform will-change-filter"
-							ref={(el) => (rowRefs.current[rowIndex] = el)}
+							ref={(el) => {
+								rowRefs.current[rowIndex] = el;
+							}}
 						>
 							{[...Array(7)].map((_, itemIndex) => {
 								const content =

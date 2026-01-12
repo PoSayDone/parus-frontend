@@ -7,7 +7,7 @@ import type { BlogPost } from "@/types/admin";
 export function PostCard({ post }: { post: BlogPost }) {
 	let formatted = "";
 
-	if (post.createdAt && post.createdAt !== "null") {
+	if (post.createdAt) {
 		try {
 			const date = new Date(post.createdAt);
 			if (!Number.isNaN(date.getTime())) {

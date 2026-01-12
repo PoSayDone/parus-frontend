@@ -1,7 +1,7 @@
 import { listPosts } from "@/lib/data/blog";
 import { Pagination } from "@modules/store/components/pagination";
 import { PostCard } from "../../posts/components/card";
-import type { SortOptions } from "@/modules/store/components/refinement-list/sort-products";
+type BlogSortOptions = "created_at" | "views";
 
 const PRODUCT_LIMIT = 12;
 
@@ -18,7 +18,7 @@ export default async function PaginatedPosts({
 	sortBy,
 	page,
 }: {
-	sortBy?: SortOptions;
+	sortBy?: BlogSortOptions;
 	page: number;
 }) {
 	const queryParams: PaginatedPostsParams = {

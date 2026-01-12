@@ -29,7 +29,7 @@ const OptionSelect: React.FC<OptionSelectProps> = ({
         className="flex flex-wrap justify-between gap-2"
         data-testid={dataTestId}
       >
-        {filteredOptions.map((v) => {
+        {filteredOptions.map((v: string) => {
           return (
             <Button
               onClick={() => updateOption(option.id, v)}

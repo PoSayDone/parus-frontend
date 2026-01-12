@@ -47,7 +47,7 @@ export default function Categories({
             handle: "",
             createdAt: new Date(),
             updatedAt: new Date(),
-          } as StoreProductCategory}
+          }}
           active={slug === "store"}
           href="/store"
         />

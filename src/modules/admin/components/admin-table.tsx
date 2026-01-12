@@ -33,7 +33,7 @@ interface AdminTableAction {
 	type: "view" | "edit" | "delete";
 	label: string;
 	href?: string;
-	onClick?: (key: string) => void;
+	onClick?: (key: string) => void | Promise<void>;
 }
 
 interface AdminTableColumn {
@@ -81,7 +81,7 @@ export function AdminTable({
 	const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 	const [deleteItemKey, setDeleteItemKey] = useState<string | null>(null);
 	const [deleteAction, setDeleteAction] = useState<
-		((key: string) => Promise<void>) | null
+		((key: string) => void | Promise<void>) | null
 	>(null);
 
 	// Debounce timeout ref
@@ -104,7 +104,7 @@ export function AdminTable({
 						page,
 						queryParams: { limit, q: searchQuery },
 					});
-					setInternalData(result.response.data || result.response.users || []);
+					setInternalData(result.response.data || []);
 					setTotal(result.response.count);
 				} catch (error) {
 					console.error("Error fetching data:", error);
@@ -143,7 +143,7 @@ export function AdminTable({
 
 	const handleDeleteClick = (
 		key: string,
-		action: (key: string) => Promise<void>,
+		action: (key: string) => void | Promise<void>,
 	) => {
 		setDeleteItemKey(key);
 		setDeleteAction(() => action);
@@ -153,7 +153,7 @@ export function AdminTable({
 	const confirmDelete = async () => {
 		if (deleteItemKey && deleteAction) {
 			try {
-				await deleteAction(deleteItemKey);
+				await Promise.resolve(deleteAction(deleteItemKey));
 				await loadData(searchTerm);
 			} catch (error) {
 				console.error("Error during deletion:", error);

@@ -1,7 +1,9 @@
 import { cn } from "@/lib/utils";
-import type { Product } from "@/types/admin";
+type PriceProduct = {
+	price: number;
+};
 
-export default function ProductPrice({ product }: { product: Product }) {
+export default function ProductPrice({ product }: { product: PriceProduct }) {
 	const selectedPrice = {
 		calculated_price_number: product.price,
 		calculated_price: `${product.price.toFixed(2)} ₽`,

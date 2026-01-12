@@ -24,14 +24,14 @@ export const serviceFormSchema = z.object({
 	description: z
 		.string()
 		.min(10, { message: "Описание должно содержать минимум 10 символов" }),
-	icon: z.enum([...iconNames, ""]).optional(),
+icon: z.enum([...iconNames]).optional(),
 	thumbnail: z.string().optional(),
 	images: z.array(z.string()).optional(),
 	price: z.string().min(1, { message: "Цена обязательна" }),
 	duration: z.string().optional(),
 	features: z.array(z.string()).optional(),
 	included: z.array(z.string()).optional(),
-	active: z.boolean().default(true),
+	active: z.boolean(),
 });
 
 export type ServiceFormValues = z.infer<typeof serviceFormSchema>;

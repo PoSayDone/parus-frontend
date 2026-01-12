@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import BlogTemplate from "@/modules/blog/templates";
-import type { SortOptions } from "@modules/store/components/refinement-list/sort-products";
+type BlogSortOptions = "created_at" | "views";
 
 export const metadata: Metadata = {
 	title: "Блог о ритуальных услугах и товарах - Парус",
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
 
 type Params = {
 	searchParams: Promise<{
-		sortBy?: SortOptions;
+		sortBy?: BlogSortOptions;
 		page?: string;
 	}>;
 };

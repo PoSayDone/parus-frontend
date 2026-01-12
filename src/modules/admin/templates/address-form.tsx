@@ -91,11 +91,18 @@ export default function AddressForm({ addressId }: { addressId?: string }) {
 
 	const onSubmit = async (values: AddressFormValues) => {
 		try {
+			const payload = {
+				...values,
+				phone: values.phone || null,
+				schedule: values.schedule || null,
+				district: values.district || null,
+				location: values.location || null,
+			};
 			let result;
 			if (addressId) {
-				result = await updateAddress(addressId, values);
+				result = await updateAddress(addressId, payload);
 			} else {
-				result = await createAddress(values);
+				result = await createAddress(payload);
 			}
 
 			if (result) {

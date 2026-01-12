@@ -34,7 +34,7 @@ const ProductInfoTab = ({ product }: ProductTabsProps) => {
 	return (
 		<div className="text-small-regular mb-4">
 			<div className="flex flex-col">
-				{product.characteristics.map((characteristic, _index) => (
+				{product.characteristics?.map((characteristic) => (
 					<div
 						className="grid grid-cols-2 not-last:border-b py-4"
 						key={characteristic.id}

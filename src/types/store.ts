@@ -9,23 +9,41 @@ export type StoreProduct = {
 	thumbnail: string | null;
 	images: string[];
 	price: number;
-	status: string;
-	createdAt: string;
-	updatedAt: string;
+	status?: string;
+	active?: boolean;
+	createdAt: Date;
+	updatedAt: Date;
 	categories?: StoreProductCategory[];
 	tags: string[];
+	characteristics?: StoreProductCharacteristic[];
 };
 
 export type StoreProductCategory = {
 	id: string;
 	name: string;
 	handle: string;
-	description: string | null;
-	image: string | null;
-	parentId: string | null;
+	description?: string | null;
+	image?: string | null;
+	parentId?: string | null;
 	parent?: StoreProductCategory | null;
 	children?: StoreProductCategory[];
 	products?: StoreProduct[];
-	createdAt: string;
-	updatedAt: string;
+	createdAt: Date;
+	updatedAt: Date;
+};
+
+export type StoreProductImage = {
+	id: string;
+	url: string;
+};
+
+export type StoreProductOption = {
+	id: string;
+	values: string[];
+};
+
+export type StoreProductCharacteristic = {
+	id: string;
+	key: string;
+	value: string;
 };

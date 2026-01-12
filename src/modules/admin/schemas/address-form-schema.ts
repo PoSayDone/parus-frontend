@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const addressFormSchema = z.object({
 	type: z.enum(["zags", "morgue", "cemetery"], {
-		required_error: "Тип адреса обязателен",
+		message: "Тип адреса обязателен",
 	}),
 	name: z
 		.string()
@@ -14,11 +14,11 @@ export const addressFormSchema = z.object({
 		.string()
 		.min(5, { message: "Адрес должен содержать минимум 5 символов" })
 		.max(500, { message: "Адрес должен содержать максимум 500 символов" }),
-	phone: z.string().optional(),
-	schedule: z.string().optional(),
-	district: z.string().optional(),
-	location: z.string().optional(),
-	active: z.boolean().default(true),
+	phone: z.string().optional().or(z.literal("")),
+	schedule: z.string().optional().or(z.literal("")),
+	district: z.string().optional().or(z.literal("")),
+	location: z.string().optional().or(z.literal("")),
+	active: z.boolean(),
 });
 
 export type AddressFormValues = z.infer<typeof addressFormSchema>;

@@ -29,7 +29,10 @@ export async function signIn({
 			return { error: "Invalid credentials" };
 		}
 
-		const session = await getIronSession<User>(await cookies(), sessionOptions);
+		const session = await getIronSession<{ user?: User }>(
+			await cookies(),
+			sessionOptions,
+		);
 		session.user = {
 			id: user.id,
 			name: user.name,
@@ -46,13 +49,19 @@ export async function signIn({
 }
 
 export async function signOut() {
-	const session = await getIronSession<User>(await cookies(), sessionOptions);
+	const session = await getIronSession<{ user?: User }>(
+		await cookies(),
+		sessionOptions,
+	);
 	session.destroy();
 	redirect("/admin/sign-in");
 }
 
 export async function getUser() {
-	const session = await getIronSession<User>(await cookies(), sessionOptions);
+	const session = await getIronSession<{ user?: User }>(
+		await cookies(),
+		sessionOptions,
+	);
 	return session.user;
 }
 

@@ -1,7 +1,7 @@
 "use server";
 
 import prisma from "@lib/prisma";
-import type { Prisma } from "@prisma/client";
+import type { AddressType, Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import type { Address } from "@/types/admin";
 
@@ -10,7 +10,7 @@ type Props = {
 	queryParams?: {
 		limit?: number;
 		q?: string;
-		type?: string;
+		type?: AddressType;
 		includeInactive?: boolean;
 		[key: string]: unknown;
 	};

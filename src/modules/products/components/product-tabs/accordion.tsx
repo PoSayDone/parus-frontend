@@ -65,9 +65,9 @@ const Item: React.FC<AccordionItemProps> = ({
 						</AccordionPrimitive.Trigger>
 					</div>
 					{subtitle && (
-						<div as="span" size="small" className="mt-1">
+						<span className="mt-1 text-sm text-muted-foreground">
 							{subtitle}
-						</div>
+						</span>
 					)}
 				</div>
 			</AccordionPrimitive.Header>

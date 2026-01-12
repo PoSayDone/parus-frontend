@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 import type React from "react";
 
-import PlaceholderImage from "@modules/common/icons/placeholder-image";
+import PlaceholderImage from "@/components/ui/placeholder-image";
 
 type ThumbnailProps = {
   thumbnail?: string | null;

@@ -15,8 +15,8 @@ import type {
 // Convert Prisma string status to boolean active field to match Category model
 export interface Product
 	extends Omit<PrismaProduct, "createdAt" | "updatedAt" | "status"> {
-	createdAt: string;
-	updatedAt: string;
+	createdAt: Date;
+	updatedAt: Date;
 	active: boolean;
 	categories: {
 		id: string;
@@ -26,8 +26,9 @@ export interface Product
 
 export interface Category
 	extends Omit<PrismaCategory, "createdAt" | "updatedAt"> {
-	createdAt: string;
-	updatedAt: string;
+	createdAt: Date;
+	updatedAt: Date;
+	status?: "active" | "inactive";
 	parent: Category | null;
 	children: Category[];
 	products: Product[];
@@ -35,43 +36,43 @@ export interface Category
 
 export interface BlogPost
 	extends Omit<PrismaBlogPost, "createdAt" | "updatedAt"> {
-	createdAt: string;
-	updatedAt: string;
+	createdAt: Date;
+	updatedAt: Date;
 }
 
 export interface User extends Omit<PrismaUser, "createdAt" | "updatedAt"> {
-	createdAt: string;
-	updatedAt: string;
+	createdAt: Date;
+	updatedAt: Date;
 }
 
 export interface Address
 	extends Omit<PrismaAddress, "createdAt" | "updatedAt"> {
-	createdAt: string;
-	updatedAt: string;
+	createdAt: Date;
+	updatedAt: Date;
 }
 
 export interface Service
 	extends Omit<PrismaService, "createdAt" | "updatedAt"> {
-	createdAt: string;
-	updatedAt: string;
+	createdAt: Date;
+	updatedAt: Date;
 }
 
 export interface PricePlan
 	extends Omit<PrismaPricePlan, "createdAt" | "updatedAt"> {
-	createdAt: string;
-	updatedAt: string;
+	createdAt: Date;
+	updatedAt: Date;
 }
 
 export interface SiteSettings
 	extends Omit<PrismaSiteSettings, "createdAt" | "updatedAt"> {
-	createdAt: string;
-	updatedAt: string;
+	createdAt: Date;
+	updatedAt: Date;
 }
 
 export interface ContactRequest
 	extends Omit<PrismaContactRequest, "createdAt" | "updatedAt"> {
-	createdAt: string;
-	updatedAt: string;
+	createdAt: Date;
+	updatedAt: Date;
 }
 
 export interface AdminStats {

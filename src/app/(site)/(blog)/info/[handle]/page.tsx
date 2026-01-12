@@ -52,7 +52,7 @@ export default async function ProductPage(props: Props) {
 
 	const post = await listPosts({
 		queryParams: { handle: params.handle, type: ["info"] },
-	}).then(({ response }) => response.posts[0]);
+	}).then(({ response }) => response.data[0]);
 
 	if (!post) {
 		notFound();
