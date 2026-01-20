@@ -22,6 +22,7 @@ export default function LandingAddressesClient({
 	const [activeId, setActiveId] = useState<string | null>(
 		cemeteries[0]?.id || null,
 	);
+	const hasInteracted = useRef(false);
 	const itemRefs = useRef<Record<string, HTMLLIElement | null>>({});
 
 	const locationsWithCoords = useMemo(
@@ -30,7 +31,7 @@ export default function LandingAddressesClient({
 	);
 
 	useEffect(() => {
-		if (!activeId) return;
+		if (!activeId || !hasInteracted.current) return;
 		const node = itemRefs.current[activeId];
 		if (node) {
 			node.scrollIntoView({ behavior: "smooth", block: "nearest" });
@@ -39,11 +40,11 @@ export default function LandingAddressesClient({
 
 	return (
 		<div className="grid grid-cols-1 lg:grid-cols-[1fr_1.2fr] gap-6 items-start">
-			<Card className="text-left h-120">
+			<Card className="text-left lg:h-120">
 				<CardHeader className="flex justify-between items-center gap-3">
 					<CardTitle>Кладбища города Перми</CardTitle>
 					<Link
-						href="/services/addresses"
+						href="/addresses"
 						className={buttonVariants({
 							variant: "default",
 							size: "sm",
@@ -58,7 +59,7 @@ export default function LandingAddressesClient({
 							Информация готовится.
 						</p>
 					) : (
-						<ScrollArea className="h-102 w-full -m-2.5">
+						<ScrollArea className="h-100 lg:h-102 w-full -m-2.5">
 							<ScrollBar orientation="vertical" />
 							<ul className="mb-3">
 								{cemeteries.map((item) => (
@@ -72,26 +73,29 @@ export default function LandingAddressesClient({
 											activeId === item.id &&
 												"bg-surface-container",
 										)}
-										onMouseEnter={() =>
-											setActiveId(item.id)
-										}
+										onMouseEnter={() => {
+											hasInteracted.current = true;
+											setActiveId(item.id);
+										}}
 									>
 										{item.handle ? (
 											<Link
 												href={`/addresses/${item.handle}`}
 												className="font-medium hover:underline text-base h-fit leading-none!"
-												onClick={() =>
-													setActiveId(item.id)
-												}
+												onClick={() => {
+													hasInteracted.current = true;
+													setActiveId(item.id);
+												}}
 											>
 												{item.name}
 											</Link>
 										) : (
 											<button
 												type="button"
-												onClick={() =>
-													setActiveId(item.id)
-												}
+												onClick={() => {
+													hasInteracted.current = true;
+													setActiveId(item.id);
+												}}
 												className="font-medium text-base text-left leading-none"
 											>
 												{item.name}
@@ -116,7 +120,10 @@ export default function LandingAddressesClient({
 			<CemeteriesMap
 				locations={locationsWithCoords}
 				activeId={activeId}
-				onSelect={setActiveId}
+				onSelect={(id) => {
+					hasInteracted.current = true;
+					setActiveId(id);
+				}}
 			/>
 		</div>
 	);
