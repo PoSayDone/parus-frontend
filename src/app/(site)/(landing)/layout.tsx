@@ -1,3 +1,5 @@
+import { YMapsProvider } from "@/components/providers/ymaps-provider";
+
 export default function LandingLayout({
 	children,
 }: {
@@ -5,7 +7,9 @@ export default function LandingLayout({
 }) {
 	return (
 		<main className="flex flex-col relative mx-auto w-full">
-			{children}
+			<YMapsProvider>
+				{children}
+			</YMapsProvider>
 		</main>
 	);
 }

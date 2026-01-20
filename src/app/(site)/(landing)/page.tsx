@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import AboutUs from "@/modules/landing/components/about-us";
+import LandingAddresses from "@/modules/landing/components/addresses";
 import WhatShouldIDo from "@/modules/landing/components/actions";
 import Hero from "@/modules/landing/components/hero";
 import { Interaction } from "@/modules/landing/components/Interaction";
@@ -47,6 +48,7 @@ export default function Home() {
 			<QnA />
 			<Interaction />
 			<Posts />
+			<LandingAddresses />
 			<WhereToFindUs />
 		</div>
 	);

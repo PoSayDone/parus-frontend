@@ -4,6 +4,7 @@ export const addressFormSchema = z.object({
 	type: z.enum(["zags", "morgue", "cemetery"], {
 		message: "Тип адреса обязателен",
 	}),
+	handle: z.string().optional().or(z.literal("")),
 	name: z
 		.string()
 		.min(2, { message: "Название должно содержать минимум 2 символа" })
@@ -17,8 +18,31 @@ export const addressFormSchema = z.object({
 	phone: z.string().optional().or(z.literal("")),
 	schedule: z.string().optional().or(z.literal("")),
 	district: z.string().optional().or(z.literal("")),
-	location: z.string().optional().or(z.literal("")),
+	description: z.string().optional().or(z.literal("")),
+	cemeteryStatus: z.string().optional().or(z.literal("")),
+	cemeteryDocuments: z.array(z.string().min(2)).optional(),
+	cemeteryNote: z.string().optional().or(z.literal("")),
+	cemeteryImages: z.array(z.string().min(2)).optional(),
+	cemeteryThumbnail: z.string().optional().or(z.literal("")),
+	cemeteryLat: z.string().optional().or(z.literal("")),
+	cemeteryLng: z.string().optional().or(z.literal("")),
 	active: z.boolean(),
+}).superRefine((values, ctx) => {
+	if (values.handle && !/^[a-z0-9-]+$/.test(values.handle)) {
+		ctx.addIssue({
+			code: z.ZodIssueCode.custom,
+			path: ["handle"],
+			message: "Слаг может содержать только латиницу, цифры и дефисы",
+		});
+	}
+
+	if (values.type === "cemetery" && !values.handle?.trim()) {
+		ctx.addIssue({
+			code: z.ZodIssueCode.custom,
+			path: ["handle"],
+			message: "Для кладбища нужен слаг для страницы",
+		});
+	}
 });
 
 export type AddressFormValues = z.infer<typeof addressFormSchema>;

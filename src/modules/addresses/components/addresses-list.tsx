@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { listAddresses } from "@/lib/data/addresses";
 
@@ -17,25 +18,82 @@ export default async function AddressesList() {
 		(address) => address.type === "cemetery",
 	);
 
-	const groupedCemeteries = cemeteriesData.reduce(
-		(acc, cemetery) => {
-			if (!acc[cemetery.district!]) {
-				acc[cemetery.district!] = [];
-			}
-			acc[cemetery.district!].push(cemetery);
-			return acc;
-		},
-		{} as Record<string, typeof cemeteriesData>,
-	);
-
 	return (
 		<>
+			{/* Cemeteries Section */}
+			<div className="mt-8">
+				<h2 className="text-xl font-medium mb-4 text-center">
+					Кладбища города Перми
+				</h2>
+				<div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
+					{cemeteriesData.map((cemetery) => {
+						const primaryImage =
+							cemetery.cemeteryThumbnail ||
+							cemetery.cemeteryImages?.[0];
+						const content = (
+							<Card className="relative overflow-hidden">
+								<div
+									className="pointer-events-none absolute right-0 top-0 h-full w-64 opacity-100"
+									style={{
+										backgroundImage:
+											primaryImage
+												? `url(${primaryImage})`
+												: "url(/cemetry.jpg)",
+										backgroundSize: "cover",
+										backgroundPosition: "center",
+										maskImage:
+											"linear-gradient(90deg, transparent 0%, #000 100%)",
+									}}
+								/>
+								<CardHeader>
+									<CardTitle className="text-lg max-w-[80%]">
+										{cemetery.name}
+									</CardTitle>
+								</CardHeader>
+								<CardContent>
+									<div className="space-y-2">
+										{cemetery.address && (
+											<div>
+												<p className="text-sm text-muted-foreground">
+													Адрес
+												</p>
+												<p>{cemetery.address}</p>
+											</div>
+										)}
+										{cemetery.district && (
+											<div>
+												<p className="text-sm text-muted-foreground">
+													Район
+												</p>
+												<p>{cemetery.district}</p>
+											</div>
+										)}
+									</div>
+								</CardContent>
+							</Card>
+						);
+
+						return cemetery.handle ? (
+							<Link
+								key={cemetery.id}
+								href={`/addresses/${cemetery.handle}`}
+								className="block hover:opacity-90 transition-opacity"
+							>
+								{content}
+							</Link>
+						) : (
+							<div key={cemetery.id}>{content}</div>
+						);
+					})}
+				</div>
+			</div>
+
 			{/* ZAGS Section */}
 			<div className="mt-8">
 				<h2 className="text-xl font-medium mb-4 text-center">
 					ЗАГС города Перми
 				</h2>
-				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+				<div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
 					{zagsData.map((zags) => (
 						<Card key={zags.id}>
 							<CardHeader>
@@ -62,12 +120,13 @@ export default async function AddressesList() {
 				</div>
 			</div>
 
+
 			{/* Morgues Section */}
-			<div className="mt-8">
+			<div className="mt-8 mb-8">
 				<h2 className="text-xl font-medium mb-4 text-center">
 					Морги города Перми
 				</h2>
-				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+				<div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
 					{morguesData.map((morgue) => (
 						<Card key={morgue.id}>
 							<CardHeader>
@@ -94,40 +153,6 @@ export default async function AddressesList() {
 				</div>
 			</div>
 
-			{/* Cemeteries Section */}
-			<div className="mt-8 mb-8">
-				<h2 className="text-xl font-medium mb-4 text-center">
-					Кладбища города Перми
-				</h2>
-				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-					{Object.entries(groupedCemeteries).map(
-						([district, cemeteries]) => (
-							<Card key={district}>
-								<CardHeader>
-									<CardTitle className="text-lg">
-										{district}
-									</CardTitle>
-								</CardHeader>
-								<CardContent>
-									<div className="space-y-3">
-										{cemeteries.map((cemetery) => (
-											<div
-												key={cemetery.id}
-												className="border-b pb-2 last:border-b-0 last:pb-0"
-											>
-												<p>{cemetery.name}</p>
-												<p className="text-sm text-muted-foreground">
-													{cemetery.location}
-												</p>
-											</div>
-										))}
-									</div>
-								</CardContent>
-							</Card>
-						),
-					)}
-				</div>
-			</div>
 		</>
 	);
 }

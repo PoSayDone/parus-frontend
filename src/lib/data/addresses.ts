@@ -82,6 +82,22 @@ export const getAddress = async (id: string): Promise<Address | null> => {
 	return address;
 };
 
+export const getCemeteryByHandle = async (
+	handle: string,
+): Promise<Address | null> => {
+	const cemetery = await prisma.address.findFirst({
+		where: {
+			handle,
+			type: "cemetery",
+			active: true,
+		},
+	});
+
+	if (!cemetery) return null;
+
+	return cemetery;
+};
+
 export const createAddress = async (
 	data: Omit<Address, "id" | "createdAt" | "updatedAt">,
 ): Promise<Address> => {
@@ -119,4 +135,5 @@ export const deleteAddress = async (id: string): Promise<void> => {
 export const revalidateAddresses = async () => {
 	revalidatePath("/(site)/(landing)", "page");
 	revalidatePath("/(site)/(services)/addresses", "page");
+	revalidatePath("/(site)/(services)/addresses/[handle]", "page");
 };

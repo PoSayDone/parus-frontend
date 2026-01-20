@@ -87,7 +87,15 @@ model Address {
     phone     String?
     schedule  String?
     district  String?
-    location  String?
+    handle    String?     @unique
+    description      String?
+    cemeteryStatus    String?
+    cemeteryDocuments String[] @default([])
+    cemeteryNote      String?
+    cemeteryImages    String[] @default([])
+    cemeteryThumbnail String?
+    cemeteryLat       Float?
+    cemeteryLng       Float?
     createdAt DateTime    @default(now())
     updatedAt DateTime    @updatedAt
     active    Boolean     @default(true)
