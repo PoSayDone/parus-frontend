@@ -9,3 +9,11 @@ export type Plan = {
 	features: string[];
 	link: string;
 };
+
+export type CemeteryLocation = {
+	id: string;
+	name: string;
+	address: string;
+	handle?: string;
+	coords: [number, number] | null;
+};

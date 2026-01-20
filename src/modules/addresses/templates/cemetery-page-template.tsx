@@ -4,6 +4,7 @@ import { Clock, MapPin, Phone } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getCemeteryByHandle } from "@/lib/data/addresses";
+import CemeteryMap from "@/modules/addresses/components/cemetery-map";
 import ContactSection from "@/modules/contact/components/contact-section";
 
 export default async function CemeteryPageTemplate({
@@ -18,6 +19,9 @@ export default async function CemeteryPageTemplate({
 	}
 
 	const hasDocuments = (cemetery.cemeteryDocuments || []).length > 0;
+	const hasCoords =
+		typeof cemetery.cemeteryLat === "number" &&
+		typeof cemetery.cemeteryLng === "number";
 
 	return (
 		<div className="min-h-screen bg-background">
@@ -72,7 +76,7 @@ export default async function CemeteryPageTemplate({
 							src={
 								cemetery.cemeteryThumbnail ||
 								cemetery.cemeteryImages?.[0] ||
-								"/memorial-1.jpg"
+								"/placeholder.svg"
 							}
 							alt={cemetery.name}
 							className="w-full h-96 object-cover rounded-lg shadow-lg"
@@ -121,6 +125,20 @@ export default async function CemeteryPageTemplate({
 						</Card>
 					)}
 				</div>
+
+				{hasCoords && (
+					<div className="mb-12">
+						<h2 className="text-2xl font-medium text-foreground mb-6">
+							Расположение на карте
+						</h2>
+						<CemeteryMap
+							coords={[
+								cemetery.cemeteryLat as number,
+								cemetery.cemeteryLng as number,
+							]}
+						/>
+					</div>
+				)}
 
 				<ContactSection />
 			</div>

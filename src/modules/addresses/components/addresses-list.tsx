@@ -38,7 +38,7 @@ export default async function AddressesList() {
 										backgroundImage:
 											primaryImage
 												? `url(${primaryImage})`
-												: "url(/cemetry.jpg)",
+												: "url(/placeholder.svg)",
 										backgroundSize: "cover",
 										backgroundPosition: "center",
 										maskImage:
