@@ -54,7 +54,7 @@ export default function AddressForm({ addressId }: { addressId?: string }) {
 			handle: "",
 			name: "",
 			address: "",
-			phone: "",
+			phone: [],
 			schedule: "",
 			district: "",
 			description: "",
@@ -87,7 +87,7 @@ export default function AddressForm({ addressId }: { addressId?: string }) {
 						handle: addressData.handle || "",
 						name: addressData.name,
 						address: addressData.address || "",
-						phone: addressData.phone || "",
+						phone: addressData.phone || [],
 						schedule: addressData.schedule || "",
 						district: addressData.district || "",
 						description: addressData.description || "",
@@ -221,7 +221,7 @@ export default function AddressForm({ addressId }: { addressId?: string }) {
 			const payload = {
 				...values,
 				handle: cemeteryPayload ? normalizedHandle || null : null,
-				phone: values.phone || null,
+				phone: values.phone || [],
 				schedule: values.schedule || null,
 				district: values.district || null,
 				description: values.description || null,
@@ -380,11 +380,12 @@ export default function AddressForm({ addressId }: { addressId?: string }) {
 						name="phone"
 						render={({ field }) => (
 							<FormItem>
-								<FormLabel>Телефон</FormLabel>
+								<FormLabel>Телефоны</FormLabel>
 								<FormControl>
-									<Input
-										{...field}
-										placeholder="Введите телефон"
+									<TagsInput
+										placeholder="Добавьте телефон и нажмите Enter"
+										value={field.value || []}
+										onChange={field.onChange}
 									/>
 								</FormControl>
 								<FormMessage />

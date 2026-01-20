@@ -15,5 +15,6 @@ export type CemeteryLocation = {
 	name: string;
 	address: string;
 	handle?: string;
+	phone?: string[];
 	coords: [number, number] | null;
 };

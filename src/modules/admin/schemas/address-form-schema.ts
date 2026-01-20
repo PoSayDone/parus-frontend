@@ -15,7 +15,7 @@ export const addressFormSchema = z.object({
 		.string()
 		.min(5, { message: "Адрес должен содержать минимум 5 символов" })
 		.max(500, { message: "Адрес должен содержать максимум 500 символов" }),
-	phone: z.string().optional().or(z.literal("")),
+	phone: z.array(z.string().min(2)).optional(),
 	schedule: z.string().optional().or(z.literal("")),
 	district: z.string().optional().or(z.literal("")),
 	description: z.string().optional().or(z.literal("")),

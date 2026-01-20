@@ -100,6 +100,11 @@ export default function LandingAddressesClient({
 										<p className="text-sm text-muted-foreground">
 											{item.address || "—"}
 										</p>
+										{item.phone?.length ? (
+											<p className="text-sm text-muted-foreground">
+												Телефон: {item.phone.join(", ")}
+											</p>
+										) : null}
 									</li>
 								))}
 							</ul>

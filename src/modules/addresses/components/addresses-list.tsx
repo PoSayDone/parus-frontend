@@ -68,6 +68,18 @@ export default async function AddressesList() {
 												<p>{cemetery.district}</p>
 											</div>
 										)}
+										{cemetery.phone?.length ? (
+											<div>
+												<p className="text-sm text-muted-foreground">
+													Телефон
+												</p>
+												<p>
+													{cemetery.phone.join(
+														", ",
+													)}
+												</p>
+											</div>
+										) : null}
 									</div>
 								</CardContent>
 							</Card>
@@ -112,7 +124,11 @@ export default async function AddressesList() {
 									<p className="text-sm text-muted-foreground">
 										Телефон
 									</p>
-									<p>{zags.phone}</p>
+									<p>
+										{zags.phone?.length
+											? zags.phone.join(", ")
+											: "—"}
+									</p>
 								</div>
 							</CardContent>
 						</Card>

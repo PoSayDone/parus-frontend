@@ -20,6 +20,7 @@ export default async function LandingAddresses() {
 		name: cemetery.name,
 		address: cemetery.address || "",
 		handle: cemetery.handle || undefined,
+		phone: cemetery.phone || [],
 		coords:
 			typeof cemetery.cemeteryLat === "number" &&
 			typeof cemetery.cemeteryLng === "number"

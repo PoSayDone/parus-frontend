@@ -49,12 +49,14 @@ export default async function CemeteryPageTemplate({
 									</Badge>
 								)}
 							</div>
-							{cemetery.phone && (
+							{cemetery.phone?.length ? (
 								<div className="flex items-start gap-3">
 									<Phone className="h-5 w-5 text-primary mt-0.5" />
-									<span>{cemetery.phone}</span>
+									<span>
+										{cemetery.phone.join(", ")}
+									</span>
 								</div>
-							)}
+							) : null}
 							{cemetery.schedule && (
 								<div className="flex items-start gap-3">
 									<Clock className="h-5 w-5 text-primary mt-0.5" />

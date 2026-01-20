@@ -84,7 +84,7 @@ model Address {
     type      AddressType // "zags", "morgue", "cemetery"
     name      String
     address   String?
-    phone     String?
+    phone     String[]    @default([])
     schedule  String?
     district  String?
     handle    String?     @unique

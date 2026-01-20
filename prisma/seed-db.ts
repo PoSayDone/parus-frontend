@@ -683,7 +683,10 @@ async function seedAddresses() {
 				type: "zags",
 				name: zags.name,
 				address: zags.address,
-				phone: zags.phone,
+				phone: zags.phone
+					.split(",")
+					.map((item) => item.trim())
+					.filter(Boolean),
 			},
 		});
 	}
