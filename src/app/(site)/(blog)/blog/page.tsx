@@ -19,6 +19,9 @@ export const metadata: Metadata = {
 			"Полезные статьи и информация о ритуальных услугах, товарах, традициях и обычаях. Экспертные советы от компании Парус.",
 		images: ["/images/og-image.png"],
 	},
+	alternates: {
+		canonical: "/blog",
+	},
 };
 
 type Params = {

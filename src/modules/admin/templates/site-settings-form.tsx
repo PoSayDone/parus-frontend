@@ -21,6 +21,7 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import {
 	getSiteSettings,
@@ -38,6 +39,7 @@ const DEFAULT_SETTINGS: SiteSettingsFormValues = {
 	address: "г. Пермь, Советской армии 52\nэтаж 128, офис 812",
 	footerNote:
 		"Похоронное бюро в СПб ООО «Центр РУ». © 2025. ИНН: 7813661578, КПП: 780601001",
+	showCatalog: true,
 };
 
 export default function SiteSettingsForm() {
@@ -60,6 +62,7 @@ export default function SiteSettingsForm() {
 						email: settings.email,
 						address: settings.address,
 						footerNote: settings.footerNote,
+						showCatalog: settings.showCatalog ?? true,
 					});
 				} else {
 					form.reset(DEFAULT_SETTINGS);
@@ -169,6 +172,28 @@ export default function SiteSettingsForm() {
 								/>
 							</FormControl>
 							<FormMessage />
+						</FormItem>
+						)}
+					/>
+
+				<FormField
+					control={form.control}
+					name="showCatalog"
+					render={({ field }) => (
+						<FormItem className="flex flex-row items-center space-x-3 space-y-0">
+							<div className="space-y-1 leading-none w-full">
+								<FormLabel>Показывать каталог</FormLabel>
+								<FormDescription>
+									Если отключено, раздел каталога будет скрыт
+									из навигации и sitemap
+								</FormDescription>
+							</div>
+							<FormControl>
+								<Switch
+									checked={field.value}
+									onCheckedChange={field.onChange}
+								/>
+							</FormControl>
 						</FormItem>
 					)}
 				/>

@@ -20,6 +20,9 @@ export const metadata: Metadata = {
 			"Широкий ассортимент ритуальных товаров высокого качества. Гроб, венки, кресты, одежда, кремационные услуги и многое другое.",
 		images: ["/images/og-image.png"],
 	},
+	alternates: {
+		canonical: "/store",
+	},
 };
 
 type Params = {

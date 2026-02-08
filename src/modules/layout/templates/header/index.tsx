@@ -12,9 +12,11 @@ import Logo from "@/modules/common/icons/logo";
 const HeaderContent = ({
 	menuState,
 	setMenuState,
+	links,
 }: {
 	menuState: boolean;
 	setMenuState: Dispatch<SetStateAction<boolean>>;
+	links: { label: string; href: string }[];
 }) => {
 	return (
 		<>
@@ -23,7 +25,7 @@ const HeaderContent = ({
 					<Logo size={32} />
 				</Link>
 				<nav className="items-center hidden lg:flex gap-6">
-					{headerLinks.map((item) => {
+					{links.map((item) => {
 						return (
 							<Link
 								key={item.href}
@@ -59,8 +61,11 @@ const HeaderContent = ({
 	);
 };
 
-export default function Header() {
+export default function Header({ showCatalog }: { showCatalog: boolean }) {
 	const [menuState, setMenuState] = useState(false);
+	const links = showCatalog
+		? headerLinks
+		: headerLinks.filter((item) => item.href !== "/store");
 
 	const NavMenuLink = ({
 		name,
@@ -90,7 +95,11 @@ export default function Header() {
 
 	return (
 		<header className="flex px-2 md:px-8 py-3 text-base items-center sticky top-0 bg-background z-40 justify-between">
-			<HeaderContent menuState={menuState} setMenuState={setMenuState} />
+			<HeaderContent
+				menuState={menuState}
+				setMenuState={setMenuState}
+				links={links}
+			/>
 			<Dialog modal open={menuState} onOpenChange={setMenuState}>
 				<DialogContent
 					className={cn(
@@ -99,22 +108,23 @@ export default function Header() {
 					)}
 					showClose={false}
 				>
-					<DialogTitle className="sr-only">
-						Navigation dialog
-					</DialogTitle>
-					<div className="flex-col ">
-						<div className="flex items-center justify-between px-2 py-3 md:px-6">
-							<HeaderContent
-								menuState={menuState}
-								setMenuState={setMenuState}
-							/>
-						</div>
-						<div className="flex flex-col grow h-full">
-							{headerLinks.map((item) => {
-								return (
-									<NavMenuLink
-										key={item.href}
-										name={item.label}
+						<DialogTitle className="sr-only">
+							Navigation dialog
+						</DialogTitle>
+						<div className="flex-col ">
+							<div className="flex items-center justify-between px-2 py-3 md:px-6">
+								<HeaderContent
+									menuState={menuState}
+									setMenuState={setMenuState}
+									links={links}
+								/>
+							</div>
+							<div className="flex flex-col grow h-full">
+								{links.map((item) => {
+									return (
+										<NavMenuLink
+											key={item.href}
+											name={item.label}
 										href={item.href}
 										className="text-xl px-4 py-4 h-fit"
 									/>

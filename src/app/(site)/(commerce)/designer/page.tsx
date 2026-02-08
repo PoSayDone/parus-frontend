@@ -20,6 +20,9 @@ export const metadata: Metadata = {
 			"Создайте уникальные ритуальные изделия с помощью нашего конструктора. Персонализированные надгробия, кресты и другие изделия.",
 		images: ["/images/og-image.png"],
 	},
+	alternates: {
+		canonical: "/designer",
+	},
 };
 
 export default function DesignerPage() {

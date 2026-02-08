@@ -18,6 +18,9 @@ export const metadata: Metadata = {
 			"Профессиональные ритуальные услуги от компании Парус. Организация похорон, кремация, транспортировка, бальзамирование и другие услуги.",
 		images: ["/images/og-image.png"],
 	},
+	alternates: {
+		canonical: "/services",
+	},
 };
 
 export default function ServicesPage() {

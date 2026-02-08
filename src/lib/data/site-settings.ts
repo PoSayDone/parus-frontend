@@ -11,6 +11,7 @@ export type SiteSettingsInput = {
 	email: string;
 	address: string;
 	footerNote: string;
+	showCatalog: boolean;
 };
 
 export const getSiteSettings = async (): Promise<SiteSettings | null> => {

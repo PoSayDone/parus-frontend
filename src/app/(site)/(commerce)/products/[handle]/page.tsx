@@ -40,6 +40,9 @@ export async function generateMetadata(props: Props) {
 	return {
 		title: `${product.title}`,
 		description: `${product.title}`,
+		alternates: {
+			canonical: `/products/${handle}`,
+		},
 		openGraph: {
 			title: `${product.title}`,
 			description: `${product.title}`,

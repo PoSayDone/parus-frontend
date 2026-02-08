@@ -5,7 +5,7 @@ import ContactModalProvider from "@/modules/contact/components/contact-modal-pro
 import { Toaster } from "@/components/ui/sonner";
 
 export const metadata: Metadata = {
-	metadataBase: new URL("https://parus.ru"),
+	metadataBase: new URL("https://parus-ritual.ru"),
 	title: {
 		default: "Парус - Ритуальные услуги и товары",
 		template: "%s | Парус",
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
 	openGraph: {
 		type: "website",
 		locale: "ru_RU",
-		url: "https://parus.ru",
+		url: "https://parus-ritual.ru",
 		title: "Парус - Ритуальные услуги и товары",
 		description:
 			"Профессиональные ритуальные услуги и качественные ритуальные товары от компании Парус. Поможем в трудную минуту с уважением и заботой.",

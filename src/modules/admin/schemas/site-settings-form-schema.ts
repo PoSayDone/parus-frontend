@@ -7,6 +7,7 @@ export const siteSettingsFormSchema = z.object({
 	footerNote: z
 		.string()
 		.min(1, { message: "Текст футера обязателен" }),
+	showCatalog: z.boolean(),
 });
 
 export type SiteSettingsFormValues = z.infer<typeof siteSettingsFormSchema>;

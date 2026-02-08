@@ -1,14 +1,18 @@
-import type React from "react";
-
 import Footer from "@modules/layout/templates/footer";
 import Header from "@modules/layout/templates/header";
+import { getSiteSettings } from "@/lib/data/site-settings";
 
-const Layout: React.FC<{
+const Layout = async ({
+	children,
+}: {
 	children: React.ReactNode;
-}> = ({ children }) => {
+}) => {
+	const settings = await getSiteSettings();
+	const showCatalog = settings?.showCatalog ?? true;
+
 	return (
 		<div>
-			<Header />
+			<Header showCatalog={showCatalog} />
 			{children}
 			<Footer />
 		</div>

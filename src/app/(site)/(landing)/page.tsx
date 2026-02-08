@@ -32,6 +32,9 @@ export const metadata: Metadata = {
 			"Профессиональные ритуальные услуги и качественные ритуальные товары от компании Парус. Поможем в трудную минуту с уважением и заботой.",
 		images: ["/images/og-image.png"],
 	},
+	alternates: {
+		canonical: "/",
+	},
 };
 
 export default function Home() {

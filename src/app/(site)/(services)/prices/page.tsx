@@ -18,6 +18,9 @@ export const metadata: Metadata = {
 			"Актуальные цены на ритуальные услуги и товары от компании Парус. Прозрачное ценообразование без скрытых платежей.",
 		images: ["/images/og-image.png"],
 	},
+	alternates: {
+		canonical: "/prices",
+	},
 };
 
 export default async function PricingPage() {

@@ -80,25 +80,25 @@ model BlogPost {
 }
 
 model Address {
-    id        String      @id @default(uuid())
-    type      AddressType // "zags", "morgue", "cemetery"
-    name      String
-    address   String?
-    phone     String[]    @default([])
-    schedule  String?
-    district  String?
-    handle    String?     @unique
-    description      String?
+    id                String      @id @default(uuid())
+    type              AddressType // "zags", "morgue", "cemetery"
+    name              String
+    address           String?
+    phone             String[]    @default([])
+    schedule          String?
+    district          String?
+    handle            String?     @unique
+    description       String?
     cemeteryStatus    String?
-    cemeteryDocuments String[] @default([])
+    cemeteryDocuments String[]    @default([])
     cemeteryNote      String?
-    cemeteryImages    String[] @default([])
+    cemeteryImages    String[]    @default([])
     cemeteryThumbnail String?
     cemeteryLat       Float?
     cemeteryLng       Float?
-    createdAt DateTime    @default(now())
-    updatedAt DateTime    @updatedAt
-    active    Boolean     @default(true)
+    createdAt         DateTime    @default(now())
+    updatedAt         DateTime    @updatedAt
+    active            Boolean     @default(true)
 }
 
 model Service {
@@ -136,14 +136,15 @@ model PricePlan {
 }
 
 model SiteSettings {
-    id         String   @id @default(uuid())
-    key        String   @unique @default("default")
-    phone      String
-    email      String   @default("parus@perm.ru")
-    address    String
-    footerNote String
-    createdAt  DateTime @default(now())
-    updatedAt  DateTime @updatedAt
+    id          String   @id @default(uuid())
+    key         String   @unique @default("default")
+    phone       String
+    email       String   @default("parus@perm.ru")
+    address     String
+    footerNote  String
+    showCatalog Boolean  @default(true)
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
 }
 
 model ContactRequest {

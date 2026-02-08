@@ -12,6 +12,9 @@ export const metadata: Metadata = {
 			"Адреса ЗАГСов, моргов и кладбищ в Перми. Вся важная контактная информация в одном месте.",
 		images: ["/images/og-image.png"],
 	},
+	alternates: {
+		canonical: "/addresses",
+	},
 };
 
 export default function AddressesPage() {

@@ -1,10 +1,13 @@
 import { listCategories } from "@/lib/data/categories";
 import { listProducts } from "@/lib/data/products";
+import { getSiteSettings } from "@/lib/data/site-settings";
 import type { MetadataRoute } from "next";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 	const baseUrl =
-		process.env.NEXT_PUBLIC_BASE_URL || "https://parusritual.ru";
+		process.env.NEXT_PUBLIC_BASE_URL || "https://parus-ritual.ru";
+	const settings = await getSiteSettings();
+	const showCatalog = settings?.showCatalog ?? true;
 
 	// Static pages
 	const staticPages: MetadataRoute.Sitemap = [
@@ -33,7 +36,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 			priority: 0.9,
 		},
 		{
-			url: `${baseUrl}/services/prices`,
+			url: `${baseUrl}/prices`,
 			lastModified: new Date(),
 			changeFrequency: "monthly",
 			priority: 0.8,
@@ -48,53 +51,57 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
 	// Dynamic category pages
 	const categoryPages: MetadataRoute.Sitemap = [];
-	try {
-		const categoryResponse = await listCategories({
-			queryParams: { limit: 1000 },
-		});
+	if (showCatalog) {
+		try {
+			const categoryResponse = await listCategories({
+				queryParams: { limit: 1000 },
+			});
 
-		if (
-			categoryResponse?.response?.data
-		) {
-			categoryPages.push(
-				...categoryResponse.response.data.map((category: any) => ({
-					url: `${baseUrl}/categories/${category.handle}`,
-					lastModified: category.updatedAt
-						? new Date(category.updatedAt)
-						: new Date(),
-					changeFrequency: "weekly" as const,
-					priority: 0.8,
-				})),
-			);
+			if (categoryResponse?.response?.data) {
+				categoryPages.push(
+					...categoryResponse.response.data.map((category: any) => ({
+						url: `${baseUrl}/categories/${category.handle}`,
+						lastModified: category.updatedAt
+							? new Date(category.updatedAt)
+							: new Date(),
+						changeFrequency: "weekly" as const,
+						priority: 0.8,
+					})),
+				);
+			}
+		} catch (error) {
+			console.error("Error fetching categories for sitemap:", error);
 		}
-	} catch (error) {
-		console.error("Error fetching categories for sitemap:", error);
 	}
 
 	// Dynamic product pages
 	const productPages: MetadataRoute.Sitemap = [];
-	try {
-		const productResponse = await listProducts({
-			queryParams: { limit: 1000 },
-		});
+	if (showCatalog) {
+		try {
+			const productResponse = await listProducts({
+				queryParams: { limit: 1000 },
+			});
 
-		if (
-			productResponse?.response?.data
-		) {
-			productPages.push(
-				...productResponse.response.data.map((product: any) => ({
-					url: `${baseUrl}/products/${product.handle}`,
-					lastModified: product.updatedAt
-						? new Date(product.updatedAt)
-						: new Date(),
-					changeFrequency: "weekly" as const,
-					priority: 0.7,
-				})),
-			);
+			if (productResponse?.response?.data) {
+				productPages.push(
+					...productResponse.response.data.map((product: any) => ({
+						url: `${baseUrl}/products/${product.handle}`,
+						lastModified: product.updatedAt
+							? new Date(product.updatedAt)
+							: new Date(),
+						changeFrequency: "weekly" as const,
+						priority: 0.7,
+					})),
+				);
+			}
+		} catch (error) {
+			console.error("Error fetching products for sitemap:", error);
 		}
-	} catch (error) {
-		console.error("Error fetching products for sitemap:", error);
 	}
 
-	return [...staticPages, ...categoryPages, ...productPages];
+	const filteredStaticPages = showCatalog
+		? staticPages
+		: staticPages.filter((page) => page.url !== `${baseUrl}/store`);
+
+	return [...filteredStaticPages, ...categoryPages, ...productPages];
 }
