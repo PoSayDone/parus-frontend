@@ -165,6 +165,14 @@
 }
 
 @layer utilities {
+	.rsw-ce ul {
+		list-style: disc;
+		padding-left: 2em;
+	}
+	.rsw-ce ol {
+		list-style: decimal;
+		padding-left: 2em;
+	}
 	.editorjs-theme {
 		--editorjs-bg: var(--card);
 		--editorjs-text: var(--foreground);

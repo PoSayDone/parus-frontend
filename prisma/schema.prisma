@@ -105,6 +105,8 @@ model Service {
     id               String   @id @default(uuid())
     handle           String   @unique
     title            String
+    metaTitle        String?
+    metaDescription  String?
     shortDescription String?
     description      String
     icon             String?

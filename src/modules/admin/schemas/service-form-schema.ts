@@ -8,6 +8,18 @@ export const serviceFormSchema = z.object({
 		.max(200, {
 			message: "Название должно содержать максимум 200 символов",
 		}),
+	metaTitle: z
+		.string()
+		.max(200, {
+			message: "Meta title должен содержать максимум 200 символов",
+		})
+		.optional(),
+	metaDescription: z
+		.string()
+		.max(500, {
+			message: "Meta description должен содержать максимум 500 символов",
+		})
+		.optional(),
 	handle: z
 		.string()
 		.min(1, { message: "URL (handle) обязателен" })

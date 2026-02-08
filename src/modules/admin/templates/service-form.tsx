@@ -5,6 +5,7 @@ import { Star, Upload, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import WysiwygEditor from "@/modules/admin/components/wysiwyg-editor";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
@@ -52,6 +53,8 @@ export default function ServiceForm({
 		resolver: zodResolver(serviceFormSchema),
 		defaultValues: {
 			title: "",
+			metaTitle: "",
+			metaDescription: "",
 			handle: "",
 			shortDescription: "",
 			description: "",
@@ -90,6 +93,8 @@ export default function ServiceForm({
 				if (serviceData) {
 					form.reset({
 						title: serviceData.title,
+						metaTitle: serviceData.metaTitle || "",
+						metaDescription: serviceData.metaDescription || "",
 						handle: serviceData.handle,
 						shortDescription: serviceData.shortDescription || "",
 						description: serviceData.description,
@@ -143,6 +148,8 @@ export default function ServiceForm({
 				thumbnail: thumbnail || null,
 				images,
 				shortDescription: values.shortDescription || null,
+				metaTitle: values.metaTitle || null,
+				metaDescription: values.metaDescription || null,
 				icon: values.icon || null,
 				duration: values.duration || null,
 				features: values.features || [],
@@ -329,12 +336,60 @@ export default function ServiceForm({
 							<FormItem>
 								<FormLabel>Описание *</FormLabel>
 								<FormControl>
-									<Textarea
-										{...field}
+									<WysiwygEditor
+										value={field.value}
+										onChange={(event) =>
+											field.onChange(
+												event.target.value,
+											)
+										}
 										placeholder="Полное описание услуги"
-										rows={4}
+										minHeight={160}
 									/>
 								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+
+					<FormField
+						control={form.control}
+						name="metaTitle"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>Meta title</FormLabel>
+								<FormControl>
+									<Input
+										{...field}
+										placeholder="Meta title (до 200 символов)"
+									/>
+								</FormControl>
+								<FormDescription>
+									Если не задано, будет использовано
+									название услуги
+								</FormDescription>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+
+					<FormField
+						control={form.control}
+						name="metaDescription"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>Meta description</FormLabel>
+								<FormControl>
+									<Textarea
+										{...field}
+										placeholder="Meta description (до 500 символов)"
+										rows={3}
+									/>
+								</FormControl>
+								<FormDescription>
+									Если не задано, будет использовано
+									краткое описание
+								</FormDescription>
 								<FormMessage />
 							</FormItem>
 						)}

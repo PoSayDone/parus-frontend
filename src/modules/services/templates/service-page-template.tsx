@@ -45,9 +45,11 @@ export default async function ServicePageTemplate({
 							</div>
 						</div>
 
-						<p className="text-muted-foreground leading-relaxed mb-8">
-							{service.description}
-						</p>
+						<p className="text-muted-foreground leading-relaxed mb-8"
+							dangerouslySetInnerHTML={{
+									__html: service.description ?? ""
+								}}
+							/>
 
 						<div className="flex flex-wrap gap-4 mb-8">
 							<Badge
