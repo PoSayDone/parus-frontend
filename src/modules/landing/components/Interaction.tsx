@@ -20,7 +20,7 @@ const DEFAULT_INTERACTION = {
 	ctaHref: "tel:+79999999999",
 };
 
-export function Interaction({
+export default function Interaction({
 	title = DEFAULT_INTERACTION.title,
 	highlight = DEFAULT_INTERACTION.highlight,
 	description = DEFAULT_INTERACTION.description,

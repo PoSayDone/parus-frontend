@@ -2,7 +2,7 @@ import type { Config } from "@puckeditor/core";
 import AboutUs from "@/modules/landing/components/about-us";
 import WhatShouldIDo from "@/modules/landing/components/actions";
 import Hero from "@/modules/landing/components/hero";
-import { Interaction } from "@/modules/landing/components/interaction";
+import Interaction from "@/modules/landing/components/interaction";
 import Cemetries from "@/modules/landing/components/cemeteries";
 import Memorials from "@/modules/landing/components/memorials";
 import Posts from "@/modules/landing/components/posts";
