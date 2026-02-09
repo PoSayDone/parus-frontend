@@ -1,3 +1,12 @@
+import type { Fields } from "@puckeditor/core";
+import type { LandingComponents } from "./types";
+
+type LandingComponentFields = {
+	[K in keyof LandingComponents]: {
+		fields: Fields<LandingComponents[K]>;
+	};
+};
+
 export const landingComponentFields = {
 	Hero: {
 		fields: {
@@ -128,7 +137,7 @@ export const landingComponentFields = {
 			buttonHref: { type: "text" },
 		},
 	},
-	LandingAddresses: {
+	Cemetries: {
 		fields: {
 			title: { type: "text" },
 			subtitle: { type: "text" },
@@ -149,4 +158,4 @@ export const landingComponentFields = {
 			text: { type: "textarea" },
 		},
 	},
-};
+} as const satisfies LandingComponentFields;

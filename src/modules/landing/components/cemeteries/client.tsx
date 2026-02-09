@@ -12,7 +12,7 @@ import {
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import type { CemeteryLocation } from "@/types/landing";
-import CemeteriesMap from "./cemeteries-map";
+import CemeteriesMap from "../cemeteries-map";
 
 export default function LandingAddressesClient({
 	cemeteries,

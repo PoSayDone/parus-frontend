@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import Section from "@/components/ui/section";
 import Pigeon from "@/modules/common/icons/pigeon";
 
-type AboutUsProps = {
+export type AboutUsProps = {
 	title?: string;
 	paragraph1?: string;
 	paragraph2?: string;

@@ -3,7 +3,7 @@ import CategoriesCarousel from "./categories-carousel";
 import { Suspense } from "react";
 import SkeletonCategoriesCarousel from "@/modules/skeletons/templates/skeleton-categories-carousel";
 
-type RitualProductsProps = {
+export type RitualProductsProps = {
 	title?: string;
 	subtitle?: string;
 };

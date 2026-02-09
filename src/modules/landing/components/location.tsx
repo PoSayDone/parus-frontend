@@ -1,9 +1,9 @@
 "use client";
 
 import Section from "@/components/ui/section";
-import { Map, Placemark, YMaps } from "@pbe/react-yandex-maps";
+import LocationMap from "./location-map";
 
-export type WhereToFindUsProps = {
+export type OurLocationProps = {
 	title?: string;
 	subtitle?: string;
 	lat?: number;
@@ -19,27 +19,16 @@ const DEFAULT_LOCATION = {
 	zoom: 16,
 };
 
-export default function WhereToFindUs({
+export default function OurLocation({
 	title = DEFAULT_LOCATION.title,
 	subtitle = DEFAULT_LOCATION.subtitle,
 	lat = DEFAULT_LOCATION.lat,
 	lng = DEFAULT_LOCATION.lng,
 	zoom = DEFAULT_LOCATION.zoom,
-}: WhereToFindUsProps) {
+}: OurLocationProps) {
 	return (
-		<Section
-			id={"where-to-find-us"}
-			title={title}
-			subtitle={subtitle}
-		>
-			<YMaps>
-				<Map
-					className="w-full max-w-[1200px] h-120 rounded-3xl overflow-clip mx-auto"
-					defaultState={{ center: [lat, lng], zoom }}
-				>
-					<Placemark defaultGeometry={[lat, lng]} />
-				</Map>
-			</YMaps>
+		<Section id={"our-location"} title={title} subtitle={subtitle}>
+			<LocationMap lat={lat} lng={lng} zoom={zoom} />
 		</Section>
 	);
 }

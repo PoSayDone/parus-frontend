@@ -7,7 +7,7 @@ const normalizeLandingData = (data: Data | null): Data => {
 	if (data && Array.isArray(data.content)) {
 		return data;
 	}
-	return defaultLandingData;
+	return defaultLandingData as Data;
 };
 
 export default async function LandingEditorPage() {

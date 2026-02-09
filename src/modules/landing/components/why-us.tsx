@@ -3,7 +3,7 @@ import CheckmarkedDocument from "@/modules/common/icons/checkmarked-document";
 import HandWithHeart from "@/modules/common/icons/hand-with-heart";
 import TwoPeopleTalking from "@/modules/common/icons/two-people-talking";
 
-type WhyUsProps = {
+export type WhyUsProps = {
 	title?: string;
 	item1Title?: string;
 	item1Description?: string;

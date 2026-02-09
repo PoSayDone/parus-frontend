@@ -1,8 +1,8 @@
 import Section from "@/components/ui/section";
 import ContactModalTrigger from "@/modules/contact/components/contact-modal-trigger";
-import { MemorialsGrid } from "./memorials-grid";
+import { MemorialsGrid } from "./grid";
 
-type MemorialsProps = {
+export type MemorialsProps = {
 	title?: string;
 	subtitle?: string;
 	features?: {

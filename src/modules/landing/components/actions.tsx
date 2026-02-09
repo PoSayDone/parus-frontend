@@ -33,7 +33,7 @@ const StepCard = ({
 	);
 };
 
-type WhatShouldIDoProps = {
+export type WhatShouldIDoProps = {
 	title?: string;
 	subtitle?: string;
 	step1Title?: string;

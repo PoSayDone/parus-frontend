@@ -11,7 +11,7 @@ const createMarkerIcon = (color: string) => {
 	return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
 };
 
-export default function CemeteriesMap({
+export default function CemeteriesMapClient({
 	locations,
 	activeId,
 	onSelect,
@@ -20,6 +20,7 @@ export default function CemeteriesMap({
 	activeId: string | null;
 	onSelect: (id: string) => void;
 }) {
+	const [isLoaded, setIsLoaded] = useState(false);
 	const [balloonLayout, setBalloonLayout] = useState<any>(null);
 	const [mapInstance, setMapInstance] = useState<any>(null);
 	const ymaps = useYMaps(["templateLayoutFactory"]);
@@ -36,6 +37,12 @@ export default function CemeteriesMap({
 		);
 		return [latSum / available.length, lngSum / available.length];
 	}, [locations]);
+
+	useEffect(() => {
+		if (!isLoaded) {
+			setIsLoaded(true);
+		}
+	}, []);
 
 	useEffect(() => {
 		if (!ymaps) return;
@@ -59,47 +66,45 @@ export default function CemeteriesMap({
 	}, [activeId, locations, mapInstance]);
 
 	return (
-		<div className="rounded-3xl border border-border-variant overflow-hidden">
-			<YMaps>
-				<Map
-					className="w-full h-120"
-					state={{ center, zoom: 10 }}
-					instanceRef={(ref) => setMapInstance(ref)}
-				>
-					{locations.map((placemark) => {
-						if (!placemark.coords) return null;
-						const isActive = placemark.id === activeId;
-						return (
-							<Placemark
-								key={placemark.id}
-								geometry={placemark.coords}
-								modules={[
-									"geoObject.addon.hint",
-									"geoObject.addon.balloon",
-								]}
-								options={{
-									openBalloonOnClick: true,
-									hideIconOnBalloonOpen: false,
-									balloonLayout: balloonLayout || undefined,
-									balloonPanelMaxMapArea: 0,
-									iconLayout: "default#image",
-									iconImageHref: createMarkerIcon(
-										isActive ? "#111827" : "#64748b",
-									),
-									iconImageSize: [20, 20],
-									iconImageOffset: [-10, -10],
-								}}
-								properties={{
-									name: placemark.name,
-									address: placemark.address,
-									hintContent: placemark.name,
-								}}
-								onClick={() => onSelect(placemark.id)}
-							/>
-						);
-					})}
-				</Map>
-			</YMaps>
-		</div>
+		<YMaps>
+			<Map
+				className="w-full h-120"
+				state={{ center, zoom: 10 }}
+				instanceRef={(ref) => setMapInstance(ref)}
+			>
+				{isLoaded && locations?.length > 0 && locations.map((placemark) => {
+					if (!placemark.coords) return null;
+					const isActive = placemark.id === activeId;
+					return (
+						<Placemark
+							key={placemark.id}
+							geometry={placemark.coords}
+							modules={[
+								"geoObject.addon.hint",
+								"geoObject.addon.balloon",
+							]}
+							options={{
+								openBalloonOnClick: true,
+								hideIconOnBalloonOpen: false,
+								balloonLayout: balloonLayout || undefined,
+								balloonPanelMaxMapArea: 0,
+								iconLayout: "default#image",
+								iconImageHref: createMarkerIcon(
+									isActive ? "#111827" : "#64748b",
+								),
+								iconImageSize: [20, 20],
+								iconImageOffset: [-10, -10],
+							}}
+							properties={{
+								name: placemark.name,
+								address: placemark.address,
+								hintContent: placemark.name,
+							}}
+							onClick={() => onSelect(placemark.id)}
+						/>
+					);
+				})}
+			</Map>
+		</YMaps>
 	);
 }

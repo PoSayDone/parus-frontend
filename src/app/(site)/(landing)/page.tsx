@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Render, type Data } from "@puckeditor/core";
+import { Render, type Config, type Data } from "@puckeditor/core";
 import { getSiteSettings } from "@/lib/data/site-settings";
 import { getLandingPage } from "@/lib/data/landing-page";
 import { landingConfig } from "@/modules/landing/puck/config";
@@ -124,5 +124,5 @@ export default async function Home() {
 		root: baseData.root || { props: {} },
 	};
 
-	return <Render config={landingConfig} data={data} />;
+	return <Render config={landingConfig as Config} data={data} />;
 }

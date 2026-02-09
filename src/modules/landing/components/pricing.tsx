@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 import PricesList from "@/modules/prices/components/prices-list";
 import SkeletonPricesList from "@/modules/skeletons/templates/skeleton-prices-grid";
 
-type PricingProps = {
+export type PricingProps = {
 	title?: string;
 	subtitle?: string;
 	buttonLabel?: string;

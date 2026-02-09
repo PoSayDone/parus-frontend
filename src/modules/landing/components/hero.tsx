@@ -4,7 +4,7 @@ import { buttonVariants } from "@/components/ui/button";
 import Section from "@/components/ui/section";
 import { cn } from "@/lib/utils";
 
-type HeroProps = {
+export type HeroProps = {
 	title?: string;
 	subtitle?: string;
 	ctaLabel?: string;

@@ -3,7 +3,7 @@ import Section from "@/components/ui/section";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 
-type InteractionProps = {
+export type InteractionProps = {
 	title?: string;
 	highlight?: string;
 	description?: string;

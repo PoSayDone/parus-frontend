@@ -3,7 +3,7 @@ import Section from "@/components/ui/section";
 import SkeletonServicesCarousel from "@/modules/skeletons/templates/skeleton-services-carousel";
 import ServicesCarousel from "./services-carousel";
 
-type ServicesProps = {
+export type ServicesProps = {
 	title?: string;
 	subtitle?: string;
 };

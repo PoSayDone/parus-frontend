@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useRef, useState, useTransition } from "react";
-import type { Data } from "@puckeditor/core";
+import type { Config, Data } from "@puckeditor/core";
 import { Puck } from "@puckeditor/core";
 import "@puckeditor/core/puck.css";
 import { toast } from "sonner";
@@ -73,25 +73,27 @@ export default function LandingPageEditor({
 	return (
 		<div className="h-screen overflow-hidden">
 			<Puck
-				config={landingEditorConfig}
+				config={landingEditorConfig as Config}
 				data={dataWithIds}
 				onChange={(data) => {
 					dataRef.current = data as Data;
 					setIsDirty(true);
 				}}
 				onPublish={(data) => handleSave(data as Data)}
-				renderHeaderActions={() => (
-					<div className="flex items-center gap-2">
-						<Button
-							type="button"
-							size="sm"
-							disabled={isPending || !isDirty}
-							onClick={() => handleSave(dataRef.current)}
-						>
-							{isPending ? "Сохранение..." : "Сохранить"}
-						</Button>
-					</div>
-				)}
+				overrides={{
+					headerActions:() => (
+										<div className="flex items-center gap-2">
+											<Button
+												type="button"
+												size="sm"
+												disabled={isPending || !isDirty}
+												onClick={() => handleSave(dataRef.current)}
+											>
+												{isPending ? "Сохранение..." : "Сохранить"}
+											</Button>
+										</div>
+									)
+				}}
 			/>
 		</div>
 	);

@@ -1,0 +1,31 @@
+import type { AboutUsProps } from "@/modules/landing/components/about-us";
+import type { WhatShouldIDoProps } from "@/modules/landing/components/actions";
+import type { HeroProps } from "@/modules/landing/components/hero";
+import type { CemetriesProps } from "@/modules/landing/components/cemeteries";
+import type { MemorialsProps } from "@/modules/landing/components/memorials";
+import type { PostsProps } from "@/modules/landing/components/posts";
+import type { PricingProps } from "@/modules/landing/components/pricing";
+import type { QnAProps } from "@/modules/landing/components/q-n-a";
+import type { RitualProductsProps } from "@/modules/landing/components/ritual-products";
+import type { ServicesProps } from "@/modules/landing/components/services";
+import type { TextBlockProps } from "@/modules/landing/components/text-block";
+import type { OurLocationProps } from "@/modules/landing/components/location";
+import type { WhyUsProps } from "@/modules/landing/components/why-us";
+import { InteractionProps } from "@/modules/landing/components/interaction";
+
+export type LandingComponents = {
+	Hero: HeroProps;
+	Services: ServicesProps;
+	WhyUs: WhyUsProps;
+	Pricing: PricingProps;
+	AboutUs: AboutUsProps;
+	Actions: WhatShouldIDoProps;
+	RitualProducts: RitualProductsProps;
+	Memorials: MemorialsProps;
+	QnA: QnAProps;
+	Interaction: InteractionProps;
+	Posts: PostsProps;
+	Cemetries: CemetriesProps;
+	WhereToFindUs: OurLocationProps;
+	TextBlock: TextBlockProps;
+};

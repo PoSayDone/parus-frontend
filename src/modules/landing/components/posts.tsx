@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 import SkeletonBlogLandingGrid from "@/modules/skeletons/templates/skeleton-blog-landing-grid";
 import PostsGrid from "./posts-grid";
 
-type PostsProps = {
+export type PostsProps = {
 	title?: string;
 	subtitle?: string;
 	buttonLabel?: string;
