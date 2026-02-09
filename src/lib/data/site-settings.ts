@@ -12,6 +12,14 @@ export type SiteSettingsInput = {
 	address: string;
 	footerNote: string;
 	showCatalog: boolean;
+	landingMetaTitle?: string;
+	landingMetaDescription?: string;
+	addressesMetaTitle?: string;
+	addressesMetaDescription?: string;
+	pricesMetaTitle?: string;
+	pricesMetaDescription?: string;
+	blogMetaTitle?: string;
+	blogMetaDescription?: string;
 };
 
 export const getSiteSettings = async (): Promise<SiteSettings | null> => {
@@ -38,4 +46,8 @@ export const updateSiteSettings = async (
 
 export const revalidateSiteSettings = async () => {
 	revalidatePath("/", "layout");
+	revalidatePath("/(site)/(landing)", "page");
+	revalidatePath("/(site)/(services)/addresses", "page");
+	revalidatePath("/(site)/(services)/prices", "page");
+	revalidatePath("/(site)/(blog)/blog", "page");
 };

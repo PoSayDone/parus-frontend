@@ -26,6 +26,8 @@ export const addressFormSchema = z.object({
 	cemeteryThumbnail: z.string().optional().or(z.literal("")),
 	cemeteryLat: z.string().optional().or(z.literal("")),
 	cemeteryLng: z.string().optional().or(z.literal("")),
+	metaTitle: z.string().optional().or(z.literal("")),
+	metaDescription: z.string().optional().or(z.literal("")),
 	active: z.boolean(),
 }).superRefine((values, ctx) => {
 	if (values.handle && !/^[a-z0-9-]+$/.test(values.handle)) {

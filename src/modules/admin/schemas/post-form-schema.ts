@@ -25,6 +25,13 @@ export const postFormSchema = z.object({
 		.string()
 		.max(60, { message: "SEO заголовок должен быть не более 60 символов" })
 		.optional(),
+	seoDescription: z
+		.string()
+		.max(160, {
+			message:
+				"SEO описание должно быть не более 160 символов",
+		})
+		.optional(),
 	thumbnail: z.string().optional(),
 	draft: z.boolean(),
 	type: z.enum(["article", "info", "document"]),

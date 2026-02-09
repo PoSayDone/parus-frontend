@@ -65,6 +65,8 @@ export default function AddressForm({ addressId }: { addressId?: string }) {
 			cemeteryThumbnail: "",
 			cemeteryLat: "",
 			cemeteryLng: "",
+			metaTitle: "",
+			metaDescription: "",
 			active: true,
 		},
 		mode: "onChange",
@@ -104,6 +106,9 @@ export default function AddressForm({ addressId }: { addressId?: string }) {
 						cemeteryLng: addressData.cemeteryLng
 							? addressData.cemeteryLng.toString()
 							: "",
+						metaTitle: addressData.metaTitle || "",
+						metaDescription:
+							addressData.metaDescription || "",
 					});
 
 					if (
@@ -241,6 +246,12 @@ export default function AddressForm({ addressId }: { addressId?: string }) {
 					: null,
 				cemeteryLng: cemeteryPayload
 					? parseCoordinate(values.cemeteryLng)
+					: null,
+				metaTitle: cemeteryPayload
+					? values.metaTitle || null
+					: null,
+				metaDescription: cemeteryPayload
+					? values.metaDescription || null
 					: null,
 			};
 			let result;
@@ -502,6 +513,49 @@ export default function AddressForm({ addressId }: { addressId?: string }) {
 											placeholder="Дополнительные условия или примечания"
 										/>
 									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+
+						<FormField
+							control={form.control}
+							name="metaTitle"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Meta title</FormLabel>
+									<FormControl>
+										<Input
+											{...field}
+											placeholder="Meta title (до 200 символов)"
+										/>
+									</FormControl>
+									<FormDescription>
+										Если не задано, будет использовано
+										название кладбища
+									</FormDescription>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+
+						<FormField
+							control={form.control}
+							name="metaDescription"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Meta description</FormLabel>
+									<FormControl>
+										<Textarea
+											{...field}
+											placeholder="Meta description (до 500 символов)"
+											rows={3}
+										/>
+									</FormControl>
+									<FormDescription>
+										Если не задано, будет использовано
+										описание кладбища
+									</FormDescription>
 									<FormMessage />
 								</FormItem>
 							)}

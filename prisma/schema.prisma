@@ -70,6 +70,7 @@ model BlogPost {
     handle      String   @unique
     description String?
     seoTitle    String?
+    seoDescription String?
     thumbnail   String?
     body        Json?
     author      String?
@@ -96,6 +97,8 @@ model Address {
     cemeteryThumbnail String?
     cemeteryLat       Float?
     cemeteryLng       Float?
+    metaTitle         String?
+    metaDescription   String?
     createdAt         DateTime    @default(now())
     updatedAt         DateTime    @updatedAt
     active            Boolean     @default(true)
@@ -143,6 +146,14 @@ model SiteSettings {
     address     String
     footerNote  String
     showCatalog Boolean  @default(true)
+    landingMetaTitle       String?
+    landingMetaDescription String?
+    addressesMetaTitle     String?
+    addressesMetaDescription String?
+    pricesMetaTitle        String?
+    pricesMetaDescription  String?
+    blogMetaTitle          String?
+    blogMetaDescription    String?
     createdAt   DateTime @default(now())
     updatedAt   DateTime @updatedAt
 }

@@ -37,14 +37,14 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 	}
 
 	return {
-		title: `${post.title} | Парус`,
-		description: `${post.title}`,
+		title: `${post.seoTitle || post.title} | Парус`,
+		description: `${post.seoDescription || post.description || post.title}`,
 		alternates: {
 			canonical: `/blog/post/${handle}`,
 		},
 		openGraph: {
-			title: `${post.title} | Парус`,
-			description: `${post.title}`,
+			title: `${post.seoTitle || post.title} | Парус`,
+			description: `${post.seoDescription || post.description || post.title}`,
 			images: post.thumbnail ? [post.thumbnail] : [],
 		},
 	};

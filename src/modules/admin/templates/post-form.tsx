@@ -63,6 +63,7 @@ export default function PostForm({ postHandle }: { postHandle?: string }) {
 			description: "",
 			body: null,
 			seoTitle: "",
+			seoDescription: "",
 			thumbnail: "",
 			draft: true,
 			type: "article",
@@ -93,6 +94,7 @@ export default function PostForm({ postHandle }: { postHandle?: string }) {
 						description: postData.description || "",
 						body: postData.body || null,
 						seoTitle: postData.seoTitle || "",
+						seoDescription: postData.seoDescription || "",
 						thumbnail: postData.thumbnail || "",
 						draft: postData.draft,
 						type: postData.type as PostFormValues["type"],
@@ -378,6 +380,27 @@ export default function PostForm({ postHandle }: { postHandle?: string }) {
 								</FormControl>
 								<FormDescription>
 									Рекомендуется 50-60 символов
+								</FormDescription>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+
+					<FormField
+						control={form.control}
+						name="seoDescription"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>SEO Описание</FormLabel>
+								<FormControl>
+									<Textarea
+										{...field}
+										placeholder="Описание для поисковых систем"
+										rows={3}
+									/>
+								</FormControl>
+								<FormDescription>
+									Рекомендуется 120-160 символов
 								</FormDescription>
 								<FormMessage />
 							</FormItem>

@@ -12,32 +12,44 @@ import QnA from "@/modules/landing/components/q-n-a";
 import RitualProducts from "@/modules/landing/components/ritual-products";
 import Services from "@/modules/landing/components/services";
 import WhyUs from "@/modules/landing/components/why-us";
+import { getSiteSettings } from "@/lib/data/site-settings";
 
-export const metadata: Metadata = {
-	title: "Парус - Ритуальные услуги и товары",
-	description:
-		"Профессиональные ритуальные услуги и качественные ритуальные товары от компании Парус. Поможем в трудную минуту с уважением и заботой.",
-	keywords: [
-		"ритуальные услуги",
-		"ритуальные товары",
-		"похороны",
-		"кремация",
-		"гроб",
-		"венки",
-		"надгробия",
-	],
-	openGraph: {
-		title: "Парус - Ритуальные услуги и товары",
-		description:
-			"Профессиональные ритуальные услуги и качественные ритуальные товары от компании Парус. Поможем в трудную минуту с уважением и заботой.",
-		images: ["/images/og-image.png"],
-	},
-	alternates: {
-		canonical: "/",
-	},
-};
+export async function generateMetadata(): Promise<Metadata> {
+	const defaultTitle = "Парус - Ритуальные услуги и товары";
+	const defaultDescription =
+		"Профессиональные ритуальные услуги и качественные ритуальные товары от компании Парус. Поможем в трудную минуту с уважением и заботой.";
+	const settings = await getSiteSettings();
+	const title = settings?.landingMetaTitle?.trim() || defaultTitle;
+	const description =
+		settings?.landingMetaDescription?.trim() || defaultDescription;
 
-export default function Home() {
+	return {
+		title,
+		description,
+		keywords: [
+			"ритуальные услуги",
+			"ритуальные товары",
+			"похороны",
+			"кремация",
+			"гроб",
+			"венки",
+			"надгробия",
+		],
+		openGraph: {
+			title,
+			description,
+			images: ["/images/og-image.png"],
+		},
+		alternates: {
+			canonical: "/",
+		},
+	};
+}
+
+export default async function Home() {
+	const settings = await getSiteSettings();
+	const showCatalog = settings?.showCatalog ?? true;
+
 	return (
 		<div className="text-xl">
 			<Hero />
@@ -46,7 +58,7 @@ export default function Home() {
 			<Pricing />
 			<AboutUs />
 			<WhatShouldIDo />
-			<RitualProducts />
+			{showCatalog ? <RitualProducts /> : null}
 			<Memorials />
 			<QnA />
 			<Interaction />

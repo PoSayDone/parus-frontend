@@ -1,28 +1,38 @@
 import type { Metadata } from "next";
 import BlogTemplate from "@/modules/blog/templates";
+import { getSiteSettings } from "@/lib/data/site-settings";
 type BlogSortOptions = "created_at" | "views";
 
-export const metadata: Metadata = {
-	title: "Блог о ритуальных услугах и товарах - Парус",
-	description:
-		"Полезные статьи и информация о ритуальных услугах, товарах, традициях и обычаях. Экспертные советы от компании Парус.",
-	keywords: [
-		"блог",
-		"ритуальные услуги",
-		"ритуальные товары",
-		"традиции",
-		"советы",
-	],
-	openGraph: {
-		title: "Блог о ритуальных услугах и товарах - Парус",
-		description:
-			"Полезные статьи и информация о ритуальных услугах, товарах, традициях и обычаях. Экспертные советы от компании Парус.",
-		images: ["/images/og-image.png"],
-	},
-	alternates: {
-		canonical: "/blog",
-	},
-};
+export async function generateMetadata(): Promise<Metadata> {
+	const defaultTitle =
+		"Блог о ритуальных услугах и товарах - Парус";
+	const defaultDescription =
+		"Полезные статьи и информация о ритуальных услугах, товарах, традициях и обычаях. Экспертные советы от компании Парус.";
+	const settings = await getSiteSettings();
+	const title = settings?.blogMetaTitle?.trim() || defaultTitle;
+	const description =
+		settings?.blogMetaDescription?.trim() || defaultDescription;
+
+	return {
+		title,
+		description,
+		keywords: [
+			"блог",
+			"ритуальные услуги",
+			"ритуальные товары",
+			"традиции",
+			"советы",
+		],
+		openGraph: {
+			title,
+			description,
+			images: ["/images/og-image.png"],
+		},
+		alternates: {
+			canonical: "/blog",
+		},
+	};
+}
 
 type Params = {
 	searchParams: Promise<{
