@@ -29,9 +29,9 @@ export function Interaction({
 }: InteractionProps) {
 	return (
 		<Section id="interaction" className="px-0 bg-secondary-container">
-			<div className="flex max-w-[1200px] w-full justify-between items-center self-center flex-col px-6 gap-8 text-center md:text-left md:px-0 md:flex-row">
+			<div className="flex max-w-300 w-full justify-between items-center self-center flex-col px-6 gap-8 text-center md:text-left md:px-0 md:flex-row">
 				<div className="flex flex-col gap-6">
-					<h2 className="text-3xl md:text-4xl font-medium leading-7">
+					<h2 className="text-3xl md:text-4xl font-medium leading-10">
 						<span className="whitespace-pre-line">{title}</span>
 						<br />
 						<span className="text-primary font-semibold">

@@ -284,9 +284,9 @@
 		letter-spacing: -0.025em;
 	}
 
-	* {
+	/** {
 		line-height: 150%;
-	}
+	}*/
 
 	h1 {
 		font-size: 2em;

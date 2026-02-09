@@ -17,7 +17,7 @@ export default function Section({
 		<section
 			id={id}
 			className={cn(
-				"flex flex-col text-center gap-4 px-2 md:px-8 py-[120px]",
+				"flex flex-col text-center gap-4 px-2 md:px-8 py-30",
 				className,
 			)}
 		>

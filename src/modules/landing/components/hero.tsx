@@ -34,19 +34,19 @@ export default function Hero({
 	return (
 		<Section
 			id="hero"
-			className="flex flex-col md:flex-row gap-4 py-0 w-full grow-0 md:min-h-[650px]"
+			className="flex flex-col md:flex-row gap-4 py-0 w-full grow-0 md:min-h-162.5"
 		>
-			<div className="rounded-4xl bg-secondary-container flex-1 relative overflow-clip flex flex-col min-h-[600px] md:min-h-auto">
-				<div className="flex flex-col gap-4 relative z-[1] text-left pt-10 px-10">
+			<div className="rounded-4xl bg-secondary-container flex-1 relative overflow-clip flex flex-col min-h-150 md:min-h-auto">
+				<div className="flex flex-col gap-4 relative z-1 text-left pt-10 px-10">
 					<h1 className="text-3xl lg:text-5xl font-medium">
-						<span className="whitespace-pre-line">{title}</span>
+						<span className="whitespace-pre-line leading-0">{title}</span>
 					</h1>
 					<p className="text-xl lg:text-2xl whitespace-pre-line">
 						{subtitle}
 					</p>
 				</div>
-				<div className="relative 2xl:static grow-1">
-					<div className="absolute top-6 right-4 lg:right-20 -scale-x-100 xl:max-w-[600px] max-w-[500px] w-full aspect-[4/9]">
+				<div className="relative 2xl:static grow">
+					<div className="absolute top-6 right-4 lg:right-20 -scale-x-100 xl:max-w-150 max-w-125 w-full aspect-4/9">
 						<Image
 							fill
 							className="object-cover"
@@ -56,7 +56,7 @@ export default function Hero({
 						/>
 					</div>
 				</div>
-				<div className="pb-10 px-10 z-[1]">
+				<div className="pb-10 px-10 z-1">
 					<Link
 						href={ctaHref}
 						className={buttonVariants({
