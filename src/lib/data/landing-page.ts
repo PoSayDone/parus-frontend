@@ -1,6 +1,7 @@
 "use server";
 
 import prisma from "@lib/prisma";
+import { Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import type { LandingPage } from "@/types/admin";
 
@@ -15,10 +16,14 @@ export const getLandingPage = async (): Promise<LandingPage | null> => {
 export const updateLandingPage = async (
 	data: LandingPage["data"],
 ): Promise<LandingPage> => {
+	const normalizedData =
+		data === null || typeof data === "undefined"
+			? Prisma.DbNull
+			: data;
 	const page = await prisma.landingPage.upsert({
 		where: { key: LANDING_KEY },
-		update: { data },
-		create: { key: LANDING_KEY, data },
+		update: { data: normalizedData },
+		create: { key: LANDING_KEY, data: normalizedData },
 	});
 
 	revalidatePath("/(site)/(landing)", "page");

@@ -18,72 +18,72 @@ export const landingConfig: Config = {
 	components: {
 		Hero: {
 			render: ({ renderDropZone, dragRef, isEditing, metadata, ...props }) => (
-				<Hero {...props} />
+				<Hero {...(props as any)} />
 			),
 		},
 		Services: {
 			render: ({ renderDropZone, dragRef, isEditing, metadata, ...props }) => (
-				<Services {...props} />
+				<Services {...(props as any)} />
 			),
 		},
 		WhyUs: {
 			render: ({ renderDropZone, dragRef, isEditing, metadata, ...props }) => (
-				<WhyUs {...props} />
+				<WhyUs {...(props as any)} />
 			),
 		},
 		Pricing: {
 			render: ({ renderDropZone, dragRef, isEditing, metadata, ...props }) => (
-				<Pricing {...props} />
+				<Pricing {...(props as any)} />
 			),
 		},
 		AboutUs: {
 			render: ({ renderDropZone, dragRef, isEditing, metadata, ...props }) => (
-				<AboutUs {...props} />
+				<AboutUs {...(props as any)} />
 			),
 		},
 		Actions: {
 			render: ({ renderDropZone, dragRef, isEditing, metadata, ...props }) => (
-				<WhatShouldIDo {...props} />
+				<WhatShouldIDo {...(props as any)} />
 			),
 		},
 		RitualProducts: {
 			render: ({ renderDropZone, dragRef, isEditing, metadata, ...props }) => (
-				<RitualProducts {...props} />
+				<RitualProducts {...(props as any)} />
 			),
 		},
 		Memorials: {
 			render: ({ renderDropZone, dragRef, isEditing, metadata, ...props }) => (
-				<Memorials {...props} />
+				<Memorials {...(props as any)} />
 			),
 		},
 		QnA: {
 			render: ({ renderDropZone, dragRef, isEditing, metadata, ...props }) => (
-				<QnAServer {...props} />
+				<QnAServer {...(props as any)} />
 			),
 		},
 		Interaction: {
 			render: ({ renderDropZone, dragRef, isEditing, metadata, ...props }) => (
-				<Interaction {...props} />
+				<Interaction {...(props as any)} />
 			),
 		},
 		Posts: {
 			render: ({ renderDropZone, dragRef, isEditing, metadata, ...props }) => (
-				<Posts {...props} />
+				<Posts {...(props as any)} />
 			),
 		},
 		LandingAddresses: {
 			render: ({ renderDropZone, dragRef, isEditing, metadata, ...props }) => (
-				<LandingAddresses {...props} />
+				<LandingAddresses {...(props as any)} />
 			),
 		},
 		WhereToFindUs: {
 			render: ({ renderDropZone, dragRef, isEditing, metadata, ...props }) => (
-				<WhereToFindUsServer {...props} />
+				<WhereToFindUsServer {...(props as any)} />
 			),
 		},
 		TextBlock: {
 			render: ({ renderDropZone, dragRef, isEditing, metadata, ...props }) => (
-				<TextBlock {...props} />
+				<TextBlock {...(props as any)} />
 			),
 		},
 	},

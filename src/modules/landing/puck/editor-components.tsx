@@ -6,8 +6,8 @@ import Section from "@/components/ui/section";
 import { cn } from "@/lib/utils";
 
 type SimpleSectionProps = {
-	title?: string;
-	subtitle?: string;
+	title?: React.ReactNode;
+	subtitle?: React.ReactNode;
 	children?: React.ReactNode;
 	id?: string;
 	className?: string;
@@ -21,7 +21,12 @@ const EditorSection = ({
 	className,
 }: SimpleSectionProps) => {
 	return (
-		<Section id={id} title={title} subtitle={subtitle} className={className}>
+		<Section
+			id={id || "section"}
+			title={title}
+			subtitle={subtitle}
+			className={className}
+		>
 			{children}
 		</Section>
 	);

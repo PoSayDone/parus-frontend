@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { Map, Placemark, YMaps } from "@pbe/react-yandex-maps";
+import { Map, Placemark, YMaps, useYMaps } from "@pbe/react-yandex-maps";
 import type { CemeteryLocation } from "@/types/landing";
 
 const DEFAULT_CENTER: [number, number] = [58.0105, 56.2502];
@@ -22,6 +22,7 @@ export default function CemeteriesMap({
 }) {
 	const [balloonLayout, setBalloonLayout] = useState<any>(null);
 	const [mapInstance, setMapInstance] = useState<any>(null);
+	const ymaps = useYMaps(["templateLayoutFactory"]);
 
 	const center = useMemo<[number, number]>(() => {
 		const available = locations.filter((item) => item.coords);
@@ -37,6 +38,17 @@ export default function CemeteriesMap({
 	}, [locations]);
 
 	useEffect(() => {
+		if (!ymaps) return;
+		const layout = ymaps.templateLayoutFactory.createClass(
+			'<div style="padding:10px 12px; font-family: inherit;">' +
+				'<div style="font-weight:600; font-size:14px; margin-bottom:4px;">$[properties.name]</div>' +
+				'<div style="font-size:12px; color:#6b7280;">$[properties.address]</div>' +
+				"</div>",
+		);
+		setBalloonLayout(() => layout);
+	}, [ymaps]);
+
+	useEffect(() => {
 		if (!mapInstance || !activeId) return;
 		const active = locations.find((item) => item.id === activeId);
 		if (!active?.coords) return;
@@ -48,18 +60,7 @@ export default function CemeteriesMap({
 
 	return (
 		<div className="rounded-3xl border border-border-variant overflow-hidden">
-			<YMaps
-				onLoad={(ymaps) => {
-					const layout =
-						ymaps.templateLayoutFactory.createClass(
-							'<div style="padding:10px 12px; font-family: inherit;">' +
-								'<div style="font-weight:600; font-size:14px; margin-bottom:4px;">$[properties.name]</div>' +
-								'<div style="font-size:12px; color:#6b7280;">$[properties.address]</div>' +
-								"</div>",
-						);
-					setBalloonLayout(() => layout);
-				}}
-			>
+			<YMaps>
 				<Map
 					className="w-full h-120"
 					state={{ center, zoom: 10 }}

@@ -81,7 +81,8 @@ export const landingComponentFields = {
 					title: { type: "text" },
 					description: { type: "textarea" },
 				},
-				getItemSummary: (item) => item.title || "Преимущество",
+				getItemSummary: (item: { title?: string }) =>
+					item.title || "Преимущество",
 				defaultItemProps: {
 					title: "Новый пункт",
 					description: "Описание пункта",
@@ -101,7 +102,8 @@ export const landingComponentFields = {
 					title: { type: "text" },
 					description: { type: "textarea" },
 				},
-				getItemSummary: (item) => item.title || "Вопрос",
+				getItemSummary: (item: { title?: string }) =>
+					item.title || "Вопрос",
 				defaultItemProps: {
 					title: "Новый вопрос",
 					description: "Ответ на вопрос",

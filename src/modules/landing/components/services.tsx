@@ -20,7 +20,7 @@ export default function Services({
 }: ServicesProps) {
 	return (
 		<Section
-			className="!px-0"
+			className="px-0!"
 			id="services"
 			title={title}
 			subtitle={

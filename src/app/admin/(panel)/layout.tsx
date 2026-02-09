@@ -109,7 +109,7 @@ export default function AdminRootLayout({
 					<h2 className="text-lg font-medium">Админ-панель</h2>
 					<Button
 						variant="ghost"
-						className="lg:hidden size-8 !p-0"
+						className="lg:hidden size-8 p-0!"
 						onClick={() => setSidebarOpen(false)}
 					>
 						<X />
@@ -161,7 +161,7 @@ export default function AdminRootLayout({
 						<Button
 							variant="ghost"
 							size="sm"
-							className="lg:hidden size-8 !p-0"
+							className="lg:hidden size-8 p-0!"
 							onClick={() => setSidebarOpen(true)}
 						>
 							<Menu />
