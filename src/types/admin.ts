@@ -8,6 +8,7 @@ import type {
 	Product as PrismaProduct,
 	Service as PrismaService,
 	SiteSettings as PrismaSiteSettings,
+	LandingPage as PrismaLandingPage,
 	User as PrismaUser,
 } from "@prisma/client";
 
@@ -65,6 +66,12 @@ export interface PricePlan
 
 export interface SiteSettings
 	extends Omit<PrismaSiteSettings, "createdAt" | "updatedAt"> {
+	createdAt: Date;
+	updatedAt: Date;
+}
+
+export interface LandingPage
+	extends Omit<PrismaLandingPage, "createdAt" | "updatedAt"> {
 	createdAt: Date;
 	updatedAt: Date;
 }

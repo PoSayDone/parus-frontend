@@ -64,20 +64,20 @@ model Category {
 }
 
 model BlogPost {
-    id          String   @id @default(uuid())
-    views       Int      @default(0)
-    title       String
-    handle      String   @unique
-    description String?
-    seoTitle    String?
+    id             String   @id @default(uuid())
+    views          Int      @default(0)
+    title          String
+    handle         String   @unique
+    description    String?
+    seoTitle       String?
     seoDescription String?
-    thumbnail   String?
-    body        Json?
-    author      String?
-    draft       Boolean  @default(true)
-    type        String   @default("article")
-    createdAt   DateTime @default(now())
-    updatedAt   DateTime @updatedAt
+    thumbnail      String?
+    body           Json?
+    author         String?
+    draft          Boolean  @default(true)
+    type           String   @default("article")
+    createdAt      DateTime @default(now())
+    updatedAt      DateTime @updatedAt
 }
 
 model Address {
@@ -139,23 +139,31 @@ model PricePlan {
 }
 
 model SiteSettings {
-    id          String   @id @default(uuid())
-    key         String   @unique @default("default")
-    phone       String
-    email       String   @default("parus@perm.ru")
-    address     String
-    footerNote  String
-    showCatalog Boolean  @default(true)
-    landingMetaTitle       String?
-    landingMetaDescription String?
-    addressesMetaTitle     String?
+    id                       String   @id @default(uuid())
+    key                      String   @unique @default("default")
+    phone                    String
+    email                    String   @default("parus@perm.ru")
+    address                  String
+    footerNote               String
+    showCatalog              Boolean  @default(true)
+    landingMetaTitle         String?
+    landingMetaDescription   String?
+    addressesMetaTitle       String?
     addressesMetaDescription String?
-    pricesMetaTitle        String?
-    pricesMetaDescription  String?
-    blogMetaTitle          String?
-    blogMetaDescription    String?
-    createdAt   DateTime @default(now())
-    updatedAt   DateTime @updatedAt
+    pricesMetaTitle          String?
+    pricesMetaDescription    String?
+    blogMetaTitle            String?
+    blogMetaDescription      String?
+    createdAt                DateTime @default(now())
+    updatedAt                DateTime @updatedAt
+}
+
+model LandingPage {
+    id        String   @id @default(uuid())
+    key       String   @unique @default("home")
+    data      Json?
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }
 
 model ContactRequest {

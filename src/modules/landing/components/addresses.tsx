@@ -3,7 +3,20 @@ import { listAddresses } from "@/lib/data/addresses";
 import type { CemeteryLocation } from "@/types/landing";
 import LandingAddressesClient from "./landing-addresses-client";
 
-export default async function LandingAddresses() {
+type LandingAddressesProps = {
+	title?: string;
+	subtitle?: string;
+};
+
+const DEFAULT_ADDRESSES = {
+	title: "Полезные адреса",
+	subtitle: "Кладбища Перми с адресами и отметками на карте.",
+};
+
+export default async function LandingAddresses({
+	title = DEFAULT_ADDRESSES.title,
+	subtitle = DEFAULT_ADDRESSES.subtitle,
+}: LandingAddressesProps) {
 	const {
 		response: { data: addresses },
 	} = await listAddresses({
@@ -34,8 +47,8 @@ export default async function LandingAddresses() {
 	return (
 		<Section
 			id="addresses"
-			title="Полезные адреса"
-			subtitle="Кладбища Перми с адресами и отметками на карте."
+			title={title}
+			subtitle={subtitle}
 		>
 			<LandingAddressesClient cemeteries={cemeteriesForMap} />
 		</Section>

@@ -6,24 +6,41 @@ import { cn } from "@/lib/utils";
 import PricesList from "@/modules/prices/components/prices-list";
 import SkeletonPricesList from "@/modules/skeletons/templates/skeleton-prices-grid";
 
-export default function Pricing() {
+type PricingProps = {
+	title?: string;
+	subtitle?: string;
+	buttonLabel?: string;
+	buttonHref?: string;
+};
+
+const DEFAULT_PRICING = {
+	title: "Стоимость услуг",
+	subtitle:
+		"Мы предлагаем различные пакеты услуг,\nчтобы каждая семья могла выбрать подходящий вариант.",
+	buttonLabel: "Перейти ко всем ценам",
+	buttonHref: "/prices",
+};
+
+export default function Pricing({
+	title = DEFAULT_PRICING.title,
+	subtitle = DEFAULT_PRICING.subtitle,
+	buttonLabel = DEFAULT_PRICING.buttonLabel,
+	buttonHref = DEFAULT_PRICING.buttonHref,
+}: PricingProps) {
 	return (
 		<Section
 			id={"pricing"}
 			className="container mx-auto"
-			title={"Стоимость услуг"}
+			title={title}
 			subtitle={
-				<>
-					Мы предлагаем различные пакеты услуг,
-					<br /> чтобы каждая семья могла выбрать подходящий вариант.
-				</>
+				<span className="whitespace-pre-line">{subtitle}</span>
 			}
 		>
 			<Suspense fallback={<SkeletonPricesList />}>
 				<PricesList />
 			</Suspense>
 			<Link
-				href={"/prices"}
+				href={buttonHref}
 				className={cn(
 					buttonVariants({
 						variant: "outline",
@@ -31,7 +48,7 @@ export default function Pricing() {
 					}),
 				)}
 			>
-				Перейти ко всем ценам
+				{buttonLabel}
 			</Link>
 		</Section>
 	);

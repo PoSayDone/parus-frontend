@@ -1,18 +1,9 @@
 import type { Metadata } from "next";
-import AboutUs from "@/modules/landing/components/about-us";
-import LandingAddresses from "@/modules/landing/components/addresses";
-import WhatShouldIDo from "@/modules/landing/components/actions";
-import Hero from "@/modules/landing/components/hero";
-import { Interaction } from "@/modules/landing/components/Interaction";
-import WhereToFindUs from "@/modules/landing/components/location";
-import Memorials from "@/modules/landing/components/memorials";
-import Posts from "@/modules/landing/components/posts";
-import Pricing from "@/modules/landing/components/pricing";
-import QnA from "@/modules/landing/components/q-n-a";
-import RitualProducts from "@/modules/landing/components/ritual-products";
-import Services from "@/modules/landing/components/services";
-import WhyUs from "@/modules/landing/components/why-us";
+import { Render, type Data } from "@puckeditor/core";
 import { getSiteSettings } from "@/lib/data/site-settings";
+import { getLandingPage } from "@/lib/data/landing-page";
+import { landingConfig } from "@/modules/landing/puck/config";
+import { defaultLandingData } from "@/modules/landing/puck/default-data";
 
 export async function generateMetadata(): Promise<Metadata> {
 	const defaultTitle = "Парус - Ритуальные услуги и товары";
@@ -46,25 +37,92 @@ export async function generateMetadata(): Promise<Metadata> {
 	};
 }
 
-export default async function Home() {
-	const settings = await getSiteSettings();
-	const showCatalog = settings?.showCatalog ?? true;
+const normalizeLandingData = (data: Data | null): Data => {
+	if (data && Array.isArray(data.content)) {
+		const usedIds = new Set<string>();
+		const contentWithIds = data.content.map((item, index) => {
+			const props = item.props ?? {};
+			const existingId =
+				typeof props.id === "string" && props.id.trim().length > 0
+					? props.id
+					: typeof (item as { id?: string }).id === "string" &&
+							(item as { id?: string }).id?.trim()
+						? (item as { id?: string }).id?.trim()
+						: `section-${index}`;
+			let resolvedId = existingId;
+			let suffix = 1;
+			while (usedIds.has(resolvedId)) {
+				resolvedId = `${existingId}-${suffix}`;
+				suffix += 1;
+			}
+			usedIds.add(resolvedId);
 
-	return (
-		<div className="text-xl">
-			<Hero />
-			<Services />
-			<WhyUs />
-			<Pricing />
-			<AboutUs />
-			<WhatShouldIDo />
-			{showCatalog ? <RitualProducts /> : null}
-			<Memorials />
-			<QnA />
-			<Interaction />
-			<Posts />
-			<LandingAddresses />
-			<WhereToFindUs />
-		</div>
-	);
+			let nextProps = {
+				...props,
+				id: resolvedId,
+			};
+			return {
+				...item,
+				props: {
+					...nextProps,
+				},
+			};
+		});
+		return {
+			...data,
+			content: contentWithIds,
+			root: data.root || { props: {} },
+		};
+	}
+	return defaultLandingData;
+};
+
+export default async function Home() {
+	const [settings, landingPage] = await Promise.all([
+		getSiteSettings(),
+		getLandingPage(),
+	]);
+	const showCatalog = settings?.showCatalog ?? true;
+	const storedData = landingPage?.data as Data | null;
+	const baseData = normalizeLandingData(storedData);
+	const content = showCatalog
+		? baseData.content
+		: (baseData.content || []).filter(
+				(item) => item.type !== "RitualProducts",
+			);
+	const usedIds = new Set<string>();
+	const data: Data = {
+		...baseData,
+		content: (content || []).map((item, index) => {
+			const props = item.props ?? {};
+			const existingId =
+				typeof props.id === "string" && props.id.trim().length > 0
+					? props.id
+					: typeof (item as { id?: string }).id === "string" &&
+							(item as { id?: string }).id?.trim()
+						? (item as { id?: string }).id?.trim()
+						: `section-${index}`;
+			let resolvedId = existingId;
+			let suffix = 1;
+			while (usedIds.has(resolvedId)) {
+				resolvedId = `${existingId}-${suffix}`;
+				suffix += 1;
+			}
+			usedIds.add(resolvedId);
+
+			let nextProps = {
+				...props,
+				id: resolvedId,
+			};
+			return {
+				...item,
+				props: {
+					...nextProps,
+				},
+			};
+		}),
+		root: baseData.root || { props: {} },
+	};
+
+	return <Render config={landingConfig} data={data} />;
 }

@@ -33,7 +33,55 @@ const StepCard = ({
 	);
 };
 
-export default function WhatShouldIDo() {
+type WhatShouldIDoProps = {
+	title?: string;
+	subtitle?: string;
+	step1Title?: string;
+	step1Description?: string;
+	step2Title?: string;
+	step2Description?: string;
+	step3Title?: string;
+	step3Description?: string;
+	step4Title?: string;
+	step4Description?: string;
+	ctaLabel?: string;
+	ctaNote?: string;
+};
+
+const DEFAULT_ACTIONS = {
+	title: "Что делать, если умер\nблизкий человек?",
+	subtitle:
+		"Следуйте этим шагам, чтобы быстро и без лишних сложностей\nорганизовать все необходимые процедуры.",
+	step1Title: "Вызвать скорую помощь и полицию",
+	step1Description:
+		"Вызовите бригаду скорой помощи и полицию по номеру 112.",
+	step2Title: "Обратиться\nк нам",
+	step2Description:
+		"Обратитесь к нам с просьбой о вызове представителя. Не забудьте записать его ФИО.",
+	step3Title: "Проверьте\nданные сотрудника",
+	step3Description:
+		"Проверьте данные сотрудника, чтобы убедиться, что он действительно работает в вашем агентстве.",
+	step4Title: "Подготовьте\nдокументы",
+	step4Description:
+		"Подготовьте заранее паспорт усопшего. Также потребуются документы тех, кто находился рядом в момент смерти.",
+	ctaLabel: "Вызывать агента",
+	ctaNote: "Получите помощь — это бесплатно.",
+};
+
+export default function WhatShouldIDo({
+	title = DEFAULT_ACTIONS.title,
+	subtitle = DEFAULT_ACTIONS.subtitle,
+	step1Title = DEFAULT_ACTIONS.step1Title,
+	step1Description = DEFAULT_ACTIONS.step1Description,
+	step2Title = DEFAULT_ACTIONS.step2Title,
+	step2Description = DEFAULT_ACTIONS.step2Description,
+	step3Title = DEFAULT_ACTIONS.step3Title,
+	step3Description = DEFAULT_ACTIONS.step3Description,
+	step4Title = DEFAULT_ACTIONS.step4Title,
+	step4Description = DEFAULT_ACTIONS.step4Description,
+	ctaLabel = DEFAULT_ACTIONS.ctaLabel,
+	ctaNote = DEFAULT_ACTIONS.ctaNote,
+}: WhatShouldIDoProps) {
 	const stepsData: {
 		number: number;
 		title: React.ReactNode;
@@ -42,47 +90,26 @@ export default function WhatShouldIDo() {
 	}[] = [
 		{
 			number: 1,
-			title: <>Вызвать скорую помощь и полицию</>,
-			description:
-				"Вызовите бригаду скорой помощи и полицию по номеру 112.",
+			title: <span className="whitespace-pre-line">{step1Title}</span>,
+			description: step1Description,
 			icon: Ambulance,
 		},
 		{
 			number: 2,
-			title: (
-				<>
-					Обратиться
-					<br />к нам
-				</>
-			),
-			description:
-				"Обратитесь к нам с просьбой о вызове представителя. Не забудьте записать его ФИО.",
+			title: <span className="whitespace-pre-line">{step2Title}</span>,
+			description: step2Description,
 			icon: Document,
 		},
 		{
 			number: 3,
-			title: (
-				<>
-					Проверьте
-					<br />
-					данные сотрудника
-				</>
-			),
-			description:
-				"Проверьте данные сотрудника, чтобы убедиться, что он действительно работает в вашем агентстве.",
+			title: <span className="whitespace-pre-line">{step3Title}</span>,
+			description: step3Description,
 			icon: RitualAgent,
 		},
 		{
 			number: 4,
-			title: (
-				<>
-					Подготовьте
-					<br />
-					документы
-				</>
-			),
-			description:
-				"Подготовьте заранее паспорт усопшего. Также потребуются документы тех, кто находился рядом в момент смерти.",
+			title: <span className="whitespace-pre-line">{step4Title}</span>,
+			description: step4Description,
 			icon: Passport,
 		},
 	];
@@ -91,19 +118,9 @@ export default function WhatShouldIDo() {
 		<Section
 			className="px-0"
 			id="actions"
-			title={
-				<>
-					Что делать, если&nbsp;умер
-					<br />
-					близкий человек?
-				</>
-			}
+			title={<span className="whitespace-pre-line">{title}</span>}
 			subtitle={
-				<>
-					Следуйте этим шагам, чтобы быстро и без лишних сложностей
-					<br />
-					организовать все необходимые процедуры.
-				</>
+				<span className="whitespace-pre-line">{subtitle}</span>
 			}
 		>
 			<div className="flex flex-col gap-10 items-center">
@@ -119,9 +136,9 @@ export default function WhatShouldIDo() {
 			</div>
 
 			<ContactModalTrigger size={"lg"} className="self-center mt-4">
-				Вызывать агента
+				{ctaLabel}
 			</ContactModalTrigger>
-			<p>Получите помощь — это бесплатно.</p>
+			<p>{ctaNote}</p>
 		</Section>
 	);
 }

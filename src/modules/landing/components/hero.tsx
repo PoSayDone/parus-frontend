@@ -4,7 +4,33 @@ import { buttonVariants } from "@/components/ui/button";
 import Section from "@/components/ui/section";
 import { cn } from "@/lib/utils";
 
-export default function Hero() {
+type HeroProps = {
+	title?: string;
+	subtitle?: string;
+	ctaLabel?: string;
+	ctaHref?: string;
+	actionCardText?: string;
+	actionCardHref?: string;
+};
+
+const DEFAULT_HERO = {
+	title: "Сопровождаем вас\nв трудный час",
+	subtitle:
+		"Всесторонняя поддержка и бережное отношение\nк каждой детали похоронной церемонии",
+	ctaLabel: "Стоимость похорон",
+	ctaHref: "/prices",
+	actionCardText: "Что делать,\nесли случилась беда?",
+	actionCardHref: "#actions",
+};
+
+export default function Hero({
+	title = DEFAULT_HERO.title,
+	subtitle = DEFAULT_HERO.subtitle,
+	ctaLabel = DEFAULT_HERO.ctaLabel,
+	ctaHref = DEFAULT_HERO.ctaHref,
+	actionCardText = DEFAULT_HERO.actionCardText,
+	actionCardHref = DEFAULT_HERO.actionCardHref,
+}: HeroProps) {
 	return (
 		<Section
 			id="hero"
@@ -13,12 +39,10 @@ export default function Hero() {
 			<div className="rounded-4xl bg-secondary-container flex-1 relative overflow-clip flex flex-col min-h-[600px] md:min-h-auto">
 				<div className="flex flex-col gap-4 relative z-[1] text-left pt-10 px-10">
 					<h1 className="text-3xl lg:text-5xl font-medium">
-						Сопровождаем вас
-						<br /> в трудный час
+						<span className="whitespace-pre-line">{title}</span>
 					</h1>
-					<p className="text-xl lg:text-2xl">
-						Всесторонняя поддержка и бережное отношение
-						<br />к каждой детали похоронной церемонии
+					<p className="text-xl lg:text-2xl whitespace-pre-line">
+						{subtitle}
 					</p>
 				</div>
 				<div className="relative 2xl:static grow-1">
@@ -34,13 +58,13 @@ export default function Hero() {
 				</div>
 				<div className="pb-10 px-10 z-[1]">
 					<Link
-						href={"/prices"}
+						href={ctaHref}
 						className={buttonVariants({
 							size: "lg",
 							className: "w-full",
 						})}
 					>
-						Стоимость похорон
+						{ctaLabel}
 					</Link>
 				</div>
 			</div>
@@ -50,10 +74,11 @@ export default function Hero() {
 						buttonVariants(),
 						"hover:bg-inverse-primary/80 transition bg-inverse-primary text-foreground text-2xl font-medium px-8 text-center flex items-center justify-center rounded-full h-full min-h-[200px] w-full",
 					)}
-					href={"#actions"}
+					href={actionCardHref}
 				>
-					Что делать,
-					<br /> если случилась беда?
+					<span className="whitespace-pre-line">
+						{actionCardText}
+					</span>
 				</Link>
 				{/*<Link
 					href={"/designer"}

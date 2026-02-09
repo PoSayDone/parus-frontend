@@ -28,6 +28,11 @@ const navigation = [
 		icon: LayoutDashboard,
 	},
 	{
+		name: "Главная (Puck)",
+		href: "/admin/landing",
+		icon: LayoutDashboard,
+	},
+	{
 		name: "Продукты",
 		href: "/admin/products",
 		icon: Package,
@@ -81,6 +86,7 @@ export default function AdminRootLayout({
 }) {
 	const [sidebarOpen, setSidebarOpen] = useState(false);
 	const pathname = usePathname();
+	const isLandingEditor = pathname === "/admin/landing";
 
 	return (
 		<div className="min-h-screen bg-background">
@@ -150,21 +156,31 @@ export default function AdminRootLayout({
 			</div>
 
 			<div className="lg:pl-72">
-				<div className="sticky top-0 z-30 bg-background border-b h-16 flex items-center px-4 lg:px-6">
-					<Button
-						variant="ghost"
-						size="sm"
-						className="lg:hidden size-8 !p-0"
-						onClick={() => setSidebarOpen(true)}
-					>
-						<Menu />
-					</Button>
-					<h1 className="text-xl font-medium ml-4 lg:ml-0">
-						Управление контентом
-					</h1>
-				</div>
+				{!isLandingEditor && (
+					<div className="sticky top-0 z-30 bg-background border-b h-16 flex items-center px-4 lg:px-6">
+						<Button
+							variant="ghost"
+							size="sm"
+							className="lg:hidden size-8 !p-0"
+							onClick={() => setSidebarOpen(true)}
+						>
+							<Menu />
+						</Button>
+						<h1 className="text-xl font-medium ml-4 lg:ml-0">
+							Управление контентом
+						</h1>
+					</div>
+				)}
 
-				<main className="p-4 lg:p-6">{children}</main>
+				<main
+					className={
+						isLandingEditor
+							? "p-0 h-screen overflow-hidden"
+							: "p-4 lg:p-6"
+					}
+				>
+					{children}
+				</main>
 			</div>
 		</div>
 	);
