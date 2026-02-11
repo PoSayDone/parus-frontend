@@ -4,12 +4,15 @@ import {
 	TypographyPreline,
 } from "@/components/typography";
 import Section from "@/components/ui/section";
+import { cn } from "@/lib/utils";
 import CheckmarkedDocument from "@/modules/common/icons/checkmarked-document";
 import HandWithHeart from "@/modules/common/icons/hand-with-heart";
 import TwoPeopleTalking from "@/modules/common/icons/two-people-talking";
+import type { IconProps } from "@/types/icon";
 
 export type WhyUsProps = {
 	title?: string;
+	subtitle?: string;
 	item1Title?: string;
 	item1Description?: string;
 	item2Title?: string;
@@ -20,6 +23,7 @@ export type WhyUsProps = {
 
 const DEFAULT_WHY_US = {
 	title: "Почему вы можете\nдоверять нам?",
+	subtitle: "Мы - команда профессионалов, которые знают, как сделать прощание максимально комфортным и безопасным",
 	item1Title: "Забота",
 	item1Description:
 		"Поможем организовать\nпрощание с вниманием к деталям\nи вашим пожеланиям.",
@@ -31,8 +35,33 @@ const DEFAULT_WHY_US = {
 		"Предложим оптимальные\nрешения, учитывая традиции\nи возможности семьи",
 };
 
+const WhyUsCard = ({
+	title,
+	description,
+	icon: Icon,
+	iconClassName,
+	className,
+}: {
+	title: string;
+	description: string;
+	icon: React.FC<IconProps>;
+	iconClassName?: string;
+	className?: string;
+}) => {
+	return (
+		<div className={cn(`w-full min-w-70 relative flex flex-col items-start justify-end flex-1 border border-primary shadow-sm bg-primary-container text-on-primary-container rounded-3xl p-10`, className)}>
+			<Icon size={140} className={cn("mb-4", iconClassName)} />
+			<TypographyH3 className="mb-4">{title}</TypographyH3>
+			<TypographyP className="text-start whitespace-pre-line">
+				{description}
+			</TypographyP>
+		</div>
+	);
+};
+
 export default function WhyUs({
 	title = DEFAULT_WHY_US.title,
+	subtitle = DEFAULT_WHY_US.subtitle,
 	item1Title = DEFAULT_WHY_US.item1Title,
 	item1Description = DEFAULT_WHY_US.item1Description,
 	item2Title = DEFAULT_WHY_US.item2Title,
@@ -42,38 +71,28 @@ export default function WhyUs({
 }: WhyUsProps) {
 	return (
 		<Section
-			className="py-37.5"
+			className="py-24"
 			id="why-us"
 			title={<TypographyPreline>{title}</TypographyPreline>}
+			subtitle={<TypographyPreline>{subtitle}</TypographyPreline>}
 		>
-			<div className="flex flex-wrap justify-center mx-auto w-full gap-10 container">
-				<div className="flex flex-col items-center flex-1 min-w-50">
-					<HandWithHeart size={140} className="mb-10" />
-					<TypographyH3 className="mb-4">
-						{item1Title}
-					</TypographyH3>
-					<TypographyP className="text-center whitespace-pre-line">
-						{item1Description}
-					</TypographyP>
-				</div>
-				<div className="flex flex-col items-center flex-1 min-w-50">
-					<CheckmarkedDocument size={140} className="mb-10 -ml-5" />
-					<TypographyH3 className="mb-4">
-						{item2Title}
-					</TypographyH3>
-					<TypographyP className="text-center whitespace-pre-line">
-						{item2Description}
-					</TypographyP>
-				</div>
-				<div className="flex flex-col items-center flex-1 min-w-[200px]">
-					<TwoPeopleTalking size={140} className="mb-10" />
-					<TypographyH3 className="mb-4">
-						{item3Title}
-					</TypographyH3>
-					<TypographyP className="text-center whitespace-pre-line">
-						{item3Description}
-					</TypographyP>
-				</div>
+			<div className="flex flex-wrap justify-center mx-auto w-full gap-4 container">
+				<WhyUsCard
+					title={item1Title}
+					description={item1Description}
+					icon={HandWithHeart}
+				/>
+				<WhyUsCard
+					title={item2Title}
+					description={item2Description}
+					icon={CheckmarkedDocument}
+					iconClassName="-ml-5"
+				/>
+				<WhyUsCard
+					title={item3Title}
+					description={item3Description}
+					icon={TwoPeopleTalking}
+				/>
 			</div>
 		</Section>
 	);

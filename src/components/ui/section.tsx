@@ -21,11 +21,11 @@ export default function Section({
 		<section
 			id={id}
 			className={cn(
-				"flex flex-col text-center px-2 md:px-8 py-30",
+				"flex flex-col text-left sm:text-center px-2 md:px-8 py-30",
 				className,
 			)}
 		>
-			<div className="flex flex-col items-center mb-8 gap-4">
+			<div className="flex flex-col mb-8 gap-4">
 				{!!title && (
 					<TypographyH2 className={cn("px-4")}>
 						{title}

@@ -44,6 +44,7 @@ export const landingConfig = {
 		WhyUs: {
 			render: ({
 				title,
+				subtitle,
 				item1Title,
 				item1Description,
 				item2Title,
@@ -53,6 +54,7 @@ export const landingConfig = {
 			}) => (
 				<WhyUs
 					title={title}
+					subtitle={subtitle}
 					item1Title={item1Title}
 					item1Description={item1Description}
 					item2Title={item2Title}

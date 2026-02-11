@@ -39,10 +39,10 @@ export default function AboutUs({
 						{title}
 					</TypographyH2>
 					<div className="flex flex-col gap-6 mx-auto ">
-						<TypographyP className="whitespace-pre-line">
+						<TypographyP className="whitespace-pre-line text-lg">
 							{paragraph1}
 						</TypographyP>
-						<TypographyP className="whitespace-pre-line">
+						<TypographyP className="whitespace-pre-line text-lg">
 							{paragraph2}
 						</TypographyP>
 					</div>
