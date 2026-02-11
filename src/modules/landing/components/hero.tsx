@@ -4,7 +4,6 @@ import {
 	TypographyH1,
 	TypographyP,
 	TypographyPreline,
-	TypographySpan,
 } from "@/components/typography";
 import { buttonVariants } from "@/components/ui/button";
 import Section from "@/components/ui/section";
@@ -25,7 +24,7 @@ const DEFAULT_HERO = {
 		"Всесторонняя поддержка и бережное отношение\nк каждой детали похоронной церемонии",
 	ctaLabel: "Стоимость похорон",
 	ctaHref: "/prices",
-	actionCardText: "Что делать,\nесли случилась беда?",
+	actionCardText: "Порядок действий",
 	actionCardHref: "#actions",
 };
 
@@ -40,76 +39,53 @@ export default function Hero({
 	return (
 		<Section
 			id="hero"
-			className="flex flex-col md:flex-row gap-4 py-0 w-full grow-0 md:min-h-[90dvh]"
+			className="py-0 px-0 md:px-0 w-full rounded-none bg-transparent"
 		>
-			<div className="rounded-4xl bg-secondary-container flex-1 relative overflow-clip flex flex-col min-h-150 md:min-h-auto">
-				<div className="flex flex-col gap-4 relative z-1 text-left pt-10 px-10">
-					<TypographyH1>
-						<TypographyPreline className="leading-0">
-							{title}
-						</TypographyPreline>
-					</TypographyH1>
-					<TypographyP className="text-xl lg:text-2xl whitespace-pre-line">
-						{subtitle}
-					</TypographyP>
-				</div>
-				<div className="relative 2xl:static grow">
-					<div className="absolute top-6 right-4 lg:right-20 -scale-x-100 xl:max-w-150 max-w-125 w-full aspect-4/9">
-						<Image
-							fill
-							className="object-cover"
-							src="/angel.png"
-							alt="Ангел"
-							priority
-						/>
-					</div>
-				</div>
-				<div className="pb-10 px-10 z-1">
-					<Link
-						href={ctaHref}
-						className={buttonVariants({
-							size: "lg",
-							className: "w-full",
-						})}
-					>
-						{ctaLabel}
-					</Link>
-				</div>
-			</div>
-			<div className="grid grid-cols-1 md:flex md:flex-col gap-4">
-				<Link
-					className={cn(
-						buttonVariants(),
-						"hover:bg-inverse-primary/80 transition bg-inverse-primary text-foreground px-8 text-center flex items-center justify-center rounded-full h-full min-h-[200px] w-full",
-					)}
-					href={actionCardHref}
-				>
-					<TypographySpan className="text-2xl font-medium">
-						<TypographyPreline>
-							{actionCardText}
-						</TypographyPreline>
-					</TypographySpan>
-				</Link>
-				{/*<Link
-					href={"/designer"}
-					className={cn(
-						buttonVariants(),
-						"hover:bg-inverse-primary/80 transition bg-inverse-primary text-foreground text-2xl font-medium sm:h-[400px] h-[300px] py-8 text-center flex items-start justify-center rounded-4xl relative overflow-clip",
-					)}
-				>
-					Перейти
-					<br />в конструтор
+			<div className="relative isolate overflow-hidden min-h-[50vh] md:min-h-212.5 w-full flex items-end justify-center px-4 md:px-8 pb-10 md:pb-12">
+				<div className="absolute inset-0 bg-primary-container aspect-16/7 w-full max-w-300 left-1/2 -translate-x-1/2 top-[50%] md:top-[35%] blur-[100px] rounded-full" />
+				<div className="absolute inset-0 aspect-4/7 w-full max-w-175 left-1/2 -translate-x-1/2">
 					<Image
-						className="absolute top-32"
-						src="/tomb.png"
-						alt="Логотип краевой ритуальной компании"
-						width={205}
-						height={370}
+						fill
+						className="object-cover object-top"
+						src="/angel.png"
+						alt="Ангел"
+						priority
 					/>
-					<div className="w-[54] h-[54] absolute right-5 bottom-5 bg-primary text-on-primary rounded-full flex items-center justify-center">
-						<ArrowRight className="size-6" />
+				</div>
+				<div className="relative z-1 w-full max-w-245 flex flex-col items-center text-center gap-6 md:gap-8">
+					<div className="space-y-4 md:space-y-6">
+						<TypographyH1 className="text-white text-4xl md:text-6xl lg:text-8xl leading-[0.95] drop-shadow-[0_0px_20px_rgba(0,0,0,0.45)]">
+							<TypographyPreline className="tracking-[-2px] md:tracking-[-4px]!">{title}</TypographyPreline>
+						</TypographyH1>
+						<TypographyP className="font-normal text-white text-base md:text-xl leading-tight whitespace-pre-line max-w-195 mx-auto drop-shadow-[0_0px_20px_rgba(0,0,0,0.45)]">
+							{subtitle}
+						</TypographyP>
 					</div>
-				</Link>*/}
+					<div className="w-full max-w-225 grid grid-cols-2 gap-4 md:gap-6">
+						<Link
+							href={ctaHref}
+							className={buttonVariants({
+								size: "lg",
+								className:
+									"md:h-20 md:text-xl! font-medium bg-primary/90 hover:bg-primary text-primary-foreground backdrop-blur-sm"
+							})}
+						>
+							{ctaLabel}
+						</Link>
+						<Link
+							href={actionCardHref}
+							className={cn(
+								buttonVariants({
+									size: "lg",
+									variant: "secondary",
+								}),
+								"md:h-20 md:text-xl! font-medium bg-white/75 text-foreground hover:bg-white/90 backdrop-blur-sm",
+							)}
+						>
+							{actionCardText}
+						</Link>
+					</div>
+				</div>
 			</div>
 		</Section>
 	);

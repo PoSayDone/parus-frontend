@@ -8,7 +8,7 @@ export function TypographyH1({
 	return (
 		<h1
 			className={cn(
-				"text-3xl md:text-4xl lg:text-5xl font-semibold leading-none",
+				"text-3xl md:text-4xl lg:text-5xl font-medium leading-none",
 				className,
 			)}
 			{...props}
