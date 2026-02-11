@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Suspense } from "react";
+import { TypographyPreline } from "@/components/typography";
 import { buttonVariants } from "@/components/ui/button";
 import Section from "@/components/ui/section";
 import { cn } from "@/lib/utils";
@@ -33,7 +34,7 @@ export default function Pricing({
 			className="container mx-auto"
 			title={title}
 			subtitle={
-				<span className="whitespace-pre-line">{subtitle}</span>
+				<TypographyPreline>{subtitle}</TypographyPreline>
 			}
 		>
 			<Suspense fallback={<SkeletonPricesList />}>

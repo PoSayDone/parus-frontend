@@ -1,3 +1,7 @@
+import {
+	TypographyH2,
+	TypographySectionSubtitle,
+} from "@/components/typography";
 import { cn } from "@/lib/utils";
 
 export default function Section({
@@ -17,20 +21,22 @@ export default function Section({
 		<section
 			id={id}
 			className={cn(
-				"flex flex-col text-center gap-4 px-2 md:px-8 py-30",
+				"flex flex-col text-center px-2 md:px-8 py-30",
 				className,
 			)}
 		>
-			{!!title && (
-				<h2 className={cn("text-3xl md:text-4xl font-medium px-4")}>
-					{title}
-				</h2>
-			)}
-			{!!subtitle && (
-				<div className="text-lg text-muted-foreground leading-relaxed mb-12 px-4 max-w-3xl mx-auto">
-					{subtitle}
-				</div>
-			)}
+			<div className="flex flex-col items-center mb-8 gap-4">
+				{!!title && (
+					<TypographyH2 className={cn("px-4")}>
+						{title}
+					</TypographyH2>
+				)}
+				{!!subtitle && (
+					<TypographySectionSubtitle>
+						{subtitle}
+					</TypographySectionSubtitle>
+				)}
+			</div>
 			{children}
 		</section>
 	);

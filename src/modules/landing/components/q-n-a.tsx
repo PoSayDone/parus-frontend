@@ -4,6 +4,11 @@ import {
 	AccordionItem,
 	AccordionTrigger,
 } from "@/components/ui/accordion";
+import {
+	TypographyP,
+	TypographyPreline,
+	TypographySpan,
+} from "@/components/typography";
 import Section from "@/components/ui/section";
 import type React from "react";
 
@@ -18,11 +23,11 @@ const Question = ({
 }) => {
 	return (
 		<AccordionItem value={value} className="border-none!">
-			<AccordionTrigger className="text-xl bg-secondary-container py-6 px-8 rounded-2xl w-full flex justify-between text-left">
-				{title}
+			<AccordionTrigger className="bg-secondary-container py-6 px-8 rounded-2xl w-full flex justify-between text-left">
+				<TypographySpan className="text-xl">{title}</TypographySpan>
 			</AccordionTrigger>
-			<AccordionContent className="bg-primary text-on-primary text-start text-lg p-8 rounded-2xl mt-2">
-				<p>{paragraph}</p>
+			<AccordionContent className="bg-primary text-on-primary text-start p-8 rounded-2xl mt-2">
+				<TypographyP className="text-lg">{paragraph}</TypographyP>
 			</AccordionContent>
 		</AccordionItem>
 	);
@@ -85,7 +90,7 @@ export default function QnA({
 		<Section
 			id="qna"
 			title={title}
-			subtitle={<span className="whitespace-pre-line">{subtitle}</span>}
+			subtitle={<TypographyPreline>{subtitle}</TypographyPreline>}
 			className="items-center"
 		>
 			<Accordion

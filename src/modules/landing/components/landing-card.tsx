@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { TypographyH3 } from "@/components/typography";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
@@ -23,8 +24,10 @@ export default function LandingCard({
 			>
 				<div className="absolute z-1 w-full h-32 top-0 right-0 bg-linear-to-b from-card to-transparent" />
 				<CardHeader className="text-start z-1 relative">
-					<CardTitle className="text-xl font-medium text-foreground group-hover:text-primary transition-colors duration-300">
-						{title}
+					<CardTitle>
+						<TypographyH3 className="text-xl text-foreground group-hover:text-primary transition-colors duration-300">
+							{title}
+						</TypographyH3>
 					</CardTitle>
 				</CardHeader>
 				<CardContent>{children}</CardContent>

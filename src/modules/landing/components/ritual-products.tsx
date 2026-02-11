@@ -1,6 +1,7 @@
 import Section from "@/components/ui/section";
 import CategoriesCarousel from "./categories-carousel";
 import { Suspense } from "react";
+import { TypographyPreline } from "@/components/typography";
 import SkeletonCategoriesCarousel from "@/modules/skeletons/templates/skeleton-categories-carousel";
 
 export type RitualProductsProps = {
@@ -24,7 +25,7 @@ export default function RitualProducts({
 			className="px-0!"
 			title={title}
 			subtitle={
-				<span className="whitespace-pre-line">{subtitle}</span>
+				<TypographyPreline>{subtitle}</TypographyPreline>
 			}
 		>
 			<Suspense fallback={<SkeletonCategoriesCarousel />}>

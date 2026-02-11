@@ -1,5 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
+import {
+	TypographyH1,
+	TypographyP,
+	TypographyPreline,
+	TypographySpan,
+} from "@/components/typography";
 import { buttonVariants } from "@/components/ui/button";
 import Section from "@/components/ui/section";
 import { cn } from "@/lib/utils";
@@ -34,16 +40,18 @@ export default function Hero({
 	return (
 		<Section
 			id="hero"
-			className="flex flex-col md:flex-row gap-4 py-0 w-full grow-0 md:min-h-162.5"
+			className="flex flex-col md:flex-row gap-4 py-0 w-full grow-0 md:min-h-[90dvh]"
 		>
 			<div className="rounded-4xl bg-secondary-container flex-1 relative overflow-clip flex flex-col min-h-150 md:min-h-auto">
 				<div className="flex flex-col gap-4 relative z-1 text-left pt-10 px-10">
-					<h1 className="text-3xl lg:text-5xl font-medium">
-						<span className="whitespace-pre-line leading-0">{title}</span>
-					</h1>
-					<p className="text-xl lg:text-2xl whitespace-pre-line">
+					<TypographyH1>
+						<TypographyPreline className="leading-0">
+							{title}
+						</TypographyPreline>
+					</TypographyH1>
+					<TypographyP className="text-xl lg:text-2xl whitespace-pre-line">
 						{subtitle}
-					</p>
+					</TypographyP>
 				</div>
 				<div className="relative 2xl:static grow">
 					<div className="absolute top-6 right-4 lg:right-20 -scale-x-100 xl:max-w-150 max-w-125 w-full aspect-4/9">
@@ -72,13 +80,15 @@ export default function Hero({
 				<Link
 					className={cn(
 						buttonVariants(),
-						"hover:bg-inverse-primary/80 transition bg-inverse-primary text-foreground text-2xl font-medium px-8 text-center flex items-center justify-center rounded-full h-full min-h-[200px] w-full",
+						"hover:bg-inverse-primary/80 transition bg-inverse-primary text-foreground px-8 text-center flex items-center justify-center rounded-full h-full min-h-[200px] w-full",
 					)}
 					href={actionCardHref}
 				>
-					<span className="whitespace-pre-line">
-						{actionCardText}
-					</span>
+					<TypographySpan className="text-2xl font-medium">
+						<TypographyPreline>
+							{actionCardText}
+						</TypographyPreline>
+					</TypographySpan>
 				</Link>
 				{/*<Link
 					href={"/designer"}

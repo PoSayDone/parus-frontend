@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import { TypographyPreline } from "@/components/typography";
 import Section from "@/components/ui/section";
 import SkeletonServicesCarousel from "@/modules/skeletons/templates/skeleton-services-carousel";
 import ServicesCarousel from "./services-carousel";
@@ -24,7 +25,7 @@ export default function Services({
 			id="services"
 			title={title}
 			subtitle={
-				<span className="whitespace-pre-line">{subtitle}</span>
+				<TypographyPreline>{subtitle}</TypographyPreline>
 			}
 		>
 			<Suspense fallback={<SkeletonServicesCarousel />}>

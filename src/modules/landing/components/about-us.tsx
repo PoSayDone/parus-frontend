@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import Section from "@/components/ui/section";
+import { TypographyH2, TypographyP } from "@/components/typography";
 import Pigeon from "@/modules/common/icons/pigeon";
 
 export type AboutUsProps = {
@@ -34,12 +35,16 @@ export default function AboutUs({
 		>
 			<div className="grid lg:grid-cols-2 gap-12 justify-center items-center px-4 md:px-0">
 				<div className="text-left">
-					<h2 className="text-3xl md:text-4xl font-medium mb-10">
+					<TypographyH2 className="mb-10">
 						{title}
-					</h2>
-					<div className="flex flex-col gap-6 leading-8 mx-auto">
-						<p className="whitespace-pre-line">{paragraph1}</p>
-						<p className="whitespace-pre-line">{paragraph2}</p>
+					</TypographyH2>
+					<div className="flex flex-col gap-6 mx-auto ">
+						<TypographyP className="whitespace-pre-line">
+							{paragraph1}
+						</TypographyP>
+						<TypographyP className="whitespace-pre-line">
+							{paragraph2}
+						</TypographyP>
 					</div>
 					<Button
 						variant="default"

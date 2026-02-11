@@ -1,3 +1,4 @@
+import { TypographyPreline } from "@/components/typography";
 import Section from "@/components/ui/section";
 
 export type TextBlockProps = {
@@ -15,7 +16,9 @@ export default function TextBlock({
 		<Section
 			id={id}
 			title={title}
-			subtitle={text ? <span className="whitespace-pre-line">{text}</span> : undefined}
+			subtitle={
+				text ? <TypographyPreline>{text}</TypographyPreline> : undefined
+			}
 		>
 			{null}
 		</Section>

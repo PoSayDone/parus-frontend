@@ -2,6 +2,10 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
+import {
+	TypographySpan,
+	TypographySmall,
+} from "@/components/typography";
 import { buttonVariants } from "@/components/ui/button";
 import {
 	Card,
@@ -55,9 +59,9 @@ export default function LandingAddressesClient({
 				</CardHeader>
 				<CardContent className="flex">
 					{cemeteries.length === 0 ? (
-						<p className="text-sm text-muted-foreground">
+						<TypographySmall className="text-muted-foreground">
 							Информация готовится.
-						</p>
+						</TypographySmall>
 					) : (
 						<ScrollArea className="h-100 lg:h-102 w-full -m-2.5">
 							<ScrollBar orientation="vertical" />
@@ -81,13 +85,15 @@ export default function LandingAddressesClient({
 										{item.handle ? (
 											<Link
 												href={`/addresses/${item.handle}`}
-												className="font-medium hover:underline text-base h-fit leading-none!"
+												className="hover:underline h-fit leading-none!"
 												onClick={() => {
 													hasInteracted.current = true;
 													setActiveId(item.id);
 												}}
 											>
-												{item.name}
+												<TypographySpan className="font-medium text-base">
+													{item.name}
+												</TypographySpan>
 											</Link>
 										) : (
 											<button
@@ -96,18 +102,20 @@ export default function LandingAddressesClient({
 													hasInteracted.current = true;
 													setActiveId(item.id);
 												}}
-												className="font-medium text-base text-left leading-none"
+												className="text-left leading-none"
 											>
-												{item.name}
+												<TypographySpan className="font-medium text-base">
+													{item.name}
+												</TypographySpan>
 											</button>
 										)}
-										<p className="text-sm text-muted-foreground">
+										<TypographySmall className="text-muted-foreground">
 											{item.address || "—"}
-										</p>
+										</TypographySmall>
 										{item.phone?.length ? (
-											<p className="text-sm text-muted-foreground">
+											<TypographySmall className="text-muted-foreground">
 												Телефон: {item.phone.join(", ")}
-											</p>
+											</TypographySmall>
 										) : null}
 									</li>
 								))}

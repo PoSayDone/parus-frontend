@@ -1,3 +1,8 @@
+import {
+	TypographyH3,
+	TypographyP,
+	TypographyPreline,
+} from "@/components/typography";
 import Section from "@/components/ui/section";
 import CheckmarkedDocument from "@/modules/common/icons/checkmarked-document";
 import HandWithHeart from "@/modules/common/icons/hand-with-heart";
@@ -37,37 +42,37 @@ export default function WhyUs({
 }: WhyUsProps) {
 	return (
 		<Section
-			className="bg-primary text-on-primary py-[150px] "
+			className="py-37.5"
 			id="why-us"
-			title={<span className="whitespace-pre-line">{title}</span>}
+			title={<TypographyPreline>{title}</TypographyPreline>}
 		>
-			<div className="flex flex-wrap justify-center mx-auto w-full gap-10">
-				<div className="flex flex-col items-center flex-1 min-w-[200px]">
+			<div className="flex flex-wrap justify-center mx-auto w-full gap-10 container">
+				<div className="flex flex-col items-center flex-1 min-w-50">
 					<HandWithHeart size={140} className="mb-10" />
-					<h3 className="text-2xl font-medium mb-4">
+					<TypographyH3 className="mb-4">
 						{item1Title}
-					</h3>
-					<p className="text-center whitespace-pre-line">
+					</TypographyH3>
+					<TypographyP className="text-center whitespace-pre-line">
 						{item1Description}
-					</p>
+					</TypographyP>
 				</div>
-				<div className="flex flex-col items-center flex-1 min-w-[200px]">
+				<div className="flex flex-col items-center flex-1 min-w-50">
 					<CheckmarkedDocument size={140} className="mb-10 -ml-5" />
-					<h3 className="text-2xl font-medium mb-4">
+					<TypographyH3 className="mb-4">
 						{item2Title}
-					</h3>
-					<p className="text-center whitespace-pre-line">
+					</TypographyH3>
+					<TypographyP className="text-center whitespace-pre-line">
 						{item2Description}
-					</p>
+					</TypographyP>
 				</div>
 				<div className="flex flex-col items-center flex-1 min-w-[200px]">
 					<TwoPeopleTalking size={140} className="mb-10" />
-					<h3 className="text-2xl font-medium mb-4">
+					<TypographyH3 className="mb-4">
 						{item3Title}
-					</h3>
-					<p className="text-center whitespace-pre-line">
+					</TypographyH3>
+					<TypographyP className="text-center whitespace-pre-line">
 						{item3Description}
-					</p>
+					</TypographyP>
 				</div>
 			</div>
 		</Section>

@@ -1,5 +1,9 @@
 "use client";
 
+import {
+	TypographyH2,
+	TypographySectionSubtitle,
+} from "@/components/typography";
 import { cn } from "@/lib/utils";
 
 export default function SectionClient({
@@ -24,14 +28,14 @@ export default function SectionClient({
 			)}
 		>
 			{!!title && (
-				<h2 className={cn("text-3xl md:text-4xl font-medium px-4")}>
+				<TypographyH2 className={cn("px-4")}>
 					{title}
-				</h2>
+				</TypographyH2>
 			)}
 			{!!subtitle && (
-				<div className="text-lg text-muted-foreground leading-relaxed mb-12 px-4 max-w-3xl mx-auto">
+				<TypographySectionSubtitle>
 					{subtitle}
-				</div>
+				</TypographySectionSubtitle>
 			)}
 			{children}
 		</section>

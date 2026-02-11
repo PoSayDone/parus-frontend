@@ -1,3 +1,8 @@
+import {
+	TypographyH3,
+	TypographyP,
+	TypographyPreline,
+} from "@/components/typography";
 import Section from "@/components/ui/section";
 import Ambulance from "@/modules/common/icons/ambulance";
 import Document from "@/modules/common/icons/document";
@@ -21,8 +26,8 @@ const StepCard = ({
 		<div className="flex flex-col py-8 w-fit justify-between bg-secondary-container md:flex-row md:justify-center items-center min-h-[500px] max-w-[1200px] rounded-4xl self-center md:w-full px-6 gap-12">
 			<div className="flex flex-col gap-6 max-w-[350px] text-left">
 				<div>{`Шаг ${number}`}</div>
-				<h3 className="text-3xl font-medium">{title}</h3>
-				<p>{description}</p>
+				<TypographyH3 className="text-3xl">{title}</TypographyH3>
+				<TypographyP>{description}</TypographyP>
 			</div>
 			<div className="size-[280px] rounded-full bg-primary flex items-center justify-center">
 				<Icon size={190} />
@@ -90,25 +95,25 @@ export default function WhatShouldIDo({
 	}[] = [
 		{
 			number: 1,
-			title: <span className="whitespace-pre-line">{step1Title}</span>,
+			title: <TypographyPreline>{step1Title}</TypographyPreline>,
 			description: step1Description,
 			icon: Ambulance,
 		},
 		{
 			number: 2,
-			title: <span className="whitespace-pre-line">{step2Title}</span>,
+			title: <TypographyPreline>{step2Title}</TypographyPreline>,
 			description: step2Description,
 			icon: Document,
 		},
 		{
 			number: 3,
-			title: <span className="whitespace-pre-line">{step3Title}</span>,
+			title: <TypographyPreline>{step3Title}</TypographyPreline>,
 			description: step3Description,
 			icon: RitualAgent,
 		},
 		{
 			number: 4,
-			title: <span className="whitespace-pre-line">{step4Title}</span>,
+			title: <TypographyPreline>{step4Title}</TypographyPreline>,
 			description: step4Description,
 			icon: Passport,
 		},
@@ -118,9 +123,9 @@ export default function WhatShouldIDo({
 		<Section
 			className="px-0"
 			id="actions"
-			title={<span className="whitespace-pre-line">{title}</span>}
+			title={<TypographyPreline>{title}</TypographyPreline>}
 			subtitle={
-				<span className="whitespace-pre-line">{subtitle}</span>
+				<TypographyPreline>{subtitle}</TypographyPreline>
 			}
 		>
 			<div className="flex flex-col gap-10 items-center">
@@ -138,7 +143,7 @@ export default function WhatShouldIDo({
 			<ContactModalTrigger size={"lg"} className="self-center mt-4">
 				{ctaLabel}
 			</ContactModalTrigger>
-			<p>{ctaNote}</p>
+			<TypographyP>{ctaNote}</TypographyP>
 		</Section>
 	);
 }

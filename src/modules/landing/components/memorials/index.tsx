@@ -1,4 +1,10 @@
 import Section from "@/components/ui/section";
+import {
+	TypographyH4,
+	TypographyP,
+	TypographyPreline,
+	TypographySmall,
+} from "@/components/typography";
 import ContactModalTrigger from "@/modules/contact/components/contact-modal-trigger";
 import { MemorialsGrid } from "./grid";
 
@@ -50,7 +56,7 @@ export default function Memorials({
 	return (
 		<Section
 			title={title}
-			subtitle={<span className="whitespace-pre-line">{subtitle}</span>}
+			subtitle={<TypographyPreline>{subtitle}</TypographyPreline>}
 			id={"memorials"}
 		>
 			<div className="container mx-auto">
@@ -67,21 +73,21 @@ export default function Memorials({
 											key={`${feature.title}-${index}`}
 											className="p-6 bg-card rounded-2xl"
 										>
-											<h4 className="font-medium text-foreground mb-2">
+											<TypographyH4 className="mb-2">
 												{feature.title}
-											</h4>
-											<p className="text-sm text-card-foreground">
+											</TypographyH4>
+											<TypographySmall className="text-card-foreground">
 												{feature.description}
-											</p>
+											</TypographySmall>
 										</div>
 									))}
 								</div>
 							</div>
 
 							<div className="px-4 md:px-0">
-								<p className="whitespace-pre-line">
+								<TypographyP className="whitespace-pre-line">
 									{paragraph}
-								</p>
+								</TypographyP>
 
 								<ContactModalTrigger size="lg" className="mt-6">
 									{ctaLabel}
