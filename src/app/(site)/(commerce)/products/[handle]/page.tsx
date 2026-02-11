@@ -1,7 +1,8 @@
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { listProducts } from "@lib/data/products";
 import { getProductByHandle } from "@lib/data/products";
 import ProductTemplate from "@modules/products/templates";
+import { getSiteSettings } from "@/lib/data/site-settings";
 
 type Props = {
 	params: Promise<{ handle: string }>;
@@ -52,6 +53,13 @@ export async function generateMetadata(props: Props) {
 }
 
 export default async function ProductPage(props: Props) {
+	const settings = await getSiteSettings();
+	const showCatalog = settings?.showCatalog ?? true;
+
+	if (!showCatalog) {
+		redirect("/");
+	}
+
 	const params = await props.params;
 
 	const product = await getProductByHandle(params.handle);
