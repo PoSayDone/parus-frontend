@@ -1,43 +1,35 @@
-import {
-	TypographyH2,
-	TypographySectionSubtitle,
-} from "@/components/typography";
+import SectionHeading from "@/components/ui/section-heading";
 import { cn } from "@/lib/utils";
 
 export default function Section({
-	id,
-	className,
-	title,
-	subtitle,
-	children,
+  id,
+  className,
+  textContainerClassName,
+  title,
+  subtitle,
+  children,
 }: {
-	id: string;
-	className?: string;
-	title?: React.ReactNode;
-	subtitle?: React.ReactNode;
-	children?: React.ReactNode;
+  id: string;
+  className?: string;
+  textContainerClassName?: string;
+  title?: React.ReactNode;
+  subtitle?: React.ReactNode;
+  children?: React.ReactNode;
 }) {
-	return (
-		<section
-			id={id}
-			className={cn(
-				"flex flex-col text-left sm:text-center px-2 md:px-8 py-30",
-				className,
-			)}
-		>
-			<div className="flex flex-col mb-8 gap-4">
-				{!!title && (
-					<TypographyH2 className={cn("px-4")}>
-						{title}
-					</TypographyH2>
-				)}
-				{!!subtitle && (
-					<TypographySectionSubtitle>
-						{subtitle}
-					</TypographySectionSubtitle>
-				)}
-			</div>
-			{children}
-		</section>
-	);
+  return (
+    <section
+      id={id}
+      className={cn(
+        "flex flex-col text-left sm:text-center py-16 lg:py-24 m-0 px-4 sm:px-0",
+        className,
+      )}
+    >
+      <SectionHeading
+        title={title}
+        subtitle={subtitle}
+        className={textContainerClassName}
+      />
+      {children}
+    </section>
+  );
 }

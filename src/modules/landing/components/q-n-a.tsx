@@ -89,14 +89,17 @@ export default function QnA({
 	return (
 		<Section
 			id="qna"
-			title={title}
-			subtitle={<TypographyPreline>{subtitle}</TypographyPreline>}
-			className="items-center"
+			className="container mx-auto"
+			textContainerClassName="lg:text-center lg:items-center"
+			title={<TypographyPreline>{title}</TypographyPreline>}
+			subtitle={
+				<TypographyPreline>{subtitle}</TypographyPreline>
+			}
 		>
 			<Accordion
 				type="single"
 				collapsible
-				className="flex flex-col gap-2 w-full max-w-[1200px]"
+				className="flex flex-col gap-2 w-full max-w-300 mx-auto"
 			>
 				{resolvedQuestions.map((question, index) => (
 					<Question

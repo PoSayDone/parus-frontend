@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import PricingCard from "@/modules/common/components/pricing-card";
+import PricingCard from "@/modules/prices/components/pricing-card";
 import type { PricePlan } from "@/types/admin";
 
 export default function PricesListClient({
@@ -14,7 +14,7 @@ export default function PricesListClient({
 
 	return (
 		<div className="space-y-8 text-start">
-			<div className="p-1 bg-muted w-fit mx-auto rounded-full gap-1">
+			<div className="p-1 bg-muted w-fit rounded-full gap-1">
 				<Button
 					variant={priceType === "parts" ? "default" : "ghost"}
 					onClick={() => setPriceType("parts")}
@@ -28,13 +28,13 @@ export default function PricesListClient({
 					Одним платежом
 				</Button>
 			</div>
-			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
 				{pricingPlans.map((plan) => (
 					<PricingCard
 						key={plan.id}
 						plan={plan}
 						priceType={priceType}
-						className="mx-auto w-full"
+						className="mx-auto w-full max-w-none"
 					/>
 				))}
 			</div>

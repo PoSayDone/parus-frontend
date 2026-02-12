@@ -1,7 +1,7 @@
 import Section from "@/components/ui/section";
 import { listAddresses } from "@/lib/data/addresses";
 import type { CemeteryLocation } from "@/types/landing";
-import LandingAddressesClient from "./client";
+import CemeteriesClient from "./client";
 
 export type CemetriesProps = {
 	title?: string;
@@ -13,7 +13,7 @@ const DEFAULT_CEMETERIES = {
 	subtitle: "Кладбища Перми с адресами и отметками на карте.",
 };
 
-export default async function Cemetries({
+export default async function Cemeteries({
 	title = DEFAULT_CEMETERIES.title,
 	subtitle = DEFAULT_CEMETERIES.subtitle,
 }: CemetriesProps) {
@@ -47,10 +47,11 @@ export default async function Cemetries({
 	return (
 		<Section
 			id="addresses"
+			 className="container mx-auto"
 			title={title}
 			subtitle={subtitle}
 		>
-			<LandingAddressesClient cemeteries={cemeteriesForMap} />
+			<CemeteriesClient cemeteries={cemeteriesForMap} />
 		</Section>
 	);
 }

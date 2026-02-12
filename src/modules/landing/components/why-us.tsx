@@ -1,8 +1,7 @@
 import {
-	TypographyH3,
-	TypographyP,
 	TypographyPreline,
 } from "@/components/typography";
+import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import Section from "@/components/ui/section";
 import { cn } from "@/lib/utils";
 import CheckmarkedDocument from "@/modules/common/icons/checkmarked-document";
@@ -49,13 +48,15 @@ const WhyUsCard = ({
 	className?: string;
 }) => {
 	return (
-		<div className={cn(`w-full min-w-70 relative flex flex-col items-start justify-end flex-1 border border-primary shadow-sm bg-primary-container text-on-primary-container rounded-3xl p-10`, className)}>
-			<Icon size={140} className={cn("mb-4", iconClassName)} />
-			<TypographyH3 className="mb-4">{title}</TypographyH3>
-			<TypographyP className="text-start whitespace-pre-line">
-				{description}
-			</TypographyP>
-		</div>
+		<Card className={cn(`gap-0 w-full min-w-70 relative flex flex-col items-start justify-end flex-1 border border-primary shadow-sm bg-primary-container text-on-primary-container rounded-3xl`, className)}>
+			<CardHeader className="text-start w-full">
+				<Icon size={140} className={cn("mb-4", iconClassName)} />
+				<CardTitle>{title}</CardTitle>
+				<CardDescription className="text-on-primary-container/70 w-full">
+					{description}
+				</CardDescription>
+			</CardHeader>
+		</Card>
 	);
 };
 
@@ -71,10 +72,11 @@ export default function WhyUs({
 }: WhyUsProps) {
 	return (
 		<Section
-			className="py-24"
+			className="container mx-auto py-24"
+			textContainerClassName="items-start text-start container mx-auto"
 			id="why-us"
-			title={<TypographyPreline>{title}</TypographyPreline>}
-			subtitle={<TypographyPreline>{subtitle}</TypographyPreline>}
+			title={<TypographyPreline className="text-start">{title}</TypographyPreline>}
+			subtitle={<TypographyPreline className="text-start">{subtitle}</TypographyPreline>}
 		>
 			<div className="flex flex-wrap justify-center mx-auto w-full gap-4 container">
 				<WhyUsCard
@@ -86,7 +88,6 @@ export default function WhyUs({
 					title={item2Title}
 					description={item2Description}
 					icon={CheckmarkedDocument}
-					iconClassName="-ml-5"
 				/>
 				<WhyUsCard
 					title={item3Title}

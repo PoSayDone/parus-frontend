@@ -1,0 +1,33 @@
+{
+  "tab_size": 2,
+  "hard_tabs": false,
+  "languages": {
+    "TypeScript": {
+      "formatter": "prettier",
+      "code_actions_on_format": {
+        // "source.fixAll.eslint": true,
+        "source.organizeImports": true,
+        // "source.removeUnusedImports": true
+      },
+      "format_on_save": "on",
+    },
+    "TSX": {
+      "formatter": "prettier",
+      "code_actions_on_format": {
+        // "source.fixAll.eslint": true,
+        "source.organizeImports": true,
+        // "source.removeUnusedImports": true
+      },
+      "format_on_save": "on",
+    },
+    "JavaScript": {
+      "formatter": "prettier",
+      "code_actions_on_format": {
+        // "source.fixAll.eslint": true,
+        "source.organizeImports": true,
+        // "source.removeUnusedImports": true
+      },
+      "format_on_save": "on",
+    },
+  },
+}

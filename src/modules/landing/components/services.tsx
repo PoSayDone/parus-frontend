@@ -22,6 +22,7 @@ export default function Services({
 	return (
 		<Section
 			className="px-0!"
+			textContainerClassName="mb-12 px-4 lg:px-0 container mx-auto lg:text-center lg:items-center"
 			id="services"
 			title={title}
 			subtitle={

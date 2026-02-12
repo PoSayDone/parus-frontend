@@ -32,6 +32,7 @@ export default function Pricing({
 		<Section
 			id={"pricing"}
 			className="container mx-auto"
+			textContainerClassName="items-start text-start"
 			title={title}
 			subtitle={
 				<TypographyPreline>{subtitle}</TypographyPreline>

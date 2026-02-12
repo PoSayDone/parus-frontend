@@ -5,9 +5,9 @@ export default function ServicesTemplate() {
 	return (
 		<div className="min-h-screen bg-background">
 			<div className="container mx-auto px-4 md:px-8 py-12">
-				<div className="text-center mb-12">
+				<div className="text-start mb-12">
 					<h1 className="text-3xl md:text-4xl mb-4">Наши услуги</h1>
-					<p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+					<p className="text-lg text-muted-foreground max-w-3xl leading-relaxed">
 						Мы предоставляем полный спектр ритуальных услуг с
 						заботой и пониманием. Наша команда профессионалов
 						поможет вам в трудную минуту, взяв на себя все
