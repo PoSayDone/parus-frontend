@@ -65,6 +65,7 @@
     "react-dom": "19.2.3",
     "react-hook-form": "^7.71.0",
     "react-simple-wysiwyg": "^3.4.1",
+    "sharp": "^0.34.5",
     "sluga": "^0.2.1",
     "sonner": "^2.0.7",
     "tailwind-merge": "^3.4.0",
