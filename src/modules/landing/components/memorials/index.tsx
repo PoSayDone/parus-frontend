@@ -1,8 +1,11 @@
 import { TypographyH4, TypographyP } from "@/components/typography";
+import { buttonVariants } from "@/components/ui/button";
 import Section from "@/components/ui/section";
 import SectionHeading from "@/components/ui/section-heading";
+import { cn } from "@/lib/utils";
 import ContactModalTrigger from "@/modules/contact/components/contact-modal-trigger";
 import Image from "next/image";
+import Link from "next/link";
 
 export type MemorialsProps = {
   title?: string;
@@ -17,6 +20,9 @@ export type MemorialsProps = {
   }[];
   paragraph?: string;
   ctaLabel?: string;
+  detailsButtonLabel?: string;
+  detailsButtonHref?: string;
+  detailsButtonDisabled?: boolean;
 };
 
 const DEFAULT_MEMORIALS = {
@@ -54,6 +60,9 @@ const DEFAULT_MEMORIALS = {
   paragraph:
     "Наша мастерская специализируется на изготовлении памятников из высококачественных материалов. Мы работаем с гранитом, мрамором и другими натуральными камнями, создавая долговечные и красивые мемориалы.",
   ctaLabel: "Заказать памятник",
+  detailsButtonLabel: "Подробнее",
+  detailsButtonHref: "/memorials",
+  detailsButtonDisabled: false,
 };
 
 const ILLUSTRATION_LAYOUT = [
@@ -72,6 +81,9 @@ export default function Memorials({
   features = DEFAULT_MEMORIALS.features,
   paragraph = DEFAULT_MEMORIALS.paragraph,
   ctaLabel = DEFAULT_MEMORIALS.ctaLabel,
+  detailsButtonLabel = DEFAULT_MEMORIALS.detailsButtonLabel,
+  detailsButtonHref = DEFAULT_MEMORIALS.detailsButtonHref,
+  detailsButtonDisabled = DEFAULT_MEMORIALS.detailsButtonDisabled,
 }: MemorialsProps) {
   return (
     <Section
@@ -121,10 +133,40 @@ export default function Memorials({
             ))}
           </div>
 
-          <div className="max-w-2xl">
+          <div className="max-w-2xl flex flex-wrap items-center gap-3">
             <ContactModalTrigger size="lg" className="mt-6">
               {ctaLabel}
             </ContactModalTrigger>
+            {detailsButtonLabel ? (
+              detailsButtonDisabled ? (
+                <span
+                  className={cn(
+                    buttonVariants({
+                      variant: "outline",
+                      size: "lg",
+                      disabled: true,
+                    }),
+                    "mt-6 pointer-events-none",
+                  )}
+                  aria-disabled="true"
+                >
+                  {detailsButtonLabel}
+                </span>
+              ) : (
+                <Link
+                  href={detailsButtonHref}
+                  className={cn(
+                    buttonVariants({
+                      variant: "outline",
+                      size: "lg",
+                    }),
+                    "mt-6",
+                  )}
+                >
+                  {detailsButtonLabel}
+                </Link>
+              )
+            ) : null}
           </div>
         </div>
       </div>

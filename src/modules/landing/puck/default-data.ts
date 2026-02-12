@@ -156,6 +156,9 @@ export const defaultLandingData: Data = {
         paragraph:
           "Наша мастерская специализируется на изготовлении памятников из высококачественных материалов. Мы работаем с гранитом, мрамором и другими натуральными камнями, создавая долговечные и красивые мемориалы.",
         ctaLabel: "Заказать памятник",
+        detailsButtonLabel: "Подробнее",
+        detailsButtonHref: "/memorials",
+        detailsButtonDisabled: false,
       },
     },
     {

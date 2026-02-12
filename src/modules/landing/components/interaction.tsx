@@ -5,8 +5,8 @@ import {
 } from "@/components/typography";
 import { buttonVariants } from "@/components/ui/button";
 import Section from "@/components/ui/section";
-import { cn } from "@/lib/utils";
-import Link from "next/link";
+import ContactModalTrigger from "@/modules/contact/components/contact-modal-trigger";
+import { Phone } from "lucide-react";
 
 export type InteractionProps = {
   title?: string;
@@ -44,17 +44,10 @@ export default function Interaction({
           <TypographyP className="text-lg md:text-xl whitespace-pre-line">
             {description}
           </TypographyP>
-          <Link
-            href={ctaHref}
-            className={cn(
-              buttonVariants({
-                size: "lg",
-                className: "w-full lg:w-fit",
-              }),
-            )}
-          >
+          <ContactModalTrigger className={buttonVariants({ size: "lg" })}>
+            <Phone />
             {ctaLabel}
-          </Link>
+          </ContactModalTrigger>
         </div>
       </div>
     </Section>

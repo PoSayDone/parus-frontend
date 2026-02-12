@@ -135,6 +135,15 @@ export const landingComponentFields = {
       },
       paragraph: { type: "textarea" },
       ctaLabel: { type: "text" },
+      detailsButtonLabel: { type: "text" },
+      detailsButtonHref: { type: "text" },
+      detailsButtonDisabled: {
+        type: "radio",
+        options: [
+          { label: "Включена", value: false },
+          { label: "Выключена", value: true },
+        ],
+      },
     },
   },
   QnA: {

@@ -154,6 +154,9 @@ export const landingEditorConfig = {
         features,
         paragraph,
         ctaLabel,
+        detailsButtonLabel,
+        detailsButtonHref,
+        detailsButtonDisabled,
       }) => (
         <Memorials
           title={title}
@@ -162,6 +165,9 @@ export const landingEditorConfig = {
           features={features}
           paragraph={paragraph}
           ctaLabel={ctaLabel}
+          detailsButtonLabel={detailsButtonLabel}
+          detailsButtonHref={detailsButtonHref}
+          detailsButtonDisabled={detailsButtonDisabled}
         />
       ),
     },
