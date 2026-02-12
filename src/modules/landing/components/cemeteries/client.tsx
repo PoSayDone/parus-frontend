@@ -35,7 +35,7 @@ export default function CemeteriesClient({
   }, [activeId]);
 
   return (
-    <Card className="text-left flex flex-col p-0 overflow-x-clip grow-0 h-full gap-0 overflow-clip">
+    <Card className="text-left flex flex-col p-0 overflow-x-clip grow-0 h-full gap-0! overflow-clip">
       <CardHeader className="flex justify-between items-center gap-3 px-0 py-4 [.border-b]:pb-1 border-b">
         {cemeteries.length === 0 ? (
           <TypographySmall className="text-muted-foreground">
