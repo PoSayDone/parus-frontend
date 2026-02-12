@@ -22,7 +22,7 @@ export const ServiceCard = ({
     <Card
       key={service.id}
       className={cn(
-        "group hover:shadow-lg transition-all duration-300 border-border hover:border-primary/20",
+        "group hover:scale-100 hover:shadow-lg transition-all duration-300 border-border hover:border-primary/20",
         className,
       )}
     >
@@ -35,10 +35,10 @@ export const ServiceCard = ({
             />
           )}
         </div>
-        <CardTitle className="font-medium text-foreground group-hover:text-primary transition-colors duration-300">
+        <CardTitle className="group-hover:text-primary transition-colors duration-300">
           {service.title}
         </CardTitle>
-        <CardDescription className="text-muted-foreground mb-2">
+        <CardDescription className="mb-2">
           {service.shortDescription}
         </CardDescription>
       </CardHeader>

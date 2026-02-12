@@ -1,7 +1,10 @@
 "use client";
 
-import { Map, Placemark, YMaps } from "@pbe/react-yandex-maps";
-import { useEffect, useState } from "react";
+import {
+  getReactifiedYMaps3Modules,
+  type ReactifiedYMaps3Modules,
+} from "@/lib/ymaps3";
+import { useEffect, useMemo, useState } from "react";
 
 export default function LocationMapClient({
   lat,
@@ -12,22 +15,54 @@ export default function LocationMapClient({
   lng: number;
   zoom: number;
 }) {
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [modules, setModules] = useState<ReactifiedYMaps3Modules | null>(null);
+  const [hasError, setHasError] = useState(false);
+  const center = useMemo<[number, number]>(() => [lng, lat], [lat, lng]);
+
   useEffect(() => {
-    if (!isLoaded) {
-      setIsLoaded(true);
-    }
+    let isMounted = true;
+
+    getReactifiedYMaps3Modules(process.env.NEXT_PUBLIC_YMAPS3_API_KEY ?? "")
+      .then((result) => {
+        if (!isMounted) return;
+        setModules(result);
+      })
+      .catch(() => {
+        if (!isMounted) return;
+        setHasError(true);
+      });
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
+  if (hasError) {
+    return <div className="h-full w-full bg-muted" />;
+  }
+
+  if (!modules) {
+    return <div className="h-full w-full bg-muted" />;
+  }
+
+  const { YMap, YMapDefaultSchemeLayer, YMapDefaultFeaturesLayer, YMapMarker } =
+    modules;
+
   return (
-    <YMaps>
-      <Map
-        key={"our-location"}
-        className="w-full h-full"
-        defaultState={{ center: [lat, lng], zoom }}
-      >
-        {isLoaded && <Placemark defaultGeometry={[lat, lng]} />}
-      </Map>
-    </YMaps>
+    <YMap
+      key="our-location"
+      className="h-full w-full"
+      mode="vector"
+      location={{ center, zoom }}
+    >
+      <YMapDefaultSchemeLayer />
+      <YMapDefaultFeaturesLayer />
+      <YMapMarker coordinates={center}>
+        <span
+          className="block size-4 rounded-full border-2 border-white bg-primary shadow-md"
+          aria-hidden
+        />
+      </YMapMarker>
+    </YMap>
   );
 }

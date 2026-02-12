@@ -1,15 +1,15 @@
 "use client";
 
+import {
+  getReactifiedYMaps3Modules,
+  type ReactifiedYMaps3Modules,
+} from "@/lib/ymaps3";
 import type { CemeteryLocation } from "@/types/landing";
-import { Map, Placemark, YMaps, useYMaps } from "@pbe/react-yandex-maps";
 import { useEffect, useMemo, useState } from "react";
 
 const DEFAULT_CENTER: [number, number] = [58.0105, 56.2502];
-
-const createMarkerIcon = (color: string) => {
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"><circle cx="10" cy="10" r="8" fill="${color}" stroke="white" stroke-width="2"/></svg>`;
-  return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
-};
+const DEFAULT_ZOOM = 10;
+const toLngLat = ([lat, lng]: [number, number]): [number, number] => [lng, lat];
 
 export default function CemeteriesMapClient({
   locations,
@@ -20,88 +20,99 @@ export default function CemeteriesMapClient({
   activeId: string | null;
   onSelect: (id: string) => void;
 }) {
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [balloonLayout, setBalloonLayout] = useState<any>(null);
-  const [mapInstance, setMapInstance] = useState<any>(null);
-  const ymaps = useYMaps(["templateLayoutFactory"]);
+  const [modules, setModules] = useState<ReactifiedYMaps3Modules | null>(null);
+  const [hasError, setHasError] = useState(false);
 
   const center = useMemo<[number, number]>(() => {
-    const available = locations.filter((item) => item.coords);
-    if (available.length === 0) return DEFAULT_CENTER;
-    const [latSum, lngSum] = available.reduce(
+    const withCoords = locations.filter((item) => item.coords);
+
+    if (withCoords.length === 0) {
+      return DEFAULT_CENTER;
+    }
+
+    const [latSum, lngSum] = withCoords.reduce(
       (acc, item) => [acc[0] + item.coords![0], acc[1] + item.coords![1]],
       [0, 0],
     );
-    return [latSum / available.length, lngSum / available.length];
+
+    return [latSum / withCoords.length, lngSum / withCoords.length];
   }, [locations]);
 
+  const activeCenter = useMemo<[number, number]>(() => {
+    const active = locations.find((item) => item.id === activeId);
+    return active?.coords ?? center;
+  }, [activeId, center, locations]);
+
   useEffect(() => {
-    if (!isLoaded) {
-      setIsLoaded(true);
-    }
+    let isMounted = true;
+
+    getReactifiedYMaps3Modules(process.env.NEXT_PUBLIC_YMAPS3_API_KEY ?? "")
+      .then((result) => {
+        if (!isMounted) return;
+        setModules(result);
+      })
+      .catch(() => {
+        if (!isMounted) return;
+        setHasError(true);
+      });
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
-  useEffect(() => {
-    if (!ymaps) return;
-    const layout = ymaps.templateLayoutFactory.createClass(
-      '<div style="padding:10px 12px; font-family: inherit; background: white; width: fit-content; border-radius: 8px;">' +
-        '<div style="font-weight:600; font-size:14px; margin-bottom:4px;">$[properties.name]</div>' +
-        '<div style="font-size:12px; color:#6b7280;">$[properties.address]</div>' +
-        "</div>",
-    );
-    setBalloonLayout(() => layout);
-  }, [ymaps]);
+  if (hasError) {
+    return <div className="h-full w-full bg-muted" />;
+  }
 
-  useEffect(() => {
-    if (!mapInstance || !activeId) return;
-    const active = locations.find((item) => item.id === activeId);
-    if (!active?.coords) return;
-    mapInstance.panTo(active.coords, {
-      flying: true,
-      duration: 300,
-    });
-  }, [activeId, locations, mapInstance]);
+  if (!modules) {
+    return <div className="h-full w-full bg-muted" />;
+  }
+
+  const { YMap, YMapDefaultSchemeLayer, YMapDefaultFeaturesLayer, YMapMarker } =
+    modules;
 
   return (
-    <YMaps>
-      <Map
-        key={"cemeteries"}
-        className="w-full h-full"
-        state={{ center, zoom: 10 }}
-        instanceRef={(ref) => setMapInstance(ref)}
-      >
-        {isLoaded &&
-          locations?.length > 0 &&
-          locations.map((placemark) => {
-            if (!placemark.coords) return null;
-            const isActive = placemark.id === activeId;
-            return (
-              <Placemark
-                key={placemark.id}
-                geometry={placemark.coords}
-                modules={["geoObject.addon.hint", "geoObject.addon.balloon"]}
-                options={{
-                  openBalloonOnClick: true,
-                  hideIconOnBalloonOpen: false,
-                  balloonLayout: balloonLayout || undefined,
-                  balloonPanelMaxMapArea: 0,
-                  iconLayout: "default#image",
-                  iconImageHref: createMarkerIcon(
-                    isActive ? "#111827" : "#64748b",
-                  ),
-                  iconImageSize: [20, 20],
-                  iconImageOffset: [-10, -10],
-                }}
-                properties={{
-                  name: placemark.name,
-                  address: placemark.address,
-                  hintContent: placemark.name,
-                }}
-                onClick={() => onSelect(placemark.id)}
+    <YMap
+      key="cemeteries"
+      className="h-full w-full"
+      mode="vector"
+      location={{ center: toLngLat(activeCenter), zoom: DEFAULT_ZOOM }}
+    >
+      <YMapDefaultSchemeLayer />
+      <YMapDefaultFeaturesLayer />
+
+      {locations.map((placemark) => {
+        if (!placemark.coords) return null;
+
+        const isActive = placemark.id === activeId;
+
+        return (
+          <YMapMarker
+            key={placemark.id}
+            coordinates={toLngLat(placemark.coords)}
+          >
+            <button
+              type="button"
+              aria-label={placemark.name}
+              title={`${placemark.name}${placemark.address ? `: ${placemark.address}` : ""}`}
+              onClick={() => onSelect(placemark.id)}
+              className="group relative block"
+            >
+              <span
+                className="block size-5 rounded-full border-2 border-white shadow-md transition-colors"
+                style={{ backgroundColor: isActive ? "#111827" : "#64748b" }}
+                aria-hidden
               />
-            );
-          })}
-      </Map>
-    </YMaps>
+              {isActive ? (
+                <span className="absolute left-1/2 top-[-10px] -translate-x-1/2 -translate-y-full rounded-lg bg-background px-2 py-1 text-xs font-medium text-foreground shadow-md whitespace-nowrap">
+                  {placemark.name}
+                </span>
+              ) : null}
+            </button>
+          </YMapMarker>
+        );
+      })}
+    </YMap>
   );
 }
