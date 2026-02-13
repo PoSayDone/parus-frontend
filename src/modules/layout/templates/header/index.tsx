@@ -3,7 +3,7 @@
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { headerLinks } from "@/lib/constants";
-import { cn } from "@/lib/utils";
+import { cn, formatPhoneNumber } from "@/lib/utils";
 import Logo from "@/modules/common/icons/logo";
 import ContactModalTrigger from "@/modules/contact/components/contact-modal-trigger";
 import { MenuIcon, Phone, XIcon } from "lucide-react";
@@ -40,7 +40,7 @@ const HeaderContent = ({
       <div className="flex justify-end gap-2 items-center">
         <ContactModalTrigger>
           <Phone />
-          {phone}
+          {formatPhoneNumber(phone)}
         </ContactModalTrigger>
         <Button
           className="lg:hidden"
@@ -118,6 +118,7 @@ export default function Header({
                 menuState={menuState}
                 setMenuState={setMenuState}
                 links={links}
+                phone={phone}
               />
             </div>
             <div className="flex flex-col grow h-full">

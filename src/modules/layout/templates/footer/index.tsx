@@ -1,5 +1,6 @@
 import { buttonVariants } from "@/components/ui/button";
 import { getSiteSettings } from "@/lib/data/site-settings";
+import { formatPhoneNumber } from "@/lib/utils";
 import Logo from "@/modules/common/icons/logo";
 import ContactModalTrigger from "@/modules/contact/components/contact-modal-trigger";
 import SkeletonFooterDocuments from "@/modules/skeletons/components/skeleton-footer-documents";
@@ -41,7 +42,7 @@ export default async function Footer() {
             {email}
           </a>
           <Link href={`tel:${phone}`} className="text-sm">
-            {phone}
+            {formatPhoneNumber(phone)}
           </Link>
         </div>
         <div className="flex flex-col gap-2">
