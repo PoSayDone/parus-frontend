@@ -118,6 +118,7 @@ export default function Header({
                 menuState={menuState}
                 setMenuState={setMenuState}
                 links={links}
+                phone={phone}
               />
             </div>
             <div className="flex flex-col grow h-full">

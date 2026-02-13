@@ -8,7 +8,10 @@ const Layout = async ({ children }: { children: React.ReactNode }) => {
 
   return (
     <div>
-      <Header showCatalog={showCatalog} phone={settings?.phone} />
+      <Header
+        showCatalog={showCatalog}
+        phone={settings?.phone ?? "+79999999999"}
+      />
       {children}
       <Footer />
     </div>
