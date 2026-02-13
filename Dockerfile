@@ -2,15 +2,17 @@ FROM oven/bun:latest AS base
 WORKDIR /app
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-	openssl \
-	&& rm -rf /var/lib/apt/lists/*
+  openssl \
+  && rm -rf /var/lib/apt/lists/*
 
 # Accept build args and set them as environment variables
 ARG DATABASE_URL
 ARG REVALIDATE_SECRET
+ARG YMAPS3_API_KEY
 
 ENV DATABASE_URL=$DATABASE_URL
 ENV REVALIDATE_SECRET=$REVALIDATE_SECRET
+ENV NEXT_PUBLIC_YMAPS3_API_KEY=$YMAPS3_API_KEY
 
 # Install dependencies
 FROM base AS deps
@@ -23,9 +25,11 @@ WORKDIR /app
 
 ARG DATABASE_URL
 ARG REVALIDATE_SECRET
+ARG YMAPS3_API_KEY
 
 ENV DATABASE_URL=$DATABASE_URL
 ENV REVALIDATE_SECRET=$REVALIDATE_SECRET
+ENV NEXT_PUBLIC_YMAPS3_API_KEY=$YMAPS3_API_KEY
 
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
