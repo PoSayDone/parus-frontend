@@ -35,14 +35,14 @@ export default function CemeteriesClient({
   }, [activeId]);
 
   return (
-    <Card className="text-left flex flex-col p-0 overflow-x-clip grow-0 h-full gap-0! overflow-clip">
-      <CardHeader className="flex justify-between items-center gap-3 px-0 py-4 [.border-b]:pb-1 border-b">
+    <Card className="text-left flex flex-col p-0! overflow-x-clip grow-0 h-full gap-0! overflow-clip">
+      <CardHeader className="flex justify-between items-center gap-3 px-0! py-2! [.border-b]:pb-0 border-b">
         {cemeteries.length === 0 ? (
           <TypographySmall className="text-muted-foreground">
             Информация готовится.
           </TypographySmall>
         ) : (
-          <ScrollArea className="min-h-0 min-w-0 h-full grow pb-3">
+          <ScrollArea className="min-h-0 min-w-0 h-full grow">
             <ScrollBar orientation="horizontal" />
             <ul className="flex flex-row px-4">
               {cemeteries.map((item) => (
@@ -52,7 +52,7 @@ export default function CemeteriesClient({
                     itemRefs.current[item.id] = node;
                   }}
                   className={cn(
-                    "rounded-xl px-3 py-3 transition-colors leading-none min-w-75",
+                    "rounded-xl px-3 py-3 pr-6 transition-colors leading-none w-max",
                     activeId === item.id && "bg-primary text-on-primary",
                   )}
                   onMouseEnter={() => {
@@ -111,7 +111,7 @@ export default function CemeteriesClient({
           </ScrollArea>
         )}
       </CardHeader>
-      <CardContent className="h-[50dvh] lg:h-[70dvh] p-0 m-0 relative">
+      <CardContent className="h-[50vh] lg:h-[70vh] p-0! m-0 relative">
         <CemeteriesMap
           locations={locationsWithCoords}
           activeId={activeId}

@@ -39,11 +39,11 @@ export default function Hero({
   return (
     <Section
       id="hero"
-      className="py-0 px-0 md:px-0 w-full rounded-none bg-transparent"
+      className="py-0 px-0! md:px-0! w-full rounded-none bg-transparent"
     >
-      <div className="relative isolate overflow-hidden min-h-[50vh] md:min-h-[80dvh] w-full flex items-end justify-center px-4 md:px-8 pb-10 md:pb-12">
-        <div className="absolute inset-0 bg-primary-container aspect-16/7 w-full max-w-300 left-1/2 -translate-x-1/2 top-[50%] md:top-[35%] blur-[100px] rounded-full" />
-        <div className="absolute inset-0 aspect-4/7 w-full max-w-175 left-1/2 -translate-x-1/2">
+      <div className="relative isolate overflow-hidden min-h-[50vh] md:min-h-[80vh] w-full flex items-end justify-center px-4 md:px-8 pb-10 md:pb-12">
+        <div className="absolute inset-0 bg-primary-container aspect-16/7 w-full max-w-200 left-1/2 -translate-x-1/2 top-[50%] md:top-[35%] blur-[100px] rounded-full" />
+        <div className="absolute inset-0 aspect-4/7 w-full max-w-155 left-1/2 -translate-x-1/2">
           <Image
             fill
             className="object-cover object-top"
@@ -52,6 +52,7 @@ export default function Hero({
             priority
           />
         </div>
+        <div className="md:hidden absolute inset-0 bg-primary aspect-16/7 w-full max-w-200 left-1/2 -translate-x-1/2 top-[50%] md:top-[35%] blur-[100px] rounded-full" />
         <div className="relative z-1 w-full max-w-245 flex flex-col items-center text-center gap-6 md:gap-8">
           <div className="space-y-4 md:space-y-6">
             <TypographyH1 className="text-white text-4xl md:text-6xl lg:text-8xl leading-[0.95] drop-shadow-[0_0px_20px_rgba(0,0,0,0.45)]">

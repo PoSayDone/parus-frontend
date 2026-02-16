@@ -20,7 +20,7 @@ export default function LocationMap({
   zoom: number;
 }) {
   return (
-    <Card className="w-full p-0 m-0 h-[50dvh] lg:h-[70dvh] overflow-clip">
+    <Card className="w-full p-0! m-0 h-[50vh] lg:h-[70vh] overflow-clip">
       <LocationMapClient lat={lat} lng={lng} zoom={zoom} />
     </Card>
   );

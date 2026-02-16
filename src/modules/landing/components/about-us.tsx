@@ -125,8 +125,8 @@ export default function AboutUs({
   return (
     <Section
       id="about-us"
-      className="container mx-auto py-24 sm:text-left"
-      textContainerClassName="items-start text-start mb-10"
+      className="container mx-auto sm:text-left"
+      textContainerClassName="items-start text-start"
       title={<TypographyPreline>{title}</TypographyPreline>}
     >
       <div className="grid grid-cols-6 sm:grid-cols-12 gap-2">

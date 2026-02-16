@@ -34,7 +34,7 @@ export default function Interaction({
 }: InteractionProps) {
   return (
     <Section id="interaction" className="bg-secondary-container lg:py-32">
-      <div className="grid grid-cols-1 lg:grid-cols-2 container mx-auto text-start items-center gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-2 container mx-auto text-start items-center gap-4 px-4">
         <div className="flex flex-col gap-6">
           <TypographyH2 className="leading-none">
             <TypographyPreline>{title}</TypographyPreline>
