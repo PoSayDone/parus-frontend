@@ -1,6 +1,7 @@
 import { listCategories } from "@/lib/data/categories";
 import { listProducts } from "@/lib/data/products";
 import { getSiteSettings } from "@/lib/data/site-settings";
+import { listServices } from "@/lib/data/services";
 import type { MetadataRoute } from "next";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -13,42 +14,60 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 	const staticPages: MetadataRoute.Sitemap = [
 		{
 			url: `${baseUrl}`,
-			lastModified: new Date(),
+			//lastModified: new Date(),
 			changeFrequency: "daily",
 			priority: 1,
 		},
 		{
 			url: `${baseUrl}/store`,
-			lastModified: new Date(),
+			//lastModified: new Date(),
 			changeFrequency: "daily",
 			priority: 0.9,
 		},
 		{
 			url: `${baseUrl}/designer`,
-			lastModified: new Date(),
+			//lastModified: new Date(),
 			changeFrequency: "monthly",
 			priority: 0.8,
 		},
 		{
 			url: `${baseUrl}/services`,
-			lastModified: new Date(),
+			//lastModified: new Date(),
 			changeFrequency: "weekly",
 			priority: 0.9,
 		},
 		{
 			url: `${baseUrl}/prices`,
-			lastModified: new Date(),
+			//lastModified: new Date(),
 			changeFrequency: "monthly",
 			priority: 0.8,
 		},
 		{
 			url: `${baseUrl}/blog`,
-			lastModified: new Date(),
+			//lastModified: new Date(),
 			changeFrequency: "weekly",
 			priority: 0.7,
 		},
 	];
+	// Dynamic service pages
+	const servicePages: MetadataRoute.Sitemap = [];
+	try {
+		const serviceResponse = await listServices({
+			queryParams: { limit: 1000 },
+		});
 
+		if (serviceResponse?.response?.data) {
+			servicePages.push(
+				...serviceResponse.response.data.map((service: any) => ({
+					url: `${baseUrl}/services/${service.handle}`,
+					changeFrequency: "weekly" as const,
+					priority: 0.8,
+				})),
+			);
+		}
+	} catch (error) {
+		console.error("Error fetching services for sitemap:", error);
+	}
 	// Dynamic category pages
 	const categoryPages: MetadataRoute.Sitemap = [];
 	if (showCatalog) {
@@ -61,9 +80,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 				categoryPages.push(
 					...categoryResponse.response.data.map((category: any) => ({
 						url: `${baseUrl}/categories/${category.handle}`,
-						lastModified: category.updatedAt
-							? new Date(category.updatedAt)
-							: new Date(),
+						//lastModified: category.updatedAt
+						//	? new Date(category.updatedAt)
+						//	: new Date(),
 						changeFrequency: "weekly" as const,
 						priority: 0.8,
 					})),
@@ -86,9 +105,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 				productPages.push(
 					...productResponse.response.data.map((product: any) => ({
 						url: `${baseUrl}/products/${product.handle}`,
-						lastModified: product.updatedAt
-							? new Date(product.updatedAt)
-							: new Date(),
+						//lastModified: product.updatedAt
+						//	? new Date(product.updatedAt)
+						//	: new Date(),
 						changeFrequency: "weekly" as const,
 						priority: 0.7,
 					})),
@@ -103,5 +122,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 		? staticPages
 		: staticPages.filter((page) => page.url !== `${baseUrl}/store`);
 
-	return [...filteredStaticPages, ...categoryPages, ...productPages];
+	return [...filteredStaticPages, ...servicePages, ...categoryPages, ...productPages];
 }
