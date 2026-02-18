@@ -1,5 +1,10 @@
-import { TypographyH4, TypographyP } from "@/components/typography";
 import { buttonVariants } from "@/components/ui/button";
+import {
+  Card,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import Section from "@/components/ui/section";
 import SectionHeading from "@/components/ui/section-heading";
 import { cn } from "@/lib/utils";
@@ -119,17 +124,15 @@ export default function Memorials({
           <SectionHeading title={title} subtitle={subtitle} />
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {(features || []).map((feature, index) => (
-              <div
+              <Card
                 key={`${feature.title}-${index}`}
-                className="p-4 lg:p-5 bg-card rounded-2xl"
+                className="rounded-2xl py-4! md:py-6!"
               >
-                <TypographyH4 className="mb-2 text-xl">
-                  {feature.title}
-                </TypographyH4>
-                <TypographyP className="text-card-foreground text-sm">
-                  {feature.description}
-                </TypographyP>
-              </div>
+                <CardHeader className="px! md:px-6!">
+                  <CardTitle>{feature.title}</CardTitle>
+                  <CardDescription>{feature.description}</CardDescription>
+                </CardHeader>
+              </Card>
             ))}
           </div>
 

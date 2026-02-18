@@ -20,7 +20,7 @@ const StepCard = ({
   icon: React.FC<IconProps>;
 }) => {
   return (
-    <Card className="flex flex-col-reverse py-8 w-fit justify-between bg-primary text-on-primary items-start lg:flex-row lg:justify-center lg:items-center lg:min-h-125 max-w-300 w-full rounded-4xl self-center md:w-full px-6 lg:gap-12">
+    <Card className="flex flex-col-reverse py-8 justify-between bg-primary text-on-primary items-start lg:flex-row lg:justify-center lg:items-center lg:min-h-125 max-w-300 w-full rounded-4xl self-center md:w-full px-6 lg:gap-12">
       <div className="flex flex-col gap-4 max-w-87.5 text-left">
         <div>{`Шаг ${number}`}</div>
         <CardTitle>{title}</CardTitle>
@@ -140,7 +140,7 @@ export default function WhatShouldIDo({
       <ContactModalTrigger size={"lg"} className="self-center mt-8">
         {ctaLabel}
       </ContactModalTrigger>
-      <TypographyP className="mt-4">{ctaNote}</TypographyP>
+      <TypographyP className="mt-4 text-center">{ctaNote}</TypographyP>
     </Section>
   );
 }
