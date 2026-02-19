@@ -62,7 +62,7 @@ export default async function RootLayout({
   
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "FuneralHome",
+    "@type": "LocalBusiness",
     "name": "Парус",
     "address": {
       "@type": "PostalAddress",
