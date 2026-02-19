@@ -1,4 +1,4 @@
-import { TypographyH3 } from "@/components/typography";
+import { TypographyH3, TypographyP } from "@/components/typography";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import {
@@ -59,9 +59,9 @@ export default function PricingCard({
         </CardTitle>
         <div className="flex items-center gap-2">
           {priceType === "parts" && plan.creditPrice ? (
-            <TypographyH3>от {plan.creditPrice} ₽</TypographyH3>
+            <TypographyP>от {plan.creditPrice} ₽</TypographyP>
           ) : (
-            <TypographyH3>{plan.price} ₽</TypographyH3>
+            <TypographyP>{plan.price} ₽</TypographyP>
           )}
         </div>
         <CardDescription className="h-11 lg:h-13">

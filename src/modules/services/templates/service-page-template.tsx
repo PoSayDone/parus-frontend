@@ -83,7 +83,7 @@ export default async function ServicePageTemplate({
 								}}
 							/>
 
-						<div className="flex flex-wrap gap-4 mb-8">
+						<div className="flex flex-wrap gap-2 mb-8">
 							<Badge
 								variant="secondary"
 								className="flex items-center gap-2"
