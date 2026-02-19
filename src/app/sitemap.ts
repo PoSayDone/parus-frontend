@@ -2,6 +2,7 @@ import { listCategories } from "@/lib/data/categories";
 import { listProducts } from "@/lib/data/products";
 import { getSiteSettings } from "@/lib/data/site-settings";
 import { listServices } from "@/lib/data/services";
+import { listAddresses } from "@/lib/data/addresses";
 import type { MetadataRoute } from "next";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -49,6 +50,28 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 			priority: 0.7,
 		},
 	];
+	// Dynamic address pages (кладбища, морги и т.д.)
+	const addressPages: MetadataRoute.Sitemap = [];
+	try {
+		const addressResponse = await listAddresses({
+			queryParams: { 
+				limit: 1000,
+				includeInactive: false // берем только активные
+			},
+		});
+
+		if (addressResponse?.response?.data) {
+			addressPages.push(
+				...addressResponse.response.data.map((item: any) => ({
+					url: `${baseUrl}/addresses/${item.handle}`,
+					changeFrequency: "monthly" as const,
+					priority: 0.6,
+				})),
+			);
+		}
+	} catch (error) {
+		console.error("Error fetching addresses for sitemap:", error);
+	}
 	// Dynamic service pages
 	const servicePages: MetadataRoute.Sitemap = [];
 	try {
@@ -122,5 +145,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 		? staticPages
 		: staticPages.filter((page) => page.url !== `${baseUrl}/store`);
 
-	return [...filteredStaticPages, ...servicePages, ...categoryPages, ...productPages];
+	return [...filteredStaticPages, ...servicePages, ...categoryPages, ...productPages, ...addressPages];
 }
