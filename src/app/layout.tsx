@@ -60,7 +60,7 @@ export default function RootLayout({
         <ContactModalProvider />
         <Toaster />
         {children}
-		<YandexMetrika /> //Яндекс.Метрика
+		<YandexMetrika /> 
       </body>
     </html>
   );
