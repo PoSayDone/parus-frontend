@@ -28,11 +28,12 @@ export default async function CemeteryPageTemplate({
 			<div className="container mx-auto px-4 py-12 relative overflow-hidden">
 				<div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-12">
 					<div>
-						<div className="flex flex-wrap items-center gap-4 mb-6">
-							<h1 className="text-4xl font-medium text-foreground">
-								{cemetery.name}
+						<div className="mb-6">
+							<h1 className="text-4xl font-medium text-foreground flex flex-wrap items-center gap-4">
+								{cemetery.name}{" "}
+								<Badge variant="secondary">кладбище</Badge>
 							</h1>
-							<Badge variant="secondary">Кладбище</Badge>
+							
 						</div>
 
 						<div className="space-y-3 text-muted-foreground mb-8">
