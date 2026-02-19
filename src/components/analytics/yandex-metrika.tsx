@@ -1,21 +1,26 @@
 "use client"
 
-import { useEffect } from "react"
+import { useEffect, Suspense } from "react"
 import { usePathname, useSearchParams } from "next/navigation"
 import Script from "next/script"
 
-export default function YandexMetrika() {
+const COUNTER_ID = 106913480
+
+// Выносим логику в отдельный под-компонент
+function MetrikaTracking() {
   const pathname = usePathname()
   const searchParams = useSearchParams()
-  const counterId = 106913480
 
   useEffect(() => {
     if (typeof window !== "undefined" && (window as any).ym) {
-      // Отправляем информацию о просмотре страницы при каждом переходе
-      (window as any).ym(counterId, "hit", window.location.href)
+      (window as any).ym(COUNTER_ID, "hit", window.location.href)
     }
   }, [pathname, searchParams])
 
+  return null
+}
+
+export default function YandexMetrika() {
   return (
     <>
       <Script id="yandex-metrika" strategy="afterInteractive">
@@ -26,7 +31,7 @@ export default function YandexMetrika() {
           k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
           (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
 
-          ym(${counterId}, "init", {
+          ym(${COUNTER_ID}, "init", {
                ssr: true,
                webvisor: true,
                clickmap: true,
@@ -36,10 +41,16 @@ export default function YandexMetrika() {
           });
         `}
       </Script>
+      
+      {/* Оборачиваем слежку в Suspense, чтобы сборка не падала */}
+      <Suspense fallback={null}>
+        <MetrikaTracking />
+      </Suspense>
+
       <noscript>
         <div>
           <img
-            src={`https://mc.yandex.ru/watch/${counterId}`}
+            src={`https://mc.yandex.ru/watch/${COUNTER_ID}`}
             style={{ position: "absolute", left: "-9999px" }}
             alt=""
           />
