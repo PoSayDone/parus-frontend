@@ -8,6 +8,7 @@ import { Icon, type IconName } from "@/components/ui/icon-picker";
 import { getService } from "@/lib/data/services";
 import ContactModalTrigger from "@/modules/contact/components/contact-modal-trigger";
 import ContactSection from "@/modules/contact/components/contact-section";
+import { getSiteSettings } from "@/lib/data/site-settings";
 import Image from "next/image";
 
 export default async function ServicePageTemplate({
@@ -16,13 +17,43 @@ export default async function ServicePageTemplate({
 	handle: string;
 }) {
 	const service = await getService(handle);
-
+	const settings = await getSiteSettings();
+	const rawPhone = settings?.phone || "+73422777272";
+	const cleanPhone = rawPhone.replace(/[^\d+]/g, "");
 	if (!service) {
 		notFound();
 	}
-
+	// Формируем динамический JSON-LD
+	const serviceJsonLd = {
+		"@context": "https://schema.org",
+		"@type": "Service",
+		"name": service.title,
+		"description": service.shortDescription,
+		"provider": {
+			"@type": "LocalBusiness",
+			"name": "Парус",
+			"url": "https://parus-ritual.ru",
+			"telephone": settings?.phone || "+7 (342) 277-72-72", // Из базы или запасной
+			"address": {
+				"@type": "PostalAddress",
+				"streetAddress": settings?.address || "г. Пермь, Красноборская, 200", // Из базы или запасной
+				"addressLocality": "Пермь",
+				"addressCountry": "RU"
+			}
+		},
+		"image": service.thumbnail ? `https://parus-ritual.ru${service.thumbnail}` : undefined,
+		"offers": {
+			"@type": "Offer",
+			"price": service.price === "Бесплатно" ? "0" : service.price.replace(/[^0-9]/g, ""),
+			"priceCurrency": "RUB"
+		}
+	};
 	return (
 		<div className="min-h-screen bg-background">
+		<script
+				type="application/ld+json"
+				dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd) }}
+			/>
 			<div className="container mx-auto px-4 py-12">
 				<div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-12">
 					<div>
@@ -76,7 +107,7 @@ export default async function ServicePageTemplate({
 								Заказать услугу
 							</ContactModalTrigger>
 							<Link
-								href="tel:+7-800-000-00-00"
+								href={`tel:${cleanPhone}`}
 								className={buttonVariants({
 									variant: "outline",
 									size: "lg",

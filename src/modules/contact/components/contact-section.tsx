@@ -1,8 +1,9 @@
 import { Phone } from "lucide-react";
 import ContactModalTrigger from "./contact-modal-trigger";
 import { buttonVariants } from "@/components/ui/button";
+import { getSiteSettings } from "@/lib/data/site-settings";
 
-export default function ContactSection({
+export default async function ContactSection({
 	title = "Готовы заказать услугу?",
 	description = `
 	Свяжитесь с нами для получения подробной консультации и
@@ -13,6 +14,11 @@ export default function ContactSection({
 	title?: string;
 	description?: string;
 }) {
+	const settings = await getSiteSettings();
+	
+	// Подготавливаем номер: чистый для ссылки и красивый для текста
+	const rawPhone = settings?.phone || "+7 (342) 277-72-72";
+	const cleanPhone = rawPhone.replace(/[^\d+]/g, "");
 	return (
 		<div className="bg-muted/50 rounded-[32px] p-8 text-center">
 			<h2 className="text-2xl font-medium text-foreground mb-4">
@@ -29,7 +35,7 @@ export default function ContactSection({
 					Заказать услугу
 				</ContactModalTrigger>
 				<a
-					href="tel:+7-800-000-00-00"
+					href={`tel:${cleanPhone}`}
 					className={buttonVariants({
 						variant: "outline",
 						size: "lg",
