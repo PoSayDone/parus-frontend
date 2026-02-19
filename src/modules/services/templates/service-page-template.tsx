@@ -43,9 +43,10 @@ export default async function ServicePageTemplate({
 		},
 		"image": service.thumbnail ? `https://parus-ritual.ru${service.thumbnail}` : undefined,
 		"offers": {
-			"@type": "Offer",
-			"price": service.price === "Бесплатно" ? "0" : service.price.replace(/[^0-9]/g, ""),
-			"priceCurrency": "RUB"
+			"@type": "AggregateOffer",
+			"lowPrice": service.price === "Бесплатно" ? "0" : service.price.replace(/[^0-9]/g, ""),
+			"priceCurrency": "RUB",
+			"offerCount": "1"
 		}
 	};
 	return (

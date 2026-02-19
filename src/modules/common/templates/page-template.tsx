@@ -32,6 +32,7 @@ export default function PageTemplate({
           className="mb-8 lg:mb-24"
           title={title}
           subtitle={description}
+		  level="h1"
         />
 
         {children}
