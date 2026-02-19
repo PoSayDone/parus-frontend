@@ -3,6 +3,7 @@ import ContactModalProvider from "@/modules/contact/components/contact-modal-pro
 import type { Metadata } from "next";
 import { Golos_Text } from "next/font/google";
 import "./globals.css";
+import YandexMetrika from "@/components/analytics/yandex-metrika"
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://parus-ritual.ru"),
@@ -59,6 +60,7 @@ export default function RootLayout({
         <ContactModalProvider />
         <Toaster />
         {children}
+		<YandexMetrika /> //Яндекс.Метрика
       </body>
     </html>
   );
