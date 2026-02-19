@@ -21,9 +21,9 @@ export default async function ContactSection({
 	const cleanPhone = rawPhone.replace(/[^\d+]/g, "");
 	return (
 		<div className="bg-muted/50 rounded-[32px] p-8 text-center">
-			<h2 className="text-2xl font-medium text-foreground mb-4">
+			<p className="text-2xl font-medium text-foreground mb-4">
 				{title}
-			</h2>
+			</p>
 			<p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
 				{description}
 			</p>

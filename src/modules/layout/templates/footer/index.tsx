@@ -46,7 +46,7 @@ export default async function Footer() {
           </Link>
         </div>
         <div className="flex flex-col gap-2">
-          <h6 className="font-medium text-xl mb-2">Компания</h6>
+          <p className="font-medium text-xl mb-2">Компания</p>
           <Link href={"/"} className="text-sm">
             О нас
           </Link>
@@ -58,7 +58,7 @@ export default async function Footer() {
           </Link>
         </div>
         <div className="flex flex-col gap-2">
-          <h6 className="font-medium text-xl mb-2">Покупателям</h6>
+          <p className="font-medium text-xl mb-2">Покупателям</p>
           <ul>
             <Suspense fallback={<SkeletonFooterDocuments />}>
               <FooterDocuments />
@@ -66,9 +66,9 @@ export default async function Footer() {
           </ul>
         </div>
         <div className="flex-col justify-start items-start text-start flex py-8 md:py-0">
-          <h2 className="text-2xl font-medium mb-2">
+          <p className="text-2xl font-medium mb-2">
             Не нашли ответ на вопрос?
-          </h2>
+          </p>
           <p className="mb-4">
             Напишите нам удобным способом
             <br /> и специалист ответит в течение 5 минут

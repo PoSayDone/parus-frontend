@@ -131,9 +131,9 @@ export default async function CemeteryPageTemplate({
 
 				{hasCoords && (
 					<div className="mb-12">
-						<h2 className="text-2xl font-medium text-foreground mb-6">
+						<p className="text-2xl font-medium text-foreground mb-6">
 							Расположение на карте
-						</h2>
+						</p>
 						<CemeteryMap
 							coords={[
 								cemetery.cemeteryLat as number,
