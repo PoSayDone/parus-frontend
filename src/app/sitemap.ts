@@ -60,15 +60,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 			},
 		});
 
-		if (addressResponse?.response?.data) {
-			addressPages.push(
-				...addressResponse.response.data.map((item: any) => ({
+		// В блоке addressPages измени фильтрацию:
+
+	if (addressResponse?.response?.data) {
+		addressPages.push(
+			...addressResponse.response.data
+				.filter((item: any) => item.handle && item.handle !== "null") // Фильтруем пустые или null хэндлы
+				.map((item: any) => ({
 					url: `${baseUrl}/addresses/${item.handle}`,
 					changeFrequency: "monthly" as const,
 					priority: 0.6,
 				})),
-			);
-		}
+		);
+	}
 	} catch (error) {
 		console.error("Error fetching addresses for sitemap:", error);
 	}
