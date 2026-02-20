@@ -47,15 +47,15 @@ export default async function Footer() {
         </div>
         <div className="flex flex-col gap-2">
           <p className="font-medium text-xl mb-2">Компания</p>
-          <Link href={"/"} className="text-sm">
+          {/*<Link href={"/"} className="text-sm">
             О нас
           </Link>
           <Link href={"/"} className="text-sm">
             Новости
           </Link>
           <Link href={"/admin"} className="text-sm">
-            Панель
-          </Link>
+           Панель
+          </Link> */}
         </div>
         <div className="flex flex-col gap-2">
           <p className="font-medium text-xl mb-2">Покупателям</p>
