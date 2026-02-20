@@ -81,7 +81,7 @@ export const noDivisionCurrencies = [
 ];
 
 export const headerLinks = [
-	{ label: "Главная", href: "/" },
+	//{ label: "Главная", href: "/" },
 	{ label: "Каталог", href: "/store" },
 	{ label: "Адреса", href: "/addresses" },
 	{ label: "Услуги", href: "/services" },
