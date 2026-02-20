@@ -91,6 +91,11 @@ export default function ContactModal({
         plan: data.plan,
         message: data.message,
       });
+	  // --- ОТПРАВКА ЦЕЛИ В МЕТРИКУ ---
+      if (typeof window !== "undefined" && (window as any).ym) {
+        (window as any).ym(106913480, 'reachGoal', 'lead_form_submit');
+      }
+      // ----------------------------------------
       toast.success("Заявка отправлена");
       onOpenChange(false);
       form.reset();
