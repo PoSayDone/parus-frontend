@@ -121,17 +121,16 @@ export default async function ServicePageTemplate({
 						</div>
 					</div>
 
-					<div className="relative bg-muted/20 rounded-xl overflow-hidden aspect-video border border-border/40 w-full">
-  <Image
-    fill
-    src={service.thumbnail || "/placeholder.svg"}
-    alt={service.title}
-    // Оставляем object-cover, чтобы фото заполняло весь баннер без пробелов
-    className="object-cover transition-transform duration-500 hover:scale-105"
-    sizes="(max-width: 768px) 100vw, 1000px"
-    priority 
-  />
-</div>
+					<div className="relative bg-muted/20 rounded-xl overflow-hidden h-[220px] md:h-[320px] border border-border/40 w-full shadow-sm">
+					  <Image
+						fill
+						src={service.thumbnail || "/placeholder.svg"}
+						alt={service.title}
+						className="object-cover transition-transform duration-500 hover:scale-105"
+						sizes="(max-width: 768px) 100vw, 800px"
+						priority
+					  />
+					</div>
 				</div>
 
 				{/* Features and Included */}
