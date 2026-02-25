@@ -10,6 +10,7 @@ import ContactModalTrigger from "@/modules/contact/components/contact-modal-trig
 import ContactSection from "@/modules/contact/components/contact-section";
 import { getSiteSettings } from "@/lib/data/site-settings";
 import Image from "next/image";
+import ServiceGallery from "../components/service-gallery";
 
 export default async function ServicePageTemplate({
 	handle,
@@ -120,15 +121,16 @@ export default async function ServicePageTemplate({
 						</div>
 					</div>
 
-					<div className="relative">
-						<Image
-							width={400}
-							height={200}
-							src={service.thumbnail || "/placeholder.svg"}
-							alt={service.title}
-							className="w-full h-96 object-cover rounded-lg shadow-lg"
-						/>
-					</div>
+					<div className="relative bg-muted/20 rounded-xl overflow-hidden h-[300px] md:h-[450px] border border-border/40">
+  <Image
+    src={service.thumbnail || "/placeholder.svg"}
+    alt={service.title}
+    fill 
+    className="object-cover transition-transform duration-500 hover:scale-105" // Для обычных фото
+    // className="object-contain p-6" // Когда появятся рисованные иконки
+    sizes="(max-width: 768px) 100vw, 50vw" 
+  />
+</div>
 				</div>
 
 				{/* Features and Included */}
@@ -183,26 +185,17 @@ export default async function ServicePageTemplate({
 				</div>
 
 				{/* Gallery */}
-				{service.images?.length > 0 && (
-					<div className="mb-12">
-						<h2 className="text-2xl font-medium text-foreground mb-6">
-							Фотогалерея
-						</h2>
-						<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-							{service.images.map((image, index) => (
-								<div key={image} className="relative group">
-									<Image
-										width={400}
-										height={200}
-										src={image || "/placeholder.svg"}
-										alt={`${service.title} - фото ${index + 1}`}
-										className="w-full h-64 object-cover rounded-lg shadow-md group-hover:shadow-lg transition-shadow duration-300"
-									/>
-								</div>
-							))}
-						</div>
-					</div>
-				)}
+				{(() => {
+					// ВРЕМЕННО: убираем фильтр, чтобы видеть ВСЕ фото в галерее
+					// const galleryImages = service.images?.filter(img => img !== service.thumbnail) || [];
+					
+					// Пока иллюстрации не готовы, используем весь массив без исключений:
+					const galleryImages = service.images || [];
+
+					return galleryImages.length > 0 && (
+						<ServiceGallery images={galleryImages} title={service.title} />
+					);
+				})()}
 
 				<ContactSection />
 			</div>
