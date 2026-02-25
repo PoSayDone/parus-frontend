@@ -121,14 +121,15 @@ export default async function ServicePageTemplate({
 						</div>
 					</div>
 
-					<div className="relative bg-muted/20 rounded-xl overflow-hidden h-[300px] md:h-[450px] border border-border/40">
+					<div className="relative bg-muted/20 rounded-xl overflow-hidden aspect-video border border-border/40 w-full">
   <Image
+    fill
     src={service.thumbnail || "/placeholder.svg"}
     alt={service.title}
-    fill 
-    className="object-cover transition-transform duration-500 hover:scale-105" // Для обычных фото
-    // className="object-contain p-6" // Когда появятся рисованные иконки
-    sizes="(max-width: 768px) 100vw, 50vw" 
+    // Оставляем object-cover, чтобы фото заполняло весь баннер без пробелов
+    className="object-cover transition-transform duration-500 hover:scale-105"
+    sizes="(max-width: 768px) 100vw, 1000px"
+    priority 
   />
 </div>
 				</div>
