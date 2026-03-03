@@ -14,7 +14,7 @@ export default function ServicesTemplate() {
           "Наши специалисты готовы ответить на все ваши вопросы и помочь выбрать подходящие услуги. Мы работаем круглосуточно и всегда готовы прийти на помощь.",
       }}
     >
-      <ServicesList className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-8" />
+      <ServicesList className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 mb-8" />
     </PageTemplate>
   );
 }
