@@ -80,6 +80,18 @@ export default function QnA({
   subtitle = DEFAULT_QNA.subtitle,
   questions = DEFAULT_QNA.questions,
 }: QnAProps) {
+	const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: questions.map((item) => ({
+      "@type": "Question",
+      name: item.title,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.description,
+      },
+    })),
+  };
   const resolvedQuestions = (questions || []).map((item) => ({
     title: item.title,
     paragraph: item.description,
@@ -93,6 +105,10 @@ export default function QnA({
       title={<TypographyPreline>{title}</TypographyPreline>}
       subtitle={<TypographyPreline>{subtitle}</TypographyPreline>}
     >
+	<script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
       <Accordion
         type="single"
         collapsible
