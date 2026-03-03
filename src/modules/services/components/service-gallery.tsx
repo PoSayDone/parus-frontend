@@ -59,7 +59,7 @@ export default function ServiceGallery({ images, title }: { images: string[], ti
 
       {/* Модальное окно (Лайтбокс) - без изменений, там фото всегда целиком */}
       <Dialog open={!!selected} onOpenChange={() => setSelected(null)}>
-        <DialogContent className="max-w-[100vw] w-full h-full p-0 border-none bg-black/95 shadow-none flex items-center justify-center focus:outline-none rounded-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0">
+        <DialogContent className="max-w-5xl w-[95vw] h-auto max-h-[95vh] p-0 border-none bg-transparent shadow-none flex items-center justify-center focus:outline-none rounded-none data-[state=open]:animate-in data-[state=closed]:animate-out overflow-hidden">
           <DialogHeader>
              <VisuallyHidden>
                 <DialogTitle>Просмотр фото: {title}</DialogTitle>
@@ -67,7 +67,7 @@ export default function ServiceGallery({ images, title }: { images: string[], ti
           </DialogHeader>
           
           {selected && (
-            <div className="relative w-full h-full flex items-center justify-center p-4 md:p-12" onClick={(e) => e.stopPropagation()}>
+            <div className="relative w-full h-auto min-h-[300px] flex items-center justify-center p-4 md:p-12" onClick={(e) => e.stopPropagation()}>
               {/* Кнопки навигации и фото... (тут всё как было) */}
                {images.length > 1 && (
                 <button onClick={showPrev} className="absolute left-2 md:left-8 z-50 p-3 text-white/70 hover:text-white bg-black/20 hover:bg-black/40 rounded-full transition-all outline-none ring-offset-background focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
@@ -78,7 +78,7 @@ export default function ServiceGallery({ images, title }: { images: string[], ti
               <img
                 src={selected.src}
                 alt={`${title} — фото ${selected.index + 1} (увеличенное)`}
-                className="max-w-full max-h-full object-contain animate-in zoom-in-95 duration-300"
+                className="w-auto h-auto max-w-full max-h-[80vh] object-contain rounded-lg shadow-2xl animate-in zoom-in-95 duration-300 select-none"
                 style={{ boxShadow: "0 0 20px rgba(0,0,0,0.5)" }}
               />
 
