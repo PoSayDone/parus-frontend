@@ -5,25 +5,45 @@ import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Icon, type IconName } from "@/components/ui/icon-picker";
-import { getService } from "@/lib/data/services";
 import ContactModalTrigger from "@/modules/contact/components/contact-modal-trigger";
 import ContactSection from "@/modules/contact/components/contact-section";
 import { getSiteSettings } from "@/lib/data/site-settings";
 import Image from "next/image";
 import ServiceGallery from "../components/service-gallery";
+import { getService, listServices } from "@/lib/data/services";
 
 export default async function ServicePageTemplate({
 	handle,
 }: {
 	handle: string;
 }) {
+	// 1. Получаем все данные из базы
 	const service = await getService(handle);
 	const settings = await getSiteSettings();
-	const rawPhone = settings?.phone || "+73422777272";
-	const cleanPhone = rawPhone.replace(/[^\d+]/g, "");
+	const servicesData = await listServices({ 
+		queryParams: { limit: 100 } 
+	});
+	
+	// 2. Проверяем наличие услуги ОДИН раз
 	if (!service) {
 		notFound();
 	}
+
+	// 3. Обработка телефона ОДИН раз
+	const rawPhone = settings?.phone || "+73422777272";
+	const cleanPhone = rawPhone.replace(/[^\d+]/g, "");
+
+	// 4. Логика выбора 3-х похожих услуг
+	const allServices = servicesData.response.data;
+	const seed = handle.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+	const relatedServices = allServices
+		.filter((s) => s.handle !== handle)
+		.sort((a, b) => {
+			const sortAlpha = (a.handle.charCodeAt(0) * seed) % 10;
+			const sortBeta = (b.handle.charCodeAt(0) * seed) % 10;
+			return sortAlpha - sortBeta;
+		})
+		.slice(0, 3);
 	// Формируем динамический JSON-LD
 	const serviceJsonLd = {
 		"@context": "https://schema.org",
@@ -131,6 +151,8 @@ export default async function ServicePageTemplate({
 						priority
 					  />
 					</div>
+					
+					
 				</div>
 
 				{/* Features and Included */}
@@ -196,7 +218,40 @@ export default async function ServicePageTemplate({
 						<ServiceGallery images={galleryImages} title={service.title} />
 					);
 				})()}
-
+				{/* Блок: Смотрите также */}
+				<div className="mb-20 mt-16 border-t pt-16">
+					<div className="flex items-center justify-between mb-8">
+						<p className="text-3xl font-medium text-foreground">
+							Смотрите также
+						</p>
+						<Link 
+							href="/services" 
+							className="text-primary hover:underline font-medium"
+						>
+							Все услуги →
+						</Link>
+					</div>
+					
+					<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+						{relatedServices.map((item) => (
+							<Link
+								key={item.handle}
+								href={`/services/${item.handle}`}
+								className="group p-6 rounded-[24px] border border-border/60 bg-card hover:border-primary/50 hover:shadow-xl transition-all duration-300"
+							>
+								<div className="mb-4 p-3 rounded-full bg-primary/10 w-fit text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+									<Icon name={item.icon as IconName} className="size-6" />
+								</div>
+								<p className="text-xl font-medium mb-2 group-hover:text-primary transition-colors">
+									{item.title}
+								</p>
+								<p className="text-muted-foreground text-sm line-clamp-2">
+									{item.shortDescription}
+								</p>
+							</Link>
+						))}
+					</div>
+				</div>
 				<ContactSection />
 			</div>
 		</div>
