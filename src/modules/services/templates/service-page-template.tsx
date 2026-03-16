@@ -11,6 +11,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import ServiceGallery from "../components/service-gallery";
+import Breadcrumbs from "@/components/ui/breadcrumbs";
 
 export default async function ServicePageTemplate({
   handle,
@@ -65,8 +66,10 @@ export default async function ServicePageTemplate({
       },
     },
     image: service.thumbnail
-      ? `https://parus-ritual.ru${service.thumbnail}`
-      : undefined,
+  ? service.thumbnail.startsWith('http') 
+    ? service.thumbnail 
+    : `https://parus-ritual.ru${service.thumbnail}`
+  : undefined,
     offers: {
       "@type": "AggregateOffer",
       lowPrice:
@@ -77,6 +80,10 @@ export default async function ServicePageTemplate({
       offerCount: "1",
     },
   };
+  const breadcrumbs = [
+  { label: "Услуги", href: "/services" },
+  { label: service.title, href: `/services/${handle}` } // путь к текущей услуге для Schema.org
+];
   return (
     <div className="min-h-screen bg-background">
       <script
@@ -84,6 +91,7 @@ export default async function ServicePageTemplate({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd) }}
       />
       <div className="container mx-auto px-4 py-12">
+	  <Breadcrumbs items={breadcrumbs} />
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-12">
           <div>
             <div className="flex items-center gap-4 mb-6 flex-wrap sm:flex-nowrap">

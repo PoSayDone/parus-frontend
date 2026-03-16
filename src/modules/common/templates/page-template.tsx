@@ -2,6 +2,7 @@ import SectionHeading from "@/components/ui/section-heading";
 import { cn } from "@/lib/utils";
 import Interaction from "@/modules/landing/components/interaction";
 import type { ReactNode } from "react";
+import Breadcrumbs from "@/components/ui/breadcrumbs";
 
 type ContactSectionContent = {
   title: string;
@@ -15,6 +16,7 @@ type PageTemplateProps = {
   contactSection?: ContactSectionContent;
   rootClassName?: string;
   containerClassName?: string;
+  breadcrumbs?: { label: string; href?: string }[];
 };
 
 export default function PageTemplate({
@@ -24,10 +26,15 @@ export default function PageTemplate({
   contactSection,
   rootClassName,
   containerClassName,
+  breadcrumbs,
 }: PageTemplateProps) {
   return (
     <div className={cn("min-h-screen px-0", rootClassName)}>
       <div className={cn("container mx-auto px-4 py-12", containerClassName)}>
+		{/* Если передали крошки — рисуем их, иначе просто заголовок текущей страницы */}
+		  <Breadcrumbs 
+			items={breadcrumbs || [{ label: typeof title === 'string' ? title : "" }]} 
+		  />
         <SectionHeading
           className="mb-8 lg:mb-24"
           title={title}
