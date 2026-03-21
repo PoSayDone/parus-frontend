@@ -58,13 +58,20 @@ export default function ServiceGallery({ images, title }: { images: string[], ti
       </div>
 
       {/* Модальное окно (Лайтбокс) - без изменений, там фото всегда целиком */}
-      <Dialog open={!!selected} onOpenChange={() => setSelected(null)}>
-        <DialogContent className="max-w-5xl w-[95vw] h-auto max-h-[95vh] p-0 border-none bg-transparent shadow-none flex items-center justify-center focus:outline-none rounded-none data-[state=open]:animate-in data-[state=closed]:animate-out overflow-hidden">
-          <DialogHeader>
-             <VisuallyHidden>
-                <DialogTitle>Просмотр фото: {title}</DialogTitle>
-             </VisuallyHidden>
-          </DialogHeader>
+      
+  <Dialog open={!!selected} onOpenChange={() => setSelected(null)}>
+  <DialogContent 
+    // z-[100] гарантирует, что мы выше хедера
+    // Таргетируемся на встроенную кнопку закрытия Dialog (это <button> внутри DialogContent)
+    // Делаем её крупной (48x48px), белой, с темным фоном (bg-black/50) и в круге (rounded-full)
+    // Также увеличиваем сам SVG крестика (w-8 h-8)
+    className="max-w-5xl w-[95vw] h-auto max-h-[95vh] p-0 border-none bg-transparent shadow-none flex items-center justify-center focus:outline-none rounded-none data-[state=open]:animate-in data-[state=closed]:animate-out overflow-hidden z-[100] [&>button]:w-12 [&>button]:h-12 [&>button]:right-2 [&>button]:top-2 [&>button]:p-2 [&>button]:bg-black/50 [&>button]:text-white [&>button]:rounded-full [&>button]:opacity-100 [&>button]:hover:bg-black/80 [&>button]:hover:text-white transition-all [&>button>svg]:w-8! [&>button>svg]:h-8!"
+  >
+    <DialogHeader>
+       <VisuallyHidden>
+          <DialogTitle>Просмотр фото: {title}</DialogTitle>
+       </VisuallyHidden>
+    </DialogHeader>
           
           {selected && (
             <div className="relative w-full h-auto min-h-[300px] flex items-center justify-center p-4 md:p-12" onClick={(e) => e.stopPropagation()}>

@@ -153,13 +153,14 @@ export default async function ServicePageTemplate({
 
           <div className="relative bg-muted/20 rounded-xl overflow-hidden h-[220px] md:h-[320px] border border-border/40 w-full shadow-sm">
             <Image
-              fill
-              src={service.thumbnail || "/placeholder.svg"}
-              alt={service.title}
-              className="object-cover transition-transform duration-500 hover:scale-105"
-              sizes="(max-width: 768px) 100vw, 800px"
-              priority
-            />
+			  fill
+			  src={service.thumbnail || "/placeholder.svg"}
+			  // Формируем умный alt: очищаем заголовок от города и добавляем " в Перми"
+			  alt={`${service.title.replace(/\s*(в\s+)?(г\.\s+)?Перм[иь]\s*/gi, "").trim()} в Перми`}
+			  className="object-cover transition-transform duration-500 hover:scale-105"
+			  sizes="(max-width: 768px) 100vw, 800px"
+			  priority
+			/>
           </div>
         </div>
 
@@ -204,19 +205,26 @@ export default async function ServicePageTemplate({
         </div>
 
         {/* Gallery */}
-        {(() => {
-          // ВРЕМЕННО: убираем фильтр, чтобы видеть ВСЕ фото в галерее
-          // const galleryImages = service.images?.filter(img => img !== service.thumbnail) || [];
+{(() => {
+  // 1. Берем массив всех картинок (если его нет, создаем пустой [])
+  const allImages = service.images || [];
+  
+  // 2. Определяем, какая картинка у нас главная (thumbnail)
+  const mainImage = service.thumbnail;
 
-          // Пока иллюстрации не готовы, используем весь массив без исключений:
-          const galleryImages = service.images || [];
+  // 3. Создаем новый массив для галереи, исключая из него главную картинку
+  const filteredGallery = allImages.filter(img => img !== mainImage);
 
-          return (
-            galleryImages.length > 0 && (
-              <ServiceGallery images={galleryImages} title={service.title} />
-            )
-          );
-        })()}
+  // 4. Если после фильтрации не осталось ни одной картинки — выходим
+  if (filteredGallery.length === 0) return null;
+
+  // 5. Если картинки есть, рисуем блок с отступом (mt-16)
+  return (
+    <div className="mt-16 border-t pt-16">
+       <ServiceGallery images={filteredGallery} title={service.title} />
+    </div>
+  );
+})()}
         {/* Блок: Смотрите также */}
         <div className="mb-20 mt-16 border-t pt-16">
           <div className="flex items-center justify-between mb-8">
