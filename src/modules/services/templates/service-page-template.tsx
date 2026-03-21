@@ -240,24 +240,45 @@ export default async function ServicePageTemplate({
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {relatedServices.map((item) => (
-              <Link
-                key={item.handle}
-                href={`/services/${item.handle}`}
-                className="group p-6 rounded-[24px] border border-border/60 bg-card hover:border-primary/50 hover:shadow-xl transition-all duration-300"
-              >
-                <div className="mb-4 p-3 rounded-full bg-primary/10 w-fit text-primary group-hover:bg-primary group-hover:text-white transition-colors">
-                  <Icon name={item.icon as IconName} className="size-6" />
-                </div>
-                <p className="text-xl font-medium mb-2 group-hover:text-primary transition-colors">
-                  {item.title}
-                </p>
-                <p className="text-muted-foreground text-sm line-clamp-2">
-                  {item.shortDescription}
-                </p>
-              </Link>
-            ))}
-          </div>
+		  {relatedServices.map((item) => (
+			<Link
+			  key={item.handle}
+			  href={`/services/${item.handle}`}
+			  // h-[180px] делает карточку узкой, как ты и просила
+			  className="group relative h-[180px] rounded-[20px] overflow-hidden border border-border/20 shadow-md transition-all duration-300 hover:shadow-lg"
+			>
+			  {/* 1. Фоновое изображение (без искажений) */}
+			  <Image
+				fill
+				src={item.thumbnail || "/placeholder.svg"}
+				alt={item.title} // Убрали "в Перми"
+				className="object-cover transition-transform duration-500 group-hover:scale-105"
+				sizes="(max-width: 768px) 100vw, 33vw"
+			  />
+
+			  {/* 2. Плотный градиент снизу для читаемости текста */}
+			  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/10 to-transparent" />
+
+			  {/* 3. Контент */}
+			  <div className="absolute inset-0 p-5 flex flex-col justify-end">
+				{/* Маленькая аккуратная иконка */}
+				<div className="mb-2 p-1.5 rounded-full bg-white/10 backdrop-blur-md w-fit text-white border border-white/10">
+				  <Icon name={item.icon as IconName} className="size-4" />
+				</div>
+				
+				<p className="text-lg font-medium text-white leading-tight">
+				  {item.title}
+				</p>
+				
+				{/* Краткое описание скрыто по умолчанию, появляется при наведении (опционально) */}
+				<p className="text-gray-300 text-xs line-clamp-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+				  {item.shortDescription}
+				</p>
+			  </div>
+			</Link>
+		  ))}
+		</div>
+         
         </div>
         <ContactSection />
       </div>
