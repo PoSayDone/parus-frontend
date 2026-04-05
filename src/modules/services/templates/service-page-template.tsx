@@ -20,6 +20,23 @@ export default async function ServicePageTemplate({
 }) {
   // 1. Получаем все данные из базы
   const service = await getService(handle);
+  // Логика разделения текста: берем ровно один первый div наверх
+  const fullDescription = service.description ?? "";
+  let topDescription = fullDescription;
+  let bottomDescription = "";
+
+  const delimiter = "</div>";
+  const firstParagraphEnd = fullDescription.indexOf(delimiter);
+  
+  if (firstParagraphEnd !== -1) {
+    topDescription = fullDescription.substring(0, firstParagraphEnd + delimiter.length);
+    
+    // Чистим нижнюю часть от пробелов, переносов строк (\n) и возможных <br> в самом начале
+    bottomDescription = fullDescription
+      .substring(firstParagraphEnd + delimiter.length)
+      .replace(/^(\s|<br\s*\/?>|&nbsp;)+/i, "") 
+      .trim();
+  }
   const settings = await getSiteSettings();
   const servicesData = await listServices({
     queryParams: { limit: 100 },
@@ -113,12 +130,13 @@ export default async function ServicePageTemplate({
               </div>
             </div>
 
-            <p
-              className="text-muted-foreground leading-relaxed mb-8 [&_a]:underline [&_a]:text-primary"
-              dangerouslySetInnerHTML={{
-                __html: service.description ?? "",
-              }}
-            />
+            {/* Верхнее описание */}
+			<div
+			  className="text-muted-foreground leading-relaxed mb-8 [&_a]:underline [&_a]:text-primary"
+			  dangerouslySetInnerHTML={{
+				__html: topDescription,
+			  }}
+			/>
 
             <div className="flex flex-wrap gap-2 mb-8">
               <Badge variant="secondary" className="flex items-center gap-2">
@@ -225,6 +243,15 @@ export default async function ServicePageTemplate({
     </div>
   );
 })()}
+		{/* НИЖНЯЯ ЧАСТЬ ОПИСАНИЯ */}
+		{bottomDescription && (
+		  <div className="mt-12"> {/* Убрали border-t и pt-16, уменьшили отступ */}
+			<div 
+			  className="text-muted-foreground leading-relaxed max-w-4xl prose prose-slate"
+			  dangerouslySetInnerHTML={{ __html: bottomDescription }}
+			/>
+		  </div>
+		)}
         {/* Блок: Смотрите также */}
         <div className="mb-20 mt-16 border-t pt-16">
           <div className="flex items-center justify-between mb-8">
