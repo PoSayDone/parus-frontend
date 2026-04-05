@@ -243,15 +243,16 @@ export default async function ServicePageTemplate({
     </div>
   );
 })()}
-		{/* НИЖНЯЯ ЧАСТЬ ОПИСАНИЯ */}
-		{bottomDescription && (
-		  <div className="mt-12"> {/* Убрали border-t и pt-16, уменьшили отступ */}
-			<div 
-			  className="text-muted-foreground leading-relaxed max-w-4xl prose prose-slate"
-			  dangerouslySetInnerHTML={{ __html: bottomDescription }}
-			/>
-		  </div>
-		)}
+		{/* Нижнее описание */}
+			{bottomDescription && (
+			  <div className="mt-12">
+				<div 
+				  
+				  className="text-muted-foreground leading-relaxed max-w-none prose prose-slate"
+				  dangerouslySetInnerHTML={{ __html: bottomDescription }}
+				/>
+			  </div>
+			)}
         {/* Блок: Смотрите также */}
         <div className="mb-20 mt-16 border-t pt-16">
           <div className="flex items-center justify-between mb-8">
