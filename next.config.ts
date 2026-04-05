@@ -2,6 +2,16 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
 	reactStrictMode: true,
+	// ДОБАВЛЯЕМ БЛОК REDIRECTS
+	async redirects() {
+		return [
+			{
+				source: "/blog/post/privacy-policy",
+				destination: "/document/privacy-policy",
+				permanent: true,
+			},
+		];
+	},
 	logging: {
 		fetches: {
 			fullUrl: true,
