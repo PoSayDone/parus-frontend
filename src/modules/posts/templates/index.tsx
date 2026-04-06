@@ -41,7 +41,7 @@ const PostTemplate: React.FC<PostTemplateProps> = ({ post }) => {
 
 	return (
 		<div
-				className="content-container flex flex-col py-6 relative max-w-[800px] w-full mx-auto sm:gap-x-12"
+				className="content-container flex flex-col py-6 relative w-full mx-auto sm:gap-x-12"
 				data-testid="post-container"
 			>
 				<h1 className="text-3xl md:text-4xl">{post.title}</h1>
