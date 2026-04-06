@@ -20,23 +20,36 @@ export default async function ServicePageTemplate({
 }) {
   // 1. Получаем все данные из базы
   const service = await getService(handle);
-  // Логика разделения текста: берем ровно один первый div наверх
-  const fullDescription = service.description ?? "";
+  // 5. Логика разделения: Заголовок — главный приоритет
+  const fullDescription = (service.description ?? "").trim();
   let topDescription = fullDescription;
   let bottomDescription = "";
 
-  const delimiter = "</div>";
-  const firstParagraphEnd = fullDescription.indexOf(delimiter);
+  // Ищем первый заголовок (h1-h6), который стоит не в самом начале
+  const headerMatch = fullDescription.match(/<(h[1-6]|ul|ol)/i);
   
-  if (firstParagraphEnd !== -1) {
-    topDescription = fullDescription.substring(0, firstParagraphEnd + delimiter.length);
-    
-    // Чистим нижнюю часть от пробелов, переносов строк (\n) и возможных <br> в самом начале
-    bottomDescription = fullDescription
-      .substring(firstParagraphEnd + delimiter.length)
-      .replace(/^(\s|<br\s*\/?>|&nbsp;)+/i, "") 
-      .trim();
+  // Также ищем закрывающие теги для сценария, где текста много, а заголовков нет
+  const firstDivEnd = fullDescription.indexOf("</div>");
+  const firstPEnd = fullDescription.indexOf("</p>");
+
+  if (headerMatch && headerMatch.index && headerMatch.index > 20) {
+    // СЦЕНАРИЙ 1: Нашли заголовок или список. Режем ПЕРЕД ним.
+    topDescription = fullDescription.substring(0, headerMatch.index);
+    bottomDescription = fullDescription.substring(headerMatch.index);
+  } 
+  else if (fullDescription.startsWith("<div") && firstDivEnd !== -1 && firstDivEnd < 600) {
+    // СЦЕНАРИЙ 2: Заголовков нет, но есть четкий первый <div> (старый вариант)
+    topDescription = fullDescription.substring(0, firstDivEnd + 6);
+    bottomDescription = fullDescription.substring(firstDivEnd + 6);
   }
+  else if (fullDescription.startsWith("<p") && firstPEnd !== -1 && firstPEnd < 600) {
+    // СЦЕНАРИЙ 3: Заголовков нет, но есть четкий первый <p>
+    topDescription = fullDescription.substring(0, firstPEnd + 4);
+    bottomDescription = fullDescription.substring(firstPEnd + 4);
+  }
+
+  // Чистка "хвостов"
+  bottomDescription = bottomDescription.replace(/^(\s|<br\s*\/?>|&nbsp;)+/i, "").trim();
   const settings = await getSiteSettings();
   const servicesData = await listServices({
     queryParams: { limit: 100 },
