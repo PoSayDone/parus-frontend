@@ -12,13 +12,16 @@ export default function TextBlock({
 	title,
 	text,
 }: TextBlockProps) {
+	
 	return (
 		<Section
 			id={id}
 			title={title}
-			subtitle={
+			// Передаем новый класс через проп textContainerClassName (который в Section идет в SectionHeading)
+			  textContainerClassName="max-w-none w-full" 
+			  subtitle={
 				text ? <TypographyPreline>{text}</TypographyPreline> : undefined
-			}
+			  }
 		>
 			{null}
 		</Section>

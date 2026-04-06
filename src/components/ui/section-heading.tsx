@@ -9,6 +9,7 @@ type SectionHeadingProps = {
   title?: React.ReactNode;
   subtitle?: React.ReactNode;
   className?: string;
+  subtitleClassName?: string; // ДОБАВИЛИ
   level?: "h1" | "h2";
 };
 
@@ -16,6 +17,7 @@ export default function SectionHeading({
   title,
   subtitle,
   className,
+  subtitleClassName,
   level = "h2", // По умолчанию h2
 }: SectionHeadingProps) {
   if (!title && !subtitle) {
@@ -33,7 +35,8 @@ export default function SectionHeading({
 	{!!title && <HeadingComponent>{title}</HeadingComponent>}
       
       {!!subtitle && (
-        <TypographySectionSubtitle className="max-w-4xl">
+        // Используем cn, чтобы объединить стандартный max-w-4xl и то, что мы передадим
+        <TypographySectionSubtitle className={cn("max-w-4xl", subtitleClassName)}>
           {subtitle}
         </TypographySectionSubtitle>
       )}
