@@ -27,7 +27,10 @@ export default function Section({
       <SectionHeading
         title={title}
         subtitle={subtitle}
-        className={textContainerClassName}
+        // передаем стили в subtitleClassName, чтобы они попали на текст
+		  subtitleClassName={textContainerClassName} 
+		  // А className теперь пустой или можно передать туда стандартный className секции
+		  className=""
       />
       {children}
     </section>
