@@ -10,9 +10,11 @@ export default async function ContactSection({
 	оформления заказа. Мы работаем круглосуточно и готовы помочь в
 	любое время.
 	`,
+	buttonText = "Заказать услугу", // Добавили новый проп с дефолтным значением
 }: {
 	title?: string;
 	description?: string;
+	buttonText?: string; // тип
 }) {
 	const settings = await getSiteSettings();
 	
@@ -32,7 +34,7 @@ export default async function ContactSection({
 					size="lg"
 					className="bg-primary hover:bg-primary/90"
 				>
-					Заказать услугу
+					{buttonText} 
 				</ContactModalTrigger>
 				<a
 					href={`tel:${cleanPhone}`}
