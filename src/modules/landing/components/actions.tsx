@@ -20,19 +20,22 @@ const StepCard = ({
   icon: React.FC<IconProps>;
 }) => {
   return (
-    <Card className="flex flex-col-reverse py-8 justify-between bg-primary text-on-primary items-start lg:flex-row lg:justify-center lg:items-center lg:min-h-125 max-w-300 w-full rounded-4xl self-center md:w-full px-6 lg:gap-12">
-      <div className="flex flex-col gap-4 max-w-87.5 text-left">
-        <div>{`Шаг ${number}`}</div>
-        <CardTitle>{title}</CardTitle>
-        <CardDescription className="text-on-primary/70">
+    <Card className="flex flex-col p-6 bg-primary text-on-primary rounded-3xl h-full border-none shadow-none">
+      {/* Верхняя часть: Иконка и Номер шага */}
+      <div className="flex justify-between items-start mb-6">
+        <div className="size-16 rounded-2xl bg-on-primary/10 flex items-center justify-center">
+          <Icon className="size-10" />
+        </div>
+        <span className="text-4xl font-bold opacity-20">0{number}</span>
+      </div>
+
+      {/* Текстовая часть */}
+      <div className="flex flex-col gap-2">
+        <CardTitle className="text-xl leading-tight">{title}</CardTitle>
+        <CardDescription className="text-on-primary/80 text-sm leading-relaxed">
           {description}
         </CardDescription>
       </div>
-      <div className="size-fit lg:size-70 rounded-full flex items-center justify-center">
-        <Icon className="size-20 lg:size-50" />
-      </div>
-      {/* <Image src={imageSrc} alt={title} width={100} height={100} /> */}
-      {/* <div className="w-[250px] h-[250px] bg-primary rounded-full"></div> */}
     </Card>
   );
 };
@@ -120,12 +123,33 @@ export default function WhatShouldIDo({
   return (
     <Section
       id="actions"
-      className="container mx-auto"
-      textContainerClassName="lg:text-center lg:items-center"
+      className="container mx-auto px-4"
+      // Убираем лишние ограничения ширины для контейнера
+      textContainerClassName="mb-12 flex flex-col items-start text-left max-w-none"
       title={<TypographyPreline>{title}</TypographyPreline>}
-      subtitle={<TypographyPreline>{subtitle}</TypographyPreline>}
+      subtitle={
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 w-full">
+          {/* Левая часть: Текст подзаголовка */}
+          <div className="max-w-3xl"> 
+            <TypographyPreline className="text-lg opacity-90">
+              {subtitle}
+            </TypographyPreline>
+          </div>
+          
+          {/* Правая часть: Кнопка и подпись под ней */}
+          <div className="flex flex-col items-start lg:items-end shrink-0">
+            <ContactModalTrigger size={"lg"}>
+              {ctaLabel}
+            </ContactModalTrigger>
+            <TypographyP className="mt-2 opacity-70 text-sm lg:text-right">
+              {ctaNote}
+            </TypographyP>
+          </div>
+        </div>
+      }
     >
-      <div className="flex flex-col gap-4 lg:gap-8 items-center">
+      {/* Сетка карточек */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 items-stretch">
         {stepsData.map((step, index) => (
           <StepCard
             key={index}
@@ -136,11 +160,6 @@ export default function WhatShouldIDo({
           />
         ))}
       </div>
-
-      <ContactModalTrigger size={"lg"} className="self-center mt-8">
-        {ctaLabel}
-      </ContactModalTrigger>
-      <TypographyP className="mt-4 text-center">{ctaNote}</TypographyP>
     </Section>
   );
 }
