@@ -37,7 +37,19 @@ export default async function CemeteryPageTemplate({
 							</h1>
 							
 						</div>
-
+						<div className="flex flex-wrap gap-3">
+								{cemetery.address && (
+									<div className="flex items-start gap-3">
+										<MapPin className="h-5 w-5 text-primary mt-0.5" />
+										<span>{cemetery.address}</span>
+									</div>
+								)}
+								{cemetery.district && (
+									<Badge variant="outline">
+										{cemetery.district}
+									</Badge>
+								)}
+							</div>
 						
 						
 					</div>
@@ -104,19 +116,7 @@ export default async function CemeteryPageTemplate({
 							Расположение на карте
 						</p>
 						<div className="space-y-3 text-muted-foreground mb-8">
-							<div className="flex flex-wrap gap-3">
-								{cemetery.address && (
-									<div className="flex items-start gap-3">
-										<MapPin className="h-5 w-5 text-primary mt-0.5" />
-										<span>{cemetery.address}</span>
-									</div>
-								)}
-								{cemetery.district && (
-									<Badge variant="outline">
-										{cemetery.district}
-									</Badge>
-								)}
-							</div>
+							
 							{cemetery.phone?.length ? (
 								<div className="flex items-start gap-3">
 									<Phone className="h-5 w-5 text-primary mt-0.5" />
