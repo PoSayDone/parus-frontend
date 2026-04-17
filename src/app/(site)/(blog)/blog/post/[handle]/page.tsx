@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import { listPosts } from "@/lib/data/blog";
 import PostTemplate from "@/modules/posts/templates";
 
@@ -35,12 +35,17 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 	if (!post) {
 		notFound();
 	}
+	
+	// Определяем корректный путь для SEO
+		let path = `/blog/post/${handle}`;
+		if (post.type === "document") path = `/document/${handle}`;
+		if (post.type === "info") path = `/info/${handle}`;
 
 	return {
 		title: `${post.seoTitle || post.title} | Парус`,
 		description: `${post.seoDescription || post.description || post.title}`,
 		alternates: {
-			canonical: `/blog/post/${handle}`,
+        canonical: path, // Заменяем статичную строку на переменную path
 		},
 		openGraph: {
 			title: `${post.seoTitle || post.title} | Парус`,
@@ -60,6 +65,10 @@ export default async function ProductPage(props: Props) {
 	if (!post) {
 		notFound();
 	}
+
+	if (post.type === "document" || post.type === "info") {
+    permanentRedirect(`/${post.type}/${params.handle}`);
+}
 
 	return <PostTemplate post={post} />;
 }

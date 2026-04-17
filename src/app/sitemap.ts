@@ -3,6 +3,7 @@ import { listProducts } from "@/lib/data/products";
 import { getSiteSettings } from "@/lib/data/site-settings";
 import { listServices } from "@/lib/data/services";
 import { listAddresses } from "@/lib/data/addresses";
+import { listPosts } from "@/lib/data/blog";
 import type { MetadataRoute } from "next";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -36,6 +37,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 			//lastModified: new Date(),
 			changeFrequency: "weekly",
 			priority: 0.9,
+		},
+		{
+			url: `${baseUrl}/addresses`, // Добавили основной раздел адресов
+			changeFrequency: "weekly",
+			priority: 0.8,
 		},
 		{
 			url: `${baseUrl}/prices`,
@@ -76,6 +82,32 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 	} catch (error) {
 		console.error("Error fetching addresses for sitemap:", error);
 	}
+	//blog Pages
+	const blogPages: MetadataRoute.Sitemap = [];
+try {
+    const blogResponse = await listPosts({
+        queryParams: { limit: 1000 },
+    });
+
+    if (blogResponse?.response?.data) {
+        blogPages.push(
+            ...blogResponse.response.data.map((post) => {
+                // Определяем префикс на основе типа из базы
+                let prefix = "blog"; 
+                if (post.type === "document") prefix = "document";
+                if (post.type === "info") prefix = "info";
+
+                return {
+                    url: `${baseUrl}/${prefix}/${post.handle}`,
+                    changeFrequency: "monthly" as const,
+                    priority: 0.7,
+                };
+            })
+        );
+    }
+} catch (error) {
+    console.error("Error fetching posts for sitemap:", error);
+}
 	// Dynamic service pages
 	const servicePages: MetadataRoute.Sitemap = [];
 	try {
@@ -149,5 +181,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 		? staticPages
 		: staticPages.filter((page) => page.url !== `${baseUrl}/store`);
 
-	return [...filteredStaticPages, ...servicePages, ...categoryPages, ...productPages, ...addressPages];
+	return [...filteredStaticPages, ...servicePages, ...categoryPages, ...productPages, ...addressPages, ...blogPages];
 }
