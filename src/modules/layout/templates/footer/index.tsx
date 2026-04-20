@@ -1,6 +1,6 @@
 import { buttonVariants } from "@/components/ui/button";
 import { getSiteSettings } from "@/lib/data/site-settings";
-import { formatPhoneNumber } from "@/lib/utils";
+import { cn, formatPhoneNumber } from "@/lib/utils";
 import Logo from "@/modules/common/icons/logo";
 import ContactModalTrigger from "@/modules/contact/components/contact-modal-trigger";
 import SkeletonFooterDocuments from "@/modules/skeletons/components/skeleton-footer-documents";
@@ -73,10 +73,13 @@ export default async function Footer() {
             Напишите нам удобным способом
             <br /> и специалист ответит в течение 5 минут
           </p>
-          <ContactModalTrigger className={buttonVariants({ size: "lg" })}>
-            <Phone />
-            Задать вопрос
-          </ContactModalTrigger>
+          <a 
+		  href={`tel:${phone}`} 
+		  className={cn(buttonVariants({ size: "lg" }), "flex gap-2 items-center")}
+		>
+		  <Phone />
+		  Задать вопрос
+		</a>
         </div>
       </div>
       <p className="text-muted-foreground text-sm">{footerNote}</p>

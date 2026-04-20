@@ -38,10 +38,16 @@ const HeaderContent = ({
         </nav>
       </div>
       <div className="flex justify-end gap-2 items-center">
-        <ContactModalTrigger>
-          <Phone />
-          {formatPhoneNumber(phone)}
-        </ContactModalTrigger>
+        <a
+		  href={`tel:${phone}`}
+		  className={cn(
+			buttonVariants({ variant: "default" }),
+			"flex gap-2 items-center"
+		  )}
+		>
+		  <Phone size={18} />
+		  {formatPhoneNumber(phone)}
+		</a>
         <Button
           className="lg:hidden"
           size={"icon"}
