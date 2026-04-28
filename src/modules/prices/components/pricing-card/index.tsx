@@ -87,6 +87,7 @@ export default function PricingCard({
 
       <CardFooter className="mt-auto">
         <ContactModalTrigger
+          plan={plan.title} // <--- ДОБАВИЛА ЭТУ СТРОЧКУ для передачи названия пакета в заявку
           className={buttonVariants({
             variant: plan.popular ? "default" : "secondary",
             className: "w-full",

@@ -27,16 +27,13 @@ import { toast } from "sonner";
 import { z } from "zod";
 
 const contactFormSchema = z.object({
-  name: z.string().min(2, "Имя должно содержать минимум 2 символа"),
+  name: z.string().optional().or(z.literal("")),
   phone: z
     .string()
-    .min(10, "Введите корректный номер телефона")
-    .regex(/^[+]?[0-9\s\-$$$$]+$/, "Некорректный формат телефона"),
-  email: z
-    .string()
-    .email("Введите корректный email")
-    .optional()
-    .or(z.literal("")),
+    .min(10, "Введите номер телефона")
+    // Разрешаем плюс, цифры, пробелы, тире и круглые скобки
+    .regex(/^[+\d\s\-\(\)]+$/, "Некорректный формат телефона"), 
+  email: z.string().optional().or(z.literal("")),
   service: z.string().optional(),
   plan: z.string().optional(),
   message: z.string().optional(),
@@ -82,15 +79,22 @@ export default function ContactModal({
   );
 
   const onSubmit = async (data: ContactFormData) => {
-    try {
-      await createContactRequest({
-        name: data.name,
-        phone: data.phone,
-        email: data.email,
-        service: data.service,
-        plan: data.plan,
-        message: data.message,
-      });
+  try {
+    const pageTitle = typeof document !== "undefined" ? document.title : "";
+    const pageUrl = typeof window !== "undefined" ? window.location.pathname : "";
+    const sourceInfo = `Заявка со страницы: ${pageTitle} (${pageUrl})`;
+
+    // Очищаем номер: оставляем только цифры и плюс
+    const cleanPhone = data.phone.replace(/[^\d+]/g, '');
+
+    await createContactRequest({
+      name: data.name || "Не указано",
+      phone: cleanPhone, // Передаем очищенный номер!
+      email: "-", 
+      service: selectedService || "-", 
+      plan: selectedPlan || "-",       
+      message: sourceInfo,
+    });
 	  // --- ОТПРАВКА ЦЕЛИ В МЕТРИКУ ---
       if (typeof window !== "undefined" && (window as any).ym) {
         (window as any).ym(106913480, 'reachGoal', 'lead_form_submit');
@@ -107,58 +111,57 @@ export default function ContactModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="w-full h-full max-w-full! max-h-dvh rounded-none md:max-w-125! md:rounded-2xl md:max-h-[90vh] overflow-y-auto px-0">
-        <DialogHeader className="px-6 text-start">
-          <DialogTitle className="text-2xl font-medium">
-            Обратная связь
-          </DialogTitle>
-          <DialogDescription className="text-muted-foreground">
-            Оставьте ваши контактные данные, и наш специалист свяжется с вами в
-            течение 15 минут
-          </DialogDescription>
-        </DialogHeader>
+      <DialogContent className="w-full max-w-full! rounded-none md:max-w-125! md:rounded-2xl px-0">
+        <DialogHeader className="px-6 text-start mb-2"> {/* Уменьшили mb */}
+  <DialogTitle className="text-2xl font-medium">
+    Заказать звонок
+  </DialogTitle>
+  <DialogDescription className="text-sm"> {/* Сделали текст компактнее */}
+    Мы перезвоним в течение 15 минут
+  </DialogDescription>
+</DialogHeader>
 
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-4 mt-4 px-6"
-          >
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <LabelInput
-                      label="Имя *"
-                      placeholder="Ваше имя"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+<Form {...form}>
+  <form
+    onSubmit={form.handleSubmit(onSubmit)}
+    className="space-y-3 mt-2 px-6" // Уменьшили space-y и mt
+  >
+    <FormField
+      control={form.control}
+      name="name"
+      render={({ field }) => (
+        <FormItem>
+          <FormControl>
+            <LabelInput
+              label="Имя" // Убрали звездочку
+              placeholder="Как к вам обращаться?"
+              {...field}
             />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      )}
+    />
 
-            <FormField
-              control={form.control}
-              name="phone"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <LabelInput
-                      label="Телефон *"
-                      type="tel"
-                      placeholder="+7 (___) ___-__-__"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+    <FormField
+      control={form.control}
+      name="phone"
+      render={({ field }) => (
+        <FormItem>
+          <FormControl>
+            <LabelInput
+              label="Телефон *"
+              type="tel"
+              placeholder="+7 (___) ___-__-__"
+              {...field}
             />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      )}
+    />
 
-            <FormField
+           {/* <FormField
               control={form.control}
               name="email"
               render={({ field }) => (
@@ -192,24 +195,19 @@ export default function ContactModal({
                   <FormMessage />
                 </FormItem>
               )}
-            />
+            /> */}
 
-            <div className="flex flex-col sm:flex-row gap-3 pt-4">
-              <Button type="submit" disabled={form.formState.isSubmitting}>
-                {form.formState.isSubmitting
-                  ? "Отправка..."
-                  : "Отправить заявку"}
-              </Button>
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => onOpenChange(false)}
-              >
-                Отмена
-              </Button>
-            </div>
-          </form>
-        </Form>
+            <div className="pt-2"> {/* Убрали контейнер с двумя кнопками */}
+      <Button 
+        type="submit" 
+        className="w-full h-12 text-base" // Кнопка на всю ширину, чуть выше для удобства нажатия пальцем
+        disabled={form.formState.isSubmitting}
+      >
+        {form.formState.isSubmitting ? "Отправка..." : "Жду звонка"}
+      </Button>
+    </div>
+  </form>
+</Form>
 
         <Separator className="my-2" />
 

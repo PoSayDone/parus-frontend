@@ -164,6 +164,7 @@ export default async function ServicePageTemplate({
 
             <div className="flex flex-col sm:flex-row gap-4">
               <ContactModalTrigger
+                service={service.title} // <--- ДОБАВИЛА ВОТ ЭТУ СТРОКУ для передачи названия услуги в форму заявки
                 size="lg"
                 className="bg-primary hover:bg-primary/90"
               >
