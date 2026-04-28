@@ -4,6 +4,7 @@ import ContactModalProvider from "@/modules/contact/components/contact-modal-pro
 import type { Metadata } from "next";
 import { Golos_Text } from "next/font/google";
 import "./globals.css";
+import { PhoneClickTracker } from "@/components/phone-click-tracker";
 import YandexMetrika from "@/components/analytics/yandex-metrika"
 
 export const metadata: Metadata = {
@@ -79,9 +80,10 @@ export default async function RootLayout({
   return (
     <html lang="ru" suppressHydrationWarning>
       <body className={`${golos.className} antialiased`}>
-        <ContactModalProvider />
-        <Toaster />
-        {children}
+	  <ContactModalProvider />
+	  <PhoneClickTracker /> {/* <-- Добавить сюда */}
+	  <Toaster />
+	  {children}
 		<script
 		  type="application/ld+json"
 		  dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
