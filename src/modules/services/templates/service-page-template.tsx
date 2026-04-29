@@ -255,7 +255,10 @@ export default async function ServicePageTemplate({
   // 5. Если картинки есть, рисуем блок с отступом (mt-16)
   return (
     <div className="mt-16 border-t pt-16">
-       <ServiceGallery images={filteredGallery} title={service.title} />
+       <ServiceGallery 
+  images={filteredGallery} 
+  title={handle === "ustanovka-pamyatnikov" ? "Детали выполненного заказа" : service.title} 
+/>
     </div>
   );
 })()}
