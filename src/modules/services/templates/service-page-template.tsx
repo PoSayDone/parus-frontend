@@ -185,16 +185,16 @@ export default async function ServicePageTemplate({
 
           <div className="relative bg-muted/20 rounded-xl overflow-hidden h-[220px] md:h-[320px] border border-border/40 w-full shadow-sm">
             <Image
-			  fill
-			  src={service.thumbnail || "/placeholder.svg"}
-			  // Формируем умный alt: очищаем заголовок от города и добавляем " в Перми"
-			  alt={`${service.title.replace(/\s*(в\s+)?(г\.\s+)?Перм[иь]\s*/gi, "").trim()} в Перми`}
-			  className="object-cover transition-transform duration-500 hover:scale-105"
-			  sizes="(max-width: 768px) 100vw, 800px"
-			  priority
-			/>
+              fill
+              src={service.thumbnail || "/placeholder.svg"}
+              alt={`${service.title.replace(/\s*(в\s+)?(г\.\s+)?Перм[иь]\s*/gi, "").trim()} в Перми`}
+              className="object-cover transition-transform duration-500 hover:scale-105"
+              sizes="(max-width: 768px) 100vw, 800px"
+              priority
+            />
           </div>
         </div>
+
 
         {/* Features and Included */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-12">
@@ -202,7 +202,9 @@ export default async function ServicePageTemplate({
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <CheckCircle2 className="h-5 w-5 text-primary" />
-                Что включает услуга
+                {handle === "ustanovka-pamyatnikov" 
+                  ? "Сколько этапов включает услуга" 
+                  : "Что включает услуга"}
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -286,7 +288,7 @@ export default async function ServicePageTemplate({
 			<Link
 			  key={item.handle}
 			  href={`/services/${item.handle}`}
-			  // h-[180px] делает карточку узкой, как ты и просила
+			  // h-[180px] делает карточку узкой
 			  className="group relative h-[180px] rounded-[20px] overflow-hidden border border-border/20 shadow-md transition-all duration-300 hover:shadow-lg"
 			>
 			  {/* 1. Фоновое изображение (без искажений) */}
@@ -302,27 +304,38 @@ export default async function ServicePageTemplate({
 			  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/10 to-transparent" />
 
 			  {/* 3. Контент */}
-			  <div className="absolute inset-0 p-5 flex flex-col justify-end">
-				{/* Маленькая аккуратная иконка */}
-				<div className="mb-2 p-1.5 rounded-full bg-white/10 backdrop-blur-md w-fit text-white border border-white/10">
-				  <Icon name={item.icon as IconName} className="size-4" />
+				<div className="absolute inset-0 p-5 flex flex-col justify-end">
+				  {/* Маленькая аккуратная иконка с проверкой на существование */}
+				  {item.icon && (
+					<div className="mb-2 p-1.5 rounded-full bg-white/10 backdrop-blur-md w-fit text-white border border-white/10">
+					  <Icon name={item.icon as IconName} className="size-4" />
+					</div>
+				  )}
+				  
+				  <p className="text-lg font-medium text-white leading-tight">
+					{item.title}
+				  </p>
+				  
+				  {/* Краткое описание скрыто по умолчанию, появляется при наведении */}
+				  <p className="text-gray-300 text-xs line-clamp-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+					{item.shortDescription}
+				  </p>
 				</div>
-				
-				<p className="text-lg font-medium text-white leading-tight">
-				  {item.title}
-				</p>
-				
-				{/* Краткое описание скрыто по умолчанию, появляется при наведении (опционально) */}
-				<p className="text-gray-300 text-xs line-clamp-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-				  {item.shortDescription}
-				</p>
-			  </div>
 			</Link>
 		  ))}
-		</div>
-         
         </div>
-        <ContactSection />
+          
+        </div>
+
+        
+
+        <ContactSection 
+          description={
+            handle === "ustanovka-pamyatnikov"
+              ? "Свяжитесь с нами для подробной консультации. Мы можем поставлять все необходимые элементы прямо на кладбище. Мы работаем круглосуточно и готовы помочь в любое время."
+              : undefined
+          }
+        />
       </div>
     </div>
   );
