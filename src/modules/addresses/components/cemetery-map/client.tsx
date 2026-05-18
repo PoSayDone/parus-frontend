@@ -36,12 +36,18 @@ export default function CemeteryMapClient({
     };
   }, []);
 
+  // Если ошибка — выводим сообщение на весь доступный размер
   if (hasError) {
-    return <div className="w-full h-96 bg-muted" />;
+    return (
+      <div className="w-full h-full bg-muted flex items-center justify-center text-sm text-muted-foreground">
+        Не удалось загрузить карту
+      </div>
+    );
   }
 
+  // Если грузится — делаем пульсирующий фон на весь доступный размер
   if (!modules) {
-    return <div className="w-full h-96 bg-muted" />;
+    return <div className="w-full h-full bg-muted animate-pulse" />;
   }
 
   const { YMap, YMapDefaultSchemeLayer, YMapDefaultFeaturesLayer, YMapMarker } =

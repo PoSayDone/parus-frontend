@@ -1,17 +1,18 @@
 "use client";
 
-import { Card } from "@/components/ui/card";
 import dynamic from "next/dynamic";
 
 const CemeteryMapClient = dynamic(() => import("./client"), {
   ssr: false,
-  loading: () => <div className="w-full h-96 bg-muted" />,
+  // Заменили фиксированную высоту загрузочного экрана на 100%
+  loading: () => <div className="w-full h-full bg-muted animate-pulse" />, 
 });
 
 export default function CemeteryMap({ coords }: { coords: [number, number] }) {
   return (
-    <Card className="p-0 m-0 h-[70dvh] overflow-clip">
+    // Убрали Card (чтобы не было двойных рамок) и поставили w-full h-full
+    <div className="w-full h-full overflow-hidden">
       <CemeteryMapClient coords={coords} />
-    </Card>
+    </div>
   );
 }

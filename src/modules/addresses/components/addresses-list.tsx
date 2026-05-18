@@ -26,10 +26,14 @@ export default async function AddressesList() {
         </TypographyH3>
         <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
           {cemeteriesData.map((cemetery) => {
+			  // ЗАКОММЕНТИРОВАЛИ ЛОГИКУ КАРТИНКИ (на случай отката)
+            /*
             const primaryImage =
               cemetery.cemeteryThumbnail || cemetery.cemeteryImages?.[0];
+			*/
             const content = (
               <Card className="relative overflow-hidden">
+			  {/* ЗАКОММЕНТИРОВАЛИ ФОНОВУЮ КАРТИНКУ В КАРТОЧКЕ
                 <div
                   className="pointer-events-none absolute right-0 top-0 h-full w-64 opacity-100"
                   style={{
@@ -42,6 +46,7 @@ export default async function AddressesList() {
                       "linear-gradient(90deg, transparent 0%, #000 100%)",
                   }}
                 />
+				*/}
                 <CardHeader>
                   <CardTitle className="text-lg max-w-[80%]">
                     {cemetery.name}
