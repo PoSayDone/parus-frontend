@@ -5,11 +5,12 @@ import {
   type ReactifiedYMaps3Modules,
 } from "@/lib/ymaps3";
 import type { CemeteryLocation } from "@/types/landing";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useRef } from "react";
 
 const DEFAULT_CENTER: [number, number] = [58.0105, 56.2502];
 const DEFAULT_ZOOM = 10;
 const toLngLat = ([lat, lng]: [number, number]): [number, number] => [lng, lat];
+
 
 export default function CemeteriesMapClient({
   locations,
@@ -23,6 +24,7 @@ export default function CemeteriesMapClient({
   const [modules, setModules] = useState<ReactifiedYMaps3Modules | null>(null);
   const [hasError, setHasError] = useState(false);
 
+const containerRef = useRef<HTMLDivElement>(null);
   const center = useMemo<[number, number]>(() => {
     const withCoords = locations.filter((item) => item.coords);
 
@@ -45,19 +47,36 @@ export default function CemeteriesMapClient({
 
   useEffect(() => {
     let isMounted = true;
+    let observer: IntersectionObserver;
 
-    getReactifiedYMaps3Modules(process.env.NEXT_PUBLIC_YMAPS3_API_KEY ?? "")
-      .then((result) => {
-        if (!isMounted) return;
-        setModules(result);
-      })
-      .catch(() => {
-        if (!isMounted) return;
-        setHasError(true);
-      });
+    const loadMap = () => {
+      getReactifiedYMaps3Modules(process.env.NEXT_PUBLIC_YMAPS3_API_KEY ?? "")
+        .then((result) => {
+          if (!isMounted) return;
+          setModules(result);
+        })
+        .catch(() => {
+          if (!isMounted) return;
+          setHasError(true);
+        });
+    };
+
+    if (containerRef.current) {
+      observer = new IntersectionObserver(
+        (entries) => {
+          if (entries[0].isIntersecting) {
+            loadMap();
+            observer.disconnect();
+          }
+        },
+        { rootMargin: "300px" } // Загружаем карту за 300px до скролла
+      );
+      observer.observe(containerRef.current);
+    }
 
     return () => {
       isMounted = false;
+      if (observer) observer.disconnect();
     };
   }, []);
 
@@ -73,6 +92,7 @@ export default function CemeteriesMapClient({
     modules;
 
   return (
+    <div ref={containerRef} className="h-full w-full">
     <YMap
       key="cemeteries"
       className="h-full w-full"
@@ -114,5 +134,6 @@ export default function CemeteriesMapClient({
         );
       })}
     </YMap>
+    </div>
   );
 }

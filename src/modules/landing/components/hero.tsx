@@ -50,6 +50,7 @@ export default function Hero({
             src="/angel.png"
             alt="Ангел"
             priority
+            sizes="(max-width: 768px) 100vw, 600px"
           />
         </div>
         <div className="md:hidden absolute inset-0 bg-primary aspect-16/7 w-full max-w-200 left-1/2 -translate-x-1/2 top-[50%] md:top-[35%] blur-[100px] rounded-full" />
