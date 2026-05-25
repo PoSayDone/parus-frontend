@@ -51,13 +51,14 @@ export default function CemeteriesMapClient({
     window.addEventListener("mousemove", triggerLoad, { once: true });
     window.addEventListener("scroll", triggerLoad, { once: true });
     window.addEventListener("touchstart", triggerLoad, { once: true });
-    const fallbackTimer = setTimeout(triggerLoad, 4000);
+    
 
     return () => {
       window.removeEventListener("mousemove", triggerLoad);
       window.removeEventListener("scroll", triggerLoad);
       window.removeEventListener("touchstart", triggerLoad);
-      clearTimeout(fallbackTimer);
+      
+	  
     };
   }, []);
 
