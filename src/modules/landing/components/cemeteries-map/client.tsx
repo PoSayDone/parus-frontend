@@ -23,8 +23,9 @@ export default function CemeteriesMapClient({
 }) {
   const [modules, setModules] = useState<ReactifiedYMaps3Modules | null>(null);
   const [hasError, setHasError] = useState(false);
-
-const containerRef = useRef<HTMLDivElement>(null);
+  const [shouldLoad, setShouldLoad] = useState(false); // Добавили зеленый свет для загрузки
+  
+  const containerRef = useRef<HTMLDivElement>(null);
   const center = useMemo<[number, number]>(() => {
     const withCoords = locations.filter((item) => item.coords);
 
@@ -45,40 +46,44 @@ const containerRef = useRef<HTMLDivElement>(null);
     return active?.coords ?? center;
   }, [activeId, center, locations]);
 
+  // Эффект 1: Шпион, который только следит за скроллом
   useEffect(() => {
-    let isMounted = true;
-    let observer: IntersectionObserver;
-
-    const loadMap = () => {
-      getReactifiedYMaps3Modules(process.env.NEXT_PUBLIC_YMAPS3_API_KEY ?? "")
-        .then((result) => {
-          if (!isMounted) return;
-          setModules(result);
-        })
-        .catch(() => {
-          if (!isMounted) return;
-          setHasError(true);
-        });
-    };
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        // Как только карта появилась на горизонте
+        if (entry.isIntersecting) {
+          setShouldLoad(true); // Даем команду "Начать загрузку!"
+          observer.disconnect(); // Убиваем шпиона, он больше не нужен
+        }
+      },
+      { rootMargin: "300px" } 
+    );
 
     if (containerRef.current) {
-      observer = new IntersectionObserver(
-        (entries) => {
-          if (entries[0].isIntersecting) {
-            loadMap();
-            observer.disconnect();
-          }
-        },
-        { rootMargin: "300px" } // Загружаем карту за 300px до скролла
-      );
       observer.observe(containerRef.current);
     }
 
+    return () => observer.disconnect();
+  }, []);
+
+  // Эффект 2: Сам загрузчик (ждет команды от шпиона)
+  useEffect(() => {
+    if (!shouldLoad) return; // Если не доскроллили - ничего не делаем
+
+    let isMounted = true;
+
+    getReactifiedYMaps3Modules(process.env.NEXT_PUBLIC_YMAPS3_API_KEY ?? "")
+      .then((result) => {
+        if (isMounted) setModules(result);
+      })
+      .catch(() => {
+        if (isMounted) setHasError(true);
+      });
+
     return () => {
       isMounted = false;
-      if (observer) observer.disconnect();
     };
-  }, []);
+  }, [shouldLoad]);
 
   if (hasError) {
     return <div className="h-full w-full bg-muted" />;
