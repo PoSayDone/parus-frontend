@@ -54,6 +54,7 @@ export default function Hero({
             alt="Ангел"
             priority
             sizes="(max-width: 768px) 100vw, 600px"
+			unoptimized
           />
         </div>
         
