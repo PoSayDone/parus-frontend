@@ -5,12 +5,11 @@ import {
   type ReactifiedYMaps3Modules,
 } from "@/lib/ymaps3";
 import type { CemeteryLocation } from "@/types/landing";
-import { useEffect, useMemo, useState, useRef } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 const DEFAULT_CENTER: [number, number] = [58.0105, 56.2502];
 const DEFAULT_ZOOM = 10;
 const toLngLat = ([lat, lng]: [number, number]): [number, number] => [lng, lat];
-
 
 export default function CemeteriesMapClient({
   locations,
@@ -23,9 +22,8 @@ export default function CemeteriesMapClient({
 }) {
   const [modules, setModules] = useState<ReactifiedYMaps3Modules | null>(null);
   const [hasError, setHasError] = useState(false);
-  const [shouldLoad, setShouldLoad] = useState(false); // Добавили зеленый свет для загрузки
-  
-  const containerRef = useRef<HTMLDivElement>(null);
+  const [shouldLoad, setShouldLoad] = useState(false);
+
   const center = useMemo<[number, number]>(() => {
     const withCoords = locations.filter((item) => item.coords);
 
@@ -46,29 +44,26 @@ export default function CemeteriesMapClient({
     return active?.coords ?? center;
   }, [activeId, center, locations]);
 
-  // Эффект 1: Шпион, который только следит за скроллом
+  // Эффект 1: Ждем любого действия человека (или 4 секунды)
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        // Как только карта появилась на горизонте
-        if (entry.isIntersecting) {
-          setShouldLoad(true); // Даем команду "Начать загрузку!"
-          observer.disconnect(); // Убиваем шпиона, он больше не нужен
-        }
-      },
-      { rootMargin: "300px" } 
-    );
+    const triggerLoad = () => setShouldLoad(true);
 
-    if (containerRef.current) {
-      observer.observe(containerRef.current);
-    }
+    window.addEventListener("mousemove", triggerLoad, { once: true });
+    window.addEventListener("scroll", triggerLoad, { once: true });
+    window.addEventListener("touchstart", triggerLoad, { once: true });
+    const fallbackTimer = setTimeout(triggerLoad, 4000);
 
-    return () => observer.disconnect();
+    return () => {
+      window.removeEventListener("mousemove", triggerLoad);
+      window.removeEventListener("scroll", triggerLoad);
+      window.removeEventListener("touchstart", triggerLoad);
+      clearTimeout(fallbackTimer);
+    };
   }, []);
 
   // Эффект 2: Сам загрузчик (ждет команды от шпиона)
   useEffect(() => {
-    if (!shouldLoad) return; // Если не доскроллили - ничего не делаем
+    if (!shouldLoad) return;
 
     let isMounted = true;
 
@@ -85,60 +80,66 @@ export default function CemeteriesMapClient({
     };
   }, [shouldLoad]);
 
+  // Состояния загрузки и ошибки
   if (hasError) {
-    return <div className="h-full w-full bg-muted" />;
+    return (
+      <div className="h-full w-full bg-muted flex items-center justify-center text-sm text-muted-foreground border-2 border-dashed border-muted-foreground/20">
+        Не удалось загрузить карту
+      </div>
+    );
   }
 
   if (!modules) {
-    return <div className="h-full w-full bg-muted" />;
+    return <div className="h-full w-full bg-muted animate-pulse" />;
   }
 
   const { YMap, YMapDefaultSchemeLayer, YMapDefaultFeaturesLayer, YMapMarker } =
     modules;
 
+  // Отрисовка самой карты
   return (
-    <div ref={containerRef} className="h-full w-full">
-    <YMap
-      key="cemeteries"
-      className="h-full w-full"
-      mode="vector"
-      location={{ center: toLngLat(activeCenter), zoom: DEFAULT_ZOOM }}
-    >
-      <YMapDefaultSchemeLayer />
-      <YMapDefaultFeaturesLayer />
+    <div className="h-full w-full">
+      <YMap
+        key="cemeteries"
+        className="h-full w-full"
+        mode="vector"
+        location={{ center: toLngLat(activeCenter), zoom: DEFAULT_ZOOM }}
+      >
+        <YMapDefaultSchemeLayer />
+        <YMapDefaultFeaturesLayer />
 
-      {locations.map((placemark) => {
-        if (!placemark.coords) return null;
+        {locations.map((placemark) => {
+          if (!placemark.coords) return null;
 
-        const isActive = placemark.id === activeId;
+          const isActive = placemark.id === activeId;
 
-        return (
-          <YMapMarker
-            key={placemark.id}
-            coordinates={toLngLat(placemark.coords)}
-          >
-            <button
-              type="button"
-              aria-label={placemark.name}
-              title={`${placemark.name}${placemark.address ? `: ${placemark.address}` : ""}`}
-              onClick={() => onSelect(placemark.id)}
-              className="group relative block"
+          return (
+            <YMapMarker
+              key={placemark.id}
+              coordinates={toLngLat(placemark.coords)}
             >
-              <span
-                className="block size-5 rounded-full border-2 border-white shadow-md transition-colors"
-                style={{ backgroundColor: isActive ? "#111827" : "#64748b" }}
-                aria-hidden
-              />
-              {isActive ? (
-                <span className="absolute left-1/2 top-[-10px] -translate-x-1/2 -translate-y-full rounded-lg bg-background px-2 py-1 text-xs font-medium text-foreground shadow-md whitespace-nowrap">
-                  {placemark.name}
-                </span>
-              ) : null}
-            </button>
-          </YMapMarker>
-        );
-      })}
-    </YMap>
+              <button
+                type="button"
+                aria-label={placemark.name}
+                title={`${placemark.name}${placemark.address ? `: ${placemark.address}` : ""}`}
+                onClick={() => onSelect(placemark.id)}
+                className="group relative block"
+              >
+                <span
+                  className="block size-5 rounded-full border-2 border-white shadow-md transition-colors"
+                  style={{ backgroundColor: isActive ? "#111827" : "#64748b" }}
+                  aria-hidden
+                />
+                {isActive ? (
+                  <span className="absolute left-1/2 top-[-10px] -translate-x-1/2 -translate-y-full rounded-lg bg-background px-2 py-1 text-xs font-medium text-foreground shadow-md whitespace-nowrap">
+                    {placemark.name}
+                  </span>
+                ) : null}
+              </button>
+            </YMapMarker>
+          );
+        })}
+      </YMap>
     </div>
   );
 }
