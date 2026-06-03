@@ -11,6 +11,8 @@ import { cn } from "@/lib/utils";
 import ContactModalTrigger from "@/modules/contact/components/contact-modal-trigger";
 import Image from "next/image";
 import Link from "next/link";
+import { getService } from "@/lib/data/services";
+import ServiceGallery from "@/modules/services/components/service-gallery";
 
 export type MemorialsProps = {
   title?: string;
@@ -79,7 +81,7 @@ const ILLUSTRATION_LAYOUT = [
   },
 ] as const;
 
-export default function Memorials({
+export default async function Memorials({
   title = DEFAULT_MEMORIALS.title,
   subtitle = DEFAULT_MEMORIALS.subtitle,
   illustrations = DEFAULT_MEMORIALS.illustrations,
@@ -90,6 +92,14 @@ export default function Memorials({
   detailsButtonHref = DEFAULT_MEMORIALS.detailsButtonHref,
   detailsButtonDisabled = DEFAULT_MEMORIALS.detailsButtonDisabled,
 }: MemorialsProps) {
+	// Получаем услугу
+  const service = await getService("izgotovlenie-pamyatnikov").catch(() => null);
+  
+  // Вытаскиваем все фото (исключая главную картинку)
+  const allGalleryImages = service?.images?.filter((img) => img !== service.thumbnail) || [];
+  
+  // Отрезаем ровно первые 4 штуки для красивого блока на главной
+  const galleryImages = allGalleryImages.slice(0, 4);
   return (
     <Section
       id="memorials"
@@ -173,6 +183,16 @@ export default function Memorials({
           </div>
         </div>
       </div>
+	  {/* НОВЫЙ БЛОК: Выводим галерею, только если фото существуют */}
+      {galleryImages.length > 0 && (
+        <div className="mt-16 md:mt-24 border-t border-border/40 pt-16">
+          <ServiceGallery 
+            images={galleryImages} 
+            title="Производство памятников" // Это пойдет в alt="Производство памятников — фото 1"
+            heading="Наше производство и работы" // А это заголовок
+          />
+        </div>
+      )}
     </Section>
   );
 }

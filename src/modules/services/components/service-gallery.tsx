@@ -6,7 +6,15 @@ import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils"; // Импортируем утилиту для классов, если она есть
 
-export default function ServiceGallery({ images, title }: { images: string[], title: string }) {
+export default function ServiceGallery({ 
+  images, 
+  title, 
+  heading = "Фотогалерея" // <-- Значение по умолчанию
+}: { 
+  images: string[]; 
+  title: string; 
+  heading?: string; // <-- Добавили опциональный тип
+}) {
   const [selected, setSelected] = useState<{src: string, index: number} | null>(null);
 
   const showNext = useCallback((e?: React.MouseEvent) => {
@@ -36,7 +44,7 @@ export default function ServiceGallery({ images, title }: { images: string[], ti
 
   return (
     <div className="mb-12">
-      <p className="text-2xl font-medium text-foreground mb-6">Фотогалерея</p>
+      <p className="text-2xl font-medium text-foreground mb-6">{heading}</p>
       
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {images.map((image, index) => (
