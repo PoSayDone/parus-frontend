@@ -65,7 +65,7 @@ export default function ServiceGallery({ images, title }: { images: string[], ti
     // Таргетируемся на встроенную кнопку закрытия Dialog (это <button> внутри DialogContent)
     // Делаем её крупной (48x48px), белой, с темным фоном (bg-black/50) и в круге (rounded-full)
     // Также увеличиваем сам SVG крестика (w-8 h-8)
-    className="max-w-5xl w-[95vw] h-auto max-h-[95vh] p-0 border-none bg-transparent shadow-none flex items-center justify-center focus:outline-none rounded-none data-[state=open]:animate-in data-[state=closed]:animate-out overflow-hidden z-[100] [&>button]:w-12 [&>button]:h-12 [&>button]:right-2 [&>button]:top-2 [&>button]:p-2 [&>button]:bg-black/50 [&>button]:text-white [&>button]:rounded-full [&>button]:opacity-100 [&>button]:hover:bg-black/80 [&>button]:hover:text-white transition-all [&>button>svg]:w-8! [&>button>svg]:h-8!"
+    className="max-w-none w-[95vw] md:w-[90vw] h-[95vh] p-0 border-none bg-transparent shadow-none flex items-center justify-center focus:outline-none rounded-none data-[state=open]:animate-in data-[state=closed]:animate-out z-[100] [&>button]:w-12 [&>button]:h-12 [&>button]:right-2 [&>button]:top-2 [&>button]:p-2 [&>button]:bg-black/50 [&>button]:text-white [&>button]:rounded-full [&>button]:opacity-100 [&>button]:hover:bg-black/80 [&>button]:hover:text-white transition-all [&>button>svg]:w-8! [&>button>svg]:h-8!"
   >
     <DialogHeader>
        <VisuallyHidden>
@@ -74,10 +74,10 @@ export default function ServiceGallery({ images, title }: { images: string[], ti
     </DialogHeader>
           
           {selected && (
-            <div className="relative w-full h-auto min-h-[300px] flex items-center justify-center p-4 md:p-12" onClick={(e) => e.stopPropagation()}>
+            <div className="relative w-full h-full flex items-center justify-center p-4 md:px-16" onClick={(e) => e.stopPropagation()}>
               {/* Кнопки навигации и фото... (тут всё как было) */}
                {images.length > 1 && (
-                <button onClick={showPrev} className="absolute left-2 md:left-8 z-50 p-3 text-white/70 hover:text-white bg-black/20 hover:bg-black/40 rounded-full transition-all outline-none ring-offset-background focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+                <button onClick={showPrev} className="absolute left-0 md:left-4 z-50 p-3 text-white/70 hover:text-white bg-black/20 hover:bg-black/40 rounded-full transition-all outline-none ring-offset-background focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
                   <ChevronLeft className="h-8 w-8 md:h-10 md:w-10" />
                 </button>
               )}
@@ -85,12 +85,12 @@ export default function ServiceGallery({ images, title }: { images: string[], ti
               <img
                 src={selected.src}
                 alt={`${title} — фото ${selected.index + 1} (увеличенное)`}
-                className="w-auto h-auto max-w-full max-h-[80vh] object-contain rounded-lg shadow-2xl animate-in zoom-in-95 duration-300 select-none"
+                className="w-auto h-auto max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl animate-in zoom-in-95 duration-300 select-none"
                 style={{ boxShadow: "0 0 20px rgba(0,0,0,0.5)" }}
               />
 
               {images.length > 1 && (
-                <button onClick={showNext} className="absolute right-2 md:right-8 z-50 p-3 text-white/70 hover:text-white bg-black/20 hover:bg-black/40 rounded-full transition-all outline-none ring-offset-background focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+                <button onClick={showNext} className="absolute right-0 md:right-4 z-50 p-3 text-white/70 hover:text-white bg-black/20 hover:bg-black/40 rounded-full transition-all outline-none ring-offset-background focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
                   <ChevronRight className="h-8 w-8 md:h-10 md:w-10" />
                 </button>
               )}
