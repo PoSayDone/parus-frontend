@@ -65,7 +65,7 @@ export default function ServiceGallery({ images, title }: { images: string[], ti
     // Таргетируемся на встроенную кнопку закрытия Dialog (это <button> внутри DialogContent)
     // Делаем её крупной (48x48px), белой, с темным фоном (bg-black/50) и в круге (rounded-full)
     // Также увеличиваем сам SVG крестика (w-8 h-8)
-    className="max-w-none w-[95vw] md:w-[90vw] h-[95vh] p-0 border-none bg-transparent shadow-none flex items-center justify-center focus:outline-none rounded-none data-[state=open]:animate-in data-[state=closed]:animate-out z-[100] [&>button]:w-12 [&>button]:h-12 [&>button]:right-2 [&>button]:top-2 [&>button]:p-2 [&>button]:bg-black/50 [&>button]:text-white [&>button]:rounded-full [&>button]:opacity-100 [&>button]:hover:bg-black/80 [&>button]:hover:text-white transition-all [&>button>svg]:w-8! [&>button>svg]:h-8!"
+    className="max-w-[100vw]! w-[100vw] md:w-[95vw] h-[100dvh] md:h-[95vh] p-0 border-none bg-transparent shadow-none flex items-center justify-center focus:outline-none rounded-none data-[state=open]:animate-in data-[state=closed]:animate-out z-[100] [&>button]:w-12 [&>button]:h-12 [&>button]:right-2 [&>button]:top-2 [&>button]:p-2 [&>button]:bg-black/50 [&>button]:text-white [&>button]:rounded-full [&>button]:opacity-100 [&>button]:hover:bg-black/80 [&>button]:hover:text-white transition-all [&>button>svg]:w-8! [&>button>svg]:h-8!"
   >
     <DialogHeader>
        <VisuallyHidden>
@@ -85,8 +85,9 @@ export default function ServiceGallery({ images, title }: { images: string[], ti
               <img
                 src={selected.src}
                 alt={`${title} — фото ${selected.index + 1} (увеличенное)`}
-                className="w-auto h-auto max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl animate-in zoom-in-95 duration-300 select-none"
-                style={{ boxShadow: "0 0 20px rgba(0,0,0,0.5)" }}
+                // ИЗМЕНЕНИЕ ЗДЕСЬ: w-full h-full заставит фото заполнить экран
+                className="w-full h-full max-h-[90vh] object-contain rounded-lg animate-in zoom-in-95 duration-300 select-none"
+                style={{ filter: "drop-shadow(0 0 20px rgba(0,0,0,0.5))" }}
               />
 
               {images.length > 1 && (
