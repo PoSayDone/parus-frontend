@@ -62,7 +62,7 @@ export default async function ServicePageTemplate({
         }
       ]
     };
-	} else if (handle === "cremation") { // проверь, правильный ли здесь handle (может быть krematsiya)
+	} else if (handle === "cremation") { 
     faqData = {
       title: "Частые вопросы о кремации",
       subtitle: "Подробно рассказываем о том, как проходит процедура",

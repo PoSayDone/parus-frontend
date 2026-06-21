@@ -9,6 +9,7 @@ import CemeteryMap from "@/modules/addresses/components/cemetery-map";
 import ContactSection from "@/modules/contact/components/contact-section";
 import ServicesCarousel from "@/modules/landing/components/services-carousel";
 import SectionHeading from "@/components/ui/section-heading";
+import AutoContactPopup from "@/modules/contact/components/auto-contact-popup"; // автооткрытие формы
 
 export default async function CemeteryPageTemplate({
 	handle,
@@ -44,6 +45,8 @@ export default async function CemeteryPageTemplate({
 
 	return (
 		<div className="min-h-screen bg-background">
+		{/* Автоматическая форма помощи через 40 секунд */}
+			<AutoContactPopup service={`Помощь по кладбищу: ${cemetery.name}`} />
 			<div className="container mx-auto px-4 py-12 relative overflow-hidden">
 				<div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-12">
 					<div>
@@ -93,7 +96,7 @@ export default async function CemeteryPageTemplate({
 							<CardHeader className="flex flex-row flex-wrap items-center gap-2 min-w-0">
 								<CardTitle>Документы для захоронения</CardTitle>
 								{cemetery.cemeteryNote && (
-									<Badge className="max-w-full truncate">
+									<Badge className="max-w-full h-auto whitespace-normal text-left leading-tight py-1 px-3">
 										{cemetery.cemeteryNote}
 									</Badge>
 								)}
