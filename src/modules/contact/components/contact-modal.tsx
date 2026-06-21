@@ -111,7 +111,7 @@ export default function ContactModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="w-full max-w-full! rounded-none md:max-w-125! md:rounded-2xl px-0">
+      <DialogContent className="w-[95vw] max-w-full! rounded-2xl mb-8 md:mb-auto md:max-w-125! px-0">
         <DialogHeader className="px-6 text-start mb-2"> {/* Уменьшили mb */}
   <DialogTitle className="text-2xl font-medium">
     Заказать звонок
@@ -209,10 +209,12 @@ export default function ContactModal({
   </form>
 </Form>
 
-        <Separator className="my-2" />
+        {/* Добавили hidden md:block, чтобы скрыть линию на мобилках */}
+        <Separator className="hidden md:block my-2" />
 
-        <div className="px-6">
-          <h4 className="font-medium mb-3">Или свяжитесь с нами напрямую:</h4>
+        {/* Добавили hidden md:block и pb-4 для аккуратного отступа снизу */}
+        <div className="hidden md:block px-6 pb-4">
+          <div className="font-medium mb-3">Или свяжитесь с нами напрямую:</div>
           <div className="space-y-2 text-sm">
             <div className="flex items-center gap-2">
               <Phone className="h-4 w-4 text-primary" />
