@@ -8,7 +8,7 @@ import Logo from "@/modules/common/icons/logo";
 import ContactModalTrigger from "@/modules/contact/components/contact-modal-trigger";
 import { MenuIcon, Phone, XIcon, Search } from "lucide-react";
 import Link from "next/link";
-import { type Dispatch, type SetStateAction, useState, useEffect } from "react";
+import { type Dispatch, type SetStateAction, useState, useEffect, Suspense } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import SearchBar from "@/components/ui/SearchBar";
 
@@ -86,6 +86,25 @@ const HeaderContent = ({
   );
 };
 
+// Невидимый компонент для отслеживания смены URL (требуется для Suspense)
+function NavigationTracker({
+  setMenuState,
+  setSearchOpen
+}: {
+  setMenuState: Dispatch<SetStateAction<boolean>>;
+  setSearchOpen: Dispatch<SetStateAction<boolean>>;
+}) {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    setMenuState(false);
+    setSearchOpen(false);
+  }, [pathname, searchParams, setMenuState, setSearchOpen]);
+
+  return null;
+}
+
 export default function Header({
   showCatalog,
   phone,
@@ -96,13 +115,7 @@ export default function Header({
   const [menuState, setMenuState] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
 
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-
-  useEffect(() => {
-    setMenuState(false);
-    setSearchOpen(false);
-  }, [pathname, searchParams]);
+  
 
   const links = showCatalog
     ? headerLinks
@@ -136,6 +149,12 @@ export default function Header({
 
   return (
     <header className="flex px-2 md:px-8 py-3 text-base items-center sticky top-0 bg-background z-40 justify-between">
+      
+      {/* Безопасное отслеживание URL, которое не сломает сборку Next.js */}
+      <Suspense fallback={null}>
+        <NavigationTracker setMenuState={setMenuState} setSearchOpen={setSearchOpen} />
+      </Suspense>
+
       <HeaderContent
         menuState={menuState}
         setMenuState={setMenuState}
