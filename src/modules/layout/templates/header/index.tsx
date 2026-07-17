@@ -6,18 +6,22 @@ import { headerLinks } from "@/lib/constants";
 import { cn, formatPhoneNumber } from "@/lib/utils";
 import Logo from "@/modules/common/icons/logo";
 import ContactModalTrigger from "@/modules/contact/components/contact-modal-trigger";
-import { MenuIcon, Phone, XIcon } from "lucide-react";
+import { MenuIcon, Phone, XIcon, Search } from "lucide-react";
 import Link from "next/link";
-import { type Dispatch, type SetStateAction, useState } from "react";
+import { type Dispatch, type SetStateAction, useState, useEffect } from "react";
+import { usePathname, useSearchParams } from "next/navigation";
+import SearchBar from "@/components/ui/SearchBar";
 
 const HeaderContent = ({
   menuState,
   setMenuState,
+  setSearchOpen,
   links,
   phone,
 }: {
   menuState: boolean;
   setMenuState: Dispatch<SetStateAction<boolean>>;
+  setSearchOpen: Dispatch<SetStateAction<boolean>>;
   links: { label: string; href: string }[];
   phone: string;
 }) => {
@@ -38,6 +42,25 @@ const HeaderContent = ({
         </nav>
       </div>
       <div className="flex justify-end gap-2 items-center">
+	  {/* Кнопка поиска */}
+        {/* Используем обычный тег <button>, чтобы shadcn не урезал размер иконки */}
+        <button
+          type="button"
+          // Добавили hidden md:flex в самое начало
+          className="hidden md:flex items-center justify-center h-10 w-10 md:h-11 md:w-11 shrink-0 text-[rgb(29,27,26)] hover:bg-gray-100 rounded-full transition-colors"
+          title="Поиск по сайту"
+          onClick={() => {
+            setMenuState(false);
+            setSearchOpen(true);
+          }}
+        >
+          {/* Жестко задаем размеры через style, чтобы перебить любые внешние стили */}
+          <Search 
+            style={{ width: "28px", height: "28px" }} 
+            strokeWidth={2.5} 
+          />
+          <span className="sr-only">Поиск</span>
+        </button>
         <a
 		  href={`tel:${phone}`}
 		  className={cn(
@@ -71,6 +94,16 @@ export default function Header({
   phone: string;
 }) {
   const [menuState, setMenuState] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    setMenuState(false);
+    setSearchOpen(false);
+  }, [pathname, searchParams]);
+
   const links = showCatalog
     ? headerLinks
     : headerLinks.filter((item) => item.href !== "/store");
@@ -106,6 +139,7 @@ export default function Header({
       <HeaderContent
         menuState={menuState}
         setMenuState={setMenuState}
+        setSearchOpen={setSearchOpen}
         links={links}
         phone={phone}
       />
@@ -121,13 +155,20 @@ export default function Header({
           <div className="flex-col ">
             <div className="flex items-center justify-between px-2 py-3 md:px-6">
               <HeaderContent
-                menuState={menuState}
-                setMenuState={setMenuState}
-                links={links}
-                phone={phone}
-              />
+				menuState={menuState}
+				setMenuState={setMenuState}
+				setSearchOpen={setSearchOpen}
+				links={links}
+				phone={phone}
+			  />
             </div>
-            <div className="flex flex-col grow h-full">
+            <div className="flex flex-col grow h-full pt-2">
+              
+              {/* Выводим полноценную строку поиска внутри бургер-меню */}
+              <div className="px-4 pb-4 md:hidden">
+                <SearchBar />
+              </div>
+
               {links.map((item) => {
                 return (
                   <NavMenuLink
@@ -140,6 +181,30 @@ export default function Header({
               })}
             </div>
             <div className="h-[78px]" />
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={searchOpen} onOpenChange={setSearchOpen}>
+        <DialogContent className="sm:max-w-3xl top-[15%] translate-y-0 p-6 md:p-10">
+          <DialogTitle className="text-2xl md:text-3xl font-semibold mb-6 text-[rgb(29,27,26)]">
+            Поиск по сайту
+          </DialogTitle>
+          
+          <div className="w-full mb-8">
+            <SearchBar />
+          </div>
+
+          <div className="flex flex-col gap-4 border-t border-[rgb(207,197,187)] pt-6">
+            <p className="text-sm uppercase tracking-wider text-gray-500 mb-2">
+              Смотреть категории
+            </p>
+            <Link href="/services" className="text-[rgb(29,27,26)] hover:opacity-70 text-lg flex items-center gap-3 transition-opacity">
+              <span className="text-gray-400">→</span> Услуги
+            </Link>
+            <Link href="/addresses" className="text-[rgb(29,27,26)] hover:opacity-70 text-lg flex items-center gap-3 transition-opacity">
+              <span className="text-gray-400">→</span> Адреса и учреждения
+            </Link>
           </div>
         </DialogContent>
       </Dialog>
