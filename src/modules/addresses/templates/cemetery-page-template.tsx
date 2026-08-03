@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getCemeteryByHandle } from "@/lib/data/addresses";
 import CemeteryMap from "@/modules/addresses/components/cemetery-map";
 import ContactSection from "@/modules/contact/components/contact-section";
+import { Suspense } from "react";
 import ServicesCarousel from "@/modules/landing/components/services-carousel";
 import SectionHeading from "@/components/ui/section-heading";
 import AutoContactPopup from "@/modules/contact/components/auto-contact-popup"; // автооткрытие формы
@@ -45,8 +46,10 @@ export default async function CemeteryPageTemplate({
 
 	return (
 		<div className="min-h-screen bg-background">
-		{/* Автоматическая форма помощи через 40 секунд */}
-			<AutoContactPopup service={`Помощь по кладбищу: ${cemetery.name}`} />
+		{/* Автоматическая форма помощи через 40 секунд (безопасная обертка) */}
+			<Suspense fallback={null}>
+				<AutoContactPopup service={`Помощь по кладбищу: ${cemetery.name}`} />
+			</Suspense>
 			<div className="container mx-auto px-4 py-12 relative overflow-hidden">
 				<div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-12">
 					<div>
@@ -213,6 +216,7 @@ export default async function CemeteryPageTemplate({
 											src={schemeImage}
 											alt={`Схема кладбища ${cemetery.name}`}
 											fill
+											priority 
 											className="object-contain p-2 transition-transform duration-500 group-hover:scale-105"
 											sizes="(max-width: 768px) 100vw, 50vw"
 										/>
