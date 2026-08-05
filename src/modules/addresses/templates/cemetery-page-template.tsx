@@ -12,6 +12,24 @@ import ServicesCarousel from "@/modules/landing/components/services-carousel";
 import SectionHeading from "@/components/ui/section-heading";
 import AutoContactPopup from "@/modules/contact/components/auto-contact-popup"; // автооткрытие формы
 
+// Функция для определения статуса по ключевым словам
+const getStatusInfo = (note?: string | null) => {
+  if (!note) return null;
+  const lowerNote = note.toLowerCase();
+  
+  if (lowerNote.includes("открыто для новых захоронений")) {
+    return { color: "bg-green-500", text: "открыто" };
+  }
+  if (lowerNote.includes("открыто только для подзахоронений")) {
+    return { color: "bg-orange-500", text: "ограничения" };
+  }
+  if (lowerNote.includes("закрыто для всех видов захоронений")) {
+    return { color: "bg-red-500", text: "закрыто" };
+  }
+  
+  return null;
+};
+
 export default async function CemeteryPageTemplate({
 	handle,
 }: {
@@ -83,8 +101,18 @@ export default async function CemeteryPageTemplate({
 				<div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-12">
 					{cemetery.cemeteryStatus && (
 						<Card className="gap-3">
-							<CardHeader>
+							<CardHeader className="flex flex-row items-center justify-between gap-2 space-y-0">
 								<CardTitle>Статус захоронений</CardTitle>
+								
+								{/* Вызываем функцию и сразу отрисовываем бейдж, если статус найден */}
+								{getStatusInfo(cemetery.cemeteryStatus) && (
+									<div className="flex items-center gap-1.5 shrink-0 bg-muted/50 px-2 py-1 rounded-md">
+										<div className={`h-2.5 w-2.5 rounded-full ${getStatusInfo(cemetery.cemeteryStatus)?.color} shadow-sm`} />
+										<span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
+											{getStatusInfo(cemetery.cemeteryStatus)?.text}
+										</span>
+									</div>
+								)}
 							</CardHeader>
 							<CardContent>
 								<p className="text-muted-foreground leading-relaxed whitespace-pre-line">
