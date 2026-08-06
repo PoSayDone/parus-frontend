@@ -1,7 +1,6 @@
-import { buttonVariants } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
-import Link from "next/link";
+// Импортируем наш новый компонент (укажите правильный путь)
+import DesignerClient from "./designer-client"; 
 
 export const metadata: Metadata = {
   title: "Конструктор ритуальных изделий - Парус",
@@ -20,42 +19,22 @@ export const metadata: Metadata = {
 
 export default function DesignerPage() {
   return (
-    <div className="w-full py-12">
-      <div
-        className="py-4 sm:py-48 px-2 flex flex-col justify-center items-start"
-        data-testid="empty-cart-message"
-      >
-        <h1 className="text-3xl">Конструктор в разработке</h1>
-        <div className="text-lg mt-4 mb-6 max-w-[32rem]">
-          На данный момент конструктор находится в разработке, просим прощения
-          за предоставленные неудобства. Сейчас вы можете воспользоваться
-          катлогом товаров и найти интересующий вас товар при помощи него.
-        </div>
-        <div className="flex flex-wrap gap-2">
-          <Link
-            href="/services"
-            className={cn(
-              buttonVariants({
-                variant: "default",
-                className: "w-full sm:w-auto",
-              }),
-            )}
-          >
-            Перейти к услугам
-          </Link>
-          <Link
-            href="/store"
-            className={cn(
-              buttonVariants({
-                variant: "outline",
-                className: "w-full sm:w-auto",
-              }),
-            )}
-          >
-            Перейти к товарам
-          </Link>
+    <div className="w-full min-h-[calc(100vh-80px)] bg-background">
+      {/* Шапка конструктора */}
+      <div className="bg-muted/30 border-b py-8">
+        <div className="container mx-auto px-4 text-center">
+          <h1 className="text-3xl md:text-5xl font-medium mb-4">
+            Конструктор памятника
+          </h1>
+          <p className="text-muted-foreground max-w-2xl mx-auto">
+            Соберите предварительный макет за 4 шага. Мы подготовим точный расчет 
+            с учетом размеров вашего участка.
+          </p>
         </div>
       </div>
+
+      {/* Сам интерактивный конструктор */}
+      <DesignerClient />
     </div>
   );
 }

@@ -52,6 +52,9 @@ interface ContactModalProps {
     address: string;
     footerNote: string;
   };
+  title?: string;
+  description?: string;
+  submitText?: string;
 }
 
 export default function ContactModal({
@@ -60,6 +63,9 @@ export default function ContactModal({
   selectedService,
   selectedPlan,
   settings,
+  title = "Заказать звонок",
+  description = "Мы перезвоним в течение 15 минут",
+  submitText = "Жду звонка",
 }: ContactModalProps) {
   const form = useForm<ContactFormData>({
     resolver: zodResolver(contactFormSchema),
@@ -112,14 +118,14 @@ export default function ContactModal({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="w-[95vw] max-w-full! rounded-2xl mb-8 md:mb-auto md:max-w-125! px-0">
-        <DialogHeader className="px-6 text-start mb-2"> {/* Уменьшили mb */}
-  <DialogTitle className="text-2xl font-medium">
-    Заказать звонок
-  </DialogTitle>
-  <DialogDescription className="text-sm"> {/* Сделали текст компактнее */}
-    Мы перезвоним в течение 15 минут
-  </DialogDescription>
-</DialogHeader>
+        <DialogHeader className="px-6 text-start mb-2">
+          <DialogTitle className="text-2xl font-medium">
+            {title}
+          </DialogTitle>
+          <DialogDescription className="text-sm">
+            {description}
+          </DialogDescription>
+        </DialogHeader>
 
 <Form {...form}>
   <form
@@ -200,10 +206,10 @@ export default function ContactModal({
             <div className="pt-2"> {/* Убрали контейнер с двумя кнопками */}
       <Button 
         type="submit" 
-        className="w-full h-12 text-base" // Кнопка на всю ширину, чуть выше для удобства нажатия пальцем
+        className="w-full h-12 text-base"
         disabled={form.formState.isSubmitting}
       >
-        {form.formState.isSubmitting ? "Отправка..." : "Жду звонка"}
+        {form.formState.isSubmitting ? "Отправка..." : submitText}
       </Button>
     </div>
   </form>
