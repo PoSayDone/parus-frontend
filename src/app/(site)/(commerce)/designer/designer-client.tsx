@@ -14,20 +14,38 @@ const MATERIALS = [
   { id: "dymovskiy", name: "Дымовский (Балтика)", color: "bg-red-900", image: "/images/materials/dymovskiy.jpg" },
   { id: "amfibolit", name: "Амфиболит гранатовый", color: "bg-stone-700", image: "/images/materials/amfibolit.jpg" },
   { id: "grey", name: "Серый гранит", color: "bg-gray-400", image: "/images/materials/grey.jpg" },
+  { id: "syuskyu", name: "Сюскюянсаари (красный)", color: "bg-rose-900", image: "/images/materials/syuskyu.jpg" },
 ];
 
 const PORTRAITS = [
   { id: "glass", name: "Фотостекло", desc: "Современный премиум-вариант (вклейка в нишу)", shape: "rect" },
   { id: "enamel", name: "Фотоэмаль", desc: "Классическая керамика (овал или прямоугольник)", shape: "oval" },
-  { id: "engraving", name: "Гравировка", desc: "Только текст или гравировка на камне", shape: "none" },
+  { id: "engraving_a4", name: "Гравировка (А4)", desc: "Классический рисунок портрета на граните", shape: "engraving" },
+  { id: "text_only", name: "Без фото", desc: "Только текстовая гравировка (ФИО и даты)", shape: "none" },
 ];
 
 const EXTRAS = [
   { id: "vase", name: "Ваза (гранит/мрамор)" },
   { id: "flowerbed", name: "Цветник" },
+  { id: "slab", name: "Плита мощения" },
   { id: "tile", name: "Облицовка плиткой" },
   { id: "chips", name: "Мраморная крошка" },
   { id: "fence", name: "Заливка основания / Бордюр" },
+];
+
+const SERVICES = [
+  { id: "inst_monument", name: "Установка памятника" },
+  { id: "cut_tile", name: "Врезка в плитку" },
+  { id: "demontage", name: "Демонтаж заливки" },
+  { id: "add_polish", name: "Дополнительная полировка" },
+  { id: "change_shape", name: "Изменение формы стелы" },
+  { id: "reinst_enamel", name: "Переустановка фотоэмали" },
+  { id: "lift_monument", name: "Подъём памятника" },
+  { id: "polish_stela", name: "Полировка стелы" },
+  { id: "cut_stone", name: "Резка камня" },
+  { id: "retouch", name: "Ретушь" },
+  { id: "inst_vase", name: "Установка вазы" },
+  { id: "inst_portrait", name: "Установка портрета" },
 ];
 
 // Типы для нашего состояния
@@ -36,7 +54,7 @@ type DesignerState = {
   material: string | null;
   portrait: string | null;
   extras: string[];
-  installation: boolean | null;
+  services: string[];
 };
 
 export default function DesignerClient() {
@@ -47,7 +65,7 @@ export default function DesignerClient() {
     material: null,
     portrait: null,
     extras: [],
-    installation: null,
+    services: [],
   });
 
   // Заглушка настроек для модалки
@@ -72,7 +90,7 @@ export default function DesignerClient() {
     if (targetStep === 2 && !selections.type) return;
     if (targetStep === 3 && (!selections.type || !selections.material)) return;
     if (targetStep === 4 && (!selections.type || !selections.material || !selections.portrait)) return;
-    if (targetStep === 5 && (!selections.type || !selections.material || !selections.portrait || selections.installation === null)) return;
+    if (targetStep === 5 && (!selections.type || !selections.material || !selections.portrait)) return;
     
     setStep(targetStep);
   };
@@ -83,7 +101,14 @@ export default function DesignerClient() {
   const setType = (type: "single" | "family") => setSelections({ ...selections, type });
   const setMaterial = (material: string) => setSelections({ ...selections, material });
   const setPortrait = (portrait: string) => setSelections({ ...selections, portrait });
-  const setInstallation = (installation: boolean) => setSelections({ ...selections, installation });
+  const toggleService = (serviceId: string) => {
+    setSelections((prev) => ({
+      ...prev,
+      services: prev.services.includes(serviceId)
+        ? prev.services.filter((id) => id !== serviceId)
+        : [...prev.services, serviceId],
+    }));
+  };
   
   const toggleExtra = (extraId: string) => {
     setSelections((prev) => ({
@@ -204,7 +229,7 @@ export default function DesignerClient() {
       {step === 3 && (
         <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
           <h2 className="text-3xl font-medium mb-6 text-center">Оформление портрета</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {PORTRAITS.map((port) => (
               <Card
                 key={port.id}
@@ -213,18 +238,23 @@ export default function DesignerClient() {
                 }`}
                 onClick={() => setPortrait(port.id)}
               >
-                <CardContent className="flex flex-col items-center justify-center p-8 h-full text-center">
-                  <div className="h-20 flex items-center justify-center mb-4">
-                    {port.id === 'glass' && <div className="w-12 h-16 bg-blue-100/50 border-2 border-blue-200 shadow-inner rounded-sm" />}
-                    {port.id === 'enamel' && <div className="w-12 h-16 bg-white border border-gray-300 shadow-sm rounded-[50%]" />}
-                    {port.id === 'engraving' && (
-                      <div className="w-16 h-12 border-b-2 border-dashed border-gray-300 flex items-center justify-center">
-                        <span className="text-gray-400 font-serif text-2xl">А-Я</span>
+                <CardContent className="flex flex-col items-center justify-center p-6 h-full text-center">
+                  <div className="h-16 flex items-center justify-center mb-4">
+                    {port.id === 'glass' && <div className="w-10 h-14 bg-blue-100/50 border-2 border-blue-200 shadow-inner rounded-sm" />}
+                    {port.id === 'enamel' && <div className="w-10 h-14 bg-white border border-gray-300 shadow-sm rounded-[50%]" />}
+                    {port.id === 'engraving_a4' && (
+                      <div className="w-10 h-14 border-2 border-dashed border-gray-400 flex items-center justify-center rounded-sm">
+                        <span className="text-gray-400 text-xs font-medium">А4</span>
+                      </div>
+                    )}
+                    {port.id === 'text_only' && (
+                      <div className="w-14 h-10 border-b-2 border-dashed border-gray-300 flex items-center justify-center">
+                        <span className="text-gray-400 font-serif text-xl">А-Я</span>
                       </div>
                     )}
                   </div>
-                  <h3 className="text-lg font-medium">{port.name}</h3>
-                  <p className="text-sm text-muted-foreground mt-2">{port.desc}</p>
+                  <h3 className="text-base font-medium">{port.name}</h3>
+                  <p className="text-xs text-muted-foreground mt-2 leading-relaxed">{port.desc}</p>
                 </CardContent>
               </Card>
             ))}
@@ -260,32 +290,27 @@ export default function DesignerClient() {
                 })}
               </div>
 
-              {/* Блок: Установка (добавили сюда) */}
-              <div className="mt-8">
-                <h3 className="text-lg font-medium mb-4">Требуется ли установка?</h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div 
-                    onClick={() => setInstallation(true)}
-                    className={`p-4 rounded-xl border cursor-pointer transition-all ${
-                      selections.installation === true ? "border-primary bg-primary/5 ring-2 ring-primary/20" : "hover:border-primary/50"
-                    }`}
-                  >
-                    <div className="font-medium mb-1 flex items-center gap-2">
-                      <div className={`w-4 h-4 rounded-full border ${selections.installation === true ? 'border-4 border-primary' : 'border-gray-300'}`} />
-                      Да, нужна установка
-                    </div>
-                  </div>
-                  <div 
-                    onClick={() => setInstallation(false)}
-                    className={`p-4 rounded-xl border cursor-pointer transition-all ${
-                      selections.installation === false ? "border-primary bg-primary/5 ring-2 ring-primary/20" : "hover:border-primary/50"
-                    }`}
-                  >
-                    <div className="font-medium mb-1 flex items-center gap-2">
-                      <div className={`w-4 h-4 rounded-full border ${selections.installation === false ? 'border-4 border-primary' : 'border-gray-300'}`} />
-                      Только изготовление
-                    </div>
-                  </div>
+              {/* Блок: Дополнительные услуги */}
+              <div className="mt-8 border-t border-border/50 pt-8">
+                <h3 className="text-lg font-medium mb-4">Дополнительные работы и услуги</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {SERVICES.map((srv) => {
+                    const isSelected = selections.services.includes(srv.id);
+                    return (
+                      <div
+                        key={srv.id}
+                        onClick={() => toggleService(srv.id)}
+                        className={`flex items-center gap-3 p-3 rounded-xl border cursor-pointer transition-colors ${
+                          isSelected ? "border-primary bg-primary/5" : "hover:border-border/80"
+                        }`}
+                      >
+                        <div className={`w-5 h-5 flex-shrink-0 rounded-md border flex items-center justify-center ${isSelected ? "bg-primary border-primary" : "border-input"}`}>
+                          {isSelected && <Check className="w-3 h-3 text-primary-foreground" />}
+                        </div>
+                        <span className="font-medium text-sm leading-tight">{srv.name}</span>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             </div>
@@ -324,10 +349,15 @@ export default function DesignerClient() {
                   {activePortrait?.shape === 'oval' && (
                     <div className="w-12 h-16 bg-zinc-100 border border-zinc-300 shadow-md rounded-[50%]" />
                   )}
+                  {activePortrait?.shape === 'engraving' && (
+                    <div className="w-12 h-16 bg-white/50 border-2 border-white/90 border-dashed rounded-sm flex items-center justify-center shadow-sm backdrop-blur-[1px]">
+                      <span className="text-white font-bold text-[10px] drop-shadow-md uppercase">А4</span>
+                    </div>
+                  )}
                   {/* Имитация текста гравировки */}
-                  <div className="mt-3 flex flex-col gap-1 items-center opacity-60">
-                    <div className="w-16 h-1 bg-white/50 rounded-full" />
-                    <div className="w-10 h-1 bg-white/50 rounded-full" />
+                  <div className="mt-3 flex flex-col gap-1.5 items-center drop-shadow-sm">
+                    <div className="w-16 h-1.5 bg-white/80 rounded-full" />
+                    <div className="w-10 h-1.5 bg-white/80 rounded-full" />
                   </div>
                 </div>
                 
@@ -397,7 +427,9 @@ export default function DesignerClient() {
               {selections.extras.length > 0 && (
                 <li>• Благоустройство: <span className="text-foreground">{selections.extras.map(e => EXTRAS.find(x => x.id === e)?.name).join(", ")}</span></li>
               )}
-              <li>• Установка: <span className="text-foreground">{selections.installation ? "Да, требуется монтаж" : "Нет, только изготовление"}</span></li>
+              {selections.services.length > 0 && (
+                <li>• Услуги: <span className="text-foreground">{selections.services.map(s => SERVICES.find(x => x.id === s)?.name).join(", ")}</span></li>
+              )}
             </ul>
           </Card>
 
@@ -414,7 +446,7 @@ export default function DesignerClient() {
           <ContactModal 
             open={isModalOpen} 
             onOpenChange={setIsModalOpen} 
-            selectedService={`Конструктор памятника. Тип: ${selections.type === "single" ? "Одиночный" : "Семейный"}, Мат: ${activeMaterial?.name || "-"}, Портрет: ${activePortrait?.name || "-"}, Допы: ${selections.extras.length > 0 ? selections.extras.map(e => EXTRAS.find(x => x.id === e)?.name).join(", ") : "Нет"}, Установка: ${selections.installation ? "Да" : "Нет"}`}
+            selectedService={`Конструктор. Тип: ${selections.type === "single" ? "Одиночный" : "Семейный"}, Мат: ${activeMaterial?.name || "-"}, Портрет: ${activePortrait?.name || "-"}, Допы: ${selections.extras.length > 0 ? selections.extras.map(e => EXTRAS.find(x => x.id === e)?.name).join(", ") : "Нет"}, Услуги: ${selections.services.length > 0 ? selections.services.map(s => SERVICES.find(x => x.id === s)?.name).join(", ") : "Нет"}`}
             settings={modalSettings}
             title="Запросить расчет стоимости"
             description="Оставьте контакты, и наш специалист перезвонит для обсуждения деталей макета и точных размеров."
@@ -441,8 +473,7 @@ export default function DesignerClient() {
             disabled={
               (step === 1 && !selections.type) || 
               (step === 2 && !selections.material) ||
-              (step === 3 && !selections.portrait) ||
-              (step === 4 && selections.installation === null)
+              (step === 3 && !selections.portrait)
             }
             className="px-8 rounded-full"
           >
