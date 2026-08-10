@@ -116,7 +116,7 @@ export default function PricesListClient({
                       <span className={`border text-[10px] px-2 py-0.5 rounded-full uppercase tracking-wider ${
                         plan.popular ? "text-muted-foreground/70 border-muted-foreground/20" : "text-muted-foreground border-border"
                       }`}>
-                        рассрочка 0-0-6
+                        рассрочка 0-0-3
                       </span>
                     )}
                   </div>
