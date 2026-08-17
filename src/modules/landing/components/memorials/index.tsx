@@ -27,9 +27,10 @@ export type MemorialsProps = {
   }[];
   paragraph?: string;
   ctaLabel?: string;
-  detailsButtonLabel?: string;
+detailsButtonLabel?: string;
   detailsButtonHref?: string;
   detailsButtonDisabled?: boolean;
+  galleryImages?: string[];
 };
 
 const DEFAULT_MEMORIALS = {
@@ -81,7 +82,7 @@ const ILLUSTRATION_LAYOUT = [
   },
 ] as const;
 
-export default async function Memorials({
+export default function Memorials({
   title = DEFAULT_MEMORIALS.title,
   subtitle = DEFAULT_MEMORIALS.subtitle,
   illustrations = DEFAULT_MEMORIALS.illustrations,
@@ -91,15 +92,8 @@ export default async function Memorials({
   detailsButtonLabel = DEFAULT_MEMORIALS.detailsButtonLabel,
   detailsButtonHref = DEFAULT_MEMORIALS.detailsButtonHref,
   detailsButtonDisabled = DEFAULT_MEMORIALS.detailsButtonDisabled,
+  galleryImages = [],
 }: MemorialsProps) {
-	// Получаем услугу
-  const service = await getService("izgotovlenie-pamyatnikov").catch(() => null);
-  
-  // Вытаскиваем все фото (исключая главную картинку)
-  const allGalleryImages = service?.images?.filter((img) => img !== service.thumbnail) || [];
-  
-  // Отрезаем ровно первые 4 штуки для красивого блока на главной
-  const galleryImages = allGalleryImages.slice(0, 4);
   return (
     <Section
       id="memorials"

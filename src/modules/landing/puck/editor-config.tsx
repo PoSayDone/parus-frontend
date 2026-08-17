@@ -6,6 +6,7 @@ import Memorials from "@/modules/landing/components/memorials";
 import QnA from "@/modules/landing/components/q-n-a";
 import WhyUs from "@/modules/landing/components/why-us";
 import type { Config } from "@puckeditor/core";
+import { getService } from "@/lib/data/services";
 import {
   LandingAddressesEditor,
   PostsEditor,
@@ -147,6 +148,12 @@ export const landingEditorConfig = {
     Memorials: {
       label: "Памятники",
       ...landingComponentFields.Memorials,
+      resolveData: async ({ props }) => {
+        const service = await getService("izgotovlenie-pamyatnikov").catch(() => null);
+        const allGalleryImages = service?.images?.filter((img) => img !== service.thumbnail) || [];
+        const galleryImages = allGalleryImages.slice(0, 4);
+        return { props: { ...props, galleryImages } };
+      },
       render: ({
         title,
         subtitle,
@@ -157,6 +164,7 @@ export const landingEditorConfig = {
         detailsButtonLabel,
         detailsButtonHref,
         detailsButtonDisabled,
+        galleryImages,
       }) => (
         <Memorials
           title={title}
@@ -168,6 +176,7 @@ export const landingEditorConfig = {
           detailsButtonLabel={detailsButtonLabel}
           detailsButtonHref={detailsButtonHref}
           detailsButtonDisabled={detailsButtonDisabled}
+          galleryImages={galleryImages}
         />
       ),
     },
