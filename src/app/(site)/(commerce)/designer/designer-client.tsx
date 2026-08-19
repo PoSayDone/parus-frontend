@@ -121,7 +121,16 @@ export default function DesignerClient() {
 
   // Поиск выбранного материала для визуала
   const activeMaterial = MATERIALS.find((m) => m.id === selections.material);
-  const activePortrait = PORTRAITS.find((p) => p.id === selections.portrait); // <-- Добавить эту строку
+  const activePortrait = PORTRAITS.find((p) => p.id === selections.portrait);
+ // Выбор 3D-модели (Плита -> Крошка -> Цветник -> Базовая тумба)
+ const modelImageSrc = selections.extras.includes("slab") 
+   ? '/images/materials/plita_stela.png' 
+   : selections.extras.includes("chips") 
+     ? '/images/materials/cvetnik_kroshka.png' 
+     : selections.extras.includes("flowerbed") 
+       ? '/images/materials/obrazetc.png' 
+       : '/images/materials/stela_tumba.png';
+
   return (
     <div className="w-full max-w-5xl mx-auto py-8 px-4">
       {/* Прогресс бар */}
@@ -315,91 +324,100 @@ export default function DesignerClient() {
               </div>
             </div>
 
-           {/* Визуал справа */}
+          {/* Визуал справа */}
             <div className="col-span-1 bg-muted/30 rounded-3xl p-6 border flex flex-col items-center justify-center min-h-[300px]">
               <p className="text-sm text-muted-foreground mb-6 font-medium uppercase tracking-wider">Предварительный вид</p>
-              {/* Примитивная визуализация */}
-              <div className="relative flex flex-col items-center mt-10 mb-8">
-                
-                {/* 1. Облицовка плиткой (ВРЕМЕННО ОТКЛЮЧЕНО через false &&) */}
-                {false && selections.extras.includes("tile") && (
-                  <div className="absolute -bottom-8 -left-12 -right-12 h-32 bg-stone-200/50 border border-stone-300 shadow-inner grid grid-cols-5 grid-rows-3 gap-[2px] p-[2px]">
-                    {Array.from({ length: 15 }).map((_, i) => (
-                      <div key={i} className="bg-stone-200/80 rounded-sm" />
-                    ))}
-                  </div>
-                )}
-
-                {/* 2. Заливка основания / Бордюр (ВРЕМЕННО ОТКЛЮЧЕНО) */}
-                {false && selections.extras.includes("fence") && (
-                  <div className="absolute -bottom-10 -left-14 -right-14 h-36 border-4 border-stone-400 rounded-sm z-0" />
-                )}
-
-                {/* Стела (ОСТАВЛЯЕМ: Текстура + Портрет) */}
-                <div 
-                  className={`shadow-xl transition-all duration-500 relative z-10 flex flex-col items-center pt-6 ${
-                    selections.type === 'family' ? 'w-48 h-32 rounded-t-xl' : 'w-32 h-48 rounded-t-full'
-                  } ${!activeMaterial?.image ? (activeMaterial?.color || 'bg-zinc-800') : ''}`} 
-                  style={activeMaterial?.image ? { backgroundImage: `url(${activeMaterial.image})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}}
-                >
-                  {/* ПОРТРЕТ НА СТЕЛЕ */}
-                  {activePortrait?.shape === 'rect' && (
-                    <div className="w-12 h-16 bg-blue-100/40 border border-blue-200/50 shadow-inner rounded-sm backdrop-blur-sm" />
-                  )}
-                  {activePortrait?.shape === 'oval' && (
-                    <div className="w-12 h-16 bg-zinc-100 border border-zinc-300 shadow-md rounded-[50%]" />
-                  )}
-                  {activePortrait?.shape === 'engraving' && (
-                    <div className="w-12 h-16 bg-white/50 border-2 border-white/90 border-dashed rounded-sm flex items-center justify-center shadow-sm backdrop-blur-[1px]">
-                      <span className="text-white font-bold text-[10px] drop-shadow-md uppercase">А4</span>
-                    </div>
-                  )}
-                  {/* Имитация текста гравировки */}
-                  <div className="mt-3 flex flex-col gap-1.5 items-center drop-shadow-sm">
-                    <div className="w-16 h-1.5 bg-white/80 rounded-full" />
-                    <div className="w-10 h-1.5 bg-white/80 rounded-full" />
-                  </div>
-                </div>
-                
-                {/* Тумба (ОСТАВЛЯЕМ: Текстура) */}
-                <div 
-                  className={`w-56 h-8 mt-1 shadow-lg transition-all duration-500 relative z-10 flex items-end justify-end px-4 ${
-                    !activeMaterial?.image ? (activeMaterial?.color || 'bg-zinc-800') : ''
-                  }`}
-                  style={activeMaterial?.image ? { backgroundImage: `url(${activeMaterial.image})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}}
-                >
-                  {/* 3. Ваза на тумбе (ВРЕМЕННО ОТКЛЮЧЕНО) */}
-                  {false && selections.extras.includes("vase") && (
-                    <div 
-                      className={`w-5 h-10 rounded-b-lg rounded-t-sm shadow-2xl -mt-8 border-x border-t border-white/20 ${
-                        !activeMaterial?.image ? (activeMaterial?.color || 'bg-zinc-800') : ''
-                      }`}
-                      style={activeMaterial?.image ? { backgroundImage: `url(${activeMaterial.image})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}}
-                    />
-                  )}
-                </div>
-                
-                {/* Цветник и 4. Мраморная крошка (ВРЕМЕННО ОТКЛЮЧЕНО) */}
-                {false && selections.extras.includes("flowerbed") && (
-                  <div 
-                    className={`w-48 h-16 mt-1 relative z-10 transition-all duration-500 p-2 shadow-inner ${
-                      !activeMaterial?.image ? (activeMaterial?.color || 'bg-zinc-800') : ''
-                    }`}
-                    style={activeMaterial?.image ? { backgroundImage: `url(${activeMaterial.image})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}}
-                  >
-                     {/* Внутренняя часть (земля или крошка) */}
-                     <div className={`w-full h-full rounded-sm shadow-inner transition-colors ${
-                       selections.extras.includes("chips") ? "bg-slate-200" : "bg-stone-800/80"
-                     }`}>
-                       {selections.extras.includes("chips") && (
-                          <div className="w-full h-full opacity-30" style={{ backgroundImage: 'radial-gradient(#000 1px, transparent 1px)', backgroundSize: '4px 4px' }} />
-                       )}
-                     </div>
-                  </div>
-                )}
-              </div>
               
-              <p className="text-center text-xs text-muted-foreground mt-8">
+              {/* 3D Визуализация через CSS-маску */}
+              <div className="relative w-full max-w-[220px] aspect-[3/4] mx-auto mt-2 mb-8 flex flex-col items-center">
+                 
+                 {/* 1. Слой с текстурой, обрезанный по силуэту 3D-модели */}
+                 <div 
+                   className="absolute inset-0 z-0 transition-all duration-500"
+                   style={{
+                     backgroundImage: activeMaterial?.image ? `url(${activeMaterial.image})` : 'none',
+                     backgroundColor: !activeMaterial?.image ? '#27272a' : 'transparent',
+                     backgroundSize: 'cover',
+                     backgroundPosition: 'center',
+                     WebkitMaskImage: `url('${modelImageSrc}')`,
+                     WebkitMaskSize: 'contain',
+                     WebkitMaskRepeat: 'no-repeat',
+                     WebkitMaskPosition: 'center',
+                     maskImage: `url('${modelImageSrc}')`,
+                     maskSize: 'contain',
+                     maskRepeat: 'no-repeat',
+                     maskPosition: 'center',
+                   }}
+                 />
+                 
+                 {/* 2. Слой с объемом (возвращаем блики от оригинальной черной картинки) */}
+                 <div 
+                   className="absolute inset-0 z-10 mix-blend-screen opacity-80 pointer-events-none transition-opacity"
+                   style={{
+                     backgroundImage: `url('${modelImageSrc}')`,
+                     backgroundSize: 'contain',
+                     backgroundRepeat: 'no-repeat',
+                     backgroundPosition: 'center'
+                   }}
+                 />
+
+                {/* 3. Портрет (ювелирная настройка) */}
+                 <div className="absolute top-[25%] -translate-x-10 z-20 flex flex-col items-center skew-y-[-12deg]">
+                    {activePortrait?.shape === 'rect' && (
+                      <div className="w-10 h-14 bg-blue-100/40 border border-blue-200/50 shadow-inner rounded-sm backdrop-blur-sm" />
+                    )}
+                    {activePortrait?.shape === 'oval' && (
+                      <div className="w-10 h-14 bg-zinc-100 border border-zinc-300 shadow-md rounded-[50%]" />
+                    )}
+                    {activePortrait?.shape === 'engraving' && (
+                      <div className="w-10 h-14 bg-white/50 border-2 border-white/90 border-dashed rounded-sm flex items-center justify-center shadow-sm backdrop-blur-[1px]">
+                        <span className="text-white font-bold text-[9px] drop-shadow-md uppercase">А4</span>
+                      </div>
+                    )}
+
+                    {/* Имитация текста гравировки */}
+                    <div className="mt-2 flex flex-col gap-1 items-center drop-shadow-sm">
+                      <div className="w-12 h-1 bg-white/80 rounded-full" />
+                      <div className="w-8 h-1 bg-white/80 rounded-full" />
+                    </div>
+                 </div>
+
+                 {/* 4. ВАЗА (отдельный слой-накладка поверх всего) */}
+                 {selections.extras.includes("vase") && (
+                   <>
+                     {/* Текстура камня для вазы */}
+                     <div 
+                       className="absolute inset-0 z-30 transition-all duration-500"
+                       style={{
+                         backgroundImage: activeMaterial?.image ? `url(${activeMaterial.image})` : 'none',
+                         backgroundColor: !activeMaterial?.image ? '#27272a' : 'transparent',
+                         backgroundSize: 'cover',
+                         backgroundPosition: 'center',
+                         WebkitMaskImage: `url('/images/materials/vase.png')`,
+                         WebkitMaskSize: 'contain',
+                         WebkitMaskRepeat: 'no-repeat',
+                         WebkitMaskPosition: 'center',
+                         maskImage: `url('/images/materials/vase.png')`,
+                         maskSize: 'contain',
+                         maskRepeat: 'no-repeat',
+                         maskPosition: 'center',
+                       }}
+                     />
+                     {/* Объем и блики для вазы */}
+                     <div 
+                       className="absolute inset-0 z-40 mix-blend-screen opacity-80 pointer-events-none transition-opacity"
+                       style={{
+                         backgroundImage: `url('/images/materials/vase.png')`,
+                         backgroundSize: 'contain',
+                         backgroundRepeat: 'no-repeat',
+                         backgroundPosition: 'center'
+                       }}
+                     />
+                   </>
+                 )}
+              </div>
+
+              <p className="text-center text-xs text-muted-foreground">
                 * Визуализация схематична. Точный 3D-макет дизайнер подготовит после заявки.
               </p>
             </div>
