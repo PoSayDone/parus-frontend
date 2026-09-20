@@ -41,11 +41,14 @@ export async function generateMetadata({
 		title,
 		description,
 		openGraph: {
+			type: "website",                  // <--  тип 
+			url: `/addresses/${handle}`,      // <--  динамический URL кладбища
 			title,
 			description,
+			// <-- Если у кладбища нет своего фото, подставляем  общую заглушку
 			images: cemetery.cemeteryThumbnail
 				? [cemetery.cemeteryThumbnail]
-				: [],
+				: ["/images/og-image.png"],
 		},
 		alternates: {
 			canonical: `/addresses/${handle}`,

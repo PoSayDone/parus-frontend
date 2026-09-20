@@ -48,9 +48,11 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
         canonical: path, // Заменяем статичную строку на переменную path
 		},
 		openGraph: {
+			type: "article", // Для постов и статей тип article
+			url: path,       // Динамический путь статьи (уже вычислен выше)
 			title: `${post.seoTitle || post.title} | Парус`,
 			description: `${post.seoDescription || post.description || post.title}`,
-			images: post.thumbnail ? [post.thumbnail] : [],
+			images: post.thumbnail ? [post.thumbnail]: ["/images/og-image.png"],
 		},
 	};
 }

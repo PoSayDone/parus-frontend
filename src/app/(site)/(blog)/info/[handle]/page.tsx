@@ -43,9 +43,12 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 			canonical: `/info/${handle}`,
 		},
 		openGraph: {
+			type: "article",          // <--  тип
+			url: `/info/${handle}`,   // <--  URL инфо-страницы
 			title: `${post.title} | Парус`,
 			description: `${post.title}`,
-			images: post.thumbnail ? [post.thumbnail] : [],
+			// <-- Подставляем главную заглушку, если нет превью
+			images: post.thumbnail ? [post.thumbnail] : ["/images/og-image.png"], 
 		},
 	};
 }

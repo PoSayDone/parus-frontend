@@ -35,9 +35,12 @@ export async function generateMetadata({
 			canonical: `/services/${handle}`,
 		},
 		openGraph: {
+			type: "website",                  // <--  тип
+			url: `/services/${handle}`,       // <--  динамический URL
 			title,
 			description,
-			images: service.thumbnail ? [service.thumbnail] : [],
+			// <-- Подставляем главную заглушку, если у услуги нет своей иконки
+			images: service.thumbnail ? [service.thumbnail] : ["/images/og-image.png"],
 		},
 	};
 }
