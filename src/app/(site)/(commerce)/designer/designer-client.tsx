@@ -31,8 +31,10 @@ const EXTRAS = [
   { id: "tile", name: "Облицовка плиткой" },
   { id: "chips", name: "Мраморная крошка" },
   { id: "fence", name: "Заливка основания / Бордюр" },
+  { id: "metal_fence", name: "Ограда (металл / ковка)" },
+  { id: "bench", name: "Лавка" },
+  { id: "table", name: "Столик" }, 
 ];
-
 const SERVICES = [
   { id: "inst_monument", name: "Установка памятника" },
   { id: "cut_tile", name: "Врезка в плитку" },
@@ -274,10 +276,9 @@ export default function DesignerClient() {
       {step === 4 && (
         <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
           <h2 className="text-3xl font-medium mb-6">Благоустройство участка</h2>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            
-            {/* Настройки слева */}
-            <div className="col-span-1 lg:col-span-2 space-y-4">
+         <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
+  {/* Настройки слева */}
+  <div className="col-span-1 lg:col-span-3 space-y-4">
               <p className="text-muted-foreground mb-4">Выберите дополнительные элементы, которые нужно учесть при расчете:</p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {EXTRAS.map((extra) => {
@@ -324,12 +325,12 @@ export default function DesignerClient() {
               </div>
             </div>
 
-          {/* Визуал справа */}
-            <div className="col-span-1 bg-muted/30 rounded-3xl p-6 border flex flex-col items-center justify-center min-h-[300px]">
+         {/* Визуал справа */}
+<div className="col-span-1 lg:col-span-2 bg-muted/30 rounded-3xl p-6 border flex flex-col items-center justify-center min-h-[450px]">
               <p className="text-sm text-muted-foreground mb-6 font-medium uppercase tracking-wider">Предварительный вид</p>
               
               {/* 3D Визуализация через CSS-маску */}
-              <div className="relative w-full max-w-[220px] aspect-[3/4] mx-auto mt-2 mb-8 flex flex-col items-center">
+<div className="relative w-full max-w-[220px] aspect-[3/4] mx-auto mt-2 mb-20 flex flex-col items-center">
                  
                  {/* 1. Слой с текстурой, обрезанный по силуэту 3D-модели */}
                  <div 
@@ -414,6 +415,49 @@ export default function DesignerClient() {
                        }}
                      />
                    </>
+                 )}
+				 {/* 5. ОГРАДА (с ручным позиционированием) */}
+                 {selections.extras.includes("metal_fence") && (
+                   <img
+                     src="/images/materials/ograda.png"
+                     alt="Ограда"
+                     className="absolute z-50 pointer-events-none max-w-none"
+                     style={{
+                       width: '155%', 
+                       
+                       left: '-22%',  
+                       
+                       top: '-15%',   
+                     }}
+                   />
+                 )}
+				 {/* 6. ЛАВОЧКА */}
+                 {selections.extras.includes("bench") && (
+                   <img
+                     src="/images/materials/lavka.png"
+                     alt="Лавочка"
+                     className="absolute z-[60] pointer-events-none max-w-none"
+                     style={{
+                  
+                       width: '120%', 
+                       left: '-30%',  
+                       top: '40%',   
+                     }}
+                   />
+                 )}
+				 {/* 7. СТОЛИК */}
+                 {selections.extras.includes("table") && (
+                   <img
+                     src="/images/materials/stolik.png"
+                     alt="Столик"
+                     className="absolute z-50 pointer-events-none max-w-none"
+                     style={{
+                       
+                       width: '120%', 
+                       left: '-30%',  
+                       top: '20%',   
+                     }}
+                   />
                  )}
               </div>
 
