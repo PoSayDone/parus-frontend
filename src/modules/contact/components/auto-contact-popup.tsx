@@ -17,7 +17,7 @@ export default function AutoContactPopup({
     
     if (hasSeenPopup) return; // Если показывали - умываем руки
 
-    // 2. Заводим таймер на 40 секунд (40000 мс)
+    // 2. Заводим таймер на 90 секунд (90000 мс)
     const timer = setTimeout(() => {
       
       // отправить отдельную цель в Метрику, 
@@ -31,7 +31,7 @@ export default function AutoContactPopup({
       
       // Записываем в память, чтобы больше не бесить пользователя
       sessionStorage.setItem("hasSeenAutoPopup", "true"); 
-    }, 40000);
+    }, 90000);
 
     // 3. Очищаем таймер, если человек ушел со страницы раньше 40 секунд
     return () => clearTimeout(timer);
