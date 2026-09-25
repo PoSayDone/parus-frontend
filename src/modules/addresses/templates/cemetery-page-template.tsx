@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getCemeteryByHandle } from "@/lib/data/addresses";
-import CemeteryMap from "@/modules/addresses/components/cemetery-map";
+import CemeteryMap from "@/modules/addresses/components/cemetery-map/cemetery-map-wrapper";
 import ContactSection from "@/modules/contact/components/contact-section";
 import { Suspense } from "react";
 import ServicesCarousel from "@/modules/landing/components/services-carousel";
@@ -29,7 +29,7 @@ const getStatusInfo = (note?: string | null) => {
   
   return null;
 };
-
+export const revalidate = 86400; // Кэшируем страницу на 24 часа
 export default async function CemeteryPageTemplate({
 	handle,
 }: {
@@ -245,6 +245,7 @@ export default async function CemeteryPageTemplate({
 											alt={`Схема кладбища ${cemetery.name}`}
 											fill
 											priority 
+											unoptimized={true}
 											className="object-contain p-2 transition-transform duration-500 group-hover:scale-105"
 											sizes="(max-width: 768px) 100vw, 50vw"
 										/>

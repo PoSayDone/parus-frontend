@@ -78,6 +78,7 @@ const HeaderContent = ({
           onClick={() => {
             setMenuState((prev) => !prev);
           }}
+		  aria-label={menuState ? "Закрыть меню" : "Открыть меню"}
         >
           {menuState ? <XIcon /> : <MenuIcon />}
         </Button>
