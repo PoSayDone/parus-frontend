@@ -64,21 +64,27 @@ export default function CemeteryMapClient({
   const { YMap, YMapDefaultSchemeLayer, YMapDefaultFeaturesLayer, YMapMarker } = modules;
 
   return (
-    <div ref={containerRef} className="w-full h-full">
-      <YMap
-        className="w-full h-full"
-        mode="vector"
-        location={{ center, zoom: 14 }}
-      >
-        <YMapDefaultSchemeLayer />
-        <YMapDefaultFeaturesLayer />
-        <YMapMarker coordinates={center}>
-          <span
-            className="block size-4 rounded-full border-2 border-white bg-primary shadow-md"
-            aria-hidden
-          />
-        </YMapMarker>
-      </YMap>
+    // Главная обертка: ограничивает видимую область и скрывает все, что выходит за ее пределы
+    <div ref={containerRef} className="w-full h-full overflow-hidden relative">
+      
+      {/* Внутренний контейнер: искусственно увеличиваем его высоту на 130px */}
+      <div className="w-full absolute top-0 left-0" style={{ height: "calc(100% + 130px)" }}>
+        <YMap
+          className="w-full h-full"
+          mode="vector"
+          location={{ center, zoom: 14 }}
+        >
+          <YMapDefaultSchemeLayer />
+          <YMapDefaultFeaturesLayer />
+          <YMapMarker coordinates={center}>
+            <span
+              className="block size-4 rounded-full border-2 border-white bg-primary shadow-md"
+              aria-hidden
+            />
+          </YMapMarker>
+        </YMap>
+      </div>
+
     </div>
   );
 }
