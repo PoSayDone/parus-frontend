@@ -38,7 +38,7 @@ export async function generateMetadata({
 	const description = cemetery.metaDescription || `Информация о кладбище «${cemetery.name}» в г. Пермь: точный адрес, статус захоронений, список документов и схема проезда. Помощь в организации похорон от агентства «Парус».`;
 	
 	// 3. Абсолютные ссылки для правильной индексации и превью в мессенджерах
-	const SITE_URL = "https://parus-perm.ru"; // Базовый домен
+	const SITE_URL = "https://parus-ritual.ru"; // Базовый домен
 	const pageUrl = `${SITE_URL}/addresses/${handle}`;
 	
 	// Проверяем, является ли ссылка на картинку уже абсолютной (начинается с http)

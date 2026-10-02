@@ -63,7 +63,7 @@ export default async function CemeteryPageTemplate({
 		: "#";
 
 	// Данные для микроразметки хлебных крошек
-	const SITE_URL = "https://parus-perm.ru"; 
+	const SITE_URL = "https://parus-ritual.ru"; 
 	const PARENT_PAGE_URL = `${SITE_URL}/addresses`;
 	
 	const jsonLd = {

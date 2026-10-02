@@ -63,15 +63,17 @@ export default async function RootLayout({
   
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "LocalBusiness",
+    "@type": "FuneralHome",
     "name": "Парус",
     "address": {
       "@type": "PostalAddress",
       "streetAddress": address, 
       "addressLocality": "Пермь",
+      "postalCode": "614067",
       "addressCountry": "RU"
     },
     "telephone": phone,
+	"openingHours": "Mo-Su 00:00-23:59", // Добавили круглосуточный график
     "url": "https://parus-ritual.ru",
     "logo": "https://parus-ritual.ru/logo.svg",
     "image": "https://parus-ritual.ru/images/og-image.png",
