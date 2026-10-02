@@ -10,7 +10,8 @@ import { MenuIcon, Phone, XIcon, Search } from "lucide-react";
 import Link from "next/link";
 import { type Dispatch, type SetStateAction, useState, useEffect, Suspense } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
-import SearchBar from "@/components/ui/SearchBar";
+import dynamic from "next/dynamic";
+const SearchBar = dynamic(() => import("@/components/ui/SearchBar"), { ssr: false });
 
 const HeaderContent = ({
   menuState,
@@ -132,7 +133,7 @@ export default function Header({
     className?: string;
   }) => {
     return (
-      <Link href={href} onClick={() => setMenuState(false)}>
+     <Link href={href} onClick={() => setMenuState(false)} prefetch={false}>
         <li
           className={cn(
             buttonVariants({
@@ -219,10 +220,10 @@ export default function Header({
             <p className="text-sm uppercase tracking-wider text-gray-500 mb-2">
               Смотреть категории
             </p>
-            <Link href="/services" className="text-[rgb(29,27,26)] hover:opacity-70 text-lg flex items-center gap-3 transition-opacity">
+            <Link href="/services" prefetch={false} className="text-[rgb(29,27,26)] hover:opacity-70 text-lg flex items-center gap-3 transition-opacity">
               <span className="text-gray-400">→</span> Услуги
             </Link>
-            <Link href="/addresses" className="text-[rgb(29,27,26)] hover:opacity-70 text-lg flex items-center gap-3 transition-opacity">
+            <Link href="/addresses" prefetch={false} className="text-[rgb(29,27,26)] hover:opacity-70 text-lg flex items-center gap-3 transition-opacity">
               <span className="text-gray-400">→</span> Адреса и учреждения
             </Link>
           </div>

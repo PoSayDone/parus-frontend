@@ -1,6 +1,7 @@
 import Image from "next/image";
+import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Clock, MapPin, Phone, Navigation, ZoomIn } from "lucide-react";
+import { Clock, MapPin, Phone, Navigation, ZoomIn, ChevronRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -56,19 +57,82 @@ export default async function CemeteryPageTemplate({
 	const yandexRouteUrl = hasCoords 
 		? `https://yandex.ru/maps/?ll=${lng},${lat}&mode=routes&rtext=~${lat},${lng}&rtt=comparison&ruri=~&z=17` 
 		: "#";
+	
 	const twogisRouteUrl = hasCoords 
 		? `https://2gis.ru/perm/directions/points/|${lng}%2C${lat}` 
 		: "#";
 
+	// Данные для микроразметки хлебных крошек
+	const SITE_URL = "https://parus-perm.ru"; 
+	const PARENT_PAGE_URL = `${SITE_URL}/addresses`;
 	
+	const jsonLd = {
+		"@context": "https://schema.org",
+		"@type": "BreadcrumbList",
+		"itemListElement": [
+			{
+				"@type": "ListItem",
+				"position": 1,
+				"name": "Похоронное бюро",
+				"item": SITE_URL
+			},
+			{
+				"@type": "ListItem",
+				"position": 2,
+				"name": "Полезные адреса",
+				"item": PARENT_PAGE_URL
+			},
+			{
+				"@type": "ListItem",
+				"position": 3,
+				"name": `Кладбище «${cemetery.name}»`,
+				"item": `${PARENT_PAGE_URL}/${handle}`
+			}
+		]
+	};
 
 	return (
 		<div className="min-h-screen bg-background">
-		{/* Автоматическая форма помощи через 40 секунд (безопасная обертка) */}
+			{/* скрипт микроразметки BreadcrumbList */}
+			<script
+				type="application/ld+json"
+				dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+			/>
+
+			{/* Автоматическая форма помощи через 40 секунд (безопасная обертка) */}
 			<Suspense fallback={null}>
 				<AutoContactPopup service={`Помощь по кладбищу: ${cemetery.name}`} />
 			</Suspense>
+			
 			<div className="container mx-auto px-4 py-12 relative overflow-hidden">
+				
+				{/* Визуальные хлебные крошки для пользователей */}
+				<nav className="flex text-sm text-muted-foreground mb-8 overflow-x-auto whitespace-nowrap" aria-label="Breadcrumb">
+					<ol className="inline-flex items-center space-x-1 md:space-x-2">
+						<li className="inline-flex items-center">
+							<Link href="/" className="hover:text-foreground transition-colors">
+								Главная
+							</Link>
+						</li>
+						<li>
+							<div className="flex items-center">
+								<ChevronRight className="w-4 h-4 mx-1 opacity-50" />
+								<Link href="/addresses" className="hover:text-foreground transition-colors">
+									Полезные адреса
+								</Link>
+							</div>
+						</li>
+						<li>
+							<div className="flex items-center">
+								<ChevronRight className="w-4 h-4 mx-1 opacity-50" />
+								<span className="text-foreground font-medium" aria-current="page">
+									{cemetery.name}
+								</span>
+							</div>
+						</li>
+					</ol>
+				</nav>
+
 				<div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-12">
 					<div>
 						<div className="mb-6">
@@ -102,7 +166,9 @@ export default async function CemeteryPageTemplate({
 					{cemetery.cemeteryStatus && (
 						<Card className="gap-3">
 							<CardHeader className="flex flex-row items-center justify-between gap-2 space-y-0">
-								<CardTitle>Статус захоронений</CardTitle>
+								<h2 className="text-lg font-semibold leading-none tracking-tight">
+	Статус захоронений на сегодня
+</h2>
 								
 								{/* Вызываем функцию и сразу отрисовываем бейдж, если статус найден */}
 								{getStatusInfo(cemetery.cemeteryStatus) && (
@@ -125,7 +191,9 @@ export default async function CemeteryPageTemplate({
 					{hasDocuments && (
 						<Card className="gap-3">
 							<CardHeader className="flex flex-row flex-wrap items-center gap-2 min-w-0">
-								<CardTitle>Документы для захоронения</CardTitle>
+								<h2 className="text-lg font-semibold leading-none tracking-tight">
+	Необходимые документы для захоронения
+</h2>
 								{cemetery.cemeteryNote && (
 									<Badge className="max-w-full h-auto whitespace-normal text-left leading-tight py-1 px-3">
 										{cemetery.cemeteryNote}
@@ -165,13 +233,13 @@ export default async function CemeteryPageTemplate({
 				{(hasCoords || hasImages) && (
 					<div className="mb-12">
 						{/* Динамический заголовок */}
-						<p className="text-2xl font-medium text-foreground mb-6">
-							{hasCoords && hasImages 
-								? `Кладбище «${cemetery.name}»: расположение на карте и схема` 
-								: hasCoords 
-									? `Кладбище «${cemetery.name}»: расположение на карте` 
-									: `Кладбище «${cemetery.name}»: схема участков`}
-						</p>
+						<h2 className="text-2xl font-medium text-foreground mb-6">
+	{hasCoords && hasImages 
+		? `Как добраться до кладбища «${cemetery.name}» (карта и схема)` 
+		: hasCoords 
+			? `Как добраться до кладбища «${cemetery.name}» (карта)` 
+			: `Схема участков кладбища «${cemetery.name}»`}
+</h2>
 						
 						<div className="space-y-3 text-muted-foreground mb-8">
 							{cemetery.phone?.length ? (
