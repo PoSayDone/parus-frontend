@@ -267,12 +267,19 @@ export default async function ServicePageTemplate({
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-12">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <CheckCircle2 className="h-5 w-5 text-primary" />
-                {handle === "ustanovka-pamyatnikov" 
-                  ? "Сколько этапов включает услуга" 
-                  : "Что включает услуга"}
-              </CardTitle>
+              <CardTitle>
+				  <h2 className="flex items-center gap-2">
+					<CheckCircle2
+					  className="h-5 w-5 text-primary shrink-0"
+					  aria-hidden="true"
+					/>
+					{handle === "cremation"
+					  ? "Что мы организуем"
+					  : handle === "ustanovka-pamyatnikov"
+						? "Сколько этапов включает услуга"
+						: "Что включает услуга"}
+				  </h2>
+				</CardTitle>
             </CardHeader>
             <CardContent>
               <ul className="space-y-3">
@@ -288,9 +295,17 @@ export default async function ServicePageTemplate({
 
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Star className="h-5 w-5 text-primary" />В стоимость входит
-              </CardTitle>
+              <CardTitle>
+				  <h2 className="flex items-center gap-2">
+					<Star
+					  className="h-5 w-5 text-primary shrink-0"
+					  aria-hidden="true"
+					/>
+					{handle === "cremation"
+					  ? "Что входит в стоимость кремации"
+					  : "В стоимость входит"}
+				  </h2>
+				</CardTitle>
             </CardHeader>
             <CardContent>
               <ul className="space-y-3">

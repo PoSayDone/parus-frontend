@@ -22,15 +22,23 @@ export async function generateMetadata({
 		notFound();
 	}
 
-	const title = (service.metaTitle || service.title) + " - Парус";
+	const baseTitle = service.metaTitle?.trim() || service.title.trim();
+
+const hasBrandSuffix = /(?:^|[\s|—–-])Парус\s*$/iu.test(baseTitle);
+
+const title = hasBrandSuffix
+	? baseTitle
+	: `${baseTitle} - Парус`;
 	const description =
 		service.metaDescription ||
 		service.shortDescription ||
 		service.title;
 
 	return {
-		title,
-		description,
+	title: {
+		absolute: title,
+	},
+	description,
 		alternates: {
 			canonical: `/services/${handle}`,
 		},

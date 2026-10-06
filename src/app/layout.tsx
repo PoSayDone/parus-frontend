@@ -83,7 +83,7 @@ export default async function RootLayout({
     <html lang="ru" suppressHydrationWarning>
       <body className={`${golos.className} antialiased`}>
 	  <ContactModalProvider />
-	  <PhoneClickTracker /> {/* <-- Добавить сюда */}
+	  <PhoneClickTracker /> 
 	  <Toaster />
 	  {children}
 		<script
