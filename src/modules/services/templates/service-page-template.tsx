@@ -350,14 +350,24 @@ export default async function ServicePageTemplate({
 })()}
 		{/* Нижнее описание */}
 			{bottomDescription && (
-			  <div className="mt-12">
-				<div 
-				  
-				  className="text-muted-foreground leading-relaxed max-w-none prose prose-slate"
-				  dangerouslySetInnerHTML={{ __html: bottomDescription }}
-				/>
-			  </div>
-			)}
+  <div className="mt-12">
+    <div
+      className="
+        text-muted-foreground leading-relaxed max-w-4xl
+        [&_h2]:mt-10 [&_h2]:mb-4
+        [&_h2]:text-2xl [&_h2]:font-medium
+        [&_h2]:text-foreground
+        [&>h2:first-child]:mt-0
+        [&_p]:mb-4
+        [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:my-5
+        [&_ol]:list-decimal [&_ol]:pl-6 [&_ol]:my-5
+        [&_li]:my-2
+        [&_a]:underline [&_a]:text-primary
+      "
+      dangerouslySetInnerHTML={{ __html: bottomDescription }}
+    />
+  </div>
+)}
         {/* Блок: Смотрите также */}
         <div className="mb-20 mt-16 border-t pt-16">
           <div className="flex items-center justify-between mb-8">
