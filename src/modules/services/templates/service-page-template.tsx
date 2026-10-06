@@ -350,7 +350,10 @@ export default async function ServicePageTemplate({
 })()}
 		{/* Нижнее описание */}
 			{bottomDescription && (
-  <div className="mt-12">
+  <div
+  className="mt-12"
+  data-template-version="services-spacing-v2"
+>
     <div
       className="
         text-muted-foreground leading-relaxed max-w-4xl
