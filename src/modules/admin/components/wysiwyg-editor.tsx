@@ -70,7 +70,8 @@ export default function WysiwygEditor({
           containerProps={{
             className: "rsw-editor border-0 rounded-none",
           }}
-          className="rsw-ce p-3"
+          // Добавили prose, чтобы редактор понимал списки, заголовки и отступы
+          className="rsw-ce p-3 prose prose-slate max-w-none [&_ul]:list-disc [&_ol]:list-decimal"
           style={{ minHeight }}
         />
       </div>
