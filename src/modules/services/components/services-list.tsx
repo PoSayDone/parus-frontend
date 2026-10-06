@@ -18,7 +18,13 @@ export default async function ServicesList({
 	return (
 		<div className={cn("flex gap-3", className)}>
 			{services.map((service) => (
-				<ServiceCard key={service.id} service={service} />
+				<ServiceCard
+	key={service.id}
+	service={{
+		...service,
+		title: service.title.replace(/\s+в\s+Перми\s*$/iu, ""),
+	}}
+/>
 			))}
 		</div>
 	);
