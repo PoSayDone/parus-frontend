@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import {
   Bold,
+  Code, // <-- Добавили иконку кода
   Eraser,
   Italic,
   Link as LinkIcon,
@@ -59,6 +60,8 @@ export default function WysiwygEditor({
           <BtnLink />
           <BtnUndo />
           <BtnRedo />
+          <div className="flex-1" /> {/* Оттолкнет кнопку HTML в правый край */}
+          <BtnToggleHtml />
         </Toolbar>
         <Editor
           value={value}
@@ -128,6 +131,32 @@ const BtnLink = createButton(
     }
   },
 );
+
+function BtnToggleHtml(props: HTMLAttributes<HTMLButtonElement>) {
+  const editorState = useEditorState();
+
+  return (
+    <Button
+      type="button"
+      variant={editorState.htmlMode ? "default" : "ghost"}
+      size="sm"
+      className="h-8 w-8 p-0 rounded-md"
+      data-active={editorState.htmlMode}
+      onClick={(e) => {
+        e.preventDefault();
+        // Переключаем встроенное состояние htmlMode
+        if ('update' in editorState && typeof editorState.update === 'function') {
+          editorState.update({ htmlMode: !editorState.htmlMode });
+        }
+      }}
+      tabIndex={-1}
+      title="Редактировать HTML код"
+      {...props}
+    >
+      <Code className="size-4" />
+    </Button>
+  );
+}
 
 function createButton(
   title: string,
