@@ -22,13 +22,19 @@ const Question = ({
   paragraph: React.ReactNode;
 }) => {
   return (
-    <AccordionItem value={value} className="border-none!">
+    <AccordionItem
+  value={value}
+  className="border-none! group/faq"
+>
       <AccordionTrigger className="bg-secondary-container py-6 px-8 rounded-2xl w-full flex justify-between text-left">
         <TypographySpan className="text-xl">{title}</TypographySpan>
       </AccordionTrigger>
-      <AccordionContent className="bg-primary text-on-primary text-start p-8 rounded-2xl mt-2">
-        <TypographyP className="text-lg">{paragraph}</TypographyP>
-      </AccordionContent>
+      <AccordionContent
+  forceMount
+  className="bg-primary text-on-primary text-start p-8 rounded-2xl mt-2 group-data-[state=closed]/faq:hidden"
+>
+  <TypographyP className="text-lg">{paragraph}</TypographyP>
+</AccordionContent>
     </AccordionItem>
   );
 };
@@ -107,7 +113,9 @@ export default function QnA({
     >
 	<script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+        dangerouslySetInnerHTML={{
+  __html: JSON.stringify(faqJsonLd).replace(/</g, "\\u003c"),
+}}
       />
       <Accordion
         type="single"
