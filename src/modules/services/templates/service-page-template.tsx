@@ -276,7 +276,9 @@ export default async function ServicePageTemplate({
 					{handle === "cremation"
 					  ? "Что мы организуем"
 					  : handle === "ustanovka-pamyatnikov"
-						? "Сколько этапов включает услуга"
+						? "Этапы установки"
+						: handle === "blagoustrojstvo-mogil"
+						? "Какие работы можно заказать"
 						: "Что включает услуга"}
 				  </h2>
 				</CardTitle>
@@ -415,8 +417,8 @@ export default async function ServicePageTemplate({
 				  )}
 				  
 				  <p className="text-lg font-medium text-white leading-tight">
-					{item.title}
-				  </p>
+  {item.title.replace(/\s+в\s+Перми\s*$/iu, "")}
+</p>
 				  
 				  {/* Краткое описание скрыто по умолчанию, появляется при наведении */}
 				  <p className="text-gray-300 text-xs line-clamp-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -444,18 +446,26 @@ export default async function ServicePageTemplate({
 		 title={
     handle === "izgotovlenie-pamyatnikov"
       ? "Рассчитать стоимость заказа"
+	  : handle === "ustanovka-pamyatnikov"
+	  ? "Уточнить стоимость и дату установки"
+	  : handle === "blagoustrojstvo-mogil"
+	  ? "Рассчитать стоимость работ"
       : undefined
   }
   buttonText={
     handle === "izgotovlenie-pamyatnikov"
       ? "Получить расчёт"
+	  : handle === "ustanovka-pamyatnikov"
+	  ? "Получить расчёт"
+	  : handle === "blagoustrojstvo-mogil"
+	  ? "Получить расчёт"
       : undefined
   }
           description={
             handle === "ustanovka-pamyatnikov"
-              ? "Свяжитесь с нами для подробной консультации. Мы можем поставлять все необходимые элементы прямо на кладбище. Мы работаем круглосуточно и готовы помочь в любое время."
+              ? "Сообщите кладбище, размеры и материал памятника. Мы уточним необходимые работы, рассчитаем стоимость и согласуем дату монтажа."
               : handle === "blagoustrojstvo-mogil"
-              ? "Свяжитесь с нами для получения консультации и расчета. Мы профессионально выполним все работы и возьмем на себя обустройство участка на любом кладбище Перми. Работаем круглосуточно."
+              ? "Сообщите расположение захоронения и какие работы нужны. Мы согласуем перечень, стоимость и сроки. Заказ можно оформить из другого города."
               : handle === "izgotovlenie-pamyatnikov"
 			  ? "Поможем выбрать материал, размеры и оформление. Свяжитесь с нами для бесплатной консультации и расчёта стоимости изготовления, доставки и установки."
 			  : undefined
