@@ -4,13 +4,21 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import type { SortOptions } from "@/modules/store/components/refinement-list/sort-products";
 import type { Category } from "@/types/admin";
+import { getProductFilterOptions } from "@/lib/data/products";
+import {
+	readFilterParam,
+	filterValueSlug,
+} from "@/lib/product-filters";
 
 type Props = {
 	params: Promise<{ category: string[] }>;
 	searchParams: Promise<{
-		page?: string;
-		sortBy?: SortOptions;
-	}>;
+	page?: string;
+	sortBy?: SortOptions;
+	color?: string | string[];
+	flower?: string | string[];
+	military?: string | string[];
+}>;
 };
 
 export async function generateStaticParams() {
@@ -64,12 +72,45 @@ export default async function CategoryPage(props: Props) {
 	if (!productCategory) {
 		notFound();
 	}
+	const filterOptions = await getProductFilterOptions(productCategory.id);
+
+const resolveFilterValues = (
+	param: string | string[] | undefined,
+	options: string[],
+): string[] => {
+	return readFilterParam(param).map((value) => {
+		return (
+			options.find(
+				(option) =>
+					option === value ||
+					filterValueSlug(option) === value,
+			) ?? value
+		);
+	});
+};
+
+const filters = {
+	colors: resolveFilterValues(
+		searchParams.color,
+		filterOptions.colors,
+	),
+	flowers: resolveFilterValues(
+		searchParams.flower,
+		filterOptions.flowers,
+	),
+	military: resolveFilterValues(
+		searchParams.military,
+		filterOptions.military,
+	),
+};
 
 	return (
 		<CategoryTemplate
-			category={productCategory as Category}
-			page={page}
-			sortBy={sortBy}
-		/>
+	category={productCategory as Category}
+	page={page}
+	sortBy={sortBy}
+	filters={filters}
+	filterOptions={filterOptions}
+/>
 	);
 }

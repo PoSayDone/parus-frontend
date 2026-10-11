@@ -10,6 +10,9 @@ import SkeletonRelatedProducts from "@modules/skeletons/templates/skeleton-relat
 import { notFound } from "next/navigation";
 import type { StoreProduct } from "@/types/store";
 import MobileActions from "../components/product-actions/mobile-actions";
+import Breadcrumbs, {
+	type BreadcrumbItem,
+} from "@/components/ui/breadcrumbs";
 
 type ProductTemplateProps = {
 	product: StoreProduct;
@@ -19,9 +22,28 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({ product }) => {
 	if (!product || !product.id) {
 		return notFound();
 	}
+	const category = product.categories?.find(
+	(item) => item.handle && item.name
+);
 
+const breadcrumbItems: BreadcrumbItem[] = [
+	{ label: "Каталог", href: "/store" },
+	...(category
+		? [{
+				label: category.name,
+				href: `/categories/${category.handle}`,
+			}]
+		: []),
+	{
+		label: product.title,
+		href: `/products/${product.handle}`,
+	},
+];
 	return (
 		<>
+			<div className="content-container pt-6 max-w-[1500px] w-full mx-auto">
+				<Breadcrumbs items={breadcrumbItems} />
+			</div>
 			<div
 				className="content-container flex flex-col sm:flex-row sm:items-start py-6 relative max-w-[1500px] w-full mx-auto sm:gap-x-12"
 				data-testid="product-container"

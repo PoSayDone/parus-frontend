@@ -2,20 +2,28 @@ import SkeletonProductGrid from "@modules/skeletons/templates/skeleton-product-g
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
-import { Input } from "@/components/ui/input";
-import RefinementList from "@/modules/store/components/refinement-list";
+import Breadcrumbs from "@/components/ui/breadcrumbs";
 import type { SortOptions } from "@/modules/store/components/refinement-list/sort-products";
 import PaginatedProducts from "@/modules/store/templates/paginated-products";
 import type { Category } from "@/types/admin";
+import CharacteristicFilters from "../components/characteristic-filters";
+import type {
+	ProductFilters,
+	ProductFilterOptions,
+} from "@/lib/product-filters";
 
 export default function CategoryTemplate({
 	category,
 	sortBy,
 	page,
+	filters = { colors: [], flowers: [], military: [] },
+	filterOptions = { colors: [], flowers: [], military: [] },
 }: {
 	category: Category;
 	sortBy?: SortOptions;
 	page?: string;
+	filters?: ProductFilters;
+	filterOptions?: ProductFilterOptions;
 }) {
 	const pageNumber = page ? parseInt(page, 10) : 1;
 	const sort = sortBy || "created_at";
@@ -35,23 +43,45 @@ export default function CategoryTemplate({
 
 	return (
 		<div className="w-full">
-			<div className="flex flex-row mb-4 gap-4 text-3xl sr-only">
-				{parents?.map((parent) => (
-						<span key={parent.id} className="text-ui-fg-subtle">
-							<Link
-								className="mr-4 hover:text-black"
-								href={`/categories/${parent.handle}`}
-								data-testid="sort-by-link"
-							>
-								{parent.name}
-							</Link>
-							/
-						</span>
-					))}
-				<h1 className={"text-4xl"} data-testid="category-page-title">
-					{category.name}
-				</h1>
-			</div>
+		<Breadcrumbs
+	items={[
+		{ label: "Каталог", href: "/store" },
+		...[...parents].reverse().map((parent) => ({
+			label: parent.name,
+			href: `/categories/${parent.handle}`,
+		})),
+		{
+			label: category.name,
+			href: `/categories/${category.handle}`,
+		},
+	]}
+/>
+			<div className="mb-6">
+	{parents.length > 0 && (
+		<div className="mb-3 flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
+			{[...parents].reverse().map((parent) => (
+				<span key={parent.id}>
+					<Link
+						href={`/categories/${parent.handle}`}
+						className="hover:text-primary"
+					>
+						{parent.name}
+					</Link>
+					<span className="ml-2" aria-hidden="true">
+						/
+					</span>
+				</span>
+			))}
+		</div>
+	)}
+
+	<h1
+		className="text-3xl font-medium text-foreground md:text-4xl"
+		data-testid="category-page-title"
+	>
+		{category.name}
+	</h1>
+</div>
 			{category.description && (
 				<div className="mb-4 text-base-regular">
 					<p>{category.description}</p>
@@ -70,23 +100,30 @@ export default function CategoryTemplate({
 					</ul>
 				</div>
 			)}
-			<div className="flex items-center gap-2 mb-4">
-				<Input placeholder="Поиск..." className="md:max-w-2/5" />
-				<RefinementList sortBy={sort} data-testid="sort-by-container" />
-			</div>
-			<Suspense
-				fallback={
-					<SkeletonProductGrid
-						numberOfProducts={category.products?.length ?? 8}
-					/>
-				}
-			>
-				<PaginatedProducts
-					sortBy={sort}
-					page={pageNumber}
-					categoryId={category.id}
+					
+
+		<CharacteristicFilters
+			key={JSON.stringify([category.handle, sort, filters])}
+			categoryHandle={category.handle}
+			sortBy={sort}
+			filters={filters}
+			options={filterOptions}
+		/>
+
+		<Suspense
+			fallback={
+				<SkeletonProductGrid
+					numberOfProducts={category.products?.length ?? 8}
 				/>
-			</Suspense>
-		</div>
-	);
+			}
+		>
+			<PaginatedProducts
+				sortBy={sort}
+				page={pageNumber}
+				categoryId={category.id}
+				filters={filters}
+			/>
+		</Suspense>
+	</div>
+);
 }

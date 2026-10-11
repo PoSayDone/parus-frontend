@@ -1,6 +1,4 @@
-import { listCategories } from "@/lib/data/categories";
 import { getSiteSettings } from "@/lib/data/site-settings";
-import Categories from "@/modules/store/components/categories";
 import { redirect } from "next/navigation";
 
 export default async function StoreLayout({
@@ -15,16 +13,11 @@ export default async function StoreLayout({
 		redirect("/");
 	}
 
-	const {
-		response: { data: categories },
-	} = await listCategories({ queryParams: { limit: 40 } });
-
 	return (
 		<div
-			className="flex flex-col w-full gap-4"
+			className="flex w-full flex-col"
 			data-testid="category-container"
 		>
-			<Categories categories={categories} />
 			{children}
 		</div>
 	);

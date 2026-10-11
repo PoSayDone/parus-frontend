@@ -5,6 +5,11 @@ import type { SortOptions } from "@modules/store/components/refinement-list/sort
 import type { Prisma } from "@prisma/client";
 import type { Product } from "@/types/admin";
 import { revalidateCategories } from "./categories";
+import {
+	collectFilterOptions,
+	matchesProductFilters,
+	type ProductFilters,
+} from "@/lib/product-filters";
 
 export const listProducts = async ({
 	page = 1,
@@ -18,6 +23,7 @@ export const listProducts = async ({
 		category_id?: string;
 		handle?: string;
 		q?: string;
+		filters?: ProductFilters;
 		[key: string]: any;
 	};
 	sortBy?: SortOptions;
@@ -77,7 +83,40 @@ export const listProducts = async ({
 	if (!queryParams?.includeInactive) {
 		where.active = true;
 	}
+	
+	const filters = queryParams?.filters;
 
+if (
+	filters &&
+	(filters.colors.length ||
+		filters.flowers.length ||
+		filters.military.length)
+) {
+	// Получаем только данные, необходимые для проверки характеристик.
+	const candidates = await prisma.product.findMany({
+		where,
+		select: {
+			id: true,
+			characteristics: {
+				select: {
+					key: true,
+					value: true,
+				},
+			},
+			categories: {
+				select: {
+					handle: true,
+				},
+			},
+		},
+	});
+
+	const matchingIds = candidates
+		.filter((product) => matchesProductFilters(product, filters))
+		.map((product) => product.id);
+
+	where.id = { in: matchingIds };
+}
 	const [products, count] = await Promise.all([
 		prisma.product.findMany({
 			where,
@@ -237,4 +276,30 @@ export const deleteProduct = async (handle: string) => {
 
 	await revalidateCategories();
 	return product;
+};
+
+export const getProductFilterOptions = async (categoryId: string) => {
+	const products = await prisma.product.findMany({
+		where: {
+			active: true,
+			categories: {
+				some: { id: categoryId },
+			},
+		},
+		select: {
+			characteristics: {
+				select: {
+					key: true,
+					value: true,
+				},
+			},
+			categories: {
+				select: {
+					handle: true,
+				},
+			},
+		},
+	});
+
+	return collectFilterOptions(products);
 };

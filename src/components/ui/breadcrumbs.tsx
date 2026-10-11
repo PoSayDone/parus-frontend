@@ -43,7 +43,9 @@ export default function Breadcrumbs({ items }: { items: BreadcrumbItem[] }) {
     <nav aria-label="Breadcrumb" className="mb-6">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{
+	__html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
+}}
       />
       
       <ol className="flex items-center space-x-2 text-sm text-muted-foreground">

@@ -6,9 +6,15 @@ type PriceProduct = {
 export default function ProductPrice({ product }: { product: PriceProduct }) {
 	const selectedPrice = {
 		calculated_price_number: product.price,
-		calculated_price: `${product.price.toFixed(2)} ₽`,
+		calculated_price: `${product.price.toLocaleString("ru-RU", {
+	minimumFractionDigits: 0,
+	maximumFractionDigits: 0,
+})} ₽`,
 		original_price_number: product.price,
-		original_price: `${product.price.toFixed(2)} ₽`,
+		original_price: `${product.price.toLocaleString("ru-RU", {
+	minimumFractionDigits: 0,
+	maximumFractionDigits: 0,
+})} ₽`,
 		currency_code: "RUB",
 		price_type: "default",
 		percentage_diff: "0",
