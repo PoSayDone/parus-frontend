@@ -53,3 +53,7 @@ jobs:
             S3_REGION=${{ secrets.S3_REGION }}
             S3_BUCKET=${{ secrets.S3_BUCKET }}
             S3_ENDPOINT=${{ secrets.S3_ENDPOINT }}
+              - name: Deploy application
+        env:
+          DEPLOY_URL: ${{ secrets.DEPLOY_URL }}
+        run: curl --fail-with-body --show-error --silent "$DEPLOY_URL"
