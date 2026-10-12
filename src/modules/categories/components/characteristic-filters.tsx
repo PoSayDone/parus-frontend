@@ -45,7 +45,9 @@ export default function CharacteristicFilters({
 			name: "military",
 			key: "military" as const,
 			placeholder: "Все товары",
-			values: options.military,
+			values: options.military.includes("да")
+				? options.military
+				: [],
 		},
 	];
 
