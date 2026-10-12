@@ -3,6 +3,11 @@ name: Build Docker images
 on:
   push:
     branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
 
 jobs:
   build-and-push-dockerfile-image:
@@ -12,12 +17,18 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Log in to Docker Hub
+      - name: Prepare image name
+        id: image
+        shell: bash
+        run: |
+          echo "name=ghcr.io/${GITHUB_REPOSITORY,,}" >> "$GITHUB_OUTPUT"
+
+      - name: Log in to GitHub Container Registry
         uses: docker/login-action@v2
         with:
-          registry: cr.yandex
-          username: ${{ secrets.YANDEX_USERNAME }}
-          password: ${{ secrets.YANDEX_TOKEN }}
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
@@ -26,7 +37,10 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: |
-            cr.yandex/crps3cqv4rgnku2mtmdf/parus-frontend:latest
+            ${{ steps.image.outputs.name }}:latest
+            ${{ steps.image.outputs.name }}:${{ github.sha }}
+          labels: |
+            org.opencontainers.image.source=https://github.com/${{ github.repository }}
           platforms: linux/amd64
           build-args: |
             NEXT_PUBLIC_DEFAULT_REGION=ru
@@ -39,6 +53,3 @@ jobs:
             S3_REGION=${{ secrets.S3_REGION }}
             S3_BUCKET=${{ secrets.S3_BUCKET }}
             S3_ENDPOINT=${{ secrets.S3_ENDPOINT }}
-
-      - name: Call API after Docker push
-        run: curl "${{ secrets.DEPLOY_URL }}"
