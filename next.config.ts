@@ -42,6 +42,10 @@ const nextConfig: NextConfig = {
 				protocol: "https",
 				hostname: "storage.yandexcloud.net",
 			},
+			{
+				protocol: "https",
+				hostname: "d5aa363e-a26b-4d65-8310-b63e26f43c43.selstorage.ru",
+			},
 		],
 	},
 	experimental: {
