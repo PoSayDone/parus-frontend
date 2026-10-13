@@ -26,14 +26,14 @@ const Question = ({
   value={value}
   className="border-none! group/faq"
 >
-      <AccordionTrigger className="bg-secondary-container py-6 px-8 rounded-2xl w-full flex justify-between text-left">
-        <TypographySpan className="text-xl">{title}</TypographySpan>
+      <AccordionTrigger className="bg-secondary-container py-5 px-6 rounded-3xl w-full flex justify-between items-center text-left hover:no-underline hover:bg-secondary-container/70 transition-colors [&>svg]:size-5 [&>svg]:translate-y-0">
+        <TypographySpan className="text-lg lg:text-xl">{title}</TypographySpan>
       </AccordionTrigger>
       <AccordionContent
   forceMount
-  className="bg-primary text-on-primary text-start p-8 rounded-2xl mt-2 group-data-[state=closed]/faq:hidden"
+  className="bg-primary text-on-primary text-start p-5 rounded-3xl mt-2 group-data-[state=closed]/faq:hidden"
 >
-  <TypographyP className="text-lg">{paragraph}</TypographyP>
+  <TypographyP className="max-w-3xl">{paragraph}</TypographyP>
 </AccordionContent>
     </AccordionItem>
   );
@@ -107,7 +107,6 @@ export default function QnA({
     <Section
       id="qna"
       className="container mx-auto"
-      textContainerClassName="lg:text-center lg:items-center"
       title={<TypographyPreline>{title}</TypographyPreline>}
       subtitle={<TypographyPreline>{subtitle}</TypographyPreline>}
     >
@@ -120,7 +119,7 @@ export default function QnA({
       <Accordion
         type="single"
         collapsible
-        className="flex flex-col gap-2 w-full max-w-300 mx-auto"
+        className="flex flex-col gap-2 w-full"
       >
         {resolvedQuestions.map((question, index) => (
           <Question

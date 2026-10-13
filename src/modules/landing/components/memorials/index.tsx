@@ -97,10 +97,9 @@ export default function Memorials({
   return (
     <Section
       id="memorials"
-      className="container mx-auto py-12 lg:py-14"
-      textContainerClassName="m-0 p-0"
+      className="container mx-auto"
     >
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 lg:items-center">
         <div className="order-1 lg:order-2">
           <div className="relative w-full max-w-145 mx-auto aspect-6/5 rounded-3xl overflow-visible">
             <div className="absolute inset-0 pointer-events-none">
@@ -124,24 +123,26 @@ export default function Memorials({
           </div>
         </div>
 
-        <div className="order-2 lg:order-1 flex flex-col justify-between gap-5 text-left z-1 mt-4 lg:mt-0">
+        <div className="order-2 lg:order-1 flex flex-col z-1">
           <SectionHeading title={title} subtitle={subtitle} />
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {(features || []).map((feature, index) => (
               <Card
                 key={`${feature.title}-${index}`}
-                className="rounded-2xl py-4! md:py-6!"
+                className="py-6"
               >
-                <CardHeader className="px! md:px-6!">
+                <CardHeader>
                   <CardTitle>{feature.title}</CardTitle>
-                  <CardDescription>{feature.description}</CardDescription>
+                  <CardDescription>
+                    {feature.description}
+                  </CardDescription>
                 </CardHeader>
               </Card>
             ))}
           </div>
 
-          <div className="max-w-2xl flex flex-wrap items-center gap-3">
-            <ContactModalTrigger size="lg" className="mt-6">
+          <div className="max-w-2xl flex flex-wrap items-center gap-3 mt-6">
+            <ContactModalTrigger size="lg">
               {ctaLabel}
             </ContactModalTrigger>
             {detailsButtonLabel ? (
@@ -153,7 +154,7 @@ export default function Memorials({
                       size: "lg",
                       disabled: true,
                     }),
-                    "mt-6 pointer-events-none",
+                    "pointer-events-none",
                   )}
                   aria-disabled="true"
                 >
@@ -167,7 +168,6 @@ export default function Memorials({
                       variant: "outline",
                       size: "lg",
                     }),
-                    "mt-6",
                   )}
                 >
                   {detailsButtonLabel}
@@ -179,7 +179,7 @@ export default function Memorials({
       </div>
 	  {/* НОВЫЙ БЛОК: Выводим галерею, только если фото существуют */}
       {galleryImages.length > 0 && (
-        <div className="mt-16 md:mt-24 border-t border-border/40 pt-16">
+        <div className="mt-16 lg:mt-24">
           <ServiceGallery 
             images={galleryImages} 
             title="Производство памятников" // Это пойдет в alt="Производство памятников — фото 1"

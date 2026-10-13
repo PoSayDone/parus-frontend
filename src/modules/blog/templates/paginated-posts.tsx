@@ -1,5 +1,6 @@
 import { listPosts } from "@/lib/data/blog";
 import { Pagination } from "@modules/store/components/pagination";
+import ListPlaceholder from "@/modules/landing/components/list-placeholder";
 import { PostCard } from "../../posts/components/card";
 type BlogSortOptions = "created_at" | "views";
 
@@ -38,18 +39,14 @@ export default async function PaginatedPosts({
 
 	if (count === 0) {
 		return (
-			<div className="flex justify-center items-center h-full py-16">
-				<p className="text-lg">
-					На данный момент нет ни одной статьи, приходите позже
-				</p>
-			</div>
+			<ListPlaceholder text="Статей пока нет. Загляните позже." />
 		);
 	}
 
 	return (
 		<>
 			<ul
-				className="grid grid-cols-1 w-full sm:grid-cols-2 md:grid-cols-2  xl:grid-cols-3 gap-2 gap-y-4 lg:gap-4"
+				className="grid grid-cols-1 w-full md:grid-cols-2 xl:grid-cols-3 gap-x-4 gap-y-8"
 				data-testid="products-list"
 			>
 				{posts.map((p) => {

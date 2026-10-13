@@ -1,5 +1,7 @@
 import { Suspense } from "react";
 
+import { TypographyH1 } from "@/components/typography";
+import Breadcrumbs from "@/components/ui/breadcrumbs";
 import SkeletonBlogGrid from "@/modules/skeletons/templates/skeleton-blog-grid";
 import PaginatedPosts from "./paginated-posts";
 
@@ -16,12 +18,11 @@ const BlogTemplate = ({
   const sort = sortBy || "created_at";
 
   return (
-    <div className="w-full container mx-auto">
-      <div className="mb-6">
-        <h1 className="text-4xl" data-testid="store-page-title">
-          Статьи
-        </h1>
-      </div>
+    <div className="w-full">
+      <Breadcrumbs items={[{ label: "Статьи", href: "/blog" }]} />
+      <TypographyH1 className="page-header" data-testid="store-page-title">
+        Статьи
+      </TypographyH1>
       <Suspense fallback={<SkeletonBlogGrid />}>
         <PaginatedPosts sortBy={sort} page={pageNumber} />
       </Suspense>

@@ -41,17 +41,15 @@ const breadcrumbItems: BreadcrumbItem[] = [
 ];
 	return (
 		<>
-			<div className="content-container pt-6 max-w-[1500px] w-full mx-auto">
-				<Breadcrumbs items={breadcrumbItems} />
-			</div>
+			<Breadcrumbs items={breadcrumbItems} />
 			<div
-				className="content-container flex flex-col sm:flex-row sm:items-start py-6 relative max-w-[1500px] w-full mx-auto sm:gap-x-12"
+				className="flex flex-col sm:flex-row sm:items-start relative w-full sm:gap-x-12"
 				data-testid="product-container"
 			>
 				<div className="block w-full max-w-[600px] relative">
 					<ImageGallery images={product?.images || []} />
 				</div>
-				<div className="flex flex-col sm:sticky sm:top-22 sm:py-0 sm:max-w-[500px] w-full py-8 gap-y-6">
+				<div className="flex flex-col sm:sticky sm:top-22 sm:py-0 sm:max-w-[500px] w-full py-8 gap-y-8">
 					<ProductInfo product={product} />
 					<ProductTabs product={product} />
 				</div>
@@ -61,7 +59,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
 				<MobileActions product={product} />
 			</div>
 			<div
-				className="content-container my-16 sm:my-32 max-w-[1500px] w-full mx-auto"
+				className="mt-16 lg:mt-24 w-full pb-28 lg:pb-0"
 				data-testid="related-products-container"
 			>
 				<Suspense fallback={<SkeletonRelatedProducts />}>

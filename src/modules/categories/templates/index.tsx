@@ -1,4 +1,6 @@
 import SkeletonProductGrid from "@modules/skeletons/templates/skeleton-product-grid";
+import { TypographyH1 } from "@/components/typography";
+import { buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
@@ -56,43 +58,25 @@ export default function CategoryTemplate({
 		},
 	]}
 />
-			<div className="mb-6">
-	{parents.length > 0 && (
-		<div className="mb-3 flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
-			{[...parents].reverse().map((parent) => (
-				<span key={parent.id}>
-					<Link
-						href={`/categories/${parent.handle}`}
-						className="hover:text-primary"
-					>
-						{parent.name}
-					</Link>
-					<span className="ml-2" aria-hidden="true">
-						/
-					</span>
-				</span>
-			))}
-		</div>
-	)}
-
-	<h1
-		className="text-3xl font-medium text-foreground md:text-4xl"
-		data-testid="category-page-title"
-	>
+			<div className="page-header">
+	<TypographyH1 data-testid="category-page-title">
 		{category.name}
-	</h1>
+	</TypographyH1>
 </div>
 			{category.description && (
-				<div className="mb-4 text-base-regular">
+				<div className="mb-8 max-w-3xl text-lg text-muted-foreground text-pretty">
 					<p>{category.description}</p>
 				</div>
 			)}
 			{category.children && category.children.length > 0 && (
-				<div className="mb-4 text-base-large">
-					<ul className="grid grid-cols-1 gap-2">
+				<div className="mb-8">
+					<ul className="flex flex-wrap gap-2">
 						{category.children?.map((c) => (
 							<li key={c.id}>
-								<Link href={`/categories/${c.handle}`}>
+								<Link
+									href={`/categories/${c.handle}`}
+									className={buttonVariants({ variant: "outline", size: "sm" })}
+								>
 									{c.name}
 								</Link>
 							</li>

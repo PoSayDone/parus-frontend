@@ -32,27 +32,23 @@ const MobileActions: React.FC<MobileActionsProps> = ({ product }) => {
 				)}
 			>
 				<div
-					className="flex flex-col gap-y-3 justify-center items-center text-large-regular p-4 h-full w-full border-t z-[20]"
+					className="flex flex-col gap-y-3 justify-center items-center p-4 h-full w-full border-t"
 					data-testid="mobile-actions"
 				>
 					<div className="flex items-center gap-x-2">
-						<span data-testid="mobile-title">{product.title}</span>
-						<span>—</span>
+						<span className="text-muted-foreground" data-testid="mobile-title">
+							{product.title}
+						</span>
 						{price ? (
-							<div className="flex items-end gap-x-2 text-ui-fg-base">
+							<div className="flex items-end gap-x-2 font-medium">
 								{price.price_type === "sale" && (
 									<p>
-										<span className="line-through text-small-regular">
+										<span className="line-through text-sm">
 											{price.original_price}
 										</span>
 									</p>
 								)}
-								<span
-									className={cn({
-										"text-ui-fg-interactive":
-											price.price_type === "sale",
-									})}
-								>
+								<span>
 									{price.calculated_price}
 								</span>
 							</div>
@@ -61,7 +57,7 @@ const MobileActions: React.FC<MobileActionsProps> = ({ product }) => {
 						)}
 					</div>
 					<Button
-						onClick={() => handleContactClick()}
+						onClick={() => handleContactClick(`Товар: ${product.title}`)}
 						className="w-full"
 						data-testid="mobile-cart-button"
 					>

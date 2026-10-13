@@ -24,17 +24,10 @@ export default async function RelatedProducts({
 	}
 
 	return (
-		<div className="product-page-constraint">
-			<div className="flex flex-col items-center text-center mb-16">
-				<span className="text-base text-muted-foreground mb-6">
-					Похожие товары
-				</span>
-				<p className="text-2xl text-ui-fg-base max-w-lg font-medium">
-					Возможно, вам также понравятся эти&nbsp;товары
-				</p>
-			</div>
+		<div>
+			<h2 className="text-2xl lg:text-3xl font-medium mb-6">Похожие товары</h2>
 
-			<ul className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2 gap-y-4">
+			<ul className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-4 gap-y-8">
 				{products.map((product) => (
 					<li key={product.id}>
 						<ProductCard product={product} />

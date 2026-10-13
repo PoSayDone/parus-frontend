@@ -2,7 +2,7 @@ import AboutUs from "@/modules/landing/components/about-us";
 import WhatShouldIDo from "@/modules/landing/components/actions";
 import Cemeteries from "@/modules/landing/components/cemeteries";
 import Hero from "@/modules/landing/components/hero";
-import Interaction from "@/modules/landing/components/interaction";
+import Interaction from "@/modules/landing/components/interaction-server";
 import OurLocation from "@/modules/landing/components/location";
 import Memorials from "@/modules/landing/components/memorials";
 import Posts from "@/modules/landing/components/posts";

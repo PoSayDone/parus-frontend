@@ -2,6 +2,9 @@ import prisma from '../../../../prisma/client';
 import Link from 'next/link';
 import SearchBar from '@/components/ui/SearchBar'; 
 import { Metadata } from 'next';
+import { TypographyH1 } from '@/components/typography';
+import { Badge } from '@/components/ui/badge';
+import { buttonVariants } from '@/components/ui/button';
 
 export const metadata: Metadata = {
   title: 'Поиск по сайту | Парус',
@@ -52,7 +55,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
           ],
           active: true,
         },
-        select: { id: true, name: true, type: true, handle: true },
+        select: { id: true, name: true, type: true, handle: true, address: true },
       }),
       prisma.product.findMany({
         where: {
@@ -77,108 +80,125 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
     ]);
   }
 
-  const totalResults = services.length + addresses.length + products.length + posts.length;
-  const isSearchEmpty = !q || totalResults === 0;
+  const ADDRESS_TYPE_LABELS: Record<string, string> = {
+    cemetery: 'Кладбище',
+    morgue: 'Морг',
+    zags: 'ЗАГС',
+  };
+
+  const groups: {
+    title: string;
+    items: { id: string; title: string; href: string; description?: string | null; label?: string }[];
+  }[] = [
+    {
+      title: 'Услуги',
+      items: services.map((item) => ({
+        id: item.id,
+        title: item.title,
+        href: `/services/${item.handle}`,
+        description: item.shortDescription,
+      })),
+    },
+    {
+      title: 'Учреждения и адреса',
+      items: addresses.map((item) => ({
+        id: item.id,
+        title: item.name,
+        // Отдельные страницы есть только у кладбищ
+        href: item.type === 'cemetery' && item.handle ? `/addresses/${item.handle}` : '/addresses',
+        description: item.address,
+        label: ADDRESS_TYPE_LABELS[item.type],
+      })),
+    },
+    {
+      title: 'Товары',
+      items: products.map((item) => ({
+        id: item.id,
+        title: item.title,
+        href: `/products/${item.handle}`,
+      })),
+    },
+    {
+      title: 'Статьи',
+      items: posts.map((item) => ({
+        id: item.id,
+        title: item.title,
+        href: `/blog/post/${item.handle}`,
+      })),
+    },
+  ].filter((group) => group.items.length > 0);
+
+  const totalResults = groups.reduce((sum, group) => sum + group.items.length, 0);
 
   return (
-    // Класс min-h-[60vh] гарантирует, что блок займет минимум 60% высоты экрана, отталкивая футер вниз
-    <div className="container mx-auto px-4 py-10 min-h-[60vh]">
-      <h1 className="text-3xl font-bold mb-6">
-        {q ? `Результаты поиска по запросу: «${q}»` : 'Поиск по сайту'}
-      </h1>
+    <div className="container mx-auto px-4 page-pad min-h-[60vh]">
+      <TypographyH1 className="page-header">Поиск по сайту</TypographyH1>
 
-      {/* БЛОК ПУСТОЙ ВЫДАЧИ ИЛИ ОТСУТСТВИЯ ЗАПРОСА */}
-      {isSearchEmpty ? (
-        <div className="mt-8 flex flex-col gap-6">
-          <p className="text-lg text-gray-700">
-            К сожалению, мы не нашли ответ на ваш запрос. Вы можете повторить поиск или поискать нужную информацию в популярных разделах:
+      <div className="max-w-2xl">
+        <SearchBar defaultValue={q} key={q} />
+      </div>
+
+      {!q ? (
+        <p className="mt-8 text-lg text-muted-foreground">
+          Введите запрос, чтобы найти услуги, адреса, товары и статьи.
+        </p>
+      ) : totalResults === 0 ? (
+        <div className="mt-8 flex flex-col gap-4">
+          <p className="text-lg text-muted-foreground max-w-2xl">
+            По запросу «{q}» ничего не найдено. Попробуйте изменить запрос
+            или перейдите в один из разделов:
           </p>
-          
-          <div className="max-w-xl w-full">
-            <SearchBar />
-          </div>
-
-          <div className="flex gap-6 mt-4">
-            <Link href="/services" className="hover:underline font-medium">
+          <div className="flex flex-wrap gap-2">
+            <Link href="/services" className={buttonVariants({ variant: 'outline' })}>
               Услуги
             </Link>
-            <Link href="/addresses" className="hover:underline font-medium">
+            <Link href="/addresses" className={buttonVariants({ variant: 'outline' })}>
               Адреса
             </Link>
-            {/* <Link href="/store" className="hover:underline font-medium">
-              Каталог
-            </Link> */}
+            <Link href="/prices" className={buttonVariants({ variant: 'outline' })}>
+              Цены
+            </Link>
           </div>
         </div>
       ) : (
-        /* БЛОК С РЕЗУЛЬТАТАМИ ПОИСКА */
         <>
-          <p className="mb-8 text-gray-600">Найдено совпадений: {totalResults}</p>
+          <p className="mt-6 mb-8 lg:mb-12 text-muted-foreground">
+            По запросу «{q}» найдено: {totalResults}
+          </p>
 
-          <div className="flex flex-col gap-8">
-            {services.length > 0 && (
-              <section>
-                <p className="text-2xl font-semibold mb-4 border-b pb-2">Услуги</p>
-                <ul className="flex flex-col gap-3">
-                  {services.map((item) => (
+          <div className="flex flex-col gap-12 lg:gap-16">
+            {groups.map((group) => (
+              <section key={group.title}>
+                <h2 className="block-title">
+                  {group.title}{' '}
+                  <span className="text-muted-foreground">{group.items.length}</span>
+                </h2>
+                <ul className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                  {group.items.map((item) => (
                     <li key={item.id}>
-                      <Link href={`/services/${item.handle}`} className="text-blue-600 hover:underline text-lg">
-                        {item.title}
-                      </Link>
-                      {item.shortDescription && <p className="text-sm text-gray-600">{item.shortDescription}</p>}
-                    </li>
-                  ))}
-                </ul>
-              </section>
-            )}
-
-            {addresses.length > 0 && (
-              <section>
-                <p className="text-2xl font-semibold mb-4 border-b pb-2">Учреждения и адреса</p>
-                <ul className="flex flex-col gap-3">
-                  {addresses.map((item) => (
-                    <li key={item.id}>
-                      <Link href={`/${item.type}/${item.handle}`} className="text-blue-600 hover:underline text-lg">
-                        {item.name}
-                      </Link>
-                      <span className="ml-2 text-xs bg-gray-200 px-2 py-1 rounded text-gray-700">
-                        {item.type === 'cemetery' ? 'Кладбище' : item.type === 'morgue' ? 'Морг' : 'ЗАГС'}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </section>
-            )}
-
-            {products.length > 0 && (
-              <section>
-                <p className="text-2xl font-semibold mb-4 border-b pb-2">Товары</p>
-                <ul className="flex flex-col gap-3">
-                  {products.map((item) => (
-                    <li key={item.id}>
-                      <Link href={`/catalog/${item.handle}`} className="text-blue-600 hover:underline text-lg">
-                        {item.title}
+                      <Link
+                        href={item.href}
+                        className="flex h-full flex-col gap-1.5 rounded-3xl border bg-card p-6 transition-colors hover:border-primary/40"
+                      >
+                        <span className="flex items-start justify-between gap-3">
+                          <span className="text-lg font-medium leading-tight">{item.title}</span>
+                          {item.label && (
+                            <Badge variant="outline" className="rounded-full bg-background mt-0.5">
+                              {item.label}
+                            </Badge>
+                          )}
+                        </span>
+                        {item.description && (
+                          <span className="text-sm text-muted-foreground line-clamp-2">
+                            {item.description}
+                          </span>
+                        )}
                       </Link>
                     </li>
                   ))}
                 </ul>
               </section>
-            )}
-
-            {posts.length > 0 && (
-              <section>
-                <p className="text-2xl font-semibold mb-4 border-b pb-2">Статьи</p>
-                <ul className="flex flex-col gap-3">
-                  {posts.map((item) => (
-                    <li key={item.id}>
-                      <Link href={`/blog/${item.handle}`} className="text-blue-600 hover:underline text-lg">
-                        {item.title}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </section>
-            )}
+            ))}
           </div>
         </>
       )}

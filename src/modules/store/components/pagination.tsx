@@ -1,5 +1,6 @@
 "use client";
 
+import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
@@ -35,9 +36,16 @@ export function Pagination({
 	) => (
 		<button
 			key={p}
-			className={cn("txt-xlarge-plus text-ui-fg-muted", {
-				"text-ui-fg-base hover:text-ui-fg-subtle": isCurrent,
-			})}
+			type="button"
+			className={cn(
+				buttonVariants({
+					variant: isCurrent ? "default" : "ghost",
+					size: "icon",
+				}),
+				"disabled:opacity-100",
+			)}
+			aria-label={`Страница ${label}`}
+			aria-current={isCurrent ? "page" : undefined}
 			disabled={isCurrent}
 			onClick={() => handlePageChange(p)}
 		>
@@ -49,9 +57,10 @@ export function Pagination({
 	const renderEllipsis = (key: string) => (
 		<span
 			key={key}
-			className="txt-xlarge-plus text-ui-fg-muted items-center cursor-default"
+			className="flex size-[50px] items-end justify-center pb-3 text-muted-foreground cursor-default"
+			aria-hidden
 		>
-			...
+			…
 		</span>
 	);
 
@@ -117,10 +126,13 @@ export function Pagination({
 
 	// Render the component
 	return (
-		<div className="flex justify-center w-full mt-12">
-			<div className="flex gap-3 items-end" data-testid={dataTestid}>
+		<nav
+			className="flex justify-center w-full mt-8 lg:mt-12"
+			aria-label="Постраничная навигация"
+		>
+			<div className="flex flex-wrap gap-1 items-center" data-testid={dataTestid}>
 				{renderPageButtons()}
 			</div>
-		</div>
+		</nav>
 	);
 }

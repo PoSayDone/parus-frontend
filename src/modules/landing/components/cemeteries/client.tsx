@@ -52,7 +52,7 @@ export default function CemeteriesClient({
                     itemRefs.current[item.id] = node;
                   }}
                   className={cn(
-                    "rounded-xl px-3 py-3 pr-6 transition-colors leading-none w-max",
+                    "rounded-2xl px-3 py-3 pr-6 transition-colors leading-none w-max",
                     activeId === item.id && "bg-primary text-on-primary",
                   )}
                   onMouseEnter={() => {
@@ -63,7 +63,7 @@ export default function CemeteriesClient({
                   {item.handle ? (
                     <Link
                       href={`/addresses/${item.handle}`}
-                      className="hover:underline h-fit leading-none!"
+                      className="hover:underline h-fit leading-none"
                       onClick={() => {
                         hasInteracted.current = true;
                         setActiveId(item.id);
@@ -99,7 +99,7 @@ export default function CemeteriesClient({
                     <TypographySmall
                       className={cn(
                         "text-muted-foreground",
-                        "text-on-primary/70",
+                        activeId === item.id && "text-on-primary/70",
                       )}
                     >
                       Телефон: {item.phone.join(", ")}

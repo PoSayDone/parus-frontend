@@ -44,10 +44,10 @@ export const metadata: Metadata = {
   },
 };
 
+// Вариативный файл: на сайте используются только начертания 400 и 500
 const golos = Golos_Text({
-  weight: ["400", "500", "600", "700", "800", "900"],
-  style: ["normal"],
-  subsets: ["latin"],
+  subsets: ["cyrillic", "latin"],
+  variable: "--font-golos-text",
   display: "swap",
 });
 
@@ -80,8 +80,8 @@ export default async function RootLayout({
     "priceRange": "15000+ RUB"
   };
   return (
-    <html lang="ru" suppressHydrationWarning>
-      <body className={`${golos.className} antialiased`}>
+    <html lang="ru" className={golos.variable} suppressHydrationWarning>
+      <body className="font-sans antialiased">
 	  <ContactModalProvider />
 	  <PhoneClickTracker /> 
 	  <Toaster />

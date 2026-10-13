@@ -1,4 +1,5 @@
 import { Pagination } from "@modules/store/components/pagination";
+import ListPlaceholder from "@/modules/landing/components/list-placeholder";
 import type { SortOptions } from "@modules/store/components/refinement-list/sort-products";
 import { listProducts } from "@/lib/data/products";
 import { ProductCard } from "@/modules/products/components/card";
@@ -47,16 +48,14 @@ export default async function PaginatedProducts({
 
 	if (count === 0) {
 		return (
-			<div className="flex justify-center items-center h-full py-16">
-				<p className="text-lg">По заданным параметрам товаров не найдено. Попробуйте выбрать другие условия.</p>
-			</div>
+			<ListPlaceholder text="По заданным параметрам товаров не найдено. Попробуйте выбрать другие условия." />
 		);
 	}
 
 	return (
 		<>
 			<ul
-				className="grid grid-cols-2 w-full sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 gap-y-4"
+				className="grid grid-cols-2 w-full md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-4 gap-y-8"
 				data-testid="products-list"
 			>
 				{products.map((product) => (

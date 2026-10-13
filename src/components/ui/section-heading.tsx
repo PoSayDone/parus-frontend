@@ -28,7 +28,7 @@ export default function SectionHeading({
   return (
     <div
       className={cn(
-        "flex flex-col items-start text-start mb-8 gap-4",
+        "flex flex-col items-start text-start mb-6 lg:mb-8 gap-4",
         className,
       )}
     >

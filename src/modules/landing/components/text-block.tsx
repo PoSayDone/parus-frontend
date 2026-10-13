@@ -17,8 +17,8 @@ export default function TextBlock({
 		<Section
 			id={id}
 			title={title}
-			// Передаем новый класс через проп textContainerClassName (который в Section идет в SectionHeading)
-			  textContainerClassName="max-w-none w-full" 
+			className="container mx-auto"
+			textContainerClassName="max-w-3xl text-base lg:text-lg"
 			  subtitle={
 				text ? <TypographyPreline>{text}</TypographyPreline> : undefined
 			  }

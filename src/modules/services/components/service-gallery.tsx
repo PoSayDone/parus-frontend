@@ -43,25 +43,26 @@ export default function ServiceGallery({
   }, [selected, showNext, showPrev]);
 
   return (
-    <div className="mb-12">
-      <p className="text-2xl font-medium text-foreground mb-6">{heading}</p>
+    <div>
+      <h2 className="block-title">{heading}</h2>
       
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {images.map((image, index) => (
-          <div 
-            key={image + index} 
-            className="relative aspect-square cursor-pointer group rounded-lg overflow-hidden bg-secondary/20 border border-border" // Добавили фон и легкую рамку
+          <button
+            type="button"
+            key={image + index}
+            aria-label={`Открыть фото ${index + 1}`}
+            className="relative aspect-[4/5] cursor-pointer rounded-3xl overflow-hidden bg-card border outline-none transition-colors hover:border-primary/40 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50"
             onClick={() => setSelected({ src: image, index })}
           >
+            {/* Превью заполняет карточку целиком; фото без обрезки открывается по клику */}
             <img
               src={image || "/placeholder.svg"}
               alt={`${title} — фото ${index + 1}`}
-              // ИЗМЕНЕНИЕ: меняем object-cover на object-contain
-              // Это "впишет" фото целиком, не обрезая его
-              className="w-full h-full object-contain p-2 transition-transform duration-300 group-hover:scale-105"
+              className="absolute inset-0 w-full h-full object-cover"
               loading="lazy"
             />
-          </div>
+          </button>
         ))}
       </div>
 
@@ -85,7 +86,7 @@ export default function ServiceGallery({
             <div className="relative w-full h-full flex items-center justify-center p-4 md:px-16" onClick={(e) => e.stopPropagation()}>
               {/* Кнопки навигации и фото... (тут всё как было) */}
                {images.length > 1 && (
-                <button onClick={showPrev} className="absolute left-0 md:left-4 z-50 p-3 text-white/70 hover:text-white bg-black/20 hover:bg-black/40 rounded-full transition-all outline-none ring-offset-background focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+                <button onClick={showPrev} className="absolute left-0 md:left-4 z-50 p-3 text-white/70 hover:text-white bg-black/20 hover:bg-black/40 rounded-full transition-colors outline-none ring-offset-background focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
                   <ChevronLeft className="h-8 w-8 md:h-10 md:w-10" />
                 </button>
               )}
@@ -99,7 +100,7 @@ export default function ServiceGallery({
               />
 
               {images.length > 1 && (
-                <button onClick={showNext} className="absolute right-0 md:right-4 z-50 p-3 text-white/70 hover:text-white bg-black/20 hover:bg-black/40 rounded-full transition-all outline-none ring-offset-background focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+                <button onClick={showNext} className="absolute right-0 md:right-4 z-50 p-3 text-white/70 hover:text-white bg-black/20 hover:bg-black/40 rounded-full transition-colors outline-none ring-offset-background focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
                   <ChevronRight className="h-8 w-8 md:h-10 md:w-10" />
                 </button>
               )}

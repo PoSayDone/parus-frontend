@@ -54,12 +54,12 @@ const WhyUsCard = ({
   return (
     <Card
       className={cn(
-        `gap-0 w-full min-w-70 relative flex flex-col items-start justify-end flex-1 border border-primary shadow-sm bg-primary-container text-on-primary-container rounded-3xl`,
+        "gap-0 h-full justify-end border-primary bg-primary-container text-on-primary-container",
         className,
       )}
     >
       <CardHeader className="text-start w-full">
-        <Icon size={140} className={cn("mb-4", iconClassName)} />
+        <Icon size={120} className={cn("mb-4", iconClassName)} />
         <CardTitle>{title}</CardTitle>
         <CardDescription className="text-on-primary-container/70 w-full">
           {description}
@@ -82,16 +82,15 @@ export default function WhyUs({
   return (
     <Section
       className="container mx-auto"
-      textContainerClassName="items-start text-start container mx-auto"
       id="why-us"
       title={
-        <TypographyPreline className="text-start">{title}</TypographyPreline>
+        <TypographyPreline>{title}</TypographyPreline>
       }
       subtitle={
-        <TypographyPreline className="text-start">{subtitle}</TypographyPreline>
+        <TypographyPreline>{subtitle}</TypographyPreline>
       }
     >
-      <div className="flex flex-wrap justify-center mx-auto w-full gap-4 container">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <WhyUsCard
           title={item1Title}
           description={item1Description}

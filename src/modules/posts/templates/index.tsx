@@ -8,6 +8,7 @@ import _ from "lodash";
 import type { BlogPost } from "@/types/admin";
 import { Eye } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { TypographyH1 } from "@/components/typography";
 import type { OutputData } from "@editorjs/editorjs";
 
 type PostTemplateProps = {
@@ -30,35 +31,33 @@ const PostTemplate: React.FC<PostTemplateProps> = ({ post }) => {
 		try {
 			const date = new Date(post.createdAt);
 			if (!Number.isNaN(date.getTime())) {
-				formatted = format(date, "LLLL dd, yyyy", {
+				formatted = format(date, "d MMMM yyyy", {
 					locale: ru,
 				});
-				formatted =
-					formatted.charAt(0).toUpperCase() + formatted.slice(1);
 			}
 		} catch (_e) {}
 	}
 
 	return (
 		<div
-				className="content-container flex flex-col py-6 relative w-full mx-auto sm:gap-x-12"
+				className="flex flex-col relative w-full max-w-4xl"
 				data-testid="post-container"
 			>
-				<h1 className="text-3xl md:text-4xl">{post.title}</h1>
+				<TypographyH1 className="lg:text-5xl">{post.title}</TypographyH1>
 				{post.views > 10 && (
-					<Badge variant={"outline"} className="mt-2">
+					<Badge variant={"outline"} className="mt-4">
 						<Eye />
 						{post.views}
 					</Badge>
 				)}
 				{formatted && post.type !== "document" && (
-					<h3 className="my-2 md:my-4 font-normal">{formatted}</h3>
+					<p className="mt-4 text-sm text-muted-foreground">{formatted}</p>
 				)}
 				{post.thumbnail && (
-					<Thumbnail className="mt-4" thumbnail={post.thumbnail} />
+					<Thumbnail className="mt-6" thumbnail={post.thumbnail} />
 				)}
 				<div
-					className="mt-2 gap-2 md:mt-4 md:gap-4 text-[17px] flex flex-col"
+					className="rich-text mt-8"
 					dangerouslySetInnerHTML={{ __html: html }}
 				/>
 			</div>

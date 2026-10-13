@@ -6,6 +6,8 @@ import SkeletonProductGrid from "@/modules/skeletons/templates/skeleton-product-
 import type { SortOptions } from "../components/refinement-list/sort-products";
 import PaginatedProducts from "./paginated-products";
 import Breadcrumbs from "@/components/ui/breadcrumbs";
+import { TypographyH1 } from "@/components/typography";
+import { buttonVariants } from "@/components/ui/button";
 
 export default async function StoreTemplate({
 	sortBy,
@@ -34,21 +36,18 @@ export default async function StoreTemplate({
 		{ label: "Каталог", href: "/store" },
 	]}
 />
-			<h1
-				className="mb-6 text-3xl font-medium text-foreground md:text-4xl"
-				data-testid="store-page-title"
-			>
+			<TypographyH1 className="page-header" data-testid="store-page-title">
 				Каталог ритуальных товаров
-			</h1>
+			</TypographyH1>
 
 			{rootCategories.length > 0 && (
 				<nav aria-label="Категории товаров" className="mb-8">
-					<ul className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
+					<ul className="flex flex-wrap gap-2">
 						{rootCategories.map((category) => (
 							<li key={category.id}>
 								<Link
 									href={`/categories/${category.handle}`}
-									className="flex h-full min-h-24 items-center justify-center rounded-2xl border border-border bg-muted/30 p-4 text-center text-base font-medium transition-colors hover:border-primary hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary md:text-lg"
+									className={buttonVariants({ variant: "outline" })}
 								>
 									{category.name}
 								</Link>

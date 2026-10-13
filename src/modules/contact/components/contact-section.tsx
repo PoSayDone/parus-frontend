@@ -22,18 +22,17 @@ export default async function ContactSection({
 	const rawPhone = settings?.phone || "+7 (342) 277-72-72";
 	const cleanPhone = rawPhone.replace(/[^\d+]/g, "");
 	return (
-		<div className="bg-muted/50 rounded-[32px] p-8 text-center">
-			<p className="text-2xl font-medium text-foreground mb-4">
-				{title}
-			</p>
-			<p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-				{description}
-			</p>
-			<div className="flex flex-col sm:flex-row gap-4 justify-center">
-				<ContactModalTrigger
-					size="lg"
-					className="bg-primary hover:bg-primary/90"
-				>
+		<div className="flex flex-col gap-6 rounded-3xl bg-secondary-container p-6 lg:flex-row lg:items-center lg:justify-between lg:gap-12">
+			<div>
+				<p className="text-2xl lg:text-3xl font-medium leading-tight mb-2">
+					{title}
+				</p>
+				<p className="text-on-secondary-container max-w-2xl text-pretty">
+					{description}
+				</p>
+			</div>
+			<div className="flex flex-col sm:flex-row gap-3 shrink-0">
+				<ContactModalTrigger size="lg">
 					{buttonText} 
 				</ContactModalTrigger>
 				<a

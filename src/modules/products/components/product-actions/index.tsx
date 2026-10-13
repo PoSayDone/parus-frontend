@@ -17,12 +17,12 @@ export default function ProductActions({
 	const { openModal: openContactModal } = useContactModal();
 
 	const handleContactClick = () => {
-		openContactModal();
+		openContactModal(`Товар: ${product.title}`);
 	};
 
 	return (
-		<div className="flex flex-col gap-y-2 bg-card p-4 rounded-3xl">
-			<div className="mb-6">
+		<div className="flex flex-col gap-y-2 bg-card border p-6 rounded-3xl">
+			<div className="mb-4">
 				<ProductPrice product={product} />
 			</div>
 			<Button

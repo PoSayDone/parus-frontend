@@ -1,5 +1,5 @@
 import Section from "@/components/ui/section";
-import CategoriesCarousel from "./categories-carousel";
+import CategoriesGrid from "./categories-grid";
 import { Suspense } from "react";
 import { TypographyPreline } from "@/components/typography";
 import SkeletonCategoriesCarousel from "@/modules/skeletons/templates/skeleton-categories-carousel";
@@ -22,14 +22,14 @@ export default function RitualProducts({
 	return (
 		<Section
 			id="ritual-products"
-			className="px-0!"
+			className="container mx-auto"
 			title={title}
 			subtitle={
 				<TypographyPreline>{subtitle}</TypographyPreline>
 			}
 		>
 			<Suspense fallback={<SkeletonCategoriesCarousel />}>
-				<CategoriesCarousel />
+				<CategoriesGrid />
 			</Suspense>
 		</Section>
 	);

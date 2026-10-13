@@ -9,15 +9,15 @@ const ProductInfo = ({ product }: ProductInfoProps) => {
 	return (
 		<div id="product-info">
 			<div className="flex flex-col gap-y-4 lg:max-w-[500px] mx-auto">
-				<h2
-					className="text-3xl md:text-4xl leading-10 text-ui-fg-base"
+				<h1
+					className="text-3xl lg:text-4xl font-medium leading-tight text-balance"
 					data-testid="product-title"
 				>
 					{product.title}
-				</h2>
+				</h1>
 
 				<div
-					className="text-medium text-ui-fg-subtle whitespace-pre-line"
+					className="text-muted-foreground whitespace-pre-line"
 					data-testid="product-description"
 				>
 					{product.description}

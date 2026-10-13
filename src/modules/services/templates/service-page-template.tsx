@@ -1,4 +1,8 @@
 import { Badge } from "@/components/ui/badge";
+import {
+  TypographyH1,
+  TypographySectionSubtitle,
+} from "@/components/typography";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Icon, type IconName } from "@/components/ui/icon-picker";
@@ -6,7 +10,7 @@ import { getService, listServices } from "@/lib/data/services";
 import { getSiteSettings } from "@/lib/data/site-settings";
 import ContactModalTrigger from "@/modules/contact/components/contact-modal-trigger";
 import ContactSection from "@/modules/contact/components/contact-section";
-import { Check, CheckCircle2, Clock, Phone, Star } from "lucide-react";
+import { Check, Clock, Phone, Star } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -182,49 +186,45 @@ export default async function ServicePageTemplate({
   { label: service.title, href: `/services/${handle}` } // путь к текущей услуге для Schema.org
 ];
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-[60vh]">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd) }}
       />
-      <div className="container mx-auto px-4 py-12">
+      <div className="container mx-auto px-4 page-pad">
 	  <Breadcrumbs items={breadcrumbs} />
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-12">
+        <div className="page-header grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
           <div>
-            <div className="flex items-center gap-4 mb-6 flex-wrap sm:flex-nowrap">
-              <div className="p-3 rounded-full bg-primary/10 group-hover:bg-primary/20 transition-colors duration-300 size-14 shrink-0">
-                {service.icon && (
+            <div className="flex flex-col items-start gap-4 mb-6">
+              {service.icon && (
+                <div className="flex items-center justify-center rounded-full bg-primary/10 size-14 shrink-0">
                   <Icon
                     name={service.icon as IconName}
-                    className="size-8 text-primary shrink-0"
+                    className="size-7 text-primary"
                   />
-                )}
-              </div>
-              <div>
-                <h1 className="text-4xl font-medium text-foreground">
-                  {service.title}
-                </h1>
-                <p className="text-lg text-muted-foreground mt-2">
-                  {service.shortDescription}
-                </p>
-              </div>
+                </div>
+              )}
+              <TypographyH1 className="lg:text-5xl">{service.title}</TypographyH1>
+              <TypographySectionSubtitle>
+                {service.shortDescription}
+              </TypographySectionSubtitle>
             </div>
 
             {/* Верхнее описание */}
 			<div
-			  className="text-muted-foreground leading-relaxed mb-8 [&_a]:underline [&_a]:text-primary"
+			  className="text-muted-foreground leading-relaxed mb-8 max-w-[65ch] [&_a]:underline [&_a]:text-primary"
 			  dangerouslySetInnerHTML={{
 				__html: topDescription,
 			  }}
 			/>
 
             <div className="flex flex-wrap gap-2 mb-8">
-              <Badge variant="secondary" className="flex items-center gap-2">
-                <Star className="h-4 w-4" />
+              <Badge variant="secondary" className="text-sm px-3 py-1 gap-1.5 [&>svg]:size-4">
+                <Star />
                 {service.price}
               </Badge>
-              <Badge variant="outline" className="flex items-center gap-2">
-                <Clock className="h-4 w-4" />
+              <Badge variant="outline" className="text-sm px-3 py-1 gap-1.5 [&>svg]:size-4">
+                <Clock />
                 {service.duration}
               </Badge>
             </div>
@@ -233,7 +233,6 @@ export default async function ServicePageTemplate({
               <ContactModalTrigger
                 service={service.title} // <--- ДОБАВИЛА ВОТ ЭТУ СТРОКУ для передачи названия услуги в форму заявки
                 size="lg"
-                className="bg-primary hover:bg-primary/90"
               >
                 Заказать услугу
               </ContactModalTrigger>
@@ -244,18 +243,18 @@ export default async function ServicePageTemplate({
                   size: "lg",
                 })}
               >
-                <Phone className="h-4 w-4 mr-2" />
+                <Phone />
                 Позвонить сейчас
               </Link>
             </div>
           </div>
 
-          <div className="relative bg-muted/20 rounded-xl overflow-hidden h-[220px] md:h-[320px] border border-border/40 w-full shadow-sm">
+          <div className="relative bg-card rounded-3xl overflow-hidden h-[220px] md:h-[320px] lg:h-full lg:min-h-[320px] border w-full">
             <Image
               fill
               src={service.thumbnail || "/placeholder.svg"}
               alt={`${service.title.replace(/\s*(в\s+)?(г\.\s+)?Перм[иь]\s*/gi, "").trim()} в Перми`}
-              className="object-cover transition-transform duration-500 hover:scale-105"
+              className="object-cover"
               sizes="(max-width: 768px) 100vw, 800px"
               priority
             />
@@ -263,16 +262,14 @@ export default async function ServicePageTemplate({
         </div>
 
 
+        {/* Каждый прямой потомок — отдельный блок страницы */}
+        <div className="page-blocks">
         {/* Features and Included */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <Card>
             <CardHeader>
               <CardTitle>
-				  <h2 className="flex items-center gap-2">
-					<CheckCircle2
-					  className="h-5 w-5 text-primary shrink-0"
-					  aria-hidden="true"
-					/>
+				  <h2>
 					{handle === "cremation"
 					  ? "Что мы организуем"
 					  : handle === "ustanovka-pamyatnikov"
@@ -284,11 +281,11 @@ export default async function ServicePageTemplate({
 				</CardTitle>
             </CardHeader>
             <CardContent>
-              <ul className="space-y-3">
+              <ul className="space-y-2">
                 {service.features.map((feature, index) => (
                   <li key={index} className="flex items-start gap-3">
                     <Check className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
-                    <span className="text-muted-foreground">{feature}</span>
+                    <span>{feature}</span>
                   </li>
                 ))}
               </ul>
@@ -298,11 +295,7 @@ export default async function ServicePageTemplate({
           <Card>
             <CardHeader>
               <CardTitle>
-				  <h2 className="flex items-center gap-2">
-					<Star
-					  className="h-5 w-5 text-primary shrink-0"
-					  aria-hidden="true"
-					/>
+				  <h2>
 					{handle === "cremation"
 					  ? "Что входит в стоимость кремации"
 					  : "В стоимость входит"}
@@ -310,11 +303,11 @@ export default async function ServicePageTemplate({
 				</CardTitle>
             </CardHeader>
             <CardContent>
-              <ul className="space-y-3">
+              <ul className="space-y-2">
                 {service.included.map((item, index) => (
                   <li key={index} className="flex items-start gap-3">
                     <Check className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
-                    <span className="text-muted-foreground">{item}</span>
+                    <span>{item}</span>
                   </li>
                 ))}
               </ul>
@@ -338,7 +331,7 @@ export default async function ServicePageTemplate({
 
   // 5. Если картинки есть, рисуем блок с отступом (mt-16)
   return (
-    <div className="mt-16 border-t pt-16">
+    <div>
        <ServiceGallery 
 		  images={filteredGallery} 
 		  title={
@@ -352,15 +345,12 @@ export default async function ServicePageTemplate({
 })()}
 		{/* Нижнее описание */}
 			{bottomDescription && (
-  <div
-  className="mt-12"
-  data-template-version="services-spacing-v2"
->
+  <div data-template-version="services-spacing-v2">
     <div
       className="
-        text-muted-foreground leading-relaxed max-w-4xl
-        [&_h2]:mt-10 [&_h2]:mb-4
-        [&_h2]:text-2xl [&_h2]:font-medium
+        text-muted-foreground leading-relaxed max-w-3xl
+        [&_h2]:mt-12 [&_h2]:mb-4
+        [&_h2]:text-2xl [&_h2]:font-medium [&_h2]:leading-tight
         [&_h2]:text-foreground
         [&>h2:first-child]:mt-0
         [&_p]:mb-4
@@ -374,26 +364,24 @@ export default async function ServicePageTemplate({
   </div>
 )}
         {/* Блок: Смотрите также */}
-        <div className="mb-20 mt-16 border-t pt-16">
-          <div className="flex items-center justify-between mb-8">
-            <p className="text-3xl font-medium text-foreground">
-              Смотрите также
-            </p>
+        <div>
+          <div className="flex items-center justify-between gap-4 mb-6">
+            <h2 className="block-title mb-0!">Смотрите также</h2>
             <Link
               href="/services"
-              className="text-primary hover:underline font-medium"
+              className={buttonVariants({ variant: "outline", size: "sm" })}
             >
-              Все услуги →
+              Все услуги
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
 		  {relatedServices.map((item) => (
 			<Link
 			  key={item.handle}
 			  href={`/services/${item.handle}`}
 			  // h-[180px] делает карточку узкой
-			  className="group relative h-[180px] rounded-[20px] overflow-hidden border border-border/20 shadow-md transition-all duration-300 hover:shadow-lg"
+			  className="group relative h-[180px] rounded-3xl overflow-hidden border"
 			>
 			  {/* 1. Фоновое изображение (без искажений) */}
 			  <Image
@@ -421,7 +409,7 @@ export default async function ServicePageTemplate({
 </p>
 				  
 				  {/* Краткое описание скрыто по умолчанию, появляется при наведении */}
-				  <p className="text-gray-300 text-xs line-clamp-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+				  <p className="text-white/70 text-sm line-clamp-1 mt-1">
 					{item.shortDescription}
 				  </p>
 				</div>
@@ -433,7 +421,7 @@ export default async function ServicePageTemplate({
 
         {/* Блок ЧаВо (выводится только если есть данные для этой услуги) */}
         {faqData && (
-          <div className="mt-16 border-t pt-16">
+          <div className="[&>section]:max-w-none [&>section]:p-0">
             <QnA 
               title={faqData.title} 
               subtitle={faqData.subtitle} 
@@ -471,6 +459,7 @@ export default async function ServicePageTemplate({
 			  : undefined
           }
         />
+        </div>
       </div>
     </div>
   );

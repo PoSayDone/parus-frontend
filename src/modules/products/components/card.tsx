@@ -19,11 +19,14 @@ export function ProductCard({
 					size="full"
 					isFeatured={isFeatured}
 				/>
-				<div className="flex flex-col text-base mt-2 justify-between">
-					<div className="flex items-center gap-x-2">
-						<ProductPrice product={product} />
+				<div className="flex flex-col mt-3 gap-0.5">
+					<ProductPrice product={product} className="text-xl" />
+					<div
+						className="text-base leading-snug text-muted-foreground"
+						data-testid="product-title"
+					>
+						{product.title}
 					</div>
-					<div data-testid="product-title">{product.title}</div>
 				</div>
 			</div>
 		</Link>

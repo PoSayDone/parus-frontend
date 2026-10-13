@@ -11,28 +11,30 @@ export function PostCard({ post }: { post: BlogPost }) {
 		try {
 			const date = new Date(post.createdAt);
 			if (!Number.isNaN(date.getTime())) {
-				formatted = format(date, "LLLL dd, yyyy", {
+				formatted = format(date, "d MMMM yyyy", {
 					locale: ru,
 				});
-				formatted =
-					formatted.charAt(0).toUpperCase() + formatted.slice(1);
 			}
 		} catch (_e) {}
 	}
 
 	return (
-		<Link href={`/blog/post/${post.handle}`} className="flex flex-col">
+		<Link href={`/blog/post/${post.handle}`} className="group flex flex-col">
 			<Thumbnail
 				thumbnail={post.thumbnail}
-				className="rounded-3xl bg-secondary-container"
+				className="bg-secondary-container transition-colors group-hover:border-primary/40"
 			/>
 			{formatted && (
-				<div className="text mt-2 text-muted-foreground">
+				<div className="mt-4 text-sm text-muted-foreground">
 					{formatted}
 				</div>
 			)}
-			<h3 className="text-2xl font-medium mt-1">{post.title}</h3>
-			<p className="text-xl mt-1">{post.description}</p>
+			<h3 className="text-xl lg:text-2xl font-medium leading-tight mt-1">
+				{post.title}
+			</h3>
+			<p className="text-base text-muted-foreground mt-2 line-clamp-3">
+				{post.description}
+			</p>
 		</Link>
 	);
 }

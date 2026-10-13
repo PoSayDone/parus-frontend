@@ -11,7 +11,10 @@ export function TypographyH1({
 
   return (
     <Comp
-      className={cn("text-3xl lg:text-5xl font-medium leading-none", className)}
+      className={cn(
+        "text-4xl lg:text-6xl font-medium leading-[1.05] text-balance",
+        className,
+      )}
       {...props}
     />
   );
@@ -27,7 +30,7 @@ export function TypographyH2({
   return (
     <Comp
       className={cn(
-        "text-3xl lg:text-7xl -tracking-[0.05em]! font-medium",
+        "text-3xl lg:text-5xl font-medium leading-[1.05] text-balance",
         className,
       )}
       {...props}
@@ -45,7 +48,7 @@ export function TypographyH3({
   return (
     <Comp
       className={cn(
-        "text-2xl lg:text-5xl -tracking-[0.05em]! font-medium",
+        "text-2xl lg:text-3xl font-medium leading-tight text-balance",
         className,
       )}
       {...props}
@@ -72,7 +75,7 @@ export function TypographyP({
 }: React.ComponentPropsWithoutRef<"p"> & { asChild?: boolean }) {
   const Comp = asChild ? Slot : "p";
 
-  return <Comp className={cn("text-lg leading-snug!", className)} {...props} />;
+  return <Comp className={cn("text-lg leading-snug", className)} {...props} />;
 }
 
 export function TypographySmall({
@@ -100,7 +103,7 @@ export function TypographySectionSubtitle({
   return (
     <Comp
       className={cn(
-        "text-lg lg:text-2xl text-muted-foreground leading-snug max-w-3xl",
+        "text-lg lg:text-xl text-muted-foreground leading-snug max-w-3xl text-pretty",
         className,
       )}
       {...props}

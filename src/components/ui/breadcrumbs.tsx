@@ -40,7 +40,7 @@ export default function Breadcrumbs({ items }: { items: BreadcrumbItem[] }) {
   };
 
   return (
-    <nav aria-label="Breadcrumb" className="mb-6">
+    <nav aria-label="Хлебные крошки" className="mb-6">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -48,13 +48,13 @@ export default function Breadcrumbs({ items }: { items: BreadcrumbItem[] }) {
 }}
       />
       
-      <ol className="flex items-center space-x-2 text-sm text-muted-foreground">
+      <ol className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted-foreground">
         {allItems.map((item, index) => {
           const isLast = index === allItems.length - 1;
           
           return (
-            <li key={index} className="flex items-center space-x-2">
-              {index > 0 && <ChevronRight className="w-4 h-4 opacity-50" />}
+            <li key={index} className="flex items-center gap-x-2">
+              {index > 0 && <ChevronRight className="size-4 opacity-50" aria-hidden />}
               
               {/* Условие !isLast гарантирует, что визуально 
                 последний пункт останется текстом (span), 

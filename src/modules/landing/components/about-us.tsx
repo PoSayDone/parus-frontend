@@ -84,7 +84,7 @@ const StatCard = ({
   return (
     <Card
       className={cn(
-        "relative overflow-hidden rounded-3xl min-h-52 sm:min-h-64 lg:min-h-80 p-0",
+        "relative overflow-hidden min-h-52 sm:min-h-64 lg:min-h-80 p-0",
         className,
       )}
     >
@@ -96,11 +96,11 @@ const StatCard = ({
         className="object-cover"
       />
       <div className="absolute inset-0 bg-linear-to-b from-primary/35 via-primary/20 to-primary/65" />
-      <div className="relative h-full p-6 sm:p-8 flex flex-col justify-between">
-        <p className="text-white text-4xl sm:text-5xl lg:text-6xl leading-none font-medium tracking-tight">
+      <div className="relative h-full p-6 flex flex-col justify-between">
+        <p className="text-white text-4xl sm:text-5xl lg:text-6xl leading-none font-medium">
           {value}
         </p>
-        <TypographyP className="text-white text-xl sm:text-2xl leading-tight">
+        <TypographyP className="text-white text-lg lg:text-xl leading-tight">
           {label}
         </TypographyP>
       </div>
@@ -125,13 +125,12 @@ export default function AboutUs({
   return (
     <Section
       id="about-us"
-      className="container mx-auto sm:text-left"
-      textContainerClassName="items-start text-start"
+      className="container mx-auto"
       title={<TypographyPreline>{title}</TypographyPreline>}
     >
-      <div className="grid grid-cols-6 sm:grid-cols-12 gap-2">
-        <div className="col-span-6 md:pt-1">
-          <TypographySectionSubtitle className=" pb-4 sm:pr-4">
+      <div className="grid grid-cols-6 sm:grid-cols-12 gap-4 sm:gap-x-8">
+        <div className="col-span-6 flex items-center">
+          <TypographySectionSubtitle>
             {paragraph1}
           </TypographySectionSubtitle>
         </div>
@@ -144,15 +143,15 @@ export default function AboutUs({
           <StatCard key={`${card.label}-${index + 2}`} {...card} />
         ))}
 
-        <div className="col-span-6 flex flex-col gap-8 lg:justify-between lg:pt-1">
-          <TypographySectionSubtitle className=" pt-4 sm:pl-4">
+        <div className="col-span-6 flex flex-col justify-center gap-6">
+          <TypographySectionSubtitle>
             {paragraph2}
           </TypographySectionSubtitle>
           {!buttonDisabled && (
             <Button
               variant="default"
               size="lg"
-              className="w-fit bg-[#728272] hover:bg-[#677767] text-white"
+              className="w-fit"
             >
               {buttonLabel}
               <ArrowUpRight className="size-5" />

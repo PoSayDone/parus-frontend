@@ -26,12 +26,11 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
 	return (
 		<div
 			className={cn(
-				"relative w-full overflow-hidden rounded-sm p-4 bg-card group-hover:shadow-elevation-card-hover transition-shadow ease-in-out duration-150 border",
+				"relative w-full overflow-hidden rounded-3xl bg-card border transition-colors group-hover:border-primary/40",
 				className,
 				{
-					"aspect-[10/14]  rounded-[24px]": isFeatured,
-					"aspect-[4/6]  rounded-[24px]":
-						!isFeatured && size !== "square",
+					"aspect-[10/14]": isFeatured,
+					"aspect-[4/6]": !isFeatured && size !== "square",
 					"aspect-[1/1]": size === "square",
 					"w-[180px]": size === "small",
 					"w-[290px]": size === "medium",
@@ -53,7 +52,7 @@ const ImageOrPlaceholder = ({
 	return image ? (
 		<Image
 			src={image}
-			alt="Thumbnail"
+			alt=""
 			className="absolute inset-0 object-cover object-center bg-card"
 			draggable={false}
 			quality={50}

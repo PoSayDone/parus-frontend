@@ -1,35 +1,28 @@
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Clock, MapPin, Phone, Navigation, ZoomIn, ChevronRight } from "lucide-react";
+import { Check, ChevronRight, Navigation, ZoomIn } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+	Card,
+	CardContent,
+	CardDescription,
+	CardHeader,
+	CardTitle,
+} from "@/components/ui/card";
 import { getCemeteryByHandle } from "@/lib/data/addresses";
 import CemeteryMap from "@/modules/addresses/components/cemetery-map/cemetery-map-wrapper";
 import ContactSection from "@/modules/contact/components/contact-section";
 import { Suspense } from "react";
 import ServicesCarousel from "@/modules/landing/components/services-carousel";
-import SectionHeading from "@/components/ui/section-heading";
+import CemeteryStatus from "@/modules/addresses/components/cemetery-status";
+import {
+	TypographyH1,
+	TypographySectionSubtitle,
+} from "@/components/typography";
 import AutoContactPopup from "@/modules/contact/components/auto-contact-popup"; // автооткрытие формы
 
-// Функция для определения статуса по ключевым словам
-const getStatusInfo = (note?: string | null) => {
-  if (!note) return null;
-  const lowerNote = note.toLowerCase();
-  
-  if (lowerNote.includes("открыто для новых захоронений")) {
-    return { color: "bg-green-500", text: "открыто" };
-  }
-  if (lowerNote.includes("открыто только для подзахоронений")) {
-    return { color: "bg-orange-500", text: "ограничения" };
-  }
-  if (lowerNote.includes("закрыто для всех видов захоронений")) {
-    return { color: "bg-red-500", text: "закрыто" };
-  }
-  
-  return null;
-};
 export const revalidate = 86400; // Кэшируем страницу на 24 часа
 export default async function CemeteryPageTemplate({
 	handle,
@@ -91,258 +84,243 @@ export default async function CemeteryPageTemplate({
 		]
 	};
 
+	const phones = cemetery.phone || [];
+	const mapTitle =
+		hasCoords && hasImages
+			? `Как добраться до кладбища «${cemetery.name}» (карта и схема)`
+			: hasCoords
+				? `Как добраться до кладбища «${cemetery.name}» (карта)`
+				: `Схема участков кладбища «${cemetery.name}»`;
+
 	return (
-		<div className="min-h-screen bg-background">
+		<div className="page-pad min-h-[60vh]">
 			{/* скрипт микроразметки BreadcrumbList */}
 			<script
 				type="application/ld+json"
 				dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
 			/>
 
-			{/* Автоматическая форма помощи через 40 секунд (безопасная обертка) */}
+			{/* Автоматическая форма помощи (безопасная обертка) */}
 			<Suspense fallback={null}>
 				<AutoContactPopup service={`Помощь по кладбищу: ${cemetery.name}`} />
 			</Suspense>
-			
-			<div className="container mx-auto px-4 py-12 relative overflow-hidden">
-				
-				{/* Визуальные хлебные крошки для пользователей */}
-				<nav className="flex text-sm text-muted-foreground mb-8 overflow-x-auto whitespace-nowrap" aria-label="Breadcrumb">
-					<ol className="inline-flex items-center space-x-1 md:space-x-2">
-						<li className="inline-flex items-center">
-							<Link href="/" className="hover:text-foreground transition-colors">
-								Главная
-							</Link>
-						</li>
-						<li>
-							<div className="flex items-center">
-								<ChevronRight className="w-4 h-4 mx-1 opacity-50" />
-								<Link href="/addresses" className="hover:text-foreground transition-colors">
+
+			{/* Каждый прямой потомок — отдельный блок страницы */}
+			<div className="page-blocks">
+				{/* 1. Шапка: что это, где находится, как связаться */}
+				<div className="container mx-auto px-4">
+					<nav
+						className="flex text-sm text-muted-foreground mb-6 overflow-x-auto whitespace-nowrap"
+						aria-label="Хлебные крошки"
+					>
+						<ol className="inline-flex items-center gap-x-2">
+							<li>
+								<Link href="/" className="hover:text-primary transition-colors">
+									Главная
+								</Link>
+							</li>
+							<li className="flex items-center gap-x-2">
+								<ChevronRight className="size-4 opacity-50" aria-hidden />
+								<Link
+									href="/addresses"
+									className="hover:text-primary transition-colors"
+								>
 									Полезные адреса
 								</Link>
-							</div>
-						</li>
-						<li>
-							<div className="flex items-center">
-								<ChevronRight className="w-4 h-4 mx-1 opacity-50" />
+							</li>
+							<li className="flex items-center gap-x-2">
+								<ChevronRight className="size-4 opacity-50" aria-hidden />
 								<span className="text-foreground font-medium" aria-current="page">
 									{cemetery.name}
 								</span>
-							</div>
-						</li>
-					</ol>
-				</nav>
+							</li>
+						</ol>
+					</nav>
 
-				<div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-12">
-					<div>
-						<div className="mb-6">
-							<h1 className="text-4xl font-medium text-foreground flex flex-wrap items-center gap-4">
-								{cemetery.name}{" "}
-								<Badge variant="secondary">кладбище</Badge>
-							</h1>
-							
+					<header className="page-header flex flex-col items-start gap-4">
+						<Badge variant="secondary">Кладбище</Badge>
+						<TypographyH1>{cemetery.name}</TypographyH1>
+						{cemetery.description && (
+							<TypographySectionSubtitle className="whitespace-pre-line">
+								{cemetery.description}
+							</TypographySectionSubtitle>
+						)}
+					</header>
+
+					{/* Справочные данные одной строкой: то, за чем сюда приходят */}
+					<dl className="grid grid-cols-1 gap-x-8 gap-y-6 border-y py-6 sm:grid-cols-2 lg:grid-cols-4">
+						{cemetery.address && (
+							<div>
+								<dt className="text-sm text-muted-foreground">Адрес</dt>
+								<dd className="mt-1 text-lg leading-snug">{cemetery.address}</dd>
+							</div>
+						)}
+						{cemetery.district && (
+							<div>
+								<dt className="text-sm text-muted-foreground">Район</dt>
+								<dd className="mt-1 text-lg leading-snug">{cemetery.district}</dd>
+							</div>
+						)}
+						{phones.length > 0 && (
+							<div>
+								<dt className="text-sm text-muted-foreground">Телефон</dt>
+								<dd className="mt-1 flex flex-col text-lg leading-snug">
+									{phones.map((phone) => (
+										<a
+											key={phone}
+											href={`tel:${phone.replace(/[^\d+]/g, "")}`}
+											className="w-fit hover:text-primary hover:underline underline-offset-4"
+										>
+											{phone}
+										</a>
+									))}
+								</dd>
+							</div>
+						)}
+						{cemetery.schedule && (
+							<div>
+								<dt className="text-sm text-muted-foreground">Режим работы</dt>
+								<dd className="mt-1 text-lg leading-snug whitespace-pre-line">
+									{cemetery.schedule}
+								</dd>
+							</div>
+						)}
+					</dl>
+
+					{(cemetery.cemeteryStatus || hasDocuments) && (
+						<div className="mt-8 grid grid-cols-1 gap-4 lg:mt-12 lg:grid-cols-2">
+							{cemetery.cemeteryStatus && (
+								<Card>
+									<CardHeader className="flex flex-row items-start justify-between gap-4">
+										<CardTitle>
+											<h2>Статус захоронений на сегодня</h2>
+										</CardTitle>
+										<CemeteryStatus note={cemetery.cemeteryStatus} />
+									</CardHeader>
+									<CardContent>
+										<p className="leading-relaxed whitespace-pre-line">
+											{cemetery.cemeteryStatus}
+										</p>
+									</CardContent>
+								</Card>
+							)}
+
+							{hasDocuments && (
+								<Card>
+									<CardHeader>
+										<CardTitle>
+											<h2>Необходимые документы для захоронения</h2>
+										</CardTitle>
+										{cemetery.cemeteryNote && (
+											<CardDescription>{cemetery.cemeteryNote}</CardDescription>
+										)}
+									</CardHeader>
+									<CardContent>
+										<ul className="space-y-2">
+											{(cemetery.cemeteryDocuments || []).map((item, index) => (
+												<li
+													key={`${item}-${index}`}
+													className="flex items-start gap-3"
+												>
+													<Check
+														className="size-5 shrink-0 mt-0.5 text-primary"
+														aria-hidden
+													/>
+													<span>{item}</span>
+												</li>
+											))}
+										</ul>
+									</CardContent>
+								</Card>
+							)}
 						</div>
-						<div className="flex flex-wrap gap-3">
-								{cemetery.address && (
-									<div className="flex items-start gap-3">
-										<MapPin className="h-5 w-5 text-primary mt-0.5" />
-										<span>{cemetery.address}</span>
-									</div>
-								)}
-								{cemetery.district && (
-									<Badge variant="outline">
-										{cemetery.district}
-									</Badge>
-								)}
+					)}
+				</div>
+
+				{/* 2. Карта, маршруты и схема */}
+				{(hasCoords || hasImages) && (
+					<div className="container mx-auto px-4">
+						<h2 className="block-title">{mapTitle}</h2>
+
+						<div
+							className={`grid grid-cols-1 gap-4 ${hasCoords && hasImages ? "lg:grid-cols-2" : ""}`}
+						>
+							{hasCoords && (
+								<div className="relative h-[300px] md:h-[420px] rounded-3xl overflow-hidden border">
+									<CemeteryMap coords={[lat, lng]} />
+								</div>
+							)}
+
+							{hasImages && (
+								<a
+									href={schemeImage}
+									target="_blank"
+									rel="noopener noreferrer"
+									className={`relative h-[300px] md:h-[420px] rounded-3xl overflow-hidden border bg-card block group ${!hasCoords ? "lg:w-1/2" : ""}`}
+									title="Нажмите, чтобы увеличить схему"
+								>
+									<Image
+										src={schemeImage}
+										alt={`Схема кладбища ${cemetery.name}`}
+										fill
+										unoptimized={true}
+										className="object-contain p-2"
+										sizes="(max-width: 768px) 100vw, 50vw"
+									/>
+									<span className="absolute bottom-4 right-4 flex items-center gap-2 rounded-full border bg-background px-4 py-2 text-sm font-medium transition-colors group-hover:border-primary/40">
+										<ZoomIn className="size-4 text-primary" aria-hidden />
+										Увеличить схему
+									</span>
+								</a>
+							)}
+						</div>
+
+						{hasCoords && (
+							<div className="mt-4 flex flex-wrap gap-2">
+								<a
+									href={yandexRouteUrl}
+									target="_blank"
+									rel="noopener noreferrer"
+									className={buttonVariants({ variant: "outline" })}
+								>
+									<Navigation className="text-primary" aria-hidden />
+									Маршрут в Яндекс.Картах
+								</a>
+								<a
+									href={twogisRouteUrl}
+									target="_blank"
+									rel="noopener noreferrer"
+									className={buttonVariants({ variant: "outline" })}
+								>
+									<Navigation className="text-primary" aria-hidden />
+									Маршрут в 2ГИС
+								</a>
 							</div>
-						
-						
+						)}
 					</div>
+				)}
 
-					
-				</div>
-
-				<div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-12">
-					{cemetery.cemeteryStatus && (
-						<Card className="gap-3">
-							<CardHeader className="flex flex-row items-center justify-between gap-2 space-y-0">
-								<h2 className="text-lg font-semibold leading-none tracking-tight">
-	Статус захоронений на сегодня
-</h2>
-								
-								{/* Вызываем функцию и сразу отрисовываем бейдж, если статус найден */}
-								{getStatusInfo(cemetery.cemeteryStatus) && (
-									<div className="flex items-center gap-1.5 shrink-0 bg-muted/50 px-2 py-1 rounded-md">
-										<div className={`h-2.5 w-2.5 rounded-full ${getStatusInfo(cemetery.cemeteryStatus)?.color} shadow-sm`} />
-										<span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
-											{getStatusInfo(cemetery.cemeteryStatus)?.text}
-										</span>
-									</div>
-								)}
-							</CardHeader>
-							<CardContent>
-								<p className="text-muted-foreground leading-relaxed whitespace-pre-line">
-									{cemetery.cemeteryStatus}
-								</p>
-							</CardContent>
-						</Card>
-					)}
-
-					{hasDocuments && (
-						<Card className="gap-3">
-							<CardHeader className="flex flex-row flex-wrap items-center gap-2 min-w-0">
-								<h2 className="text-lg font-semibold leading-none tracking-tight">
-	Необходимые документы для захоронения
-</h2>
-								{cemetery.cemeteryNote && (
-									<Badge className="max-w-full h-auto whitespace-normal text-left leading-tight py-1 px-3">
-										{cemetery.cemeteryNote}
-									</Badge>
-								)}
-							</CardHeader>
-							<CardContent>
-								<ul className="space-y-3">
-									{(cemetery.cemeteryDocuments || []).map(
-										(item, index) => (
-											<li
-												key={`${item}-${index}`}
-												className="text-muted-foreground leading-relaxed"
-											>
-												{item}
-											</li>
-										),
-									)}
-								</ul>
-							</CardContent>
-						</Card>
-					)}
-				</div>
-				
-				{/* 3. БЛОК О КОМПАНИИ И УСЛУГИ */}
-				<div className="mb-20">
-					<p className="text-base md:text-lg text-muted-foreground leading-relaxed mb-8 max-w-none">
-						Ритуальное агентство «Парус» предлагает комплексные ритуальные услуги в Перми. 
-						Мы берем на себя все организационные вопросы, обеспечивая достойные проводы 
-						и профессиональную поддержку на каждом этапе.
-					</p>
-					
+				{/* 3. Услуги агентства: карусель идёт от края до края экрана */}
+				<div>
+					<div className="container mx-auto px-4">
+						<h2 className="block-title mb-4!">Ритуальные услуги агентства «Парус»</h2>
+						<p className="mb-6 max-w-3xl text-lg text-muted-foreground text-pretty lg:mb-8">
+							Ритуальное агентство «Парус» предлагает комплексные ритуальные услуги в Перми.
+							Мы берем на себя все организационные вопросы, обеспечивая достойные проводы
+							и профессиональную поддержку на каждом этапе.
+						</p>
+					</div>
 					<ServicesCarousel />
 				</div>
 
-				{/* БЛОК КАРТЫ, МАРШРУТОВ И СХЕМЫ */}
-				{(hasCoords || hasImages) && (
-					<div className="mb-12">
-						{/* Динамический заголовок */}
-						<h2 className="text-2xl font-medium text-foreground mb-6">
-	{hasCoords && hasImages 
-		? `Как добраться до кладбища «${cemetery.name}» (карта и схема)` 
-		: hasCoords 
-			? `Как добраться до кладбища «${cemetery.name}» (карта)` 
-			: `Схема участков кладбища «${cemetery.name}»`}
-</h2>
-						
-						<div className="space-y-3 text-muted-foreground mb-8">
-							{cemetery.phone?.length ? (
-								<div className="flex items-start gap-3">
-									<Phone className="h-5 w-5 text-primary mt-0.5" />
-									<span>{cemetery.phone.join(", ")}</span>
-								</div>
-							) : null}
-							{cemetery.schedule && (
-								<div className="flex items-start gap-3">
-									<Clock className="h-5 w-5 text-primary mt-0.5" />
-									<span>{cemetery.schedule}</span>
-								</div>
-							)}
-						</div>
-
-						{/* Сетка: слева карта, справа схема (если есть карта) */}
-						<div className={`grid grid-cols-1 ${hasCoords && hasImages ? 'lg:grid-cols-2' : ''} gap-8`}>
-							
-							{/* Интерактивная карта и кнопки */}
-							{hasCoords && (
-								<div className="flex flex-col gap-4">
-									<div className="relative h-[300px] md:h-[400px] rounded-xl overflow-hidden border border-border/50">
-										{/* Возвращаем исходную прямую передачу координат из базы */}
-										<CemeteryMap 
-											coords={[
-												cemetery.cemeteryLat as number, 
-												cemetery.cemeteryLng as number
-											]} 
-										/>
-									</div>
-									
-									
-									
-									<div className="flex flex-wrap gap-3 mt-2">
-										<a 
-											href={yandexRouteUrl} 
-											target="_blank" 
-											rel="noopener noreferrer" 
-											className={buttonVariants({ variant: "outline", size: "lg" })}
-										>
-											<Navigation className="w-4 h-4 mr-2 text-primary" />
-											Маршрут в Яндекс.Картах
-										</a>
-										<a 
-											href={twogisRouteUrl} 
-											target="_blank" 
-											rel="noopener noreferrer" 
-											className={buttonVariants({ variant: "outline", size: "lg" })}
-										>
-											<Navigation className="w-4 h-4 mr-2 text-primary" />
-											Маршрут в 2ГИС
-										</a>
-									</div>
-								</div>
-							)}
-
-							{/* Схема кладбища (фото) */}
-							{hasImages && (
-								<div className={`flex flex-col gap-4 ${!hasCoords ? 'lg:w-1/2' : ''}`}>
-									{/* Делаем картинку кликабельной ссылкой */}
-									<a 
-										href={schemeImage}
-										target="_blank"
-										rel="noopener noreferrer"
-										className="relative h-[300px] md:h-[400px] rounded-xl overflow-hidden border border-border/50 bg-muted/20 block group cursor-pointer"
-										title="Нажмите, чтобы увеличить схему"
-									>
-										<Image
-											src={schemeImage}
-											alt={`Схема кладбища ${cemetery.name}`}
-											fill
-											priority 
-											unoptimized={true}
-											className="object-contain p-2 transition-transform duration-500 group-hover:scale-105"
-											sizes="(max-width: 768px) 100vw, 50vw"
-										/>
-										{/* Красивый оверлей с лупой при наведении */}
-										<div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-											<div className="bg-background/90 backdrop-blur-sm text-foreground px-4 py-2 rounded-full flex items-center gap-2 shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
-												<ZoomIn className="w-4 h-4 text-primary" />
-												<span className="font-medium text-sm">Увеличить</span>
-											</div>
-										</div>
-									</a>
-									
-								</div>
-							)}
-
-						</div>
-					</div>
-				)}
-				
-				{cemetery.description && (
-							<p className="text-muted-foreground leading-relaxed mb-4 whitespace-pre-line">
-								{cemetery.description}
-							</p>
-						)}
-				<ContactSection 
-				  title={`Нужна помощь в организации ритуальных услуг на кладбище «${cemetery.name}»?`}
-				  description="Специалисты агентства «Парус» проконсультируют вас по вопросам захоронения, помогут подготовить документы и возьмут на себя благоустройство участка. Мы работаем круглосуточно."
-				  buttonText="Получить консультацию"
-				/>
+				{/* 4. Обращение за помощью */}
+				<div className="container mx-auto px-4">
+					<ContactSection
+						title={`Нужна помощь в организации ритуальных услуг на кладбище «${cemetery.name}»?`}
+						description="Специалисты агентства «Парус» проконсультируют вас по вопросам захоронения, помогут подготовить документы и возьмут на себя благоустройство участка. Мы работаем круглосуточно."
+						buttonText="Получить консультацию"
+					/>
+				</div>
 			</div>
 		</div>
 	);

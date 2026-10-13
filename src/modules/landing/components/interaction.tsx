@@ -3,10 +3,9 @@ import {
   TypographyP,
   TypographyPreline,
 } from "@/components/typography";
-import { buttonVariants } from "@/components/ui/button";
 import Section from "@/components/ui/section";
+import { formatPhoneNumber } from "@/lib/utils";
 import ContactModalTrigger from "@/modules/contact/components/contact-modal-trigger";
-import { Phone } from "lucide-react";
 
 export type InteractionProps = {
   title?: string;
@@ -14,6 +13,9 @@ export type InteractionProps = {
   description?: string;
   ctaLabel?: string;
   ctaHref?: string;
+  phone?: string;
+  // Без обёртки-секции: когда блок стоит внутри .page-blocks
+  bare?: boolean;
 };
 
 const DEFAULT_INTERACTION = {
@@ -27,29 +29,52 @@ const DEFAULT_INTERACTION = {
 
 export default function Interaction({
   title = DEFAULT_INTERACTION.title,
-  highlight = DEFAULT_INTERACTION.highlight,
   description = DEFAULT_INTERACTION.description,
   ctaLabel = DEFAULT_INTERACTION.ctaLabel,
-  ctaHref = DEFAULT_INTERACTION.ctaHref,
+  phone = "+7 (342) 277-72-72",
+  bare = false,
 }: InteractionProps) {
-  return (
-    <Section id="interaction" className="bg-secondary-container lg:py-32">
-      <div className="grid grid-cols-1 lg:grid-cols-2 container mx-auto text-start items-center gap-4 px-4">
-        <div className="flex flex-col gap-6">
-          <TypographyH2 className="leading-none">
+  const cleanPhone = phone.replace(/[^\d+]/g, "");
+
+  const panel = (
+      <div className="flex flex-col gap-8 rounded-3xl bg-primary p-6 text-on-primary sm:p-10 lg:flex-row lg:items-end lg:justify-between lg:gap-16 lg:p-16">
+        <div className="flex flex-col gap-4">
+          <TypographyH2>
             <TypographyPreline>{title}</TypographyPreline>
           </TypographyH2>
-        </div>
-        <div className="flex flex-col items-start gap-8">
-          <TypographyP className="text-lg md:text-xl whitespace-pre-line">
+          <TypographyP className="max-w-md text-on-primary/75 lg:text-xl text-pretty">
             {description}
           </TypographyP>
-          <ContactModalTrigger className={buttonVariants({ size: "lg" })}>
-            <Phone />
+        </div>
+
+        {/* Телефон крупнее всего остального: в трудную минуту чаще звонят, чем пишут */}
+        <div className="flex flex-col items-start gap-6 lg:items-end lg:text-right">
+          <div>
+            <a
+              href={`tel:${cleanPhone}`}
+              className="block whitespace-nowrap text-3xl font-medium leading-none underline-offset-8 hover:underline sm:text-4xl lg:text-5xl"
+            >
+              {formatPhoneNumber(phone)}
+            </a>
+            <p className="mt-3 text-on-primary/75">
+              Круглосуточно, без выходных
+            </p>
+          </div>
+          <ContactModalTrigger
+            size="lg"
+            className="bg-background text-foreground hover:bg-background/90"
+          >
             {ctaLabel}
           </ContactModalTrigger>
         </div>
       </div>
+  );
+
+  if (bare) return panel;
+
+  return (
+    <Section id="interaction" className="container mx-auto">
+      {panel}
     </Section>
   );
 }

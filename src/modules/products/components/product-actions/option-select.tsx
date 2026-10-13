@@ -35,11 +35,7 @@ const OptionSelect: React.FC<OptionSelectProps> = ({
               onClick={() => updateOption(option.id, v)}
               key={v}
               variant={v === current ? "default" : "outline"}
-              className={cn("px-2 flex-1 ", {
-                "border-ui-border-interactive": v === current,
-                "hover:shadow-elevation-card-rest transition-shadow ease-in-out duration-150":
-                  v !== current,
-              })}
+              className="px-2 flex-1"
               disabled={disabled}
               data-testid="option-button"
             >

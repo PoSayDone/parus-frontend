@@ -22,20 +22,20 @@ export const ServiceCard = ({
     <Card
       key={service.id}
       className={cn(
-        "group hover:scale-100 hover:shadow-lg transition-all duration-300 border-border hover:border-primary/20",
+        "group transition-colors hover:border-primary/40",
         className,
       )}
     >
       <CardHeader className="text-start">
-        <div className="mb-4 p-3 rounded-full bg-primary/10 group-hover:bg-primary/20 transition-colors duration-300 size-16">
+        <div className="mb-4 flex items-center justify-center rounded-full bg-primary/10 size-14">
           {service.icon && (
             <Icon
               name={service.icon as IconName}
-              className="size-10 text-primary"
+              className="size-7 text-primary"
             />
           )}
         </div>
-        <CardTitle className="group-hover:text-primary transition-colors duration-300">
+        <CardTitle>
           {service.title}
         </CardTitle>
         <CardDescription className="mb-2">
@@ -45,7 +45,7 @@ export const ServiceCard = ({
       <CardFooter className="mt-auto">
         <Link
           className={buttonVariants({
-            variant: "secondary",
+            variant: "outline",
             className: "w-full",
           })}
           href={`/services/${service.handle}`}

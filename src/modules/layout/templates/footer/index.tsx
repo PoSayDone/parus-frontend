@@ -1,8 +1,7 @@
 import { buttonVariants } from "@/components/ui/button";
 import { getSiteSettings } from "@/lib/data/site-settings";
-import { cn, formatPhoneNumber } from "@/lib/utils";
+import { formatPhoneNumber } from "@/lib/utils";
 import Logo from "@/modules/common/icons/logo";
-import ContactModalTrigger from "@/modules/contact/components/contact-modal-trigger";
 import SkeletonFooterDocuments from "@/modules/skeletons/components/skeleton-footer-documents";
 import { Phone } from "lucide-react";
 import Link from "next/link";
@@ -24,10 +23,11 @@ export default async function Footer() {
   const addressLines = address.split("\n");
 
   return (
-    <footer className="px-8 py-10 md:p-20 flex flex-col justify-between border-t">
-      <div className="flex flex-col md:flex-row justify-between items-start py-6 gap-6 md:mb-6">
+    <footer className="border-t">
+      <div className="container mx-auto px-4 py-12 lg:py-16">
+      <div className="flex flex-col md:flex-row justify-between items-start gap-8 mb-8 lg:mb-12">
         <div className="flex flex-col gap-2">
-          <Link href={"/"} className="font-bold text-xl mb-2">
+          <Link href={"/"} aria-label="Парус, на главную" className="mb-2">
             <Logo size={32} />
           </Link>
           <p className="text-sm">
@@ -41,41 +41,27 @@ export default async function Footer() {
           <a href={`mailto:${email}`} className="text-sm hover:underline">
             {email}
           </a>
-          <Link href={`tel:${phone}`} className="text-sm">
+          <a href={`tel:${phone}`} className="text-sm hover:underline">
             {formatPhoneNumber(phone)}
-          </Link>
+          </a>
         </div>
         <div className="flex flex-col gap-2">
-          <p className="font-medium text-xl mb-2">Компания</p>
-          {/*<Link href={"/"} className="text-sm">
-            О нас
-          </Link>
-          <Link href={"/"} className="text-sm">
-            Новости
-          </Link>
-          <Link href={"/admin"} className="text-sm">
-           Панель
-          </Link> */}
+          <p className="font-medium text-lg mb-2">Покупателям</p>
+          <Suspense fallback={<SkeletonFooterDocuments />}>
+            <FooterDocuments />
+          </Suspense>
         </div>
-        <div className="flex flex-col gap-2">
-          <p className="font-medium text-xl mb-2">Покупателям</p>
-          <ul>
-            <Suspense fallback={<SkeletonFooterDocuments />}>
-              <FooterDocuments />
-            </Suspense>
-          </ul>
-        </div>
-        <div className="flex-col justify-start items-start text-start flex py-8 md:py-0">
-          <p className="text-2xl font-medium mb-2">
+        <div className="flex flex-col items-start">
+          <p className="text-xl lg:text-2xl font-medium mb-2">
             Не нашли ответ на вопрос?
           </p>
-          <p className="mb-4">
+          <p className="mb-6 text-muted-foreground">
             Напишите нам удобным способом
             <br /> и специалист ответит в течение 5 минут
           </p>
           <a 
 		  href={`tel:${phone}`} 
-		  className={cn(buttonVariants({ size: "lg" }), "flex gap-2 items-center")}
+		  className={buttonVariants({ size: "lg" })}
 		>
 		  <Phone />
 		  Задать вопрос
@@ -83,6 +69,7 @@ export default async function Footer() {
         </div>
       </div>
       <p className="text-muted-foreground text-sm">{footerNote}</p>
+      </div>
     </footer>
   );
 }

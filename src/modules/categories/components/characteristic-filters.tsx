@@ -1,5 +1,6 @@
 "use client";
 
+import { buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
@@ -72,7 +73,7 @@ export default function CharacteristicFilters({
 	<form
 		action={categoryUrl}
 		method="get"
-		className="mb-6 flex flex-wrap items-end gap-3"
+		className="mb-8 flex flex-wrap items-end gap-3"
 	>
 		<div className="w-full sm:w-[180px]">
 			<label
@@ -87,7 +88,7 @@ export default function CharacteristicFilters({
 					id="category-sort"
 					name="sortBy"
 					defaultValue={sortBy}
-					className="h-10 w-full appearance-none rounded-xl border border-border bg-background pl-3 pr-9 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+					className="h-10 w-full appearance-none rounded-full border border-input bg-card pl-4 pr-9 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
 				>
 					<option value="created_at">Сначала новые</option>
 					<option value="price_asc">Сначала дешевле</option>
@@ -119,7 +120,7 @@ export default function CharacteristicFilters({
 					</legend>
 
 					<details className="group relative open:z-30">
-						<summary className="flex h-10 cursor-pointer list-none items-center justify-between gap-2 rounded-xl border border-border bg-background px-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary [&::-webkit-details-marker]:hidden">
+						<summary className="flex h-10 cursor-pointer list-none items-center justify-between gap-2 rounded-full border border-input bg-card px-4 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary [&::-webkit-details-marker]:hidden">
 							<span className="truncate" title={label}>
 								{label}
 							</span>
@@ -130,7 +131,7 @@ export default function CharacteristicFilters({
 							/>
 						</summary>
 
-						<div className="absolute left-0 top-full z-30 mt-2 max-h-64 w-full min-w-[180px] overflow-y-auto rounded-xl border border-border bg-background p-1.5 shadow-lg">
+						<div className="absolute left-0 top-full z-30 mt-2 max-h-64 w-full min-w-[180px] overflow-y-auto rounded-2xl border bg-popover p-1.5">
 							{group.values.map((value) => (
 								<label
 									key={value}
@@ -158,7 +159,7 @@ export default function CharacteristicFilters({
 
 		<button
 			type="submit"
-			className="h-10 rounded-xl bg-primary px-4 text-sm text-primary-foreground"
+			className={buttonVariants({ size: "sm", className: "h-10" })}
 		>
 			Применить
 		</button>

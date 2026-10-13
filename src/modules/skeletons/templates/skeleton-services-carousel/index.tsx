@@ -2,14 +2,14 @@ import repeat from "@lib/util/repeat";
 import SkeletonServiceCard from "../../components/skeleton-service-card";
 
 const SkeletonServicesCarousel = ({
-	numberOfCards = 8,
+	numberOfCards = 3,
 }: {
 	numberOfCards?: number;
 }) => {
 	return (
 		<div
-			className="flex gap-4 overflow-x-clip w-full"
-			data-testid="blog-landing-list-loader"
+			className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+			data-testid="services-carousel-loader"
 		>
 			{repeat(numberOfCards).map((index) => (
 				<SkeletonServiceCard key={index} />

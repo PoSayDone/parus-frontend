@@ -25,6 +25,9 @@ export default function ContactModalClient({
 			selectedService={selectedService}
 			selectedPlan={selectedPlan}
 			settings={settings}
+			contextLabel={
+				selectedPlan ? `Пакет «${selectedPlan}»` : selectedService
+			}
 		/>
 	);
 }

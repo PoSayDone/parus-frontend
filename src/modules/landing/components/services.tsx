@@ -21,14 +21,8 @@ export default function Services({
 }: ServicesProps) {
 	return (
 		<Section
-			// 1. Убираем px-0! и ставим container mx-auto сюда. 
-			// Это сделает секцию такой же по ширине, как блок со стоимостью.
-			className="container mx-auto px-4" 
-			
-			// 2. Здесь оставляем только отступы и выравнивание. 
-			// Убираем container и mx-auto отсюда, чтобы они не конфликтовали.
-			textContainerClassName="mb-12 flex flex-col items-start text-left"
-			
+			className="px-0!"
+			headingClassName="container mx-auto px-4"
 			id="services"
 			title={title}
 			subtitle={

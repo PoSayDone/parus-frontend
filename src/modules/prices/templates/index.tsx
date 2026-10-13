@@ -3,6 +3,24 @@ import SkeletonPricesList from "@/modules/skeletons/templates/skeleton-prices-gr
 import { Suspense } from "react";
 import PricesList from "../components/prices-list";
 
+const EXTRA_SERVICES = [
+  {
+    title: "Кремация",
+    description: "Организация кремации с урной",
+    price: "от 25 000 ₽",
+  },
+  {
+    title: "Отпевание",
+    description: "Религиозная церемония",
+    price: "от 8 000 ₽",
+  },
+  {
+    title: "Бальзамирование",
+    description: "Подготовка тела",
+    price: "от 15 000 ₽",
+  },
+];
+
 export default function PricesTemplate() {
   return (
     <PageTemplate
@@ -18,35 +36,22 @@ export default function PricesTemplate() {
         <PricesList />
       </Suspense>
 
-      <div className="bg-muted/50 rounded-[32px] p-8 mb-8 md:pb-16 mt-12">
-        <p className="text-2xl font-semibold text-foreground mb-8 text-center">
+      <div>
+        <h2 className="block-title">
           Дополнительные услуги
-        </p>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div className="text-center">
-            <p className="font-semibold text-foreground mb-2">Кремация</p>
-            <p className="text-muted-foreground text-sm mb-2">
-              Организация кремации с урной
-            </p>
-            <span className="text-primary font-medium">от 25 000 ₽</span>
-          </div>
-          <div className="text-center">
-            <p className="font-semibold text-foreground mb-2">Отпевание</p>
-            <p className="text-muted-foreground text-sm mb-2">
-              Религиозная церемония
-            </p>
-            <span className="text-primary font-medium">от 8 000 ₽</span>
-          </div>
-          <div className="text-center">
-            <p className="font-semibold text-foreground mb-2">
-              Бальзамирование
-            </p>
-            <p className="text-muted-foreground text-sm mb-2">
-              Подготовка тела
-            </p>
-            <span className="text-primary font-medium">от 15 000 ₽</span>
-          </div>
-        </div>
+        </h2>
+        <ul className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {EXTRA_SERVICES.map((item) => (
+            <li
+              key={item.title}
+              className="flex flex-col rounded-3xl border bg-card p-6"
+            >
+              <p className="text-lg lg:text-xl font-medium">{item.title}</p>
+              <p className="text-muted-foreground mt-1">{item.description}</p>
+              <p className="text-2xl font-medium mt-6">{item.price}</p>
+            </li>
+          ))}
+        </ul>
       </div>
     </PageTemplate>
   );

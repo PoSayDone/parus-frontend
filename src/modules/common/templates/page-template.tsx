@@ -1,6 +1,6 @@
 import SectionHeading from "@/components/ui/section-heading";
 import { cn } from "@/lib/utils";
-import Interaction from "@/modules/landing/components/interaction";
+import Interaction from "@/modules/landing/components/interaction-server";
 import type { ReactNode } from "react";
 import Breadcrumbs from "@/components/ui/breadcrumbs";
 
@@ -29,27 +29,31 @@ export default function PageTemplate({
   breadcrumbs,
 }: PageTemplateProps) {
   return (
-    <div className={cn("min-h-screen px-0", rootClassName)}>
-      <div className={cn("container mx-auto px-4 py-12", containerClassName)}>
-		{/* Если передали крошки — рисуем их, иначе просто заголовок текущей страницы */}
-		  <Breadcrumbs 
-			items={breadcrumbs || [{ label: typeof title === 'string' ? title : "" }]} 
-		  />
+    <div className={cn("min-h-[60vh]", rootClassName)}>
+      <div className={cn("container mx-auto px-4 page-pad", containerClassName)}>
+        {/* Если передали крошки — рисуем их, иначе просто заголовок текущей страницы */}
+        <Breadcrumbs
+          items={breadcrumbs || [{ label: typeof title === "string" ? title : "" }]}
+        />
         <SectionHeading
-          className="mb-8 lg:mb-24"
+          className="mb-8 lg:mb-12"
           title={title}
           subtitle={description}
-		  level="h1"
+          level="h1"
         />
 
-        {children}
+        {/* Каждый прямой потомок — отдельный блок страницы */}
+        <div className="page-blocks">
+          {children}
+          {contactSection ? (
+            <Interaction
+              bare
+              title={contactSection.title}
+              description={contactSection.description}
+            />
+          ) : null}
+        </div>
       </div>
-      {contactSection ? (
-        <Interaction
-          title={contactSection.title}
-          description={contactSection.description}
-        />
-      ) : null}
     </div>
   );
 }

@@ -32,7 +32,6 @@ export default function Pricing({
 		<Section
 			id={"pricing"}
 			className="container mx-auto"
-			textContainerClassName="items-start text-start"
 			title={title}
 			subtitle={
 				<TypographyPreline>{subtitle}</TypographyPreline>
@@ -46,7 +45,7 @@ export default function Pricing({
 				className={cn(
 					buttonVariants({
 						variant: "outline",
-						className: "w-fit self-center mt-8",
+						className: "w-fit self-center mt-6 lg:mt-8",
 					}),
 				)}
 			>

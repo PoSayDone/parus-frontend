@@ -12,10 +12,10 @@ export default async function FooterDocuments() {
 	});
 
 	return (
-		<ul>
+		<ul className="flex flex-col gap-2">
 			{posts.map((post) => (
 				<li key={post.id}>
-					<Link href={`/document/${post.handle}`} className="text-sm">
+					<Link href={`/document/${post.handle}`} className="text-sm hover:underline">
 						{post.title}
 					</Link>
 				</li>

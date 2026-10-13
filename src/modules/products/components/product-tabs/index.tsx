@@ -22,7 +22,7 @@ const ProductTabs = ({ product }: ProductTabsProps) => {
 		<div className="w-full">
 			{tabs.map((tab, i) => (
 				<div key={i}>
-					<h3 className="mb-4">{tab.label}</h3>
+					<h2 className="text-lg font-medium mb-2 mt-6 first:mt-0">{tab.label}</h2>
 					{tab.component}
 				</div>
 			))}
@@ -32,17 +32,17 @@ const ProductTabs = ({ product }: ProductTabsProps) => {
 
 const ProductInfoTab = ({ product }: ProductTabsProps) => {
 	return (
-		<div className="text-small-regular mb-4">
+		<div className="mb-4">
 			<div className="flex flex-col">
 				{product.characteristics?.map((characteristic) => (
 					<div
-						className="grid grid-cols-2 not-last:border-b py-4"
+						className="grid grid-cols-2 gap-4 not-last:border-b py-3"
 						key={characteristic.id}
 					>
-						<div className="font-medium text-muted-foreground">
+						<div className="text-muted-foreground">
 							{characteristic.key}
 						</div>
-						<div className="font-medium">
+						<div>
 							{characteristic.value}
 						</div>
 					</div>
@@ -56,8 +56,7 @@ const ShippingInfoTab = () => {
 	return (
 		<div className="flex flex-col gap-6">
 			<div>
-				<div className="font-medium mb-1">Быстрая доставка</div>
-				<p className="max-w-sm">
+				<p className="text-muted-foreground max-w-sm">
 					Мы имеем возможность доставки товара, условия доставки
 					обсуждаются с менеджером.
 				</p>

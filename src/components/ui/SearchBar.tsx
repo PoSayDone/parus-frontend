@@ -1,36 +1,46 @@
-'use client';
+"use client";
 
-import { useState, FormEvent } from 'react';
-import { useRouter } from 'next/navigation';
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Search } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { type FormEvent, useState } from "react";
 
-export default function SearchBar() {
-  const [query, setQuery] = useState<string>('');
+export default function SearchBar({
+  defaultValue = "",
+  autoFocus = false,
+}: {
+  defaultValue?: string;
+  autoFocus?: boolean;
+}) {
+  const [query, setQuery] = useState<string>(defaultValue);
   const router = useRouter();
 
-  // Добавлена типизация события формы
   const handleSearch = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
+
     if (query.trim()) {
       router.push(`/search?q=${encodeURIComponent(query.trim())}`);
     }
   };
 
   return (
-    <form onSubmit={handleSearch} className="flex gap-2">
-      <input
-        type="text"
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        placeholder="Поиск по сайту..."
-        className="border border-gray-300 rounded px-4 py-2 w-full text-black"
-      />
-      <button 
-        type="submit" 
-        className="bg-[rgb(101,86,68)] text-white px-6 py-2 rounded-full border-b border-[rgb(207,197,187)] hover:opacity-90 transition-opacity"
-      >
+    <form onSubmit={handleSearch} role="search" className="flex gap-2">
+      <div className="relative grow min-w-0">
+        <Search className="absolute left-5 top-1/2 -translate-y-1/2 size-5 text-muted-foreground pointer-events-none" />
+        <Input
+          type="search"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Услуга, кладбище, товар…"
+          aria-label="Поиск по сайту"
+          autoFocus={autoFocus}
+          className="pl-13 text-base md:text-base"
+        />
+      </div>
+      <Button type="submit" className="h-[54px]">
         Найти
-      </button>
+      </Button>
     </form>
   );
 }

@@ -5,7 +5,6 @@ import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { headerLinks } from "@/lib/constants";
 import { cn, formatPhoneNumber } from "@/lib/utils";
 import Logo from "@/modules/common/icons/logo";
-import ContactModalTrigger from "@/modules/contact/components/contact-modal-trigger";
 import { MenuIcon, Phone, XIcon, Search } from "lucide-react";
 import Link from "next/link";
 import { type Dispatch, type SetStateAction, useState, useEffect, Suspense } from "react";
@@ -26,16 +25,28 @@ const HeaderContent = ({
   links: { label: string; href: string }[];
   phone: string;
 }) => {
+  const pathname = usePathname();
+
   return (
     <>
-      <div className="flex flex-row  gap-8">
-        <Link href={"/"} className="text-xl ml-2 md:ml-0 -mt-0.5">
+      <div className="flex flex-row items-center gap-8">
+        <Link href={"/"} aria-label="Парус, на главную" className="-mt-0.5">
           <Logo size={32} />
         </Link>
         <nav className="items-center hidden lg:flex gap-6">
           {links.map((item) => {
+            const isActive =
+              pathname === item.href || pathname.startsWith(`${item.href}/`);
             return (
-              <Link key={item.href} href={item.href} className="h-fit">
+              <Link
+                key={item.href}
+                href={item.href}
+                aria-current={isActive ? "page" : undefined}
+                className={cn(
+                  "h-fit transition-colors hover:text-primary",
+                  isActive ? "text-primary" : "text-foreground",
+                )}
+              >
                 {item.label}
               </Link>
             );
@@ -43,39 +54,30 @@ const HeaderContent = ({
         </nav>
       </div>
       <div className="flex justify-end gap-2 items-center">
-	  {/* Кнопка поиска */}
-        {/* Используем обычный тег <button>, чтобы shadcn не урезал размер иконки */}
-        <button
-          type="button"
-          // Добавили hidden md:flex в самое начало
-          className="hidden md:flex items-center justify-center h-10 w-10 md:h-11 md:w-11 shrink-0 text-[rgb(29,27,26)] hover:bg-gray-100 rounded-full transition-colors"
+        <Button
+          className="hidden md:flex"
+          size={"icon"}
+          variant={"ghost"}
           title="Поиск по сайту"
           onClick={() => {
             setMenuState(false);
             setSearchOpen(true);
           }}
         >
-          {/* Жестко задаем размеры через style, чтобы перебить любые внешние стили */}
-          <Search 
-            style={{ width: "28px", height: "28px" }} 
-            strokeWidth={2.5} 
-          />
+          <Search className="size-5" />
           <span className="sr-only">Поиск</span>
-        </button>
+        </Button>
         <a
-		  href={`tel:${phone}`}
-		  className={cn(
-			buttonVariants({ variant: "default" }),
-			"flex gap-2 items-center"
-		  )}
-		>
-		  <Phone size={18} />
-		  {formatPhoneNumber(phone)}
-		</a>
+          href={`tel:${phone}`}
+          className={cn(buttonVariants({ variant: "default" }), "px-4 sm:px-6")}
+        >
+          <Phone />
+          {formatPhoneNumber(phone)}
+        </a>
         <Button
           className="lg:hidden"
           size={"icon"}
-          variant={"secondary"}
+          variant={"outline"}
           onClick={() => {
             setMenuState((prev) => !prev);
           }}
@@ -133,24 +135,28 @@ export default function Header({
     className?: string;
   }) => {
     return (
-     <Link href={href} onClick={() => setMenuState(false)} prefetch={false}>
-        <li
+      <li>
+        <Link
+          href={href}
+          onClick={() => setMenuState(false)}
+          prefetch={false}
           className={cn(
             buttonVariants({
               variant: "ghost",
             }),
-            "w-full justify-start items-center ",
+            "w-full justify-start rounded-none",
             className,
           )}
         >
           {name}
-        </li>
-      </Link>
+        </Link>
+      </li>
     );
   };
 
   return (
-    <header className="flex px-2 md:px-8 py-3 text-base items-center sticky top-0 bg-background z-40 justify-between">
+    <header className="sticky top-0 z-40 bg-background">
+      <div className="container mx-auto flex items-center justify-between px-4 py-3 text-base">
       
       {/* Безопасное отслеживание URL, которое не сломает сборку Next.js */}
       <Suspense fallback={null}>
@@ -164,17 +170,18 @@ export default function Header({
         links={links}
         phone={phone}
       />
+      </div>
       <Dialog modal open={menuState} onOpenChange={setMenuState}>
         <DialogContent
           className={cn(
-            "h-[100vh] w-screen !max-w-full rounded-none !px-0 !py-0",
+            "h-dvh w-screen !max-w-full rounded-none border-none !px-0 !py-0",
             "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:slide-out-to-top-1/2 data-[state=open]:slide-in-from-top-1/2 data-[state=closed]:fade-out-0 data-[state=open]:fade-in-50 data-[state=closed]:zoom-out-100 data-[state=open]:zoom-in-100",
           )}
           showClose={false}
         >
-          <DialogTitle className="sr-only">Navigation dialog</DialogTitle>
+          <DialogTitle className="sr-only">Меню</DialogTitle>
           <div className="flex-col ">
-            <div className="flex items-center justify-between px-2 py-3 md:px-6">
+            <div className="container mx-auto flex items-center justify-between px-4 py-3">
               <HeaderContent
 				menuState={menuState}
 				setMenuState={setMenuState}
@@ -183,23 +190,25 @@ export default function Header({
 				phone={phone}
 			  />
             </div>
-            <div className="flex flex-col grow h-full pt-2">
+            <div className="container mx-auto flex flex-col grow h-full pt-2">
               
               {/* Выводим полноценную строку поиска внутри бургер-меню */}
               <div className="px-4 pb-4 md:hidden">
                 <SearchBar />
               </div>
 
-              {links.map((item) => {
-                return (
-                  <NavMenuLink
-                    key={item.href}
-                    name={item.label}
-                    href={item.href}
-                    className="text-xl px-4 py-4 h-fit"
-                  />
-                );
-              })}
+              <ul>
+                {links.map((item) => {
+                  return (
+                    <NavMenuLink
+                      key={item.href}
+                      name={item.label}
+                      href={item.href}
+                      className="text-xl px-4 py-4 h-fit"
+                    />
+                  );
+                })}
+              </ul>
             </div>
             <div className="h-[78px]" />
           </div>
@@ -207,24 +216,37 @@ export default function Header({
       </Dialog>
 
       <Dialog open={searchOpen} onOpenChange={setSearchOpen}>
-        <DialogContent className="sm:max-w-3xl top-[15%] translate-y-0 p-6 md:p-10">
-          <DialogTitle className="text-2xl md:text-3xl font-semibold mb-6 text-[rgb(29,27,26)]">
+        <DialogContent className="sm:max-w-2xl top-[15%] translate-y-0 p-6 md:p-8 gap-6">
+          <DialogTitle className="text-2xl">
             Поиск по сайту
           </DialogTitle>
-          
-          <div className="w-full mb-8">
-            <SearchBar />
-          </div>
 
-          <div className="flex flex-col gap-4 border-t border-[rgb(207,197,187)] pt-6">
-            <p className="text-sm uppercase tracking-wider text-gray-500 mb-2">
-              Смотреть категории
-            </p>
-            <Link href="/services" prefetch={false} className="text-[rgb(29,27,26)] hover:opacity-70 text-lg flex items-center gap-3 transition-opacity">
-              <span className="text-gray-400">→</span> Услуги
+          <SearchBar autoFocus />
+
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="text-sm text-muted-foreground mr-1">
+              Разделы:
+            </span>
+            <Link
+              href="/services"
+              prefetch={false}
+              className={buttonVariants({ variant: "outline", size: "sm" })}
+            >
+              Услуги
             </Link>
-            <Link href="/addresses" prefetch={false} className="text-[rgb(29,27,26)] hover:opacity-70 text-lg flex items-center gap-3 transition-opacity">
-              <span className="text-gray-400">→</span> Адреса и учреждения
+            <Link
+              href="/addresses"
+              prefetch={false}
+              className={buttonVariants({ variant: "outline", size: "sm" })}
+            >
+              Адреса и учреждения
+            </Link>
+            <Link
+              href="/prices"
+              prefetch={false}
+              className={buttonVariants({ variant: "outline", size: "sm" })}
+            >
+              Цены
             </Link>
           </div>
         </DialogContent>

@@ -29,8 +29,7 @@ export default function Posts({
 	return (
 		<Section
 			id="posts"
-			className="container mx-auto "
-			textContainerClassName="lg:text-center lg:items-center"
+			className="container mx-auto"
 			title={title}
 			subtitle={subtitle}
 		>
@@ -40,8 +39,8 @@ export default function Posts({
 			<Link
 				href={buttonHref}
 				className={cn(
-					buttonVariants({ variant: "default", size: "lg" }),
-					"mt-4 self-center",
+					buttonVariants({ variant: "outline" }),
+					"w-fit self-center mt-6 lg:mt-8",
 				)}
 			>
 				{buttonLabel}

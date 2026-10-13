@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/form";
 import { Separator } from "@/components/ui/separator";
 import { createContactRequest } from "@/lib/data/contact-requests";
+import { formatPhoneNumber } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Clock, Mail, MapPin, Phone } from "lucide-react";
 import { useMemo } from "react";
@@ -55,6 +56,8 @@ interface ContactModalProps {
   title?: string;
   description?: string;
   submitText?: string;
+  // Что именно выбрал посетитель (пакет, услуга, товар): показываем в шапке формы
+  contextLabel?: string;
 }
 
 export default function ContactModal({
@@ -66,6 +69,7 @@ export default function ContactModal({
   title = "Заказать звонок",
   description = "Мы перезвоним в течение 15 минут",
   submitText = "Жду звонка",
+  contextLabel,
 }: ContactModalProps) {
   const form = useForm<ContactFormData>({
     resolver: zodResolver(contactFormSchema),
@@ -111,20 +115,25 @@ export default function ContactModal({
       form.reset();
     } catch (error) {
       console.error("Error submitting contact request:", error);
-      toast.error("Не удалось отправить заявку");
+      toast.error("Не удалось отправить заявку. Позвоните нам, мы на связи круглосуточно.");
     }
   };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="w-[95vw] max-w-full! rounded-2xl mb-8 md:mb-auto md:max-w-125! px-0">
+      <DialogContent className="w-[95vw] max-w-full! mb-8 md:mb-auto md:max-w-125! px-0">
         <DialogHeader className="px-6 text-start mb-2">
-          <DialogTitle className="text-2xl font-medium">
+          <DialogTitle className="text-2xl">
             {title}
           </DialogTitle>
           <DialogDescription className="text-sm">
             {description}
           </DialogDescription>
+          {contextLabel && (
+            <p className="mt-2 w-fit max-w-full rounded-2xl bg-secondary-container px-3 py-1.5 text-sm text-on-secondary-container">
+              {contextLabel}
+            </p>
+          )}
         </DialogHeader>
 
 <Form {...form}>
@@ -141,6 +150,7 @@ export default function ContactModal({
             <LabelInput
               label="Имя" // Убрали звездочку
               placeholder="Как к вам обращаться?"
+              autoComplete="name"
               {...field}
             />
           </FormControl>
@@ -158,6 +168,8 @@ export default function ContactModal({
             <LabelInput
               label="Телефон *"
               type="tel"
+              inputMode="tel"
+              autoComplete="tel"
               placeholder="+7 (___) ___-__-__"
               {...field}
             />
@@ -206,10 +218,10 @@ export default function ContactModal({
             <div className="pt-2"> {/* Убрали контейнер с двумя кнопками */}
       <Button 
         type="submit" 
-        className="w-full h-12 text-base"
+        className="w-full"
         disabled={form.formState.isSubmitting}
       >
-        {form.formState.isSubmitting ? "Отправка..." : submitText}
+        {form.formState.isSubmitting ? "Отправляем…" : submitText}
       </Button>
     </div>
   </form>
@@ -220,7 +232,7 @@ export default function ContactModal({
 
         {/* Добавили hidden md:block и pb-4 для аккуратного отступа снизу */}
         <div className="hidden md:block px-6 pb-4">
-          <div className="font-medium mb-3">Или свяжитесь с нами напрямую:</div>
+          <div className="font-medium mb-3">Или свяжитесь с нами напрямую</div>
           <div className="space-y-2 text-sm">
             <div className="flex items-center gap-2">
               <Phone className="h-4 w-4 text-primary" />
@@ -228,7 +240,7 @@ export default function ContactModal({
                 href={`tel:${settings.phone}`}
                 className="text-primary hover:underline"
               >
-                {settings.phone}
+                {formatPhoneNumber(settings.phone)}
               </a>
             </div>
             <div className="flex items-center gap-2">
@@ -240,8 +252,8 @@ export default function ContactModal({
                 {settings.email}
               </a>
             </div>
-            <div className="flex items-center gap-2">
-              <MapPin className="h-4 w-4 text-primary" />
+            <div className="flex items-start gap-2">
+              <MapPin className="h-4 w-4 mt-0.5 shrink-0 text-primary" />
               <span className="text-muted-foreground">
                 {addressLines.map((line, index) => (
                   <span key={`${line}-${index}`}>

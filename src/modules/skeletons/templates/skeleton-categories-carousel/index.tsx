@@ -8,8 +8,8 @@ const SkeletonCategoriesCarousel = ({
 }) => {
 	return (
 		<div
-			className="flex gap-4 overflow-x-clip w-full"
-			data-testid="blog-landing-list-loader"
+			className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
+			data-testid="categories-grid-loader"
 		>
 			{repeat(numberOfCards).map((index) => (
 				<SkeletonCategoryCard key={index} />

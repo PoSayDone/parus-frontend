@@ -115,5 +115,10 @@ export default async function Home() {
     root: baseData.root || { props: {} },
   };
 
-  return <Render config={landingConfig as Config} data={data} />;
+  // Нижний отступ дополняет последнюю секцию до общего правила: 64 / 96px до футера
+  return (
+    <div className="pb-8 lg:pb-12">
+      <Render config={landingConfig as Config} data={data} />
+    </div>
+  );
 }

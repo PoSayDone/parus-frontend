@@ -1,6 +1,6 @@
 const SkeletonCategoryCard = () => {
 	return (
-		<div className="h-[420px] w-[304px] bg-card rounded-4xl border animate-pulse shrink-0" />
+		<div className="h-40 sm:h-48 lg:h-56 bg-card rounded-3xl border animate-pulse" />
 	);
 };
 

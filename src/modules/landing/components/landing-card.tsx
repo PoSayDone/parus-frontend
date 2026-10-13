@@ -15,22 +15,25 @@ export default function LandingCard({
 	href?: string;
 }) {
 	return (
-		<Link href={href} className="group">
+		<Link href={href} className="group rounded-3xl outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50">
 			<Card
 				className={cn(
-					"relative group hover:shadow-lg transition-all duration-300 border-border hover:border-primary/20",
+					"relative transition-colors hover:border-primary/40",
 					className,
 				)}
 			>
-				<div className="absolute z-1 w-full h-32 top-0 right-0 bg-linear-to-b from-card to-transparent" />
-				<CardHeader className="text-start z-1 relative">
+				{/* Подложка под заголовок нужна только поверх обложки */}
+				{children ? (
+					<div className="absolute z-1 w-full h-32 top-0 right-0 bg-linear-to-b from-card to-transparent" />
+				) : null}
+				<CardHeader className="z-1 relative">
 					<CardTitle>
-						<TypographyH3 className="text-xl text-foreground group-hover:text-primary transition-colors duration-300">
+						<TypographyH3 className="text-lg lg:text-xl">
 							{title}
 						</TypographyH3>
 					</CardTitle>
 				</CardHeader>
-				<CardContent>{children}</CardContent>
+				{children ? <CardContent>{children}</CardContent> : null}
 			</Card>
 		</Link>
 	);

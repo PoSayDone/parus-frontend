@@ -57,7 +57,7 @@ const LabelInput = React.forwardRef<HTMLInputElement, FloatingLabelInputProps>(
 		return (
 			<div
 				className={cn(
-					"relative w-full px-3 py-1.5 h-14 bg-card rounded-xl transition border border-transparent",
+					"relative w-full px-3 py-1.5 h-14 bg-card rounded-2xl transition border border-transparent",
 					isFocused && "border-ring ring-ring/50 ring-[3px]",
 				)}
 			>
@@ -79,7 +79,7 @@ const LabelInput = React.forwardRef<HTMLInputElement, FloatingLabelInputProps>(
 					<Label
 						htmlFor={inputId}
 						className={cn(
-							"absolute left-0 transition-all duration-200 pointer-events-none text-card-foreground",
+							"absolute left-0 transition-all duration-200 pointer-events-none text-muted-foreground",
 							shouldFloat
 								? "top-0 text-sm"
 								: "top-1/2 -translate-y-1/2 text-base",

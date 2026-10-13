@@ -63,7 +63,7 @@ const FloatingTextarea = React.forwardRef<
 		return (
 			<div
 				className={cn(
-					"relative w-full px-3 py-1.5 bg-card rounded-xl transition border border-transparent min-h-24",
+					"relative w-full px-3 py-1.5 bg-card rounded-2xl transition border border-transparent min-h-24",
 					isFocused && "border-ring ring-ring/50 ring-[3px]",
 				)}
 			>
@@ -88,7 +88,7 @@ const FloatingTextarea = React.forwardRef<
 					<Label
 						htmlFor={inputId}
 						className={cn(
-							"absolute left-0 transition-all duration-200 pointer-events-none text-card-foreground",
+							"absolute left-0 transition-all duration-200 pointer-events-none text-muted-foreground",
 							shouldFloat
 								? "top-0 text-sm"
 								: "top-1/2 -translate-y-1/2 text-base",
