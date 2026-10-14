@@ -6,6 +6,7 @@ import { Golos_Text } from "next/font/google";
 import "./globals.css";
 import { PhoneClickTracker } from "@/components/phone-click-tracker";
 import YandexMetrika from "@/components/analytics/yandex-metrika"
+import Script from "next/script";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://parus-ritual.ru"),
@@ -81,6 +82,43 @@ export default async function RootLayout({
   };
   return (
     <html lang="ru" className={golos.variable} suppressHydrationWarning>
+      <head>
+        <Script id="gudok" strategy="beforeInteractive">
+          {`
+            (function(window,document,n,project_ids){
+              window.GudokData=n;
+              if(typeof project_ids !== "object"){
+                project_ids = [project_ids]
+              };
+              window[n] = {};
+              window[n]["projects"]=project_ids;
+              config_load(project_ids.join(','));
+
+              function config_load(cId){
+                var a=document.getElementsByTagName("script")[0],
+                    s=document.createElement("script"),
+                    i=function(){a.parentNode.insertBefore(s,a)},
+                    cMrs='';
+
+                s.async=true;
+
+                if(document.location.search &&
+                    document.location.search.indexOf('?gudok_check=')===0){
+                  cMrs+=document.location.search.replace('?','&');
+                }
+
+                s.src="//mod.gudok.tel/script.js?sid="+cId+cMrs;
+
+                if(window.opera == "[object Opera]"){
+                  document.addEventListener("DOMContentLoaded", i, false);
+                }else{
+                  i();
+                }
+              }
+            })(window, document, "gd", "inl8a8snz6");
+          `}
+        </Script>
+      </head>
       <body className="font-sans antialiased">
 	  <ContactModalProvider />
 	  <PhoneClickTracker /> 
