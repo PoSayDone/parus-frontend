@@ -51,9 +51,45 @@ export default async function PaginatedProducts({
 			<ListPlaceholder text="По заданным параметрам товаров не найдено. Попробуйте выбрать другие условия." />
 		);
 	}
+	
+	const itemListJsonLd = {
+	"@context": "https://schema.org",
+	"@type": "ItemList",
+	numberOfItems: count,
+	itemListElement: products.map((product, index) => {
+		const productUrl =
+			`https://parus-ritual.ru/products/${encodeURIComponent(product.handle)}`;
 
+		return {
+			"@type": "ListItem",
+			position: (safePage - 1) * PRODUCT_LIMIT + index + 1,
+			item: {
+				"@type": "Product",
+				"@id": `${productUrl}#product`,
+				name: product.title,
+				url: productUrl,
+				...(product.thumbnail
+					? { image: product.thumbnail }
+					: {}),
+				offers: {
+					"@type": "Offer",
+					url: productUrl,
+					priceCurrency: "RUB",
+					price: product.price,
+					availability: "https://schema.org/InStock",
+				},
+			},
+		};
+	}),
+};
 	return (
 		<>
+			<script
+				type="application/ld+json"
+				dangerouslySetInnerHTML={{
+					__html: JSON.stringify(itemListJsonLd).replace(/</g, "\\u003c"),
+				}}
+			/>
 			<ul
 				className="grid grid-cols-2 w-full md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-4 gap-y-8"
 				data-testid="products-list"
