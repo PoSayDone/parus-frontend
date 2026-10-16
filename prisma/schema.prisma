@@ -53,6 +53,8 @@ model Category {
     name        String
     handle      String     @unique
     description String?
+	metaTitle  	String?
+	metaDescription String?
     thumbnail   String?
     active      Boolean    @default(true)
     parent      Category?  @relation("CategoryToCategory", fields: [parentId], references: [id])

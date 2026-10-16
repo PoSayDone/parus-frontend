@@ -43,23 +43,49 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata(props: Props): Promise<Metadata> {
-	const params = await props.params;
-	try {
-		const productCategory = await getCategoryByHandle(params.category[0]);
+	const { category } = await props.params;
+	const productCategory = await getCategoryByHandle(category[0]);
 
-		const title = productCategory?.name;
-		const description = productCategory?.description ?? `${title} category.`;
-
-		return {
-			title: `${title}`,
-			description,
-			alternates: {
-				canonical: `/categories/${params.category.join("/")}`,
-			},
-		};
-	} catch {
+	if (!productCategory) {
 		notFound();
 	}
+
+	const rawTitle =
+		productCategory.metaTitle?.trim() ||
+		productCategory.name;
+
+	const title = /парус/iu.test(rawTitle)
+		? rawTitle
+		: `${rawTitle} | Парус`;
+
+	const description =
+		productCategory.metaDescription?.trim() ||
+		productCategory.description?.trim() ||
+		`${productCategory.name} — каталог ритуального агентства «Парус».`;
+
+	const canonical = `/categories/${category.join("/")}`;
+
+	return {
+		title: {
+			absolute: title,
+		},
+		description,
+		alternates: {
+			canonical,
+		},
+		openGraph: {
+		type: "website",
+		url: canonical,
+		title,
+		description,
+		images: [
+			{
+				url: "https://parus-ritual.ru/images/og-image.png",
+				alt: "Ритуальное агентство «Парус»",
+			},
+		],
+	},
+	};
 }
 
 export default async function CategoryPage(props: Props) {

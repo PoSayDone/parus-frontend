@@ -16,7 +16,7 @@ export default async function CategoriesGrid() {
 
 	if (categories.length === 0) {
 		return (
-			<ListPlaceholder text="На данный момент ритуальные товары не доступны" />
+			<ListPlaceholder text="На данный момент ритуальные товары недоступны" />
 		);
 	}
 
@@ -27,7 +27,11 @@ export default async function CategoriesGrid() {
 			{categories.map((category) => (
 				<LandingCard
 					key={category.id}
-					title={category.name}
+					title={category.name
+					.replace(/(^|\s)ритуальные(?=\s|$)/giu, "$1")
+					.replace(/\s+/g, " ")
+					.trim()
+					.replace(/^./u, (letter) => letter.toUpperCase())}
 					className={cn(
 						"relative overflow-clip",
 						hasThumbnails ? "h-40 sm:h-48 lg:h-56" : "h-24 justify-center",

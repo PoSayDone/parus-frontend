@@ -11,6 +11,8 @@ export const categoryFormSchema = z.object({
 		.string()
 		.max(500, { message: "Описание должно быть не более 500 символов" })
 		.optional(),
+	metaTitle: z.string().trim().optional(),
+	metaDescription: z.string().trim().optional(),
 	handle: z
 		.string()
 		.min(1, { message: "URL (handle) обязателен" })

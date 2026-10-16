@@ -55,6 +55,8 @@ export default function CategoryForm({
 		defaultValues: {
 			name: "",
 			description: "",
+			metaTitle: "",
+			metaDescription: "",
 			handle: "",
 			active: true,
 		},
@@ -79,6 +81,8 @@ export default function CategoryForm({
 					form.reset({
 						name: categoryData.name,
 						description: categoryData.description || "",
+						metaTitle: categoryData.metaTitle || "",
+						metaDescription: categoryData.metaDescription || "",
 						handle: categoryData.handle,
 						active:
 							categoryData.active !== undefined
@@ -251,7 +255,62 @@ export default function CategoryForm({
 					/>
 				</CardContent>
 			</Card>
+			<Card className="bg-transparent border-border-variant">
+	<CardHeader>
+		<CardTitle>SEO</CardTitle>
+		<CardDescription>
+			Заголовок и описание страницы для поисковых систем.
+		</CardDescription>
+	</CardHeader>
 
+	<CardContent className="space-y-4">
+		<FormField
+			control={form.control}
+			name="metaTitle"
+			render={({ field }) => (
+				<FormItem>
+					<FormLabel>SEO Title</FormLabel>
+					<FormControl>
+						<Input
+							{...field}
+							value={field.value ?? ""}
+							placeholder="Введите SEO-заголовок"
+						/>
+					</FormControl>
+					<FormDescription>
+						Если оставить пустым, используем название категории.
+						Бренд «Парус» добавляется автоматически, если он
+						ещё не указан в заголовке.
+					</FormDescription>
+					<FormMessage />
+				</FormItem>
+			)}
+		/>
+
+		<FormField
+			control={form.control}
+			name="metaDescription"
+			render={({ field }) => (
+				<FormItem>
+					<FormLabel>SEO Description</FormLabel>
+					<FormControl>
+						<Textarea
+							{...field}
+							value={field.value ?? ""}
+							placeholder="Введите описание meta description"
+							rows={3}
+						/>
+					</FormControl>
+					<FormDescription>
+						Если оставить пустым, используем обычное описание
+						категории.
+					</FormDescription>
+					<FormMessage />
+				</FormItem>
+			)}
+		/>
+	</CardContent>
+</Card>
 			<Card className="bg-transparent border-border-variant">
 				<CardHeader>
 					<CardTitle>Изображение категории</CardTitle>
