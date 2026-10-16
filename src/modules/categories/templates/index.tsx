@@ -105,6 +105,7 @@ export default function CategoryTemplate({
 				sortBy={sort}
 				page={pageNumber}
 				categoryId={category.id}
+				categoryName={category.name}
 				filters={filters}
 			/>
 		</Suspense>

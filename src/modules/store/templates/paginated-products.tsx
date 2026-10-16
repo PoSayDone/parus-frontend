@@ -17,11 +17,13 @@ export default async function PaginatedProducts({
 	sortBy,
 	page,
 	categoryId,
+	categoryName,
 	filters,
 }: {
 	sortBy?: SortOptions;
 	page: number;
 	categoryId?: string;
+	categoryName?: string;
 	filters?: ProductFilters;
 }) {
 	const safePage =
@@ -55,6 +57,7 @@ export default async function PaginatedProducts({
 	const itemListJsonLd = {
 	"@context": "https://schema.org",
 	"@type": "ItemList",
+	name: categoryName || "Каталог ритуальных товаров",
 	numberOfItems: count,
 	itemListElement: products.map((product, index) => {
 		const productUrl =
