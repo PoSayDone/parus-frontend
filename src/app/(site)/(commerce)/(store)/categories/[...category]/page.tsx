@@ -8,6 +8,7 @@ import { getProductFilterOptions } from "@/lib/data/products";
 import {
 	readFilterParam,
 	filterValueSlug,
+	readDimensionParam,
 } from "@/lib/product-filters";
 
 type Props = {
@@ -18,6 +19,10 @@ type Props = {
 	color?: string | string[];
 	flower?: string | string[];
 	military?: string | string[];
+	heightMin?: string | string[];
+	heightMax?: string | string[];
+	widthMin?: string | string[];
+	widthMax?: string | string[];
 }>;
 };
 
@@ -128,6 +133,10 @@ const filters = {
 		searchParams.military,
 		filterOptions.military,
 	),
+	heightMin: readDimensionParam(searchParams.heightMin),
+	heightMax: readDimensionParam(searchParams.heightMax),
+	widthMin: readDimensionParam(searchParams.widthMin),
+	widthMax: readDimensionParam(searchParams.widthMax),
 };
 
 	return (

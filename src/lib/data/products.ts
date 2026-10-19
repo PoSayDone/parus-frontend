@@ -88,9 +88,15 @@ export const listProducts = async ({
 
 if (
 	filters &&
-	(filters.colors.length ||
+	(
+		filters.colors.length ||
 		filters.flowers.length ||
-		filters.military.length)
+		filters.military.length ||
+		filters.heightMin !== undefined ||
+		filters.heightMax !== undefined ||
+		filters.widthMin !== undefined ||
+		filters.widthMax !== undefined
+	)
 ) {
 	// Получаем только данные, необходимые для проверки характеристик.
 	const candidates = await prisma.product.findMany({

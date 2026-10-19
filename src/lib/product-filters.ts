@@ -2,12 +2,18 @@ export type ProductFilters = {
 	colors: string[];
 	flowers: string[];
 	military: string[];
+	heightMin?: number;
+	heightMax?: number;
+	widthMin?: number;
+	widthMax?: number;
 };
 
 export type ProductFilterOptions = {
 	colors: string[];
 	flowers: string[];
 	military: string[];
+	height?: { min: number; max: number };
+	width?: { min: number; max: number };
 };
 
 type FilterProduct = {
@@ -37,6 +43,42 @@ export function readFilterParam(
 	return [...new Set(values.flatMap(splitValues))];
 }
 
+export function readDimensionParam(
+	value?: string | string[],
+): number | undefined {
+	const raw = Array.isArray(value) ? value[0] : value;
+
+	if (!raw?.trim()) return undefined;
+
+	const normalized = raw
+		.trim()
+		.replace(/\s+/g, "")
+		.replace(/мм$/iu, "")
+		.replace(",", ".");
+
+	if (!/^\d+(?:\.\d+)?$/.test(normalized)) {
+		return undefined;
+	}
+
+	const number = Number(normalized);
+
+	return Number.isFinite(number) ? number : undefined;
+}
+
+function matchesRange(
+	value: number | undefined,
+	min?: number,
+	max?: number,
+): boolean {
+	if (min === undefined && max === undefined) return true;
+	if (value === undefined) return false;
+
+	return (
+		(min === undefined || value >= min) &&
+		(max === undefined || value <= max)
+	);
+}
+
 export function getProductFilterValues(product: FilterProduct) {
 	const characteristics = product.characteristics ?? [];
 
@@ -60,31 +102,62 @@ export function getProductFilterValues(product: FilterProduct) {
 
 	const military = read("воинский").includes("да") ? "да" : "нет";
 
-	return { colors, flowers, military };
+	const readDimension = (key: string) => {
+	const characteristic = characteristics.find(
+		(item) => normalizeValue(item.key) === key,
+	);
+
+	return readDimensionParam(characteristic?.value);
+};
+
+return {
+	colors,
+	flowers,
+	military,
+	height: readDimension("высота (мм)"),
+	width: readDimension("ширина (мм)"),
+};
 }
 
 export function matchesProductFilters(
 	product: FilterProduct,
-	filters: ProductFilters
+	filters: ProductFilters,
 ): boolean {
 	const values = getProductFilterValues(product);
 
 	return (
 		(!filters.colors.length ||
-			filters.colors.every((value) => values.colors.includes(value))) &&
+			filters.colors.every((value) =>
+				values.colors.includes(value),
+			)) &&
 		(!filters.flowers.length ||
-			filters.flowers.every((value) => values.flowers.includes(value))) &&
+			filters.flowers.every((value) =>
+				values.flowers.includes(value),
+			)) &&
 		(!filters.military.length ||
-			filters.military.includes(values.military))
+			filters.military.includes(values.military)) &&
+		matchesRange(
+			values.height,
+			filters.heightMin,
+			filters.heightMax,
+		) &&
+		matchesRange(
+			values.width,
+			filters.widthMin,
+			filters.widthMax,
+		)
 	);
 }
 
 export function collectFilterOptions(
-	products: FilterProduct[]
+	products: FilterProduct[],
 ): ProductFilterOptions {
 	const colors = new Set<string>();
 	const flowers = new Set<string>();
 	const military = new Set<string>();
+
+	let height: ProductFilterOptions["height"];
+	let width: ProductFilterOptions["width"];
 
 	for (const product of products) {
 		const values = getProductFilterValues(product);
@@ -92,12 +165,28 @@ export function collectFilterOptions(
 		values.colors.forEach((value) => colors.add(value));
 		values.flowers.forEach((value) => flowers.add(value));
 		military.add(values.military);
+
+		if (values.height !== undefined) {
+			height = {
+				min: Math.min(height?.min ?? values.height, values.height),
+				max: Math.max(height?.max ?? values.height, values.height),
+			};
+		}
+
+		if (values.width !== undefined) {
+			width = {
+				min: Math.min(width?.min ?? values.width, values.width),
+				max: Math.max(width?.max ?? values.width, values.width),
+			};
+		}
 	}
 
 	return {
 		colors: [...colors].sort((a, b) => a.localeCompare(b, "ru")),
 		flowers: [...flowers].sort((a, b) => a.localeCompare(b, "ru")),
 		military: ["да", "нет"].filter((value) => military.has(value)),
+		...(height ? { height } : {}),
+		...(width ? { width } : {}),
 	};
 }
 

@@ -52,7 +52,10 @@ export default function CharacteristicFilters({
 		},
 	];
 
-	function toggleValue(key: keyof ProductFilters, value: string) {
+	function toggleValue(
+	key: "colors" | "flowers" | "military",
+	value: string,
+) {
 		setSelected((current) => ({
 			...current,
 			[key]: current[key].includes(value)
@@ -61,9 +64,26 @@ export default function CharacteristicFilters({
 		}));
 	}
 
-	if (groups.every((group) => group.values.length === 0)) {
-		return null;
-	}
+	const dimensionGroups = [
+	{
+		key: "height",
+		title: "Высота, мм",
+		minName: "heightMin",
+		maxName: "heightMax",
+		bounds: options.height,
+		minValue: filters.heightMin,
+		maxValue: filters.heightMax,
+	},
+	{
+		key: "width",
+		title: "Ширина, мм",
+		minName: "widthMin",
+		maxName: "widthMax",
+		bounds: options.width,
+		minValue: filters.widthMin,
+		maxValue: filters.widthMax,
+	},
+];
 
 	const categoryUrl = `/categories/${categoryHandle}`;
 	const resetUrl =
@@ -156,7 +176,49 @@ export default function CharacteristicFilters({
 				</fieldset>
 			);
 		})}
+		
+		{dimensionGroups.map((group) => {
+	if (!group.bounds) return null;
 
+	return (
+		<fieldset
+			key={group.key}
+			className="w-full min-w-0 sm:w-[200px]"
+		>
+			<legend className="mb-1.5 text-sm font-medium">
+				{group.title}
+			</legend>
+
+			<div className="flex h-10 items-center gap-2 rounded-full border border-input bg-card px-3">
+				<input
+					type="number"
+					name={group.minName}
+					aria-label={`${group.title}: от`}
+					min={0}
+					step="any"
+					defaultValue={group.minValue ?? ""}
+					placeholder={`От ${group.bounds.min}`}
+					className="h-full w-0 min-w-0 flex-1 bg-transparent text-sm outline-none focus-visible:ring-2 focus-visible:ring-primary"
+				/>
+
+				<span aria-hidden="true" className="text-muted-foreground">
+					—
+				</span>
+
+				<input
+					type="number"
+					name={group.maxName}
+					aria-label={`${group.title}: до`}
+					min={0}
+					step="any"
+					defaultValue={group.maxValue ?? ""}
+					placeholder={`До ${group.bounds.max}`}
+					className="h-full w-0 min-w-0 flex-1 bg-transparent text-sm outline-none focus-visible:ring-2 focus-visible:ring-primary"
+				/>
+			</div>
+		</fieldset>
+	);
+})}
 		<button
 			type="submit"
 			className={buttonVariants({ size: "sm", className: "h-10" })}
