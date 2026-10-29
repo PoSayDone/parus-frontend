@@ -92,6 +92,10 @@ if (
 		filters.colors.length ||
 		filters.flowers.length ||
 		filters.military.length ||
+		filters.woods?.length ||
+		filters.traditions?.length ||
+		filters.icons?.length ||
+		filters.carved?.length ||
 		filters.heightMin !== undefined ||
 		filters.heightMax !== undefined ||
 		filters.widthMin !== undefined ||

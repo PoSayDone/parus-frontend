@@ -25,6 +25,13 @@ export default function CharacteristicFilters({
 	options,
 }: Props) {
 	const [selected, setSelected] = useState<ProductFilters>(filters);
+	
+	const hasCrossFilters = Boolean(
+	options.woods?.length ||
+	options.traditions?.length ||
+	options.icons?.length ||
+	options.carved?.length,
+);
 
 	const groups = [
 		{
@@ -32,7 +39,7 @@ export default function CharacteristicFilters({
 			name: "color",
 			key: "colors" as const,
 			placeholder: "Все цвета",
-			values: options.colors,
+			values: hasCrossFilters ? [] : options.colors,
 		},
 		{
 			title: "Цветы",
@@ -50,19 +57,58 @@ export default function CharacteristicFilters({
 				? options.military
 				: [],
 		},
+		{
+			title: "Древесина",
+			name: "wood",
+			key: "woods" as const,
+			placeholder: "Все породы",
+			values: options.woods ?? [],
+		},
+		{
+			title: "Религиозная традиция",
+			name: "tradition",
+			key: "traditions" as const,
+			placeholder: "Все традиции",
+			values: options.traditions ?? [],
+		},
+		{
+			title: "Иконка",
+			name: "icon",
+			key: "icons" as const,
+			placeholder: "Все товары",
+			values: options.icons ?? [],
+		},
+		{
+			title: "Резной",
+			name: "carved",
+			key: "carved" as const,
+			placeholder: "Все товары",
+			values: options.carved ?? [],
+		},
 	];
 
 	function toggleValue(
-	key: "colors" | "flowers" | "military",
+	key:
+		| "colors"
+		| "flowers"
+		| "military"
+		| "woods"
+		| "traditions"
+		| "icons"
+		| "carved",
 	value: string,
 ) {
-		setSelected((current) => ({
+	setSelected((current) => {
+		const values = current[key] ?? [];
+
+		return {
 			...current,
-			[key]: current[key].includes(value)
-				? current[key].filter((item) => item !== value)
-				: [...current[key], value],
-		}));
-	}
+			[key]: values.includes(value)
+				? values.filter((item) => item !== value)
+				: [...values, value],
+		};
+	});
+}
 
 	const dimensionGroups = [
 	{
@@ -125,7 +171,7 @@ export default function CharacteristicFilters({
 		{groups.map((group) => {
 			if (!group.values.length) return null;
 
-			const selectedValues = selected[group.key];
+			const selectedValues = selected[group.key] ?? [];
 			const label = selectedValues.length
 				? selectedValues.map(filterValueLabel).join(", ")
 				: group.placeholder;
@@ -133,7 +179,11 @@ export default function CharacteristicFilters({
 			return (
 				<fieldset
 					key={group.name}
-					className="w-full min-w-0 sm:w-[180px]"
+					className={`w-full min-w-0 ${
+	group.key === "traditions"
+		? "sm:w-[220px]"
+		: "sm:w-[180px]"
+}`}
 				>
 					<legend className="mb-1.5 text-sm font-medium">
 						{group.title}

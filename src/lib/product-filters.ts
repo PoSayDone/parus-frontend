@@ -2,6 +2,10 @@ export type ProductFilters = {
 	colors: string[];
 	flowers: string[];
 	military: string[];
+	woods?: string[];
+	traditions?: string[];
+	icons?: string[];
+	carved?: string[];
 	heightMin?: number;
 	heightMax?: number;
 	widthMin?: number;
@@ -101,6 +105,18 @@ export function getProductFilterValues(product: FilterProduct) {
 	}
 
 	const military = read("воинский").includes("да") ? "да" : "нет";
+	
+	const woods = read("древесина");
+	const traditions = read("религиозная традиция");
+	const icons = read("иконка").includes("да") ? "да" : "нет";
+	const carved = read("резной").includes("да") ? "да" : "нет";
+
+	// Определяем, есть ли у товара характеристики этой группы.
+	const hasCrossCharacteristics = characteristics.some((item) =>
+		["древесина", "религиозная традиция", "иконка", "резной"].includes(
+			normalizeValue(item.key),
+		),
+	);
 
 	const readDimension = (key: string) => {
 	const characteristic = characteristics.find(
@@ -114,6 +130,11 @@ return {
 	colors,
 	flowers,
 	military,
+	woods,
+	traditions,
+	icons,
+	carved,
+	hasCrossCharacteristics,
 	height: readDimension("высота (мм)"),
 	width: readDimension("ширина (мм)"),
 };
@@ -136,6 +157,18 @@ export function matchesProductFilters(
 			)) &&
 		(!filters.military.length ||
 			filters.military.includes(values.military)) &&
+		(!filters.woods?.length ||
+			filters.woods.some((value) =>
+				values.woods.includes(value),
+			)) &&
+		(!filters.traditions?.length ||
+			filters.traditions.some((value) =>
+				values.traditions.includes(value),
+			)) &&
+		(!filters.icons?.length ||
+			filters.icons.includes(values.icons)) &&
+		(!filters.carved?.length ||
+			filters.carved.includes(values.carved)) &&
 		matchesRange(
 			values.height,
 			filters.heightMin,
@@ -155,7 +188,10 @@ export function collectFilterOptions(
 	const colors = new Set<string>();
 	const flowers = new Set<string>();
 	const military = new Set<string>();
+	const woods = new Set<string>();
+	const traditions = new Set<string>();
 
+	let hasCrossCharacteristics = false;
 	let height: ProductFilterOptions["height"];
 	let width: ProductFilterOptions["width"];
 
@@ -166,25 +202,53 @@ export function collectFilterOptions(
 		values.flowers.forEach((value) => flowers.add(value));
 		military.add(values.military);
 
+		values.woods.forEach((value) => woods.add(value));
+		values.traditions.forEach((value) => traditions.add(value));
+
+		if (values.hasCrossCharacteristics) {
+			hasCrossCharacteristics = true;
+		}
+
 		if (values.height !== undefined) {
 			height = {
-				min: Math.min(height?.min ?? values.height, values.height),
-				max: Math.max(height?.max ?? values.height, values.height),
+				min: Math.min(
+					height?.min ?? values.height,
+					values.height,
+				),
+				max: Math.max(
+					height?.max ?? values.height,
+					values.height,
+				),
 			};
 		}
 
 		if (values.width !== undefined) {
 			width = {
-				min: Math.min(width?.min ?? values.width, values.width),
-				max: Math.max(width?.max ?? values.width, values.width),
+				min: Math.min(
+					width?.min ?? values.width,
+					values.width,
+				),
+				max: Math.max(
+					width?.max ?? values.width,
+					values.width,
+				),
 			};
 		}
 	}
 
+	const sortValues = (values: Set<string>) =>
+		[...values].sort((a, b) => a.localeCompare(b, "ru"));
+
 	return {
-		colors: [...colors].sort((a, b) => a.localeCompare(b, "ru")),
-		flowers: [...flowers].sort((a, b) => a.localeCompare(b, "ru")),
-		military: ["да", "нет"].filter((value) => military.has(value)),
+		colors: sortValues(colors),
+		flowers: sortValues(flowers),
+		military: ["да", "нет"].filter((value) =>
+			military.has(value),
+		),
+		woods: sortValues(woods),
+		traditions: sortValues(traditions),
+		icons: hasCrossCharacteristics ? ["да", "нет"] : [],
+		carved: hasCrossCharacteristics ? ["да", "нет"] : [],
 		...(height ? { height } : {}),
 		...(width ? { width } : {}),
 	};

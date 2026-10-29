@@ -19,6 +19,10 @@ type Props = {
 	color?: string | string[];
 	flower?: string | string[];
 	military?: string | string[];
+	wood?: string | string[];
+	tradition?: string | string[];
+	icon?: string | string[];
+	carved?: string | string[];
 	heightMin?: string | string[];
 	heightMax?: string | string[];
 	widthMin?: string | string[];
@@ -132,6 +136,22 @@ const filters = {
 	military: resolveFilterValues(
 		searchParams.military,
 		filterOptions.military,
+	),
+	woods: resolveFilterValues(
+	searchParams.wood,
+	filterOptions.woods ?? [],
+	),
+	traditions: resolveFilterValues(
+		searchParams.tradition,
+		filterOptions.traditions ?? [],
+	),
+	icons: resolveFilterValues(
+		searchParams.icon,
+		filterOptions.icons ?? [],
+	),
+	carved: resolveFilterValues(
+		searchParams.carved,
+		filterOptions.carved ?? [],
 	),
 	heightMin: readDimensionParam(searchParams.heightMin),
 	heightMax: readDimensionParam(searchParams.heightMax),
