@@ -26,12 +26,7 @@ export default function CharacteristicFilters({
 }: Props) {
 	const [selected, setSelected] = useState<ProductFilters>(filters);
 	
-	const hasCrossFilters = Boolean(
-	options.woods?.length ||
-	options.traditions?.length ||
-	options.icons?.length ||
-	options.carved?.length,
-);
+	
 
 	const groups = [
 		{
@@ -39,7 +34,7 @@ export default function CharacteristicFilters({
 			name: "color",
 			key: "colors" as const,
 			placeholder: "Все цвета",
-			values: hasCrossFilters ? [] : options.colors,
+			values: options.colors,
 		},
 		{
 			title: "Цветы",
